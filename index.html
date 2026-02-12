@@ -1678,21 +1678,22 @@
 
       fetch('/', {
         method: 'POST',
-        body: formData
+        body: new URLSearchParams(formData).toString(),
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       })
       .then(function(response) {
-        if (response.ok) {
+        if (response.ok || response.status === 302 || response.status === 303) {
           form.style.display = 'none';
           document.getElementById('formSuccess').classList.add('show');
           form.reset();
         } else {
-          throw new Error('Submission failed');
+          throw new Error('Status ' + response.status);
         }
       })
       .catch(function(error) {
         submitBtn.disabled = false;
         submitBtn.textContent = 'Submit Your Piece';
-        alert('Something went wrong. Please try again or text your details to 780-965-1477.');
+        alert('Something went wrong (' + error.message + '). Please try again or text your details to 780-965-1477.');
       });
     });
 
