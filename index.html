@@ -765,8 +765,7 @@
         <h1>Edmonton Refreshed<br>High-End Seating</h1>
         <p class="tagline">Premium pre-owned furniture in Edmonton</p>
         <div class="contact-bar">
-          <span>Text: <a href="sms:7809651477">780-965-1477</a></span>
-          <span>Email: <a href="mailto:cbottrell1990@gmail.com">cbottrell1990@gmail.com</a></span>
+          <span>To set up a viewing, Text: <a href="sms:7809651477">780-965-1477</a></span>
         </div>
       </div>
       <div class="divider"></div>
@@ -796,7 +795,6 @@
           We buy premium furniture directly from Edmontonians.
           Skip the hassle of listing, negotiating, and coordinating with strangers.
           We offer fair prices, fast decisions, and free pickup from your home.
-
           Fill out the form below, include a few pictures of what you'd like to sell along with a picture of any tags you're able to locate, and we'll get back to you ASAP.
         </p>
       </div>
@@ -854,7 +852,6 @@
             <label for="photos">Photos <span class="optional">(3-5 images)</span></label>
             <input type="file" id="photos" name="photos" accept="image/*" multiple>
             <p style="font-size:0.75rem;color:var(--color-text-secondary);margin-top:6px;">
-              Prefer to send photos separately? Text them to 780-965-1477.
             </p>
           </div>
           <button type="submit" class="btn-submit">Submit Your Piece</button>
@@ -1678,8 +1675,7 @@
 
       fetch('/', {
         method: 'POST',
-        body: new URLSearchParams(formData).toString(),
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        body: formData
       })
       .then(function(response) {
         if (response.ok || response.status === 302 || response.status === 303) {
