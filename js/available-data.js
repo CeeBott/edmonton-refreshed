@@ -89,7 +89,7 @@ function renderAvailable() {
   grid.innerHTML = availableItems.map(function(item) {
     return '<div class="card">' +
       (item.images && item.images.length > 0
-        ? buildCarousel(item.images, item.title)
+        ? buildCarousel(item.images, item.brand + ' ' + item.title)
         : '<div class="card-image-placeholder">Photo coming soon</div>'
       ) +
       '<div class="card-body">' +
@@ -107,3 +107,39 @@ function renderAvailable() {
 }
 
 renderAvailable();
+
+
+// ═══════════════════════════════════════════════════════════
+//  PRODUCT SCHEMA (JSON-LD)
+//  Renders one Product block per available item.
+//  Runs once at page load — no dynamic re-injection.
+// ═══════════════════════════════════════════════════════════
+
+(function() {
+  availableItems.forEach(function(item) {
+    // Parse numeric price from string like "$7,999"
+    var numericPrice = item.price.replace(/[^0-9.]/g, '');
+
+    var schema = {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": item.brand + ' ' + item.title,
+      "brand": {
+        "@type": "Brand",
+        "name": item.brand
+      },
+      "itemCondition": "https://schema.org/UsedCondition",
+      "offers": {
+        "@type": "Offer",
+        "priceCurrency": "CAD",
+        "price": numericPrice,
+        "availability": "https://schema.org/InStock"
+      }
+    };
+
+    var script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.textContent = JSON.stringify(schema);
+    document.head.appendChild(script);
+  });
+})();

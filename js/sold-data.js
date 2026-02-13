@@ -373,7 +373,7 @@ function renderSold() {
     return '<div class="card sold">' +
       '<span class="sold-badge">Sold</span>' +
       (item.images && item.images.length > 0
-        ? buildCarousel(item.images, item.title)
+        ? buildCarousel(item.images, item.brand + ' ' + item.title)
         : '<div class="card-image-placeholder">Photo</div>'
       ) +
       '<div class="card-body">' +
