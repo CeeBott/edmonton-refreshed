@@ -476,7 +476,7 @@ main { padding-top: var(--nav-height); }
   margin: 36px 0 12px;
 }
 
-.sell-content > .brands-list {
+.sell-content .brands-list {
   font-size: 0.95rem;
   color: var(--color-text-secondary);
   line-height: 1.8;
@@ -484,7 +484,7 @@ main { padding-top: var(--nav-height); }
   margin-bottom: 0;
 }
 
-.sell-content > .sell-list {
+.sell-content .sell-list {
   list-style: none;
   margin-bottom: 0;
   width: fit-content;
@@ -492,7 +492,7 @@ main { padding-top: var(--nav-height); }
   margin-right: auto;
 }
 
-.sell-content > .sell-list li {
+.sell-content .sell-list li {
   position: relative;
   padding-left: 20px;
   font-size: 0.95rem;
@@ -500,7 +500,7 @@ main { padding-top: var(--nav-height); }
   line-height: 1.8;
 }
 
-.sell-content > .sell-list li::before {
+.sell-content .sell-list li::before {
   content: '\2022';
   position: absolute;
   left: 0;
