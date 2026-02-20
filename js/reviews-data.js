@@ -44,8 +44,7 @@ var reviews = [
 // ── Aggregate (includes written + ratings-only) ──────────────
 var reviewAggregate = {
   totalCount: 16,
-  ratingValue: 4.9,   // (15 × 5 + 1 × 4) / 16 = 4.9375 → 4.9
-  platform: "Facebook"
+  ratingValue: 4.9    // (15 × 5 + 1 × 4) / 16 = 4.9375 → 4.9
 };
 
 

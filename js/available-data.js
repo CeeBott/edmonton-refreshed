@@ -14,9 +14,9 @@ var availableItems = [
   {
     brand: "B&B Italia",
     title: "Charles L-shaped Modular Sectional",
-    description: "An icon of design. The Charles sectional is a generational piece of furniture. Bench-made in Italy, upholsetered in a beautiful white fabric, boasting a tubular steel frame encased in cold-cured polyurethane foam, solid polished Aluminum feet that make it feel like its hovering, and manufactured in 2007",
+    description: "An icon of design. The Charles sectional is a generational piece of furniture. Bench-made in Italy, upholstered in a beautiful white fabric, boasting a tubular steel frame encased in cold-cured polyurethane foam, solid polished Aluminum feet that make it feel like it's hovering, and manufactured in 2007.",
     price: "$7,999",
-    specs: ["B&B Italia", "Sofa: 129 inches, Chaise: 91 inches, Heigh: 29 inches", "Great Condition"],
+    specs: ["B&B Italia", "Sofa: 129 inches, Chaise: 91 inches, Height: 29 inches", "Great Condition"],
     images: [
       "images/BB-030/IMG_5892.jpeg",
       "images/BB-030/IMG_5530.jpeg",
@@ -37,7 +37,7 @@ var availableItems = [
   {
     brand: "La-Z-Boy",
     title: "Emric Right Facing Sectional",
-    description: "At only only 18 months old, this Emric sectional from La-Z-Boy is like new. Upholstered in Charcoal McKittrick fabric, and currently retails for $5,598 from La-Z-Boy. The seat and back cushions show zero signs of use. Manufactured in the USA, clean, and ready for its new home.",
+    description: "At only 18 months old, this Emric sectional from La-Z-Boy is like new. Upholstered in Charcoal McKittrick fabric, and currently retails for $5,598 from La-Z-Boy. The seat and back cushions show zero signs of use. Manufactured in the USA, clean, and ready for its new home.",
     price: "$2,499",
     specs: ["La-Z-Boy", "Sofa: 108 inches, Chaise: 89 inches, Height: 36 inches", "Excellent Condition"],
     images: [
@@ -59,7 +59,7 @@ var availableItems = [
   {
     brand: "La-Z-Boy",
     title: "Genuine Nubuck Leather Roundabout Ottoman",
-    description: "Upholstered in genuine Nubuck Leather and only 18 months old, this Roundabout Ottoman retails from La-Z-Boy for $1,649. It's engineered to function as a seat, and has four casters on the bottom for eaasy maneuverability.",
+    description: "Upholstered in genuine Nubuck Leather and only 18 months old, this Roundabout Ottoman retails from La-Z-Boy for $1,649. It's engineered to function as a seat, and has four casters on the bottom for easy maneuverability.",
     price: "$749",
     specs: ["La-Z-Boy", "35 inches wide x 35 inches wide x 18 inches high", "Like New"],
     images: [
