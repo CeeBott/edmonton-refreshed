@@ -69,7 +69,7 @@ function renderReviews() {
       '<div class="reviews-aggregate-detail">' +
         '<div class="reviews-stars">' + stars + '</div>' +
         '<div class="reviews-aggregate-meta">' +
-          reviewAggregate.totalCount + ' ratings on ' + reviewAggregate.platform +
+          reviewAggregate.totalCount + ' ratings' +
         '</div>' +
       '</div>' +
     '</div>';
@@ -80,10 +80,18 @@ function renderReviews() {
     for (var i = 1; i <= 5; i++) {
       cardStars += '<span class="review-star' + (i <= review.rating ? ' filled' : '') + '">★</span>';
     }
+
+    var initial = review.name.charAt(0).toUpperCase();
+
     return '<div class="review-card">' +
-      '<div class="review-stars">' + cardStars + '</div>' +
+      '<div class="review-card-header">' +
+        '<div class="review-avatar">' + initial + '</div>' +
+        '<div class="review-header-info">' +
+          '<div class="review-author">' + review.name + '</div>' +
+          '<div class="review-card-stars">' + cardStars + '</div>' +
+        '</div>' +
+      '</div>' +
       '<p class="review-text">\u201C' + review.text + '\u201D</p>' +
-      '<div class="review-author">\u2014 ' + review.name + '</div>' +
     '</div>';
   }).join('');
 
@@ -91,7 +99,6 @@ function renderReviews() {
     '<div class="reviews-inner">' +
       aggregateHTML +
       '<div class="reviews-grid">' + cardsHTML + '</div>' +
-      '<a class="reviews-source" href="https://www.facebook.com/edmonton.refreshed/reviews" target="_blank" rel="noopener">View all reviews on Facebook &rarr;</a>' +
     '</div>';
 }
 
