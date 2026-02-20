@@ -36,7 +36,14 @@
       "name": "Edmonton, Alberta"
     },
     "description": "Curated premium pre-owned sectionals and sofas in Edmonton, Alberta.",
-    "telephone": "+1-780-965-1477"
+    "telephone": "+1-780-965-1477",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "reviewCount": "16",
+      "bestRating": "5",
+      "worstRating": "1"
+    }
   }
   </script>
 
@@ -77,6 +84,9 @@
       <div class="empty-state" id="available-empty" style="display:none;">
         <p>No pieces currently available. Check back soon or follow us for updates.</p>
       </div>
+      <div class="divider" style="margin-top: 16px;"></div>
+      <h2 class="section-label">What Clients Say</h2>
+      <div id="reviews-section"></div>
     </div>
   </main>
 
@@ -100,6 +110,7 @@
 
   <script src="js/shared.js"></script>
   <script src="js/available-data.js"></script>
+  <script src="js/reviews-data.js"></script>
 
 </body>
 </html>
