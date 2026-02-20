@@ -408,21 +408,25 @@ main { padding-top: var(--nav-height); }
 .card-cta:hover { color: var(--color-accent-hover); }
 
 /* ── Sold Badge ── */
-.card.sold { position: relative; }
+.card-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
 
 .sold-badge {
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
+  display: inline-block;
   background: var(--color-sold-badge);
   color: white;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  padding: 4px 12px;
+  padding: 2px 8px;
   border-radius: 100px;
-  z-index: 3;
+  line-height: 1.6;
+  flex-shrink: 0;
 }
 
 /* ── Sell Page ── */

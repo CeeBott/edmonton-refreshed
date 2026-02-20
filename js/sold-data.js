@@ -399,13 +399,15 @@ function renderSold() {
 
   grid.innerHTML = soldItems.map(function(item) {
     return '<div class="card sold">' +
-      '<span class="sold-badge">Sold</span>' +
       (item.images && item.images.length > 0
         ? buildCarousel(item.images, item.brand + ' ' + item.title)
         : '<div class="card-image-placeholder">Photo</div>'
       ) +
       '<div class="card-body">' +
-        '<div class="card-brand">' + item.brand + '</div>' +
+        '<div class="card-meta">' +
+          '<div class="card-brand">' + item.brand + '</div>' +
+          '<span class="sold-badge">Sold</span>' +
+        '</div>' +
         '<div class="card-title">' + item.title + '</div>' +
         (item.description ? '<div class="card-description">' + item.description + '</div>' : '') +
       '</div>' +

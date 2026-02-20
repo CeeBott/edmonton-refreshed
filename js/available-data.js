@@ -38,7 +38,7 @@ var availableItems = [
     brand: "La-Z-Boy",
     title: "Emric Right Facing Sectional",
     description: "At only only 18 months old, this Emric sectional from La-Z-Boy is like new. Upholstered in Charcoal McKittrick fabric, and currently retails for $5,598 from La-Z-Boy. The seat and back cushions show zero signs of use. Manufactured in the USA, clean, and ready for its new home.",
-    price: "$2,699",
+    price: "$2,499",
     specs: ["La-Z-Boy", "Sofa: 108 inches, Chaise: 89 inches, Height: 36 inches", "Excellent Condition"],
     images: [
       "images/LB-041/IMG_6670.jpeg",
@@ -60,7 +60,7 @@ var availableItems = [
     brand: "La-Z-Boy",
     title: "Genuine Nubuck Leather Roundabout Ottoman",
     description: "Upholstered in genuine Nubuck Leather and only 18 months old, this Roundabout Ottoman retails from La-Z-Boy for $1,649. It's engineered to function as a seat, and has four casters on the bottom for eaasy maneuverability.",
-    price: "$799",
+    price: "$749",
     specs: ["La-Z-Boy", "35 inches wide x 35 inches wide x 18 inches high", "Like New"],
     images: [
       "images/LB-042/IMG_6685.jpeg",
