@@ -116,14 +116,27 @@ renderAvailable();
 // ═══════════════════════════════════════════════════════════
 
 (function() {
+  var BASE_URL = 'https://edmonton-refreshed.com/';
+
+  // priceValidUntil: 90 days from today — keeps Google confident prices are current
+  var validUntil = new Date();
+  validUntil.setDate(validUntil.getDate() + 90);
+  var priceValidUntil = validUntil.toISOString().split('T')[0];
+
   availableItems.forEach(function(item) {
     // Parse numeric price from string like "$7,999"
     var numericPrice = item.price.replace(/[^0-9.]/g, '');
+
+    // Resolve first image to an absolute URL
+    var imageUrl = (item.images && item.images.length > 0)
+      ? BASE_URL + item.images[0]
+      : null;
 
     var schema = {
       "@context": "https://schema.org",
       "@type": "Product",
       "name": item.brand + ' ' + item.title,
+      "description": item.description,
       "brand": {
         "@type": "Brand",
         "name": item.brand
@@ -133,9 +146,42 @@ renderAvailable();
         "@type": "Offer",
         "priceCurrency": "CAD",
         "price": numericPrice,
-        "availability": "https://schema.org/InStock"
+        "priceValidUntil": priceValidUntil,
+        "availability": "https://schema.org/InStock",
+        "url": BASE_URL,
+        "hasMerchantReturnPolicy": {
+          "@type": "MerchantReturnPolicy",
+          "applicableCountry": "CA",
+          "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted"
+        },
+        "shippingDetails": {
+          "@type": "OfferShippingDetails",
+          "shippingRate": {
+            "@type": "MonetaryAmount",
+            "value": "0",
+            "currency": "CAD"
+          },
+          "shippingDestination": {
+            "@type": "DefinedRegion",
+            "addressCountry": "CA",
+            "addressRegion": "AB"
+          },
+          "deliveryTime": {
+            "@type": "ShippingDeliveryTime",
+            "handlingTime": {
+              "@type": "QuantitativeValue",
+              "minValue": 1,
+              "maxValue": 3,
+              "unitCode": "DAY"
+            }
+          }
+        }
       }
     };
+
+    if (imageUrl) {
+      schema["image"] = imageUrl;
+    }
 
     var script = document.createElement('script');
     script.type = 'application/ld+json';
