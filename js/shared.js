@@ -166,6 +166,48 @@ if (lightboxEl) {
 
 
 // ═══════════════════════════════════════════════════════════
+//  CONVERSION EVENT TRACKING
+//  Fires GA4 events for contact link clicks.
+//  gtag() is defined in the inline <head> snippet on each page.
+// ═══════════════════════════════════════════════════════════
+
+document.addEventListener('click', function(e) {
+  var link = e.target.closest('a');
+  if (!link || typeof gtag !== 'function') return;
+
+  var href = link.getAttribute('href') || '';
+
+  // Phone number click (nav bar)
+  if (href.startsWith('tel:')) {
+    gtag('event', 'phone_click', {
+      event_category: 'contact',
+      event_label: 'nav_phone'
+    });
+    return;
+  }
+
+  // SMS link click — differentiate listing CTA vs sell page
+  if (href.startsWith('sms:')) {
+    var isListingCTA = !!link.closest('.card-cta, .card');
+    gtag('event', 'sms_click', {
+      event_category: 'contact',
+      event_label: isListingCTA ? 'listing_cta' : 'sell_page_sms'
+    });
+    return;
+  }
+
+  // Email link click (sell page)
+  if (href.startsWith('mailto:')) {
+    gtag('event', 'email_click', {
+      event_category: 'contact',
+      event_label: 'sell_page_email'
+    });
+    return;
+  }
+});
+
+
+// ═══════════════════════════════════════════════════════════
 //  MOBILE NAV
 // ═══════════════════════════════════════════════════════════
 
