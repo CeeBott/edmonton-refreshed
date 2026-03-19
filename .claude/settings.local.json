@@ -8,7 +8,14 @@
       "WebFetch(domain:edmonton-refreshed.com)",
       "Bash(curl:*)",
       "Bash(node build.js:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(sips -g pixelWidth -g pixelHeight /Users/collinbottrell/Desktop/edmonton-refreshed/images/BB-030/IMG_5892.jpeg /Users/collinbottrell/Desktop/edmonton-refreshed/images/LB-041/IMG_6670.jpeg)",
+      "Bash(sips -g pixelWidth -g pixelHeight /Users/collinbottrell/Desktop/edmonton-refreshed/images/RC-043/IMG_6980.png /Users/collinbottrell/Desktop/edmonton-refreshed/images/RC-043/milo-corner-sectional-dimensions.png /Users/collinbottrell/Desktop/edmonton-refreshed/images/RC-043/milo-module-dimensions.png)",
+      "Bash(convert --version)",
+      "Bash(magick --version)",
+      "Bash(python3 -c \"from PIL import Image; print\\(''Pillow available''\\)\")",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(git push:*)"
     ]
   }
 }

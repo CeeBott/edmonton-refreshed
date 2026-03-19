@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <link rel="preconnect" href="https://www.googletagmanager.com">
+
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-8MN82PPZRZ"></script>
   <script>
@@ -16,14 +18,16 @@
   <title>Sell High-End Sofas and Sectionals in Edmonton | Edmonton Refreshed</title>
   <link rel="icon" type="image/svg+xml" href="../favicon.svg">
   <link rel="canonical" href="https://edmonton-refreshed.com/sell/">
-  <meta name="description" content="Looking to sell premium furniture in Edmonton? Send photos and details for a straightforward offer and pickup.">
+  <meta name="description" content="Sell your premium sofa or sectional in Edmonton. Fair offers within 24 hours, we handle all pickup. Natuzzi, B&amp;B Italia, La-Z-Boy, and more.">
   <meta name="robots" content="index, follow">
+  <meta name="geo.region" content="CA-AB">
+  <meta name="geo.placename" content="Edmonton">
 
   <!-- Open Graph (Facebook, iMessage, SMS, etc.) -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://edmonton-refreshed.com/sell/">
-  <meta property="og:title" content="Sell High-End Furniture in Edmonton | Edmonton Refreshed">
-  <meta property="og:description" content="Looking to sell premium furniture in Edmonton? Send photos and details for a straightforward offer and pickup.">
+  <meta property="og:title" content="Sell High-End Sofas and Sectionals in Edmonton | Edmonton Refreshed">
+  <meta property="og:description" content="Sell your premium sofa or sectional in Edmonton. Fair offers within 24 hours, we handle all pickup. Natuzzi, B&amp;B Italia, La-Z-Boy, and more.">
   <meta property="og:site_name" content="Edmonton Refreshed">
   <meta property="og:image" content="https://edmonton-refreshed.com/images/og-preview.png">
   <meta property="og:image:width" content="1200">
@@ -31,9 +35,31 @@
 
   <!-- Twitter / X -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Sell High-End Furniture in Edmonton | Edmonton Refreshed">
-  <meta name="twitter:description" content="Looking to sell premium furniture in Edmonton? Send photos and details for a straightforward offer and pickup.">
+  <meta name="twitter:title" content="Sell High-End Sofas and Sectionals in Edmonton | Edmonton Refreshed">
+  <meta name="twitter:description" content="Sell your premium sofa or sectional in Edmonton. Fair offers within 24 hours, we handle all pickup. Natuzzi, B&amp;B Italia, La-Z-Boy, and more.">
   <meta name="twitter:image" content="https://edmonton-refreshed.com/images/og-preview.png">
+
+  <!-- BreadcrumbList Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://edmonton-refreshed.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Sell Your Furniture",
+        "item": "https://edmonton-refreshed.com/sell/"
+      }
+    ]
+  }
+  </script>
 
   <!-- HowTo Schema -->
   <script type="application/ld+json">
@@ -70,29 +96,32 @@
   {
     "@context": "https://schema.org",
     "@type": "Service",
-    "name": "Sell Your Premium Furniture",
-    "description": "We buy high-end seating in Edmonton and the surrounding area. Fair offer within 24 hours, pickup on your schedule.",
+    "name": "Sell Your Premium Sofa or Sectional in Edmonton",
+    "description": "We buy high-end sofas and sectionals in Edmonton and the surrounding area. Fair offer within 24 hours, pickup anywhere in the greater Edmonton area at your convenience.",
     "url": "https://edmonton-refreshed.com/sell/",
     "provider": {
-      "@type": "LocalBusiness",
+      "@type": "FurnitureStore",
       "name": "Edmonton Refreshed",
+      "url": "https://edmonton-refreshed.com/",
       "telephone": "+1-780-965-1477",
-      "areaServed": {
-        "@type": "Place",
-        "name": "Edmonton, Alberta"
-      }
+      "email": "info@edmonton-refreshed.com",
+      "sameAs": ["https://www.facebook.com/share/1DxqENgHxH/"]
     },
-    "areaServed": {
-      "@type": "Place",
-      "name": "Edmonton, Alberta"
-    }
+    "areaServed": [
+      { "@type": "City", "name": "Edmonton" },
+      { "@type": "City", "name": "St. Albert" },
+      { "@type": "City", "name": "Sherwood Park" },
+      { "@type": "City", "name": "Spruce Grove" },
+      { "@type": "City", "name": "Leduc" },
+      { "@type": "City", "name": "Fort Saskatchewan" }
+    ]
   }
   </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../css/styles.css?v=6">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.min.css?v=8">
 </head>
 <body>
 
@@ -104,6 +133,7 @@
         <li><a href="/" data-page="available">Available</a></li>
         <li><a href="/sold/" data-page="sold">Sold</a></li>
         <li><a href="/sell/" data-page="sell">Sell Your Furniture</a></li>
+        <li><a href="/about/" data-page="about">About</a></li>
       </ul>
       <div class="nav-contact">
         <a href="tel:7809651477">780-965-1477</a>
@@ -136,16 +166,16 @@
             offer and handle pickup — no hassle, no flakes, no back-and-forth.
           </p>
 
-          <div class="sell-contact">
+          <address class="sell-contact">
             <div>
               <span class="label">Text</span>
-              <a href="sms:7809651477">(780) 965-1477</a>
+              <a href="sms:7809651477">780-965-1477</a>
             </div>
             <div>
               <span class="label">Email</span>
               <a href="mailto:info@edmonton-refreshed.com">info@edmonton-refreshed.com</a>
             </div>
-          </div>
+          </address>
         </div>
 
         <h2 class="sell-section-heading">How It Works</h2>

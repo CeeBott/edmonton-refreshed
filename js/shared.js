@@ -229,6 +229,8 @@ if (navToggle && navLinks) {
   var page = 'available';
   if (path.indexOf('/sold') !== -1) page = 'sold';
   else if (path.indexOf('/sell') !== -1) page = 'sell';
+  else if (path.indexOf('/about') !== -1) page = 'about';
+  else if (path.indexOf('/listings') !== -1) page = 'available';
 
   document.querySelectorAll('.nav-links a').forEach(function(a) {
     if (a.dataset.page === page) {

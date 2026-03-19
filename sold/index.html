@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <link rel="preconnect" href="https://www.googletagmanager.com">
+
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-8MN82PPZRZ"></script>
   <script>
@@ -18,6 +20,8 @@
   <link rel="canonical" href="https://edmonton-refreshed.com/sold/">
   <meta name="description" content="Browse previously sold premium sectionals and sofas in Edmonton and see the brands and quality we specialize in.">
   <meta name="robots" content="index, follow">
+  <meta name="geo.region" content="CA-AB">
+  <meta name="geo.placename" content="Edmonton">
 
   <!-- Open Graph (Facebook, iMessage, SMS, etc.) -->
   <meta property="og:type" content="website">
@@ -35,22 +39,43 @@
   <meta name="twitter:description" content="Browse previously sold premium sectionals and sofas in Edmonton and see the brands and quality we specialize in.">
   <meta name="twitter:image" content="https://edmonton-refreshed.com/images/og-preview.png">
 
+  <!-- BreadcrumbList Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://edmonton-refreshed.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Sold",
+        "item": "https://edmonton-refreshed.com/sold/"
+      }
+    ]
+  }
+  </script>
+
   <!-- ItemList Schema -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "ItemList",
     "name": "Previously Sold Premium Furniture",
-    "description": "Browse previously sold premium sectionals and sofas in Edmonton.",
-    "url": "https://edmonton-refreshed.com/sold/",
-    "numberOfItems": 27
+    "description": "Browse previously sold premium sectionals and sofas in Edmonton — a record of the brands and quality Edmonton Refreshed works with.",
+    "url": "https://edmonton-refreshed.com/sold/"
   }
   </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../css/styles.css?v=6">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.min.css?v=8">
 </head>
 <body>
 
@@ -62,6 +87,7 @@
         <li><a href="/" data-page="available">Available</a></li>
         <li><a href="/sold/" data-page="sold">Sold</a></li>
         <li><a href="/sell/" data-page="sell">Sell Your Furniture</a></li>
+        <li><a href="/about/" data-page="about">About</a></li>
       </ul>
       <div class="nav-contact">
         <a href="tel:7809651477">780-965-1477</a>
@@ -74,9 +100,16 @@
 
   <main>
     <div class="page">
+
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="breadcrumb-sep">/</span>
+        <span class="breadcrumb-current">Sold</span>
+      </nav>
+
       <div class="hero">
         <h1>Sold Pieces</h1>
-        <p class="tagline">Premium seating previously placed in Edmonton homes — a record of the brands and quality we work with.</p>
+        <p class="tagline">Over 39 premium sofas and sectionals placed in Edmonton homes. This is a record of the brands and quality we work with &mdash; Natuzzi, B&amp;B Italia, La-Z-Boy, Rove Concepts, Brentwood Classics, Crate &amp; Barrel, Urban Barn, EQ3, American Leather, and more.</p>
       </div>
       <div class="divider"></div>
       <h2 class="section-label">Past Sales</h2>
@@ -311,7 +344,7 @@
   </main>
 
   <footer>
-    <p>&copy; 2026 Edmonton Refreshed High-End Seating</p>
+    <p>&copy; 2026 Edmonton Refreshed Seating</p>
     <p>Serving Edmonton, Alberta and surrounding areas</p>
   </footer>
 

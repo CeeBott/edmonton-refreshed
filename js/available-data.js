@@ -89,6 +89,10 @@ var availableItems = [
 //  RENDER
 // ═══════════════════════════════════════════════════════════
 
+function slugify(str) {
+  return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+}
+
 function renderAvailable() {
   var grid = document.getElementById('available-grid');
   var empty = document.getElementById('available-empty');
@@ -100,13 +104,20 @@ function renderAvailable() {
   }
 
   grid.innerHTML = availableItems.map(function(item) {
+    var slug = slugify(item.brand + '-' + item.title);
+    var listingUrl = '/listings/' + slug + '/';
+
     var brandLine = item.comingSoon
       ? '<div class="card-meta"><div class="card-brand">' + item.brand + '</div><span class="coming-soon-badge">Coming Soon</span></div>'
       : '<div class="card-brand">' + item.brand + '</div>';
 
+    var titleEl = item.comingSoon
+      ? '<div class="card-title">' + item.title + '</div>'
+      : '<div class="card-title"><a class="card-title-link" href="' + listingUrl + '">' + item.title + '</a></div>';
+
     var priceCta = item.comingSoon
       ? '<div class="card-price card-price--muted">Listing coming soon</div>'
-      : '<div class="card-price">' + item.price + '</div><a class="card-cta" href="sms:7809651477">Contact to View &rarr;</a>';
+      : '<div class="card-price">' + item.price + '</div>';
 
     return '<div class="card">' +
       (item.images && item.images.length > 0
@@ -115,7 +126,7 @@ function renderAvailable() {
       ) +
       '<div class="card-body">' +
         brandLine +
-        '<div class="card-title">' + item.title + '</div>' +
+        titleEl +
         '<div class="card-description">' + item.description + '</div>' +
         '<div class="card-specs">' +
           item.specs.map(function(s) { return '<span class="spec-tag">' + s + '</span>'; }).join('') +
@@ -129,86 +140,5 @@ function renderAvailable() {
 renderAvailable();
 
 
-// ═══════════════════════════════════════════════════════════
-//  PRODUCT SCHEMA (JSON-LD)
-//  Renders one Product block per available item.
-//  Runs once at page load — no dynamic re-injection.
-// ═══════════════════════════════════════════════════════════
-
-(function() {
-  var BASE_URL = 'https://edmonton-refreshed.com/';
-
-  // priceValidUntil: 90 days from today — keeps Google confident prices are current
-  var validUntil = new Date();
-  validUntil.setDate(validUntil.getDate() + 90);
-  var priceValidUntil = validUntil.toISOString().split('T')[0];
-
-  availableItems.forEach(function(item) {
-    // Skip schema for coming-soon items (no price to inject)
-    if (item.comingSoon) return;
-
-    // Parse numeric price from string like "$7,999"
-    var numericPrice = item.price.replace(/[^0-9.]/g, '');
-
-    // Resolve first image to an absolute URL
-    var imageUrl = (item.images && item.images.length > 0)
-      ? BASE_URL + item.images[0]
-      : null;
-
-    var schema = {
-      "@context": "https://schema.org",
-      "@type": "Product",
-      "name": item.brand + ' ' + item.title,
-      "description": item.description,
-      "brand": {
-        "@type": "Brand",
-        "name": item.brand
-      },
-      "itemCondition": "https://schema.org/UsedCondition",
-      "offers": {
-        "@type": "Offer",
-        "priceCurrency": "CAD",
-        "price": numericPrice,
-        "priceValidUntil": priceValidUntil,
-        "availability": "https://schema.org/InStock",
-        "url": BASE_URL,
-        "hasMerchantReturnPolicy": {
-          "@type": "MerchantReturnPolicy",
-          "applicableCountry": "CA",
-          "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted"
-        },
-        "shippingDetails": {
-          "@type": "OfferShippingDetails",
-          "shippingRate": {
-            "@type": "MonetaryAmount",
-            "value": "0",
-            "currency": "CAD"
-          },
-          "shippingDestination": {
-            "@type": "DefinedRegion",
-            "addressCountry": "CA",
-            "addressRegion": "AB"
-          },
-          "deliveryTime": {
-            "@type": "ShippingDeliveryTime",
-            "handlingTime": {
-              "@type": "QuantitativeValue",
-              "minValue": 1,
-              "maxValue": 3,
-              "unitCode": "DAY"
-            }
-          }
-        }
-      }
-    };
-
-    if (imageUrl) {
-      schema["image"] = imageUrl;
-    }
-
-    var script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.textContent = JSON.stringify(schema);
-    document.head.appendChild(script);
-  });
-})();
+// Product schema is injected as static <script> tags in index.html <head>
+// by the build script (build.js). No runtime DOM injection needed.
