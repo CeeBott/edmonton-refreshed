@@ -80,16 +80,27 @@ function generateAvailableHTML(items) {
       return '<span class="spec-tag">' + escapeHtml(s) + '</span>';
     }).join('');
 
+    var imgHtml = imgSrc
+      ? '          <div class="card-image-placeholder"><img src="' + imgSrc + '" alt="' + alt + '" loading="' + loading + '"></div>'
+      : '          <div class="card-image-placeholder">Photos coming soon</div>';
+
+    var brandLine = item.comingSoon
+      ? '            <div class="card-meta"><div class="card-brand">' + escapeHtml(item.brand) + '</div><span class="coming-soon-badge">Coming Soon</span></div>'
+      : '            <div class="card-brand">' + escapeHtml(item.brand) + '</div>';
+
+    var priceCta = item.comingSoon
+      ? '            <div class="card-price card-price--muted">Listing coming soon</div>'
+      : '            <div class="card-price">' + escapeHtml(item.price) + '</div>\n            <a class="card-cta" href="sms:7809651477">Contact to View &rarr;</a>';
+
     lines.push(
       '        <div class="card">',
-      '          <div class="card-image-placeholder"><img src="' + imgSrc + '" alt="' + alt + '" loading="' + loading + '"></div>',
+      imgHtml,
       '          <div class="card-body">',
-      '            <div class="card-brand">' + escapeHtml(item.brand) + '</div>',
+      brandLine,
       '            <div class="card-title">' + escapeHtml(item.title) + '</div>',
       '            <div class="card-description">' + escapeHtml(item.description) + '</div>',
       '            <div class="card-specs">' + specs + '</div>',
-      '            <div class="card-price">' + escapeHtml(item.price) + '</div>',
-      '            <a class="card-cta" href="sms:7809651477">Contact to View &rarr;</a>',
+      priceCta,
       '          </div>',
       '        </div>'
     );

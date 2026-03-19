@@ -432,6 +432,28 @@ main { padding-top: var(--nav-height); }
   flex-shrink: 0;
 }
 
+/* ── Coming Soon Badge ── */
+.coming-soon-badge {
+  display: inline-block;
+  background: var(--color-accent);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 2px 8px;
+  border-radius: 100px;
+  line-height: 1.6;
+  flex-shrink: 0;
+}
+
+.card-price--muted {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--color-text-secondary);
+  margin-bottom: 0;
+}
+
 /* ── Sell Page ── */
 .sell-hero {
   text-align: center;

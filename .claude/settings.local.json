@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nClean up codebase: fix typos, add structured data, remove dead CSS\n\n- Fix typos in product descriptions \\(upholsetered, Heigh, only only, eaasy\\)\n- Add meta robots tags to all pages\n- Add ItemList JSON-LD schema to sold page\n- Add Service JSON-LD schema to sell page\n- Remove unused .contact-bar CSS \\(17 lines of dead code\\)\n- Remove unused platform property from review aggregate data\n- Fix lightbox alt text fallback for accessibility\n- Bump CSS cache-buster to v3\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git push)",
+      "Bash(git -C /Users/collinbottrell/Desktop/edmonton-refreshed log --oneline -20)",
+      "WebFetch(domain:edmonton-refreshed.com)",
+      "Bash(curl:*)",
+      "Bash(node build.js:*)",
+      "Bash(git commit:*)"
+    ]
+  }
+}

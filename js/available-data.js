@@ -69,6 +69,19 @@ var availableItems = [
       "images/LB-042/IMG_6686.jpeg",
     ]
   },
+  {
+    brand: "Rove Concepts",
+    title: "Milo 6-Piece Modular Sectional",
+    description: "A statement in texture and versatility. The Milo is upholstered in Pearl Chatou Boucl\u00e9 \u2014 a wool-fiber fabric whose tightly looped construction delivers extraordinary softness without sacrificing durability. Six fully independent modules of kiln-dried hardwood and sinuous spring construction, topped with three-layer high-density foam finished in 100% goose feathers. Low-profile stainless steel legs. Configure it as a grand L-shape, split it into two loveseats, or anchor a room around a sofa and ottoman \u2014 the layout is yours.\n\nEst. MSRP $7,400",
+    price: "",
+    comingSoon: true,
+    specs: ["Rove Concepts", "6-piece modular", "Excellent Condition"],
+    images: [
+      "images/RC-043/IMG_6980.jpeg",
+      "images/RC-043/milo-corner-sectional-dimensions.jpeg",
+      "images/RC-043/milo-module-dimensions.jpeg",
+    ]
+  },
 ];
 
 
@@ -87,20 +100,27 @@ function renderAvailable() {
   }
 
   grid.innerHTML = availableItems.map(function(item) {
+    var brandLine = item.comingSoon
+      ? '<div class="card-meta"><div class="card-brand">' + item.brand + '</div><span class="coming-soon-badge">Coming Soon</span></div>'
+      : '<div class="card-brand">' + item.brand + '</div>';
+
+    var priceCta = item.comingSoon
+      ? '<div class="card-price card-price--muted">Listing coming soon</div>'
+      : '<div class="card-price">' + item.price + '</div><a class="card-cta" href="sms:7809651477">Contact to View &rarr;</a>';
+
     return '<div class="card">' +
       (item.images && item.images.length > 0
         ? buildCarousel(item.images, item.brand + ' ' + item.title)
-        : '<div class="card-image-placeholder">Photo coming soon</div>'
+        : '<div class="card-image-placeholder">Photos coming soon</div>'
       ) +
       '<div class="card-body">' +
-        '<div class="card-brand">' + item.brand + '</div>' +
+        brandLine +
         '<div class="card-title">' + item.title + '</div>' +
         '<div class="card-description">' + item.description + '</div>' +
         '<div class="card-specs">' +
           item.specs.map(function(s) { return '<span class="spec-tag">' + s + '</span>'; }).join('') +
         '</div>' +
-        '<div class="card-price">' + item.price + '</div>' +
-        '<a class="card-cta" href="sms:7809651477">Contact to View &rarr;</a>' +
+        priceCta +
       '</div>' +
     '</div>';
   }).join('');
@@ -124,6 +144,9 @@ renderAvailable();
   var priceValidUntil = validUntil.toISOString().split('T')[0];
 
   availableItems.forEach(function(item) {
+    // Skip schema for coming-soon items (no price to inject)
+    if (item.comingSoon) return;
+
     // Parse numeric price from string like "$7,999"
     var numericPrice = item.price.replace(/[^0-9.]/g, '');
 
