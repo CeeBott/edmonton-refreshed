@@ -135,7 +135,6 @@ function renderAvailable() {
       '<div class="card-body">' +
         brandLine +
         titleEl +
-        '<div class="card-description">' + item.description + '</div>' +
         '<div class="card-specs">' +
           item.specs.map(function(s) { return '<span class="spec-tag">' + s + '</span>'; }).join('') +
         '</div>' +

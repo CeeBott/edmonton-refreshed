@@ -123,7 +123,6 @@ function generateAvailableHTML(items) {
       '          <div class="card-body">',
       brandLine,
       titleLine,
-      '            <div class="card-description">' + escapeHtml(item.description) + '</div>',
       '            <div class="card-specs">' + specs + '</div>',
       priceCta,
       '          </div>',
