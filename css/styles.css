@@ -929,11 +929,27 @@ footer p { margin: 2px 0; }
 
   /* On mobile, always show carousel arrows */
   .carousel .carousel-btn { opacity: 1; }
+
+  /* Credibility strip — single line on mobile */
+  .credibility-strip {
+    font-size: 0.65rem;
+    padding: 8px 16px;
+    gap: 10px;
+    flex-wrap: nowrap;
+  }
+  .credibility-strip .credibility-sep { font-size: 0.5rem; }
 }
 
 @media (max-width: 400px) {
   .hero h1 { font-size: 1.5rem; }
   .hero { padding: 48px 16px 32px; }
+
+  /* Extra-small: further condense credibility strip */
+  .credibility-strip {
+    font-size: 0.58rem;
+    gap: 6px;
+    padding: 7px 12px;
+  }
 }
 
 /* ── Breadcrumb ── */
@@ -1105,10 +1121,37 @@ footer p { margin: 2px 0; }
 @media (max-width: 768px) {
   .listing-layout {
     grid-template-columns: 1fr;
-    gap: 28px;
+    gap: 24px;
   }
   .listing-title { font-size: 1.4rem; }
   .listing-hero { padding: 20px 16px 48px; }
+
+  /* Prevent grid children from overflowing on mobile */
+  .listing-layout {
+    overflow: hidden;
+  }
+  .listing-carousel,
+  .listing-body {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  /* Stack CTA buttons vertically */
+  .listing-cta {
+    display: block;
+    text-align: center;
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  /* Smaller price on mobile */
+  .listing-price { font-size: 1.35rem; }
+
+  /* Tighter specs on mobile */
+  .listing-specs { margin-bottom: 24px; }
+
+  /* Back link spacing */
+  .listing-back { margin-top: 4px; }
 }
 
 /* ── Service Area Note ── */
