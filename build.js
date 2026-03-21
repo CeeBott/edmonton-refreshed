@@ -468,13 +468,23 @@ function generateListingPage(item, slug) {
 '            <div class="listing-brand">' + escapeHtml(item.brand) + '</div>\n' +
 '            <h1 class="listing-title">' + escapeHtml(item.title) + '</h1>\n' +
 '            <p class="listing-description">' + escapeHtml(item.description) + '</p>\n' +
+(item.retailCompare ? '            <div class="listing-retail-compare">' + escapeHtml(item.retailCompare) + '</div>\n' : '') +
 '            <div class="listing-specs">' + specsHTML + '</div>\n' +
 '            <div class="listing-price">' + escapeHtml(item.price) + '</div>\n' +
-'            <a class="listing-cta" href="sms:7809651477">Text to View &rarr;</a>\n' +
+'            <a class="listing-cta" href="sms:7809651477">Text to Secure &rarr;</a>\n' +
 '            <a class="listing-cta listing-cta--secondary" href="tel:7809651477">Call 780-965-1477</a>\n' +
 '            <a class="listing-back" href="/">&larr; All Available Pieces</a>\n' +
 '          </div>\n' +
 '        </div>\n' +
+'      </div>\n' +
+'\n' +
+'      <div class="newsletter-embed">\n' +
+'        <p class="newsletter-heading">New pieces sell fast. Enter your email and you&rsquo;ll hear about new arrivals before they hit the public listings.</p>\n' +
+'        <form class="newsletter-form" action="https://app.kit.com/forms/9233085/subscriptions" method="post" data-sv-form="9233085" data-uid="47c0cc8b38">\n' +
+'          <input type="email" name="email_address" placeholder="Your email address" required>\n' +
+'          <button type="submit">Subscribe</button>\n' +
+'        </form>\n' +
+'        <p class="newsletter-success">Thanks! You&rsquo;re on the list.</p>\n' +
 '      </div>\n' +
 '\n' +
 '    </div>\n' +

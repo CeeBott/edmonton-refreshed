@@ -291,3 +291,39 @@ if (navToggle && navLinks) {
     }
   });
 })();
+
+
+// ═══════════════════════════════════════════════════════════
+//  NEWSLETTER FORM (Kit / ConvertKit)
+// ═══════════════════════════════════════════════════════════
+
+document.querySelectorAll('.newsletter-form').forEach(function(form) {
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var email = form.querySelector('input[name="email_address"]');
+    var btn = form.querySelector('button');
+    var success = form.parentElement.querySelector('.newsletter-success');
+    if (!email || !email.value) return;
+
+    btn.textContent = 'Sending\u2026';
+    btn.disabled = true;
+
+    var data = new FormData();
+    data.append('email_address', email.value);
+
+    fetch('https://app.kit.com/forms/9233085/subscriptions', {
+      method: 'POST',
+      body: data,
+      headers: { 'Accept': 'application/json' }
+    }).then(function() {
+      form.style.display = 'none';
+      if (success) success.style.display = 'block';
+      if (typeof gtag === 'function') {
+        gtag('event', 'newsletter_signup', { event_category: 'engagement' });
+      }
+    }).catch(function() {
+      btn.textContent = 'Subscribe';
+      btn.disabled = false;
+    });
+  });
+});
