@@ -422,7 +422,7 @@ function generateListingPage(item, slug) {
 '  <link rel="preconnect" href="https://fonts.googleapis.com">\n' +
 '  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n' +
 '  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet">\n' +
-'  <link rel="stylesheet" href="../../css/styles.min.css?v=10">\n' +
+'  <link rel="stylesheet" href="../../css/styles.min.css?v=11">\n' +
 '</head>\n' +
 '<body>\n' +
 '\n' +
