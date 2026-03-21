@@ -446,11 +446,7 @@ function generateListingPage(item, slug) {
 '  </nav>\n' +
 '\n' +
 '  <div class="credibility-strip">\n' +
-'    <span>39+ Pieces Sold</span>\n' +
-'    <span class="credibility-sep">|</span>\n' +
-'    <span>&#9733; 4.9 Rating</span>\n' +
-'    <span class="credibility-sep">|</span>\n' +
-'    <span>Proudly Edmonton Owned &amp; Operated</span>\n' +
+'    <span>We Deliver Anywhere in Edmonton and the Surrounding Area</span>\n' +
 '  </div>\n' +
 '\n' +
 '  <main>\n' +
