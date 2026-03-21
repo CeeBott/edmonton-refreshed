@@ -10,7 +10,9 @@ function buildCarousel(images, alt) {
   var singleClass = count <= 1 ? ' single' : '';
 
   var imgsHtml = images.map(function(src, i) {
-    return '<img src="' + src + '" alt="' + alt + ' — photo ' + (i+1) + '" loading="' + (i === 0 ? 'eager' : 'lazy') + '" draggable="false">';
+    var base = src.replace(/\.jpeg$/, '');
+    var srcset = base + '-400w.jpeg 400w, ' + base + '-800w.jpeg 800w, ' + src + ' 1200w';
+    return '<img src="' + src + '" srcset="' + srcset + '" sizes="(max-width: 768px) 100vw, 530px" alt="' + alt + ' — photo ' + (i+1) + '" loading="' + (i === 0 ? 'eager' : 'lazy') + '" draggable="false">';
   }).join('');
 
   var dotsHtml = images.map(function(_, i) {
@@ -52,11 +54,17 @@ function goToSlide(carousel, index) {
   if (counter) counter.textContent = (index + 1) + ' / ' + count;
 }
 
-// Delegate clicks for carousel arrows, dots, and image → lightbox
+// Delegate clicks for carousel arrows, dots, and images
+var didSwipe = false;
+
 document.addEventListener('click', function(e) {
+  // If a swipe just happened, don't treat the click as a tap
+  if (didSwipe) { didSwipe = false; return; }
+
   var btn = e.target.closest('.carousel-btn');
   if (btn) {
     e.stopPropagation();
+    e.preventDefault();
     var carousel = btn.closest('.carousel');
     var current = parseInt(carousel.dataset.index);
     if (btn.classList.contains('prev')) goToSlide(carousel, current - 1);
@@ -67,14 +75,21 @@ document.addEventListener('click', function(e) {
   var dot = e.target.closest('.dot');
   if (dot) {
     e.stopPropagation();
+    e.preventDefault();
     var carousel = dot.closest('.carousel');
     goToSlide(carousel, parseInt(dot.dataset.index));
     return;
   }
 
-  // Click on image → open lightbox
+  // Click on image — navigate to listing page on available cards, open lightbox elsewhere
   var img = e.target.closest('.carousel-track img');
   if (img) {
+    var card = img.closest('.card');
+    if (card) {
+      var link = card.querySelector('.card-title-link');
+      if (link) { window.location.href = link.href; return; }
+      // Card without listing link (sold items) — open lightbox if available
+    }
     var carousel = img.closest('.carousel');
     var images = Array.from(carousel.querySelectorAll('.carousel-track img')).map(function(i) { return i.src; });
     var index = parseInt(carousel.dataset.index);
@@ -82,29 +97,67 @@ document.addEventListener('click', function(e) {
   }
 });
 
-// Touch / swipe support
+// ── Swipe engine (shared by carousels and lightbox) ──
+var swipeAccum = 0;
+var swipeLockUntil = 0;
+
+function handleSwipe(dir, target) {
+  var lb = document.getElementById('lightbox');
+  if (lb && lb.classList.contains('open')) {
+    lightboxNav(dir);
+    return;
+  }
+  var carousel = target.closest('.carousel');
+  if (carousel) {
+    var current = parseInt(carousel.dataset.index);
+    goToSlide(carousel, current + dir);
+  }
+}
+
+document.addEventListener('wheel', function(e) {
+  var lb = document.getElementById('lightbox');
+  var isLightbox = lb && lb.classList.contains('open') && lb.contains(e.target);
+  var isCarousel = e.target.closest('.carousel');
+  if (!isLightbox && !isCarousel) return;
+  if (Math.abs(e.deltaX) < Math.abs(e.deltaY)) return;
+  e.preventDefault();
+  var now = Date.now();
+  if (now < swipeLockUntil) return;
+  swipeAccum += e.deltaX;
+  if (Math.abs(swipeAccum) > 10) {
+    handleSwipe(swipeAccum > 0 ? 1 : -1, e.target);
+    swipeAccum = 0;
+    swipeLockUntil = now + 350;
+  }
+}, { passive: false });
+
+// Touch swipe (finger on mobile / tablet) — works on carousels and lightbox
 var touchStartX = 0;
-var touchCarousel = null;
+var touchStartY = 0;
+var touchTarget = null;
 
 document.addEventListener('touchstart', function(e) {
-  var carousel = e.target.closest('.carousel');
-  if (!carousel) return;
+  var lb = document.getElementById('lightbox');
+  var isLightbox = lb && lb.classList.contains('open') && lb.contains(e.target);
+  var isCarousel = e.target.closest('.carousel');
+  if (!isLightbox && !isCarousel) return;
   touchStartX = e.touches[0].clientX;
-  touchCarousel = carousel;
+  touchStartY = e.touches[0].clientY;
+  touchTarget = e.target;
 }, { passive: true });
 
 document.addEventListener('touchend', function(e) {
-  if (!touchCarousel) return;
-  var diff = touchStartX - e.changedTouches[0].clientX;
-  var current = parseInt(touchCarousel.dataset.index);
-  if (Math.abs(diff) > 40) {
-    if (diff > 0) goToSlide(touchCarousel, current + 1);
-    else goToSlide(touchCarousel, current - 1);
+  if (!touchTarget) return;
+  var diffX = touchStartX - e.changedTouches[0].clientX;
+  var diffY = touchStartY - e.changedTouches[0].clientY;
+  if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY)) {
+    handleSwipe(diffX > 0 ? 1 : -1, touchTarget);
+    didSwipe = true;
   }
-  touchCarousel = null;
+  touchTarget = null;
 }, { passive: true });
 
-// Keyboard navigation
+// Keyboard navigation (carousels + lightbox)
 document.addEventListener('keydown', function(e) {
   var lb = document.getElementById('lightbox');
   if (lb && lb.classList.contains('open')) {

@@ -144,8 +144,33 @@ body {
   transition: all 0.3s;
 }
 
+/* ── Credibility Strip ── */
+.credibility-strip {
+  background: var(--color-accent);
+  color: rgba(255,255,255,0.9);
+  text-align: center;
+  padding: 10px 24px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-top: var(--nav-height);
+}
+.credibility-strip span {
+  white-space: nowrap;
+}
+.credibility-strip .credibility-sep {
+  opacity: 0.35;
+  font-size: 0.6rem;
+}
+
 /* ── Main Content ── */
-main { padding-top: var(--nav-height); }
+main { padding-top: 0; }
+body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
 
 .page {
   animation: fadeIn 0.3s ease;
@@ -242,6 +267,8 @@ main { padding-top: var(--nav-height); }
   aspect-ratio: 4/3;
   overflow: hidden;
   background: #f0f0f0;
+  touch-action: pan-y;
+  cursor: pointer;
 }
 
 .carousel-track {
@@ -945,6 +972,67 @@ footer p { margin: 2px 0; }
   border-radius: var(--radius);
   overflow: hidden;
 }
+/* Always show arrows on listing page carousels */
+.listing-carousel .carousel .carousel-btn {
+  opacity: 0.7;
+  width: 42px;
+  height: 42px;
+  background: rgba(0,0,0,0.3);
+}
+.listing-carousel .carousel .carousel-btn:hover {
+  opacity: 1;
+  background: rgba(0,0,0,0.5);
+}
+.listing-carousel .carousel .carousel-btn svg {
+  stroke: white;
+}
+/* Hide dots on listing carousel (thumbnails replace them) */
+.listing-carousel .carousel-dots { display: none; }
+
+/* ── Thumbnail Strip ── */
+.listing-thumbnails {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  max-width: 100%;
+}
+.listing-thumbnails::-webkit-scrollbar { display: none; }
+.listing-thumb {
+  flex: 0 0 72px;
+  width: 72px;
+  height: 54px;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid transparent;
+  opacity: 0.55;
+  transition: opacity 0.2s, border-color 0.2s;
+}
+.listing-thumb.active {
+  border-color: var(--color-accent);
+  opacity: 1;
+}
+.listing-thumb:hover { opacity: 1; }
+.listing-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.listing-thumb-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  background: #f0f0f0;
+  opacity: 0.85;
+}
+.listing-thumb-more:hover { opacity: 1; background: #e5e5e5; }
 .listing-brand {
   font-size: 0.75rem;
   text-transform: uppercase;
@@ -1049,7 +1137,9 @@ footer p { margin: 2px 0; }
   border-bottom: 1px solid var(--color-border);
 }
 .faq-item:first-child { border-top: 1px solid var(--color-border); }
+h3.faq-question,
 .faq-question {
+  font-family: var(--font-sans);
   font-size: 0.95rem;
   font-weight: 600;
   color: var(--color-text);
@@ -1146,11 +1236,8 @@ footer p { margin: 2px 0; }
 /* Card needs relative positioning for the stretched link */
 .card { position: relative; }
 
-/* Carousel controls must sit above the stretched link */
-.carousel-btn,
-.carousel-dots,
-.carousel-counter { z-index: 2; position: relative; }
-.carousel-track img { position: relative; z-index: 2; }
+/* Lift entire carousel stacking context above the stretched card link */
+.card .carousel { z-index: 2; }
 
 @media (max-width: 768px) {
   .about-hero h1 { font-size: 1.7rem; }

@@ -248,28 +248,6 @@ function generateProductSchemas(items) {
           "@type": "MerchantReturnPolicy",
           "applicableCountry": "CA",
           "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted"
-        },
-        "shippingDetails": {
-          "@type": "OfferShippingDetails",
-          "shippingRate": {
-            "@type": "MonetaryAmount",
-            "value": "0",
-            "currency": "CAD"
-          },
-          "shippingDestination": {
-            "@type": "DefinedRegion",
-            "addressCountry": "CA",
-            "addressRegion": "AB"
-          },
-          "deliveryTime": {
-            "@type": "ShippingDeliveryTime",
-            "handlingTime": {
-              "@type": "QuantitativeValue",
-              "minValue": 1,
-              "maxValue": 3,
-              "unitCode": "DAY"
-            }
-          }
         }
       }
     };
@@ -311,6 +289,22 @@ function buildCarouselHTML(images, alt, prefix) {
     '</div>';
 }
 
+function buildThumbnailStrip(images, alt, prefix) {
+  if (!images || images.length <= 1) return '';
+  var maxVisible = 7;
+  var thumbs = images.slice(0, maxVisible).map(function(src, i) {
+    var absSrc = prefix + src.replace(/\.jpeg$/, '') + '-400w.jpeg';
+    return '<button class="listing-thumb' + (i === 0 ? ' active' : '') + '" data-index="' + i + '">' +
+      '<img src="' + absSrc + '" alt="' + escapeHtml(alt) + ' — thumbnail ' + (i + 1) + '" loading="lazy">' +
+    '</button>';
+  }).join('');
+  var overflow = '';
+  if (images.length > maxVisible) {
+    overflow = '<button class="listing-thumb listing-thumb-more" data-index="' + maxVisible + '">+' + (images.length - maxVisible) + '</button>';
+  }
+  return '<div class="listing-thumbnails">' + thumbs + overflow + '</div>';
+}
+
 function generateListingPage(item, slug) {
   var BASE_URL       = 'https://edmonton-refreshed.com/';
   var listingUrl     = BASE_URL + 'listings/' + slug + '/';
@@ -341,15 +335,6 @@ function generateListingPage(item, slug) {
         "@type": "MerchantReturnPolicy",
         "applicableCountry": "CA",
         "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted"
-      },
-      "shippingDetails": {
-        "@type": "OfferShippingDetails",
-        "shippingRate": { "@type": "MonetaryAmount", "value": "0", "currency": "CAD" },
-        "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "CA", "addressRegion": "AB" },
-        "deliveryTime": {
-          "@type": "ShippingDeliveryTime",
-          "handlingTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 3, "unitCode": "DAY" }
-        }
       }
     }
   };
@@ -374,10 +359,12 @@ function generateListingPage(item, slug) {
   }).join('');
 
   var titleTag    = escapeHtml(item.brand) + ' ' + escapeHtml(item.title) + ' in Edmonton | Edmonton Refreshed';
-  // Truncate meta description at word boundary, max ~155 chars
-  var rawDesc     = item.description.replace(/\n/g, ' ').replace(/\s+/g, ' ').trim();
-  if (rawDesc.length > 155) {
-    rawDesc = rawDesc.substring(0, 155).replace(/\s+\S*$/, '') + '…';
+  // SEO-optimized meta description: price, condition, city, then first sentence of description
+  var condition   = (item.specs && item.specs.length >= 3) ? item.specs[2] : '';
+  var firstSentence = item.description.replace(/\n/g, ' ').replace(/\s+/g, ' ').trim().split(/\.(?:\s|$)/)[0];
+  var rawDesc     = item.brand + ' ' + item.title + ' — ' + item.price + ' — ' + condition + '. Pre-owned, professionally inspected, available in Edmonton. ' + firstSentence + '.';
+  if (rawDesc.length > 160) {
+    rawDesc = rawDesc.substring(0, 160).replace(/\s+\S*$/, '') + '…';
   }
   var metaDesc    = escapeHtml(rawDesc);
   var ogImageUrl  = imageUrl;
@@ -408,6 +395,7 @@ function generateListingPage(item, slug) {
 '  <meta name="geo.placename" content="Edmonton">\n' +
 '\n' +
 '  <!-- Open Graph -->\n' +
+'  <meta property="og:locale" content="en_CA">\n' +
 '  <meta property="og:type" content="product">\n' +
 '  <meta property="og:url" content="' + listingUrl + '">\n' +
 '  <meta property="og:title" content="' + titleTag + '">\n' +
@@ -457,6 +445,14 @@ function generateListingPage(item, slug) {
 '    </div>\n' +
 '  </nav>\n' +
 '\n' +
+'  <div class="credibility-strip">\n' +
+'    <span>39+ Pieces Sold</span>\n' +
+'    <span class="credibility-sep">|</span>\n' +
+'    <span>&#9733; 4.9 Rating</span>\n' +
+'    <span class="credibility-sep">|</span>\n' +
+'    <span>Proudly Edmonton Owned &amp; Operated</span>\n' +
+'  </div>\n' +
+'\n' +
 '  <main>\n' +
 '    <div class="page">\n' +
 '\n' +
@@ -470,6 +466,7 @@ function generateListingPage(item, slug) {
 '        <div class="listing-layout">\n' +
 '          <div class="listing-carousel">\n' +
 '            ' + carouselHTML + '\n' +
+'            ' + buildThumbnailStrip(item.images || [], item.brand + ' ' + item.title, imgPrefix) + '\n' +
 '          </div>\n' +
 '          <div class="listing-body">\n' +
 '            <div class="listing-brand">' + escapeHtml(item.brand) + '</div>\n' +
@@ -505,7 +502,39 @@ function generateListingPage(item, slug) {
 '    <div class="lightbox-counter" id="lightbox-counter"></div>\n' +
 '  </div>\n' +
 '\n' +
-'  <script src="../../js/shared.js"></script>\n' +
+'  <script src="../../js/shared.min.js"></script>\n' +
+'  <script>\n' +
+'  (function() {\n' +
+'    var thumbs = document.querySelectorAll(".listing-thumb:not(.listing-thumb-more)");\n' +
+'    var moreBtn = document.querySelector(".listing-thumb-more");\n' +
+'    var carousel = document.querySelector(".listing-carousel .carousel");\n' +
+'    var maxVisible = thumbs.length;\n' +
+'    if (!thumbs.length || !carousel) return;\n' +
+'    function syncThumbs(idx) {\n' +
+'      thumbs.forEach(function(t, i) { t.classList.toggle("active", i === idx); });\n' +
+'      if (moreBtn) moreBtn.classList.toggle("active", idx >= maxVisible);\n' +
+'    }\n' +
+'    thumbs.forEach(function(thumb) {\n' +
+'      thumb.addEventListener("click", function(e) {\n' +
+'        e.stopPropagation();\n' +
+'        var idx = parseInt(thumb.dataset.index);\n' +
+'        goToSlide(carousel, idx);\n' +
+'        syncThumbs(idx);\n' +
+'      });\n' +
+'    });\n' +
+'    if (moreBtn) moreBtn.addEventListener("click", function(e) {\n' +
+'      e.stopPropagation();\n' +
+'      var idx = parseInt(moreBtn.dataset.index);\n' +
+'      goToSlide(carousel, idx);\n' +
+'      syncThumbs(idx);\n' +
+'    });\n' +
+'    var origGoToSlide = goToSlide;\n' +
+'    goToSlide = function(c, idx) {\n' +
+'      origGoToSlide(c, idx);\n' +
+'      if (c === carousel) syncThumbs(parseInt(c.dataset.index));\n' +
+'    };\n' +
+'  })();\n' +
+'  </script>\n' +
 '\n' +
 '</body>\n' +
 '</html>\n';
@@ -671,9 +700,31 @@ availableItems.forEach(function(item) {
 var sitemapPath = path.join(ROOT, 'sitemap.xml');
 fs.writeFileSync(sitemapPath, generateSitemap(availableItems), 'utf8');
 
+// ── 5. Minify JS files ──────────────────────────────
+//  Simple minification: strip comments, collapse whitespace, trim lines.
+function minifyJS(src) {
+  return src
+    .replace(/\/\/[^\n]*/g, '')          // strip single-line comments
+    .replace(/\/\*[\s\S]*?\*\//g, '')    // strip multi-line comments
+    .replace(/\n\s*\n/g, '\n')           // collapse blank lines
+    .split('\n').map(function(l) { return l.trim(); }).filter(Boolean).join('\n');
+}
+
+var jsFiles = ['shared.js', 'available-data.js', 'sold-data.js', 'reviews-data.js'];
+var jsMinCount = 0;
+jsFiles.forEach(function(file) {
+  var srcPath = path.join(ROOT, 'js', file);
+  if (!fs.existsSync(srcPath)) return;
+  var minPath = path.join(ROOT, 'js', file.replace('.js', '.min.js'));
+  var content = fs.readFileSync(srcPath, 'utf8');
+  fs.writeFileSync(minPath, minifyJS(content), 'utf8');
+  jsMinCount++;
+});
+
 // ── Summary ──────────────────────────────────────────
 console.log('Build complete:');
 console.log('  index.html      — ' + availableItems.length + ' available items, ' + reviews.length + ' reviews, ' + availableItems.filter(function(i) { return !i.comingSoon; }).length + ' product schemas');
 console.log('  sold/index.html — ' + soldItems.length + ' sold items');
 console.log('  listings/       — ' + listingCount + ' individual listing pages generated');
 console.log('  sitemap.xml     — updated with lastmod ' + today());
+console.log('  js/             — ' + jsMinCount + ' JS files minified');

@@ -24,6 +24,7 @@
   <meta name="geo.placename" content="Edmonton">
 
   <!-- Open Graph (Facebook, iMessage, SMS, etc.) -->
+  <meta property="og:locale" content="en_CA">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://edmonton-refreshed.com/">
   <meta property="og:title" content="Premium Used Furniture in Edmonton | Edmonton Refreshed">
@@ -38,6 +39,22 @@
   <meta name="twitter:title" content="Premium Used Furniture in Edmonton | Edmonton Refreshed">
   <meta name="twitter:description" content="Curated premium pre-owned sectionals and sofas in Edmonton, Alberta. High-end brands, professionally inspected, with straightforward purchase and pickup.">
   <meta name="twitter:image" content="https://edmonton-refreshed.com/images/og-preview.png">
+
+  <!-- BreadcrumbList Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://edmonton-refreshed.com/"
+      }
+    ]
+  }
+  </script>
 
   <!-- FurnitureStore Schema -->
   <script type="application/ld+json">
@@ -68,7 +85,7 @@
       { "@type": "City", "name": "Fort Saskatchewan" }
     ],
     "sameAs": [
-      "https://www.facebook.com/share/1DxqENgHxH/"
+      "https://www.facebook.com/EdmontonRefreshed"
     ],
     "aggregateRating": {
       "@type": "AggregateRating",
@@ -76,7 +93,45 @@
       "reviewCount": "16",
       "bestRating": "5",
       "worstRating": "1"
-    }
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "author": { "@type": "Person", "name": "Leila" },
+        "reviewRating": { "@type": "Rating", "ratingValue": "4", "bestRating": "5" },
+        "reviewBody": "Detailed listing, pointed out benefits as well as flaws. Excellent knowledge of the product. Great customer service — delivered my sofa next day in extremely cold weather, which I did not expect. Highly recommended. I would definitely buy from Collin again."
+      },
+      {
+        "@type": "Review",
+        "author": { "@type": "Person", "name": "Debbie" },
+        "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+        "reviewBody": "Collin was an absolute pleasure to deal with in every aspect! He was very responsive, knowledgeable about the product, answered all my questions and the item was exactly as described. Also priced very fairly. I would highly recommend Collin!"
+      },
+      {
+        "@type": "Review",
+        "author": { "@type": "Person", "name": "Barbara" },
+        "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+        "reviewBody": "This was a great shopping experience. The quality of the furniture was excellent. Service was above and beyond."
+      },
+      {
+        "@type": "Review",
+        "author": { "@type": "Person", "name": "Andrea" },
+        "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+        "reviewBody": "Very happy with my purchase. He really went above and beyond with delivery. Thank you Collin!"
+      },
+      {
+        "@type": "Review",
+        "author": { "@type": "Person", "name": "CN" },
+        "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+        "reviewBody": "Accurate description, fair pricing, pleasant and easy to deal with. Great seller!"
+      },
+      {
+        "@type": "Review",
+        "author": { "@type": "Person", "name": "Fiona" },
+        "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+        "reviewBody": "Friendly, very communicative, easy to deal with."
+      }
+    ]
   }
   </script>
 
@@ -150,28 +205,6 @@
         "@type": "MerchantReturnPolicy",
         "applicableCountry": "CA",
         "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted"
-      },
-      "shippingDetails": {
-        "@type": "OfferShippingDetails",
-        "shippingRate": {
-          "@type": "MonetaryAmount",
-          "value": "0",
-          "currency": "CAD"
-        },
-        "shippingDestination": {
-          "@type": "DefinedRegion",
-          "addressCountry": "CA",
-          "addressRegion": "AB"
-        },
-        "deliveryTime": {
-          "@type": "ShippingDeliveryTime",
-          "handlingTime": {
-            "@type": "QuantitativeValue",
-            "minValue": 1,
-            "maxValue": 3,
-            "unitCode": "DAY"
-          }
-        }
       }
     },
     "image": "https://edmonton-refreshed.com/images/BB-030/bb-italia-14.jpeg"
@@ -199,28 +232,6 @@
         "@type": "MerchantReturnPolicy",
         "applicableCountry": "CA",
         "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted"
-      },
-      "shippingDetails": {
-        "@type": "OfferShippingDetails",
-        "shippingRate": {
-          "@type": "MonetaryAmount",
-          "value": "0",
-          "currency": "CAD"
-        },
-        "shippingDestination": {
-          "@type": "DefinedRegion",
-          "addressCountry": "CA",
-          "addressRegion": "AB"
-        },
-        "deliveryTime": {
-          "@type": "ShippingDeliveryTime",
-          "handlingTime": {
-            "@type": "QuantitativeValue",
-            "minValue": 1,
-            "maxValue": 3,
-            "unitCode": "DAY"
-          }
-        }
       }
     },
     "image": "https://edmonton-refreshed.com/images/LB-041/la-z-boy-07.jpeg"
@@ -248,28 +259,6 @@
         "@type": "MerchantReturnPolicy",
         "applicableCountry": "CA",
         "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted"
-      },
-      "shippingDetails": {
-        "@type": "OfferShippingDetails",
-        "shippingRate": {
-          "@type": "MonetaryAmount",
-          "value": "0",
-          "currency": "CAD"
-        },
-        "shippingDestination": {
-          "@type": "DefinedRegion",
-          "addressCountry": "CA",
-          "addressRegion": "AB"
-        },
-        "deliveryTime": {
-          "@type": "ShippingDeliveryTime",
-          "handlingTime": {
-            "@type": "QuantitativeValue",
-            "minValue": 1,
-            "maxValue": 3,
-            "unitCode": "DAY"
-          }
-        }
       }
     },
     "image": "https://edmonton-refreshed.com/images/LB-042/la-z-boy-03.jpeg"
@@ -297,28 +286,6 @@
         "@type": "MerchantReturnPolicy",
         "applicableCountry": "CA",
         "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted"
-      },
-      "shippingDetails": {
-        "@type": "OfferShippingDetails",
-        "shippingRate": {
-          "@type": "MonetaryAmount",
-          "value": "0",
-          "currency": "CAD"
-        },
-        "shippingDestination": {
-          "@type": "DefinedRegion",
-          "addressCountry": "CA",
-          "addressRegion": "AB"
-        },
-        "deliveryTime": {
-          "@type": "ShippingDeliveryTime",
-          "handlingTime": {
-            "@type": "QuantitativeValue",
-            "minValue": 1,
-            "maxValue": 3,
-            "unitCode": "DAY"
-          }
-        }
       }
     },
     "image": "https://edmonton-refreshed.com/images/RC-043/rove-concepts-01.jpeg"
@@ -356,6 +323,14 @@
       </button>
     </div>
   </nav>
+
+  <div class="credibility-strip">
+    <span>39+ Pieces Sold</span>
+    <span class="credibility-sep">|</span>
+    <span>&#9733; 4.9 Rating</span>
+    <span class="credibility-sep">|</span>
+    <span>Proudly Edmonton Owned &amp; Operated</span>
+  </div>
 
   <main>
     <div class="page">
@@ -496,19 +471,19 @@
     <h2 class="section-label">Common Questions</h2>
     <div class="faq-list">
       <div class="faq-item">
-        <div class="faq-question">Where can I view pieces?</div>
+        <h3 class="faq-question">Where can I view pieces?</h3>
         <div class="faq-answer">All available pieces are in Edmonton. Viewings are by appointment &mdash; no set hours. Text or call 780-965-1477 and we&rsquo;ll arrange a time.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-question">What brands do you carry?</div>
+        <h3 class="faq-question">What brands do you carry?</h3>
         <div class="faq-answer">We specialize in premium makers: Natuzzi, B&amp;B Italia, La-Z-Boy, Rove Concepts, Brentwood Classics, Crate &amp; Barrel, Urban Barn, EQ3, American Leather, and similar. If it&rsquo;s a recognized brand in good condition, we&rsquo;re interested.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-question">Do you deliver?</div>
+        <h3 class="faq-question">Do you deliver?</h3>
         <div class="faq-answer">Delivery is available at an additional fee determined by distance to your home from our location, and complexity of delivery - are you in an apartment? Or is your desired room located anywhere other than the main floor of your home? This is the main factor determining complexity, but not the only one.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-question">How do I sell my sofa or sectional?</div>
+        <h3 class="faq-question">How do I sell my sofa or sectional?</h3>
         <div class="faq-answer">Head to the <a href="/sell/">Sell Your Furniture</a> page. Send photos, the brand, age, and your asking price &mdash; we respond within 24 hours with a fair offer and handle all pickup.</div>
       </div>
     </div>
@@ -519,22 +494,9 @@
     <p>Serving Edmonton, Alberta and surrounding areas</p>
   </footer>
 
-  <!-- ── Lightbox ── -->
-  <div class="lightbox" id="lightbox">
-    <button class="lightbox-close" aria-label="Close">&times;</button>
-    <button class="lightbox-nav prev" aria-label="Previous">
-      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
-    </button>
-    <img id="lightbox-img" src="" alt="Furniture photo">
-    <button class="lightbox-nav next" aria-label="Next">
-      <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
-    </button>
-    <div class="lightbox-counter" id="lightbox-counter"></div>
-  </div>
-
-  <script src="js/shared.js"></script>
-  <script src="js/available-data.js"></script>
-  <script src="js/reviews-data.js"></script>
+  <script src="js/shared.min.js"></script>
+  <script src="js/available-data.min.js"></script>
+  <script src="js/reviews-data.min.js"></script>
 
 </body>
 </html>
