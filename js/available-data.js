@@ -72,14 +72,22 @@ var availableItems = [
   {
     brand: "Rove Concepts",
     title: "Milo 6-Piece Modular Sectional",
-    description: "A statement in texture and versatility. The Milo is upholstered in Pearl Chatou Boucl\u00e9 \u2014 a wool-fiber fabric whose tightly looped construction delivers extraordinary softness without sacrificing durability. Six fully independent modules of kiln-dried hardwood and sinuous spring construction, topped with three-layer high-density foam finished in 100% goose feathers. Low-profile stainless steel legs. Configure it as a grand L-shape, split it into two loveseats, or anchor a room around a sofa and ottoman \u2014 the layout is yours.\n\nEst. MSRP $7,400",
-    price: "",
-    comingSoon: true,
-    specs: ["Rove Concepts", "6-piece modular", "Excellent Condition"],
+    description: "A statement in texture and versatility. The Milo is upholstered in Pearl Chatou Boucl\u00e9 \u2014 a wool-fiber fabric whose tightly looped construction delivers extraordinary softness without sacrificing durability. Six fully independent modules of kiln-dried hardwood and sinuous spring construction, topped with three-layer high-density foam finished in 100% goose feathers. Low-profile stainless steel legs. Configure it as a grand L-shape, split it into two loveseats, or anchor a room around a sofa and ottoman \u2014 the layout is yours.\n\nEst. Retail $7,400",
+    price: "$4,499",
+    specs: ["Rove Concepts", "Sectional: 126.5 x 126.5 x 31.5 inches, 424.7 lbs \u2014 Extra module: 39 x 39.5 x 31.5 inches, 74 lbs", "Excellent Condition"],
     images: [
       "images/RC-043/rove-concepts-01.jpeg",
       "images/RC-043/rove-concepts-02.jpeg",
       "images/RC-043/rove-concepts-03.jpeg",
+      "images/RC-043/rove-concepts-04.jpeg",
+      "images/RC-043/rove-concepts-05.jpeg",
+      "images/RC-043/rove-concepts-06.jpeg",
+      "images/RC-043/rove-concepts-07.jpeg",
+      "images/RC-043/rove-concepts-08.jpeg",
+      "images/RC-043/rove-concepts-09.jpeg",
+      "images/RC-043/rove-concepts-10.jpeg",
+      "images/RC-043/rove-concepts-11.jpeg",
+      "images/RC-043/rove-concepts-12.jpeg",
     ]
   },
 ];
