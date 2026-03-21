@@ -709,10 +709,11 @@ fs.writeFileSync(sitemapPath, generateSitemap(availableItems), 'utf8');
 // ── 5. Minify JS files ──────────────────────────────
 //  Simple minification: strip comments, collapse whitespace, trim lines.
 function minifyJS(src) {
+  // Strip single-line comments but not :// inside strings (e.g. https://)
   return src
-    .replace(/\/\/[^\n]*/g, '')          // strip single-line comments
-    .replace(/\/\*[\s\S]*?\*\//g, '')    // strip multi-line comments
-    .replace(/\n\s*\n/g, '\n')           // collapse blank lines
+    .replace(/(?<![:'"])\/\/[^\n]*/g, '')  // strip // comments, skip ://, '//', "//"]
+    .replace(/\/\*[\s\S]*?\*\//g, '')      // strip multi-line comments
+    .replace(/\n\s*\n/g, '\n')             // collapse blank lines
     .split('\n').map(function(l) { return l.trim(); }).filter(Boolean).join('\n');
 }
 
