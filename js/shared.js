@@ -286,6 +286,7 @@ if (navToggle && navLinks) {
   if (path.indexOf('/sold') !== -1) page = 'sold';
   else if (path.indexOf('/sell') !== -1) page = 'sell';
   else if (path.indexOf('/about') !== -1) page = 'about';
+  else if (path.indexOf('/guides') !== -1) page = 'guides';
   else if (path.indexOf('/listings') !== -1) page = 'available';
 
   document.querySelectorAll('.nav-links a').forEach(function(a) {

@@ -447,7 +447,7 @@ function generateListingPage(item, slug) {
 '  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel=\'stylesheet\'">\n' +
 '  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"></noscript>\n' +
 '  <link rel="preload" as="image" href="../../' + (item.images && item.images.length > 0 ? item.images[0].replace(/\.jpeg$/, '-800w.jpeg') : '') + '" fetchpriority="high">\n' +
-'  <link rel="stylesheet" href="../../css/styles.min.css?v=13">\n' +
+'  <link rel="stylesheet" href="../../css/styles.min.css?v=14">\n' +
 '  <meta name="theme-color" content="#2c2c2c">\n' +
 '</head>\n' +
 '<body>\n' +
@@ -460,6 +460,7 @@ function generateListingPage(item, slug) {
 '        <li><a href="/" data-page="available">Available</a></li>\n' +
 '        <li><a href="/sold/" data-page="sold">Sold</a></li>\n' +
 '        <li><a href="/sell/" data-page="sell">Sell Your Furniture</a></li>\n' +
+'        <li><a href="/guides/" data-page="guides">Guides</a></li>\n' +
 '        <li><a href="/about/" data-page="about">About</a></li>\n' +
 '      </ul>\n' +
 '      <div class="nav-contact">\n' +
@@ -651,6 +652,18 @@ function generateSitemap(items) {
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.6</priority>',
+    '  </url>',
+    '  <url>',
+    '    <loc>https://edmonton-refreshed.com/guides/</loc>',
+    '    <lastmod>' + d + '</lastmod>',
+    '    <changefreq>weekly</changefreq>',
+    '    <priority>0.7</priority>',
+    '  </url>',
+    '  <url>',
+    '    <loc>https://edmonton-refreshed.com/guides/how-to-buy-used-sofa-edmonton/</loc>',
+    '    <lastmod>' + d + '</lastmod>',
+    '    <changefreq>monthly</changefreq>',
+    '    <priority>0.8</priority>',
     '  </url>',
   ];
 
