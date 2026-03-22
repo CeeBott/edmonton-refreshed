@@ -1408,7 +1408,7 @@ h3.faq-question,
 .guide-article {
   max-width: 720px;
   margin: 0 auto;
-  padding: 48px 24px 0;
+  padding: 48px 24px 48px;
 }
 .guide-header {
   margin-bottom: 40px;
@@ -1533,12 +1533,23 @@ h3.faq-question,
   line-height: 1.6;
 }
 
+/* Scoped overrides: faq-section and section-label inside guide articles */
+.guide-article .faq-section {
+  max-width: none;
+  padding: 0;
+  margin-top: 2.5rem;
+}
+.guide-article .section-label {
+  padding: 0 0 20px;
+}
+
 @media (max-width: 768px) {
-  .guide-article { padding: 32px 16px 0; }
+  .guide-article { padding: 32px 16px 32px; }
   .guide-header h1 { font-size: 1.5rem; }
   .guide-body p, .guide-body li { font-size: 1rem; }
   .guide-body h2 { font-size: 1.25rem; }
   .guide-cta { padding: 1.5rem; }
+  .guides-list { padding: 0 16px 60px; }
 }
 
 /* Card title link — stretched to make entire card clickable */
