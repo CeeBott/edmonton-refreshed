@@ -107,11 +107,8 @@ function slugify(str) {
 
 function renderAvailable() {
   var grid = document.getElementById('available-grid');
-  var empty = document.getElementById('available-empty');
-
   if (availableItems.length === 0) {
     grid.style.display = 'none';
-    empty.style.display = 'block';
     return;
   }
 
