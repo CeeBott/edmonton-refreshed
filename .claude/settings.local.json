@@ -18,7 +18,12 @@
       "Bash(git push:*)",
       "Bash(ls \"/Users/collinbottrell/Desktop/edmonton-refreshed/images/RC-043\\(Listing\\)/\")",
       "Bash(sips -g pixelWidth -g pixelHeight \"/Users/collinbottrell/Desktop/edmonton-refreshed/images/RC-043\\(Listing\\)/IMG_7004-hero.jpeg\")",
-      "Bash(sips -g pixelWidth -g pixelHeight /Users/collinbottrell/Desktop/edmonton-refreshed/images/BB-030/bb-italia-01.jpeg /Users/collinbottrell/Desktop/edmonton-refreshed/images/BB-030/bb-italia-01-800w.jpeg /Users/collinbottrell/Desktop/edmonton-refreshed/images/BB-030/bb-italia-01-400w.jpeg)"
+      "Bash(sips -g pixelWidth -g pixelHeight /Users/collinbottrell/Desktop/edmonton-refreshed/images/BB-030/bb-italia-01.jpeg /Users/collinbottrell/Desktop/edmonton-refreshed/images/BB-030/bb-italia-01-800w.jpeg /Users/collinbottrell/Desktop/edmonton-refreshed/images/BB-030/bb-italia-01-400w.jpeg)",
+      "Bash(for f:*)",
+      "Bash(do sed:*)",
+      "Bash(done)",
+      "Bash(and the Surrounding Area\" instead of the default credibility stats.:*)",
+      "Bash(node -c js/shared.min.js)"
     ]
   }
 }

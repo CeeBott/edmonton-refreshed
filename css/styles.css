@@ -411,6 +411,12 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
 .carousel:hover .carousel-btn { opacity: 1; }
 .carousel-btn:hover { background: rgba(255,255,255,1); }
 
+/* Show carousel arrows on touch devices (no hover capability) */
+@media (hover: none) {
+  .carousel .carousel-btn { opacity: 0.7; }
+  .carousel .carousel-btn:active { opacity: 1; }
+}
+
 .carousel-btn.prev { left: 10px; }
 .carousel-btn.next { right: 10px; }
 

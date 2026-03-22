@@ -230,6 +230,11 @@ function generateProductSchemas(items) {
       ? BASE_URL + item.images[0]
       : null;
 
+    // Extract SKU from image folder name (e.g., "images/BB-030/..." → "BB-030")
+    var sku = (item.images && item.images.length > 0)
+      ? item.images[0].split('/')[1]
+      : null;
+
     var schema = {
       "@context": "https://schema.org",
       "@type": "Product",
@@ -252,6 +257,7 @@ function generateProductSchemas(items) {
       }
     };
 
+    if (sku) schema["sku"] = sku;
     if (imageUrl) schema["image"] = imageUrl;
 
     blocks.push(
@@ -316,6 +322,11 @@ function generateListingPage(item, slug) {
     ? BASE_URL + item.images[0]
     : BASE_URL + 'images/og-preview.png';
 
+  // Extract SKU from image folder name (e.g., "images/BB-030/..." → "BB-030")
+  var listingSku = (item.images && item.images.length > 0)
+    ? item.images[0].split('/')[1]
+    : null;
+
   var productSchema = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -338,6 +349,8 @@ function generateListingPage(item, slug) {
       }
     }
   };
+
+  if (listingSku) productSchema["sku"] = listingSku;
 
   var breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -376,6 +389,7 @@ function generateListingPage(item, slug) {
 '  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
 '\n' +
 '  <link rel="preconnect" href="https://www.googletagmanager.com">\n' +
+'  <link rel="dns-prefetch" href="https://www.googletagmanager.com">\n' +
 '\n' +
 '  <!-- Google tag (gtag.js) -->\n' +
 '  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8MN82PPZRZ"></script>\n' +
@@ -422,7 +436,7 @@ function generateListingPage(item, slug) {
 '  <link rel="preconnect" href="https://fonts.googleapis.com">\n' +
 '  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n' +
 '  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet">\n' +
-'  <link rel="stylesheet" href="../../css/styles.min.css?v=11">\n' +
+'  <link rel="stylesheet" href="../../css/styles.min.css?v=12">\n' +
 '</head>\n' +
 '<body>\n' +
 '\n' +
