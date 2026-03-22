@@ -41,6 +41,12 @@ function srcsetFor(imgPath, prefix) {
   return prefix + base + '-400w.jpeg 400w, ' + prefix + base + '-800w.jpeg 800w, ' + prefix + imgPath + ' 1200w';
 }
 
+function webpSrcsetFor(imgPath, prefix) {
+  prefix = prefix || '';
+  var base = imgPath.replace(/\.jpeg$/, '');
+  return prefix + base + '-400w.webp 400w, ' + prefix + base + '-800w.webp 800w, ' + prefix + base + '.webp 1200w';
+}
+
 function slugify(str) {
   return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 }
@@ -101,8 +107,9 @@ function generateAvailableHTML(items) {
       return '<span class="spec-tag">' + escapeHtml(s) + '</span>';
     }).join('');
 
+    var fetchPri = idx === 0 ? ' fetchpriority="high" width="800" height="600"' : '';
     var imgHtml = imgSrc
-      ? '          <div class="card-image-placeholder"><img src="' + imgSrc + '" srcset="' + srcsetFor(imgSrc) + '" sizes="(max-width: 768px) 100vw, 530px" alt="' + alt + '" loading="' + loading + '"></div>'
+      ? '          <div class="card-image-placeholder"><picture><source type="image/webp" srcset="' + webpSrcsetFor(imgSrc) + '" sizes="(max-width: 768px) 100vw, 530px"><img src="' + imgSrc + '" srcset="' + srcsetFor(imgSrc) + '" sizes="(max-width: 768px) 100vw, 530px" alt="' + alt + '" loading="' + loading + '"' + fetchPri + '></picture></div>'
       : '          <div class="card-image-placeholder">Photos coming soon</div>';
 
     var brandLine = item.comingSoon
@@ -147,7 +154,7 @@ function generateSoldHTML(items) {
 
     lines.push(
       '        <div class="card sold">',
-      '          <div class="card-image-placeholder"><img src="' + imgSrc + '" srcset="' + srcsetFor(imgSrc) + '" sizes="(max-width: 768px) 100vw, 530px" alt="' + alt + '" loading="lazy"></div>',
+      '          <div class="card-image-placeholder"><picture><source type="image/webp" srcset="' + webpSrcsetFor(imgSrc) + '" sizes="(max-width: 768px) 100vw, 530px"><img src="' + imgSrc + '" srcset="' + srcsetFor(imgSrc) + '" sizes="(max-width: 768px) 100vw, 530px" alt="' + alt + '" loading="lazy"></picture></div>',
       '          <div class="card-body">',
       '            <div class="card-meta"><div class="card-brand">' + escapeHtml(item.brand) + '</div><span class="sold-badge">Sold</span></div>',
       '            <div class="card-title">' + escapeHtml(item.title) + '</div>' + descLine,
@@ -279,7 +286,9 @@ function buildCarouselHTML(images, alt, prefix) {
 
   var imgs = images.map(function(src, i) {
     var absSrc = prefix + src;
-    return '<img src="' + absSrc + '" srcset="' + srcsetFor(src, prefix) + '" sizes="(max-width: 768px) 100vw, 550px" alt="' + escapeHtml(alt) + ' &mdash; photo ' + (i + 1) + '" loading="' + (i === 0 ? 'eager' : 'lazy') + '" draggable="false">';
+    var loadAttr = i === 0 ? 'eager' : 'lazy';
+    var fetchPri = i === 0 ? ' fetchpriority="high"' : '';
+    return '<picture><source type="image/webp" srcset="' + webpSrcsetFor(src, prefix) + '" sizes="(max-width: 768px) 100vw, 550px"><img src="' + absSrc + '" srcset="' + srcsetFor(src, prefix) + '" sizes="(max-width: 768px) 100vw, 550px" alt="' + escapeHtml(alt) + ' &mdash; photo ' + (i + 1) + '" loading="' + loadAttr + '"' + fetchPri + ' draggable="false"></picture>';
   }).join('');
 
   var dots = images.map(function(_, i) {
@@ -435,8 +444,11 @@ function generateListingPage(item, slug) {
 '\n' +
 '  <link rel="preconnect" href="https://fonts.googleapis.com">\n' +
 '  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n' +
-'  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet">\n' +
-'  <link rel="stylesheet" href="../../css/styles.min.css?v=12">\n' +
+'  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel=\'stylesheet\'">\n' +
+'  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"></noscript>\n' +
+'  <link rel="preload" as="image" href="../../' + (item.images && item.images.length > 0 ? item.images[0].replace(/\.jpeg$/, '-800w.jpeg') : '') + '" fetchpriority="high">\n' +
+'  <link rel="stylesheet" href="../../css/styles.min.css?v=13">\n' +
+'  <meta name="theme-color" content="#2c2c2c">\n' +
 '</head>\n' +
 '<body>\n' +
 '\n' +

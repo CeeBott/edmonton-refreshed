@@ -300,8 +300,11 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.min.css?v=12">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"></noscript>
+  <link rel="preload" as="image" href="images/BB-030/bb-italia-14-800w.jpeg" fetchpriority="high">
+  <link rel="stylesheet" href="css/styles.min.css?v=13">
+  <meta name="theme-color" content="#2c2c2c">
 </head>
 <body>
 
@@ -348,7 +351,7 @@
       <div class="cards-grid" id="available-grid">
         <!-- Static fallback for crawlers; JS replaces this on load -->
         <div class="card">
-          <div class="card-image-placeholder"><img src="images/BB-030/bb-italia-14.jpeg" srcset="images/BB-030/bb-italia-14-400w.jpeg 400w, images/BB-030/bb-italia-14-800w.jpeg 800w, images/BB-030/bb-italia-14.jpeg 1200w" sizes="(max-width: 768px) 100vw, 530px" alt="B&amp;B Italia Charles L-shaped Modular Sectional" loading="eager"></div>
+          <div class="card-image-placeholder"><picture><source type="image/webp" srcset="images/BB-030/bb-italia-14-400w.webp 400w, images/BB-030/bb-italia-14-800w.webp 800w, images/BB-030/bb-italia-14.webp 1200w" sizes="(max-width: 768px) 100vw, 530px"><img src="images/BB-030/bb-italia-14.jpeg" srcset="images/BB-030/bb-italia-14-400w.jpeg 400w, images/BB-030/bb-italia-14-800w.jpeg 800w, images/BB-030/bb-italia-14.jpeg 1200w" sizes="(max-width: 768px) 100vw, 530px" alt="B&amp;B Italia Charles L-shaped Modular Sectional" loading="eager" fetchpriority="high" width="800" height="600"></picture></div>
           <div class="card-body">
             <div class="card-brand">B&amp;B Italia</div>
             <div class="card-title"><a class="card-title-link" href="/listings/b-b-italia-charles-l-shaped-modular-sectional/">Charles L-shaped Modular Sectional</a></div>
@@ -357,7 +360,7 @@
           </div>
         </div>
         <div class="card">
-          <div class="card-image-placeholder"><img src="images/LB-041/la-z-boy-07.jpeg" srcset="images/LB-041/la-z-boy-07-400w.jpeg 400w, images/LB-041/la-z-boy-07-800w.jpeg 800w, images/LB-041/la-z-boy-07.jpeg 1200w" sizes="(max-width: 768px) 100vw, 530px" alt="La-Z-Boy Emric Right Facing Sectional" loading="lazy"></div>
+          <div class="card-image-placeholder"><picture><source type="image/webp" srcset="images/LB-041/la-z-boy-07-400w.webp 400w, images/LB-041/la-z-boy-07-800w.webp 800w, images/LB-041/la-z-boy-07.webp 1200w" sizes="(max-width: 768px) 100vw, 530px"><img src="images/LB-041/la-z-boy-07.jpeg" srcset="images/LB-041/la-z-boy-07-400w.jpeg 400w, images/LB-041/la-z-boy-07-800w.jpeg 800w, images/LB-041/la-z-boy-07.jpeg 1200w" sizes="(max-width: 768px) 100vw, 530px" alt="La-Z-Boy Emric Right Facing Sectional" loading="lazy"></picture></div>
           <div class="card-body">
             <div class="card-brand">La-Z-Boy</div>
             <div class="card-title"><a class="card-title-link" href="/listings/la-z-boy-emric-right-facing-sectional/">Emric Right Facing Sectional</a></div>
@@ -366,7 +369,7 @@
           </div>
         </div>
         <div class="card">
-          <div class="card-image-placeholder"><img src="images/LB-042/la-z-boy-03.jpeg" srcset="images/LB-042/la-z-boy-03-400w.jpeg 400w, images/LB-042/la-z-boy-03-800w.jpeg 800w, images/LB-042/la-z-boy-03.jpeg 1200w" sizes="(max-width: 768px) 100vw, 530px" alt="La-Z-Boy Genuine Nubuck Leather Roundabout Ottoman" loading="lazy"></div>
+          <div class="card-image-placeholder"><picture><source type="image/webp" srcset="images/LB-042/la-z-boy-03-400w.webp 400w, images/LB-042/la-z-boy-03-800w.webp 800w, images/LB-042/la-z-boy-03.webp 1200w" sizes="(max-width: 768px) 100vw, 530px"><img src="images/LB-042/la-z-boy-03.jpeg" srcset="images/LB-042/la-z-boy-03-400w.jpeg 400w, images/LB-042/la-z-boy-03-800w.jpeg 800w, images/LB-042/la-z-boy-03.jpeg 1200w" sizes="(max-width: 768px) 100vw, 530px" alt="La-Z-Boy Genuine Nubuck Leather Roundabout Ottoman" loading="lazy"></picture></div>
           <div class="card-body">
             <div class="card-brand">La-Z-Boy</div>
             <div class="card-title"><a class="card-title-link" href="/listings/la-z-boy-genuine-nubuck-leather-roundabout-ottoman/">Genuine Nubuck Leather Roundabout Ottoman</a></div>
@@ -375,7 +378,7 @@
           </div>
         </div>
         <div class="card">
-          <div class="card-image-placeholder"><img src="images/RC-043/rove-concepts-01.jpeg" srcset="images/RC-043/rove-concepts-01-400w.jpeg 400w, images/RC-043/rove-concepts-01-800w.jpeg 800w, images/RC-043/rove-concepts-01.jpeg 1200w" sizes="(max-width: 768px) 100vw, 530px" alt="Rove Concepts Milo 6-Piece Modular Sectional" loading="lazy"></div>
+          <div class="card-image-placeholder"><picture><source type="image/webp" srcset="images/RC-043/rove-concepts-01-400w.webp 400w, images/RC-043/rove-concepts-01-800w.webp 800w, images/RC-043/rove-concepts-01.webp 1200w" sizes="(max-width: 768px) 100vw, 530px"><img src="images/RC-043/rove-concepts-01.jpeg" srcset="images/RC-043/rove-concepts-01-400w.jpeg 400w, images/RC-043/rove-concepts-01-800w.jpeg 800w, images/RC-043/rove-concepts-01.jpeg 1200w" sizes="(max-width: 768px) 100vw, 530px" alt="Rove Concepts Milo 6-Piece Modular Sectional" loading="lazy"></picture></div>
           <div class="card-body">
             <div class="card-brand">Rove Concepts</div>
             <div class="card-title"><a class="card-title-link" href="/listings/rove-concepts-milo-6-piece-modular-sectional/">Milo 6-Piece Modular Sectional</a></div>
