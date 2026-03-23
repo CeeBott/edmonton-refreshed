@@ -23,7 +23,10 @@
       "Bash(do sed:*)",
       "Bash(done)",
       "Bash(and the Surrounding Area\" instead of the default credibility stats.:*)",
-      "Bash(node -c js/shared.min.js)"
+      "Bash(node -c js/shared.min.js)",
+      "Bash(rm -f .git/index)",
+      "Bash(git reset:*)",
+      "Bash(rm -f .git/index.lock)"
     ]
   }
 }
