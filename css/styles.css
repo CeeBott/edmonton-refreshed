@@ -1094,6 +1094,7 @@ footer p { margin: 2px 0; }
   color: var(--color-text-secondary);
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 0;
 }
 .breadcrumb a {
@@ -1534,6 +1535,39 @@ h3.faq-question,
 }
 
 /* Scoped overrides: faq-section and section-label inside guide articles */
+.guide-table-wrap {
+  overflow-x: auto;
+  margin: 1.75rem 0 2rem;
+  -webkit-overflow-scrolling: touch;
+}
+.guide-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.guide-table th,
+.guide-table td {
+  text-align: left;
+  padding: 0.65rem 1rem;
+  border: 1px solid var(--color-border);
+  vertical-align: top;
+}
+.guide-table thead th {
+  background: var(--color-surface);
+  font-weight: 600;
+  color: var(--color-text);
+  font-size: 0.875rem;
+  letter-spacing: 0.01em;
+}
+.guide-table tbody tr:nth-child(even) {
+  background: var(--color-surface);
+}
+.guide-table tbody td:first-child {
+  white-space: nowrap;
+  color: var(--color-text-secondary);
+}
+
 .guide-article .faq-section {
   max-width: none;
   padding: 0;
@@ -1548,8 +1582,13 @@ h3.faq-question,
   .guide-header h1 { font-size: 1.5rem; }
   .guide-body p, .guide-body li { font-size: 1rem; }
   .guide-body h2 { font-size: 1.25rem; }
+  .guide-body h3 { font-size: 1rem; }
+  .guide-callout { padding: 1rem 1.25rem; }
   .guide-cta { padding: 1.5rem; }
   .guides-list { padding: 0 16px 60px; }
+  .guide-table tbody td:first-child { white-space: normal; }
+  .breadcrumb { padding: 16px 16px 0; }
+  .about-hero { padding: 40px 16px 32px; }
 }
 
 /* Card title link — stretched to make entire card clickable */
