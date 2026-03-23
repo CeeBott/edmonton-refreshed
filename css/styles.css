@@ -590,6 +590,7 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   border-radius: 100px;
   line-height: 1.6;
   flex-shrink: 0;
+  margin-left: auto;
 }
 
 /* ── Coming Soon Badge ── */
