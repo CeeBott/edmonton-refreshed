@@ -1,0 +1,333 @@
+// ═══════════════════════════════════════════════════════════
+//  CAROUSEL BUILDER
+// ═══════════════════════════════════════════════════════════
+
+var carouselId = 0;
+
+function buildCarousel(images, alt) {
+  var id = 'carousel-' + (carouselId++);
+  var count = images.length;
+  var singleClass = count <= 1 ? ' single' : '';
+
+  var imgsHtml = images.map(function(src, i) {
+    var base = src.replace(/\.jpeg$/, '');
+    var srcset = base + '-400w.jpeg 400w, ' + base + '-800w.jpeg 800w, ' + src + ' 1200w';
+    var webpSrcset = base + '-400w.webp 400w, ' + base + '-800w.webp 800w, ' + base + '.webp 1200w';
+    var loadAttr = i === 0 ? 'eager' : 'lazy';
+    var fetchPri = i === 0 ? ' fetchpriority="high"' : '';
+    return '<picture><source type="image/webp" srcset="' + webpSrcset + '" sizes="(max-width: 768px) 100vw, 530px"><img src="' + src + '" srcset="' + srcset + '" sizes="(max-width: 768px) 100vw, 530px" alt="' + alt + ' — photo ' + (i+1) + '" loading="' + loadAttr + '"' + fetchPri + ' draggable="false"></picture>';
+  }).join('');
+
+  var dotsHtml = images.map(function(_, i) {
+    return '<button class="dot' + (i === 0 ? ' active' : '') + '" data-index="' + i + '" aria-label="Photo ' + (i+1) + '"></button>';
+  }).join('');
+
+  return '<div class="carousel' + singleClass + '" id="' + id + '" data-index="0" data-count="' + count + '">' +
+    '<div class="carousel-track">' + imgsHtml + '</div>' +
+    '<button class="carousel-btn prev" aria-label="Previous photo">' +
+      '<svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>' +
+    '</button>' +
+    '<button class="carousel-btn next" aria-label="Next photo">' +
+      '<svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>' +
+    '</button>' +
+    '<div class="carousel-counter">1 / ' + count + '</div>' +
+    '<div class="carousel-dots">' + dotsHtml + '</div>' +
+  '</div>';
+}
+
+
+// ═══════════════════════════════════════════════════════════
+//  CAROUSEL INTERACTION
+// ═══════════════════════════════════════════════════════════
+
+function goToSlide(carousel, index) {
+  var count = parseInt(carousel.dataset.count);
+  if (index < 0) index = count - 1;
+  if (index >= count) index = 0;
+
+  carousel.dataset.index = index;
+  var track = carousel.querySelector('.carousel-track');
+  track.style.transform = 'translateX(-' + (index * 100) + '%)';
+
+  carousel.querySelectorAll('.dot').forEach(function(d, i) {
+    d.classList.toggle('active', i === index);
+  });
+
+  var counter = carousel.querySelector('.carousel-counter');
+  if (counter) counter.textContent = (index + 1) + ' / ' + count;
+}
+
+// Delegate clicks for carousel arrows, dots, and images
+var didSwipe = false;
+
+document.addEventListener('click', function(e) {
+  // If a swipe just happened, don't treat the click as a tap
+  if (didSwipe) { didSwipe = false; return; }
+
+  var btn = e.target.closest('.carousel-btn');
+  if (btn) {
+    e.stopPropagation();
+    e.preventDefault();
+    var carousel = btn.closest('.carousel');
+    var current = parseInt(carousel.dataset.index);
+    if (btn.classList.contains('prev')) goToSlide(carousel, current - 1);
+    else goToSlide(carousel, current + 1);
+    return;
+  }
+
+  var dot = e.target.closest('.dot');
+  if (dot) {
+    e.stopPropagation();
+    e.preventDefault();
+    var carousel = dot.closest('.carousel');
+    goToSlide(carousel, parseInt(dot.dataset.index));
+    return;
+  }
+
+  // Click on image — navigate to listing page on available cards, open lightbox elsewhere
+  var img = e.target.closest('.carousel-track img');
+  if (img) {
+    var card = img.closest('.card');
+    if (card) {
+      var link = card.querySelector('.card-title-link');
+      if (link) { window.location.href = link.href; return; }
+      // Card without listing link (sold items) — open lightbox if available
+    }
+    var carousel = img.closest('.carousel');
+    var images = Array.from(carousel.querySelectorAll('.carousel-track img')).map(function(i) { return i.src; });
+    var index = parseInt(carousel.dataset.index);
+    openLightbox(images, index);
+  }
+});
+
+// ── Swipe engine (shared by carousels and lightbox) ──
+var swipeAccum = 0;
+var swipeLockUntil = 0;
+
+function handleSwipe(dir, target) {
+  var lb = document.getElementById('lightbox');
+  if (lb && lb.classList.contains('open')) {
+    lightboxNav(dir);
+    return;
+  }
+  var carousel = target.closest('.carousel');
+  if (carousel) {
+    var current = parseInt(carousel.dataset.index);
+    goToSlide(carousel, current + dir);
+  }
+}
+
+document.addEventListener('wheel', function(e) {
+  var lb = document.getElementById('lightbox');
+  var isLightbox = lb && lb.classList.contains('open') && lb.contains(e.target);
+  var isCarousel = e.target.closest('.carousel');
+  if (!isLightbox && !isCarousel) return;
+  if (Math.abs(e.deltaX) < Math.abs(e.deltaY)) return;
+  e.preventDefault();
+  var now = Date.now();
+  if (now < swipeLockUntil) return;
+  swipeAccum += e.deltaX;
+  if (Math.abs(swipeAccum) > 10) {
+    handleSwipe(swipeAccum > 0 ? 1 : -1, e.target);
+    swipeAccum = 0;
+    swipeLockUntil = now + 350;
+  }
+}, { passive: false });
+
+// Touch swipe (finger on mobile / tablet) — works on carousels and lightbox
+var touchStartX = 0;
+var touchStartY = 0;
+var touchTarget = null;
+
+document.addEventListener('touchstart', function(e) {
+  var lb = document.getElementById('lightbox');
+  var isLightbox = lb && lb.classList.contains('open') && lb.contains(e.target);
+  var isCarousel = e.target.closest('.carousel');
+  if (!isLightbox && !isCarousel) return;
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+  touchTarget = e.target;
+}, { passive: true });
+
+document.addEventListener('touchend', function(e) {
+  if (!touchTarget) return;
+  var diffX = touchStartX - e.changedTouches[0].clientX;
+  var diffY = touchStartY - e.changedTouches[0].clientY;
+  if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY)) {
+    handleSwipe(diffX > 0 ? 1 : -1, touchTarget);
+    didSwipe = true;
+  }
+  touchTarget = null;
+}, { passive: true });
+
+// Keyboard navigation (carousels + lightbox)
+document.addEventListener('keydown', function(e) {
+  var lb = document.getElementById('lightbox');
+  if (lb && lb.classList.contains('open')) {
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') lightboxNav(-1);
+    if (e.key === 'ArrowRight') lightboxNav(1);
+  }
+});
+
+
+// ═══════════════════════════════════════════════════════════
+//  LIGHTBOX
+// ═══════════════════════════════════════════════════════════
+
+var lightboxImages = [];
+var lightboxIndex = 0;
+
+function openLightbox(images, index) {
+  lightboxImages = images;
+  lightboxIndex = index;
+  var lb = document.getElementById('lightbox');
+  var img = document.getElementById('lightbox-img');
+  var counter = document.getElementById('lightbox-counter');
+  if (!lb || !img) return;
+  img.src = images[index];
+  counter.textContent = (index + 1) + ' / ' + images.length;
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  var lb = document.getElementById('lightbox');
+  if (!lb) return;
+  lb.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function lightboxNav(dir) {
+  lightboxIndex += dir;
+  if (lightboxIndex < 0) lightboxIndex = lightboxImages.length - 1;
+  if (lightboxIndex >= lightboxImages.length) lightboxIndex = 0;
+  var img = document.getElementById('lightbox-img');
+  var counter = document.getElementById('lightbox-counter');
+  if (img) img.src = lightboxImages[lightboxIndex];
+  if (counter) counter.textContent = (lightboxIndex + 1) + ' / ' + lightboxImages.length;
+}
+
+// Lightbox event listeners (guarded — lightbox HTML not on every page)
+var lightboxEl = document.getElementById('lightbox');
+if (lightboxEl) {
+  lightboxEl.addEventListener('click', function(e) {
+    if (e.target === e.currentTarget || e.target.classList.contains('lightbox-close')) closeLightbox();
+  });
+  var prevBtn = document.querySelector('.lightbox-nav.prev');
+  var nextBtn = document.querySelector('.lightbox-nav.next');
+  if (prevBtn) prevBtn.addEventListener('click', function(e) { e.stopPropagation(); lightboxNav(-1); });
+  if (nextBtn) nextBtn.addEventListener('click', function(e) { e.stopPropagation(); lightboxNav(1); });
+}
+
+
+// ═══════════════════════════════════════════════════════════
+//  CONVERSION EVENT TRACKING
+//  Fires GA4 events for contact link clicks.
+//  gtag() is defined in the inline <head> snippet on each page.
+// ═══════════════════════════════════════════════════════════
+
+document.addEventListener('click', function(e) {
+  var link = e.target.closest('a');
+  if (!link || typeof gtag !== 'function') return;
+
+  var href = link.getAttribute('href') || '';
+
+  // Phone number click (nav bar)
+  if (href.startsWith('tel:')) {
+    gtag('event', 'phone_click', {
+      event_category: 'contact',
+      event_label: 'nav_phone'
+    });
+    return;
+  }
+
+  // SMS link click — differentiate listing CTA vs sell page
+  if (href.startsWith('sms:')) {
+    var isListingCTA = !!link.closest('.card-cta, .card');
+    gtag('event', 'sms_click', {
+      event_category: 'contact',
+      event_label: isListingCTA ? 'listing_cta' : 'sell_page_sms'
+    });
+    return;
+  }
+
+  // Email link click (sell page)
+  if (href.startsWith('mailto:')) {
+    gtag('event', 'email_click', {
+      event_category: 'contact',
+      event_label: 'sell_page_email'
+    });
+    return;
+  }
+});
+
+
+// ═══════════════════════════════════════════════════════════
+//  MOBILE NAV
+// ═══════════════════════════════════════════════════════════
+
+var navToggle = document.getElementById('navToggle');
+var navLinks = document.getElementById('navLinks');
+if (navToggle && navLinks) {
+  navToggle.addEventListener('click', function() {
+    navLinks.classList.toggle('open');
+  });
+}
+
+
+// ═══════════════════════════════════════════════════════════
+//  ACTIVE NAV LINK DETECTION
+// ═══════════════════════════════════════════════════════════
+
+(function() {
+  var path = window.location.pathname;
+  var page = 'available';
+  if (path.indexOf('/sold') !== -1) page = 'sold';
+  else if (path.indexOf('/sell') !== -1) page = 'sell';
+  else if (path.indexOf('/about') !== -1) page = 'about';
+  else if (path.indexOf('/guides') !== -1) page = 'guides';
+  else if (path.indexOf('/listings') !== -1) page = 'available';
+
+  document.querySelectorAll('.nav-links a').forEach(function(a) {
+    if (a.dataset.page === page) {
+      a.classList.add('active');
+    }
+  });
+})();
+
+
+// ═══════════════════════════════════════════════════════════
+//  NEWSLETTER FORM (Kit / ConvertKit)
+// ═══════════════════════════════════════════════════════════
+
+document.querySelectorAll('.newsletter-form').forEach(function(form) {
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var email = form.querySelector('input[name="email_address"]');
+    var btn = form.querySelector('button');
+    var success = form.parentElement.querySelector('.newsletter-success');
+    if (!email || !email.value) return;
+
+    btn.textContent = 'Sending\u2026';
+    btn.disabled = true;
+
+    var data = new FormData();
+    data.append('email_address', email.value);
+
+    fetch('https://app.kit.com/forms/9233085/subscriptions', {
+      method: 'POST',
+      body: data,
+      headers: { 'Accept': 'application/json' }
+    }).then(function() {
+      form.style.display = 'none';
+      if (success) success.style.display = 'block';
+      if (typeof gtag === 'function') {
+        gtag('event', 'newsletter_signup', { event_category: 'engagement' });
+      }
+    }).catch(function() {
+      btn.textContent = 'Subscribe';
+      btn.disabled = false;
+    });
+  });
+});

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="12" fill="#fafaf9"/>
+  <g fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Seat cushion -->
+    <path d="M12 38 C12 34 14 32 18 32 L46 32 C50 32 52 34 52 38 L52 42 L12 42 Z"/>
+    <!-- Back cushion -->
+    <path d="M14 32 C14 24 16 20 20 20 L44 20 C48 20 50 24 50 32"/>
+    <!-- Left arm -->
+    <path d="M12 42 L12 28 C12 25 10 24 8 24 L8 42"/>
+    <!-- Right arm -->
+    <path d="M52 42 L52 28 C52 25 54 24 56 24 L56 42"/>
+    <!-- Legs -->
+    <line x1="14" y1="42" x2="12" y2="48"/>
+    <line x1="50" y1="42" x2="52" y2="48"/>
+  </g>
+</svg>
