@@ -184,7 +184,7 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
 /* ── Hero / Header Section ── */
 .hero {
   text-align: center;
-  padding: 64px 24px 32px;
+  padding: 64px 24px 40px;
   max-width: var(--max-width);
   margin: 0 auto;
 }
@@ -210,7 +210,28 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
 /* ── Hero Sell CTA ── */
 .hero-sell-cta {
   text-align: center;
-  margin: 16px auto 28px;
+  margin: 0;
+}
+.hero-or-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 160px;
+  margin: 24px auto 20px;
+  color: var(--color-text-secondary);
+}
+.hero-or-divider::before,
+.hero-or-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--color-border);
+}
+.hero-or-divider span {
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
 }
 .hero-sell-cta p {
   font-size: 0.9rem;
