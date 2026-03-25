@@ -562,7 +562,7 @@ function generateListingPage(item, slug) {
 '      </div>\n' +
 '\n' +
 '      <div class="newsletter-embed">\n' +
-'        <p class="newsletter-heading">New pieces sell fast. Enter your email and you&rsquo;ll hear about new arrivals before they hit the public listings.</p>\n' +
+'        <p class="newsletter-heading">Get first access before pieces sell. Enter your email to hear about new arrivals before the public.</p>\n' +
 '        <form class="newsletter-form" action="https://app.kit.com/forms/9233085/subscriptions" method="post" data-sv-form="9233085" data-uid="47c0cc8b38">\n' +
 '          <input type="email" name="email_address" placeholder="Your email address" required>\n' +
 '          <button type="submit">Subscribe</button>\n' +
