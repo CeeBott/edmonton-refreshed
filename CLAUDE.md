@@ -199,30 +199,9 @@ The build regenerates the homepage Product schema, the static fallback card, and
 
 ### Deploy
 
-The mounted workspace filesystem prevents standard `git add` from updating the index (the lock file is created but can't be promoted). Use the following pattern instead — it writes the index to `/tmp` where there are no restrictions:
-
-```bash
-# 1. Stage into a writable temp index
-GIT_INDEX_FILE=/tmp/git_index git read-tree HEAD
-GIT_INDEX_FILE=/tmp/git_index git add <files>
-
-# 2. Write the tree and create the commit
-TREE=$(GIT_INDEX_FILE=/tmp/git_index git write-tree)
-COMMIT=$(git commit-tree $TREE -p HEAD -m "your commit message")
-
-# 3. Point HEAD to the new commit (use Python to avoid shell redirection issues)
-python3 -c "
-f = open('.git/refs/heads/main', 'w')
-f.write('$COMMIT\n')
-f.flush()
-f.close()
-"
-
-# 4. Push
+```
 git push origin main
 ```
-
-**Never run `git commit` with `GIT_INDEX_FILE` pointing to an alternate path while HEAD is at a different commit** — it will commit from whatever is in that index file, which may be empty or stale. Always `read-tree HEAD` first to seed the temp index with the current state before adding files.
 
 GitHub Pages auto-deploys from the main branch within ~60 seconds of a push.
 

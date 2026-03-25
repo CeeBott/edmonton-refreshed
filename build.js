@@ -479,7 +479,7 @@ function generateListingPage(item, slug) {
 '  <meta property="og:url" content="' + listingUrl + '">\n' +
 '  <meta property="og:title" content="' + titleTag + '">\n' +
 '  <meta property="og:description" content="' + metaDesc + '">\n' +
-'  <meta property="og:site_name" content="Edmonton Refreshed">\n' +
+'  <meta property="og:site_name" content="Edmonton Refreshed Seating">\n' +
 '  <meta property="og:image" content="' + ogImageUrl + '">\n' +
 '\n' +
 '  <!-- Twitter / X -->\n' +
