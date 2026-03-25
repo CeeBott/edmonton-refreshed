@@ -26,7 +26,8 @@
       "Bash(node -c js/shared.min.js)",
       "Bash(rm -f .git/index)",
       "Bash(git reset:*)",
-      "Bash(rm -f .git/index.lock)"
+      "Bash(rm -f .git/index.lock)",
+      "Bash(xargs sed:*)"
     ]
   }
 }
