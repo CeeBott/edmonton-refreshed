@@ -156,7 +156,7 @@ function renderAvailable() {
   }
 
   grid.innerHTML = availableItems.map(function(item) {
-    var slug = slugify(item.brand + '-' + item.title);
+    var slug = item.slug || slugify(item.brand + '-' + item.title);
     var listingUrl = '/listings/' + slug + '/';
 
     var brandLine = item.comingSoon
