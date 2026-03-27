@@ -1122,6 +1122,7 @@ footer p { margin: 2px 0; }
 
   /* Retail compare on mobile */
   .listing-retail-compare { font-size: 0.9rem; }
+  .listing-value-pill { font-size: 0.75rem; }
 }
 
 @media (max-width: 400px) {
@@ -1164,14 +1165,15 @@ footer p { margin: 2px 0; }
   padding: 32px 24px 24px;
 }
 .listing-layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 56px;
-  align-items: start;
+  display: block;
+}
+.listing-carousel {
+  margin-bottom: 32px;
 }
 .listing-carousel .carousel {
   border-radius: var(--radius);
   overflow: hidden;
+  aspect-ratio: 16/9;
 }
 /* Always show arrows on listing page carousels */
 .listing-carousel .carousel .carousel-btn {
@@ -1189,6 +1191,9 @@ footer p { margin: 2px 0; }
 }
 /* Hide dots on listing carousel (thumbnails replace them) */
 .listing-carousel .carousel-dots { display: none; }
+
+/* Anchor images to bottom so furniture is always fully visible in the crop */
+.listing-carousel .carousel-track img { object-position: center bottom; }
 
 /* ── Thumbnail Strip ── */
 .listing-thumbnails {
@@ -1262,7 +1267,75 @@ footer p { margin: 2px 0; }
   font-size: 1rem;
   font-weight: 500;
   color: var(--color-text);
+  margin: 28px 0;
+}
+
+/* Two-part retail value pill — "Est. Retail: $X" | "Buy it Today: $Y" */
+.listing-value-pill {
+  display: inline-flex;
+  align-items: stretch;
+  border: 1px solid var(--color-border);
+  border-radius: 100px;
+  overflow: hidden;
+  margin: 28px 0;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+.listing-value-pill .pill-retail {
+  padding: 7px 14px 7px 16px;
+  background: var(--color-bg);
+  color: var(--color-text-secondary);
+}
+.listing-value-pill .pill-now {
+  padding: 7px 16px 7px 14px;
+  background: var(--color-accent);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* Construction features list */
+.listing-features {
+  list-style: none;
   margin-bottom: 24px;
+}
+.listing-features li {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  padding: 3px 0 3px 16px;
+  position: relative;
+}
+.listing-features li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  top: 2px;
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  opacity: 0.6;
+}
+
+/* Condition / Configuration meta sections */
+.listing-meta-item {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.listing-meta-label {
+  display: block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+.listing-meta-text {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+  white-space: pre-line;
+  margin: 0;
 }
 
 .listing-specs {
@@ -1312,22 +1385,12 @@ footer p { margin: 2px 0; }
 .listing-back:hover { color: var(--color-text); }
 
 @media (max-width: 768px) {
-  .listing-layout {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
   .listing-title { font-size: 1.4rem; }
   .listing-hero { padding: 20px 16px 16px; }
+  .listing-carousel { margin-bottom: 20px; }
 
-  /* Prevent grid children from overflowing on mobile */
-  .listing-layout {
-    overflow: hidden;
-  }
-  .listing-carousel,
-  .listing-body {
-    min-width: 0;
-    max-width: 100%;
-  }
+  /* Taller crop on mobile — 4/3 gives more vertical room */
+  .listing-carousel .carousel { aspect-ratio: 4/3; }
 
   /* Stack CTA buttons vertically */
   .listing-cta {

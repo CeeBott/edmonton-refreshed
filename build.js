@@ -98,7 +98,7 @@ function generateAvailableHTML(items) {
   var lines = ['        <!-- Static fallback for crawlers; JS replaces this on load -->'];
 
   items.forEach(function(item, idx) {
-    var slug       = slugify(item.brand + '-' + item.title);
+    var slug       = item.slug || slugify(item.brand + '-' + item.title);
     var listingUrl = '/listings/' + slug + '/';
     var imgSrc     = (item.images && item.images.length > 0) ? item.images[0] : '';
     var alt        = escapeHtml(item.brand + ' ' + item.title);
@@ -230,7 +230,7 @@ function generateProductSchemas(items) {
   items.forEach(function(item) {
     if (item.comingSoon) return;
 
-    var slug       = slugify(item.brand + '-' + item.title);
+    var slug       = item.slug || slugify(item.brand + '-' + item.title);
     var listingUrl = BASE_URL + 'listings/' + slug + '/';
     var numericPrice = item.price.replace(/[^0-9.]/g, '');
     var imageUrl     = (item.images && item.images.length > 0)
@@ -436,9 +436,41 @@ function generateListingPage(item, slug) {
     return '<span class="spec-tag">' + escapeHtml(s) + '</span>';
   }).join('');
 
+  // Optional features list (construction specs etc.) — wrapped with "Features" label
+  var featuresHTML = '';
+  if (item.features && item.features.length > 0) {
+    featuresHTML = '<div class="listing-meta-item"><span class="listing-meta-label">Features</span><ul class="listing-features">' +
+      item.features.map(function(f) { return '<li>' + escapeHtml(f) + '</li>'; }).join('') +
+      '</ul></div>';
+  }
+
+  // Optional condition section
+  var conditionHTML = '';
+  if (item.condition) {
+    conditionHTML = '<div class="listing-meta-item"><span class="listing-meta-label">Condition</span><p class="listing-meta-text">' + escapeHtml(item.condition) + '</p></div>';
+  }
+
+  // Optional configuration / includes section
+  var configHTML = '';
+  if (item.configuration) {
+    configHTML = '<div class="listing-meta-item"><span class="listing-meta-label">Includes</span><p class="listing-meta-text">' + escapeHtml(item.configuration) + '</p></div>';
+  }
+
+  // Retail value pill — split "X | Y" into two-part badge; fall back to plain text
+  var retailHTML = '';
+  if (item.retailCompare) {
+    var pillParts = item.retailCompare.split(' | ');
+    if (pillParts.length === 2) {
+      retailHTML = '<div class="listing-value-pill"><span class="pill-retail">' + escapeHtml(pillParts[0]) + '</span><span class="pill-now">' + escapeHtml(pillParts[1]) + '</span></div>';
+    } else {
+      retailHTML = '<div class="listing-retail-compare">' + escapeHtml(item.retailCompare) + '</div>';
+    }
+  }
+
   var titleTag    = escapeHtml(item.brand) + ' ' + escapeHtml(item.title) + ' in Edmonton | Edmonton Refreshed';
   // SEO-optimized meta description: price, condition, city, then first sentence of description
-  var condition   = (item.specs && item.specs.length >= 3) ? item.specs[2] : '';
+  var condSpec    = (item.specs || []).filter(function(s) { return /condition/i.test(s); })[0];
+  var condition   = condSpec || ((item.specs && item.specs.length > 0) ? item.specs[item.specs.length - 1] : '');
   var firstSentence = item.description.replace(/\n/g, ' ').replace(/\s+/g, ' ').trim().split(/\.(?:\s|$)/)[0];
   var rawDesc     = item.brand + ' ' + item.title + ' — ' + item.price + ' — ' + condition + '. Pre-owned, professionally inspected, available in Edmonton. ' + firstSentence + '.';
   if (rawDesc.length > 160) {
@@ -503,7 +535,7 @@ function generateListingPage(item, slug) {
 '  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel=\'stylesheet\'">\n' +
 '  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"></noscript>\n' +
 '  <link rel="preload" as="image" href="../../' + (item.images && item.images.length > 0 ? item.images[0].replace(/\.jpeg$/, '-800w.jpeg') : '') + '" fetchpriority="high">\n' +
-'  <link rel="stylesheet" href="../../css/styles.min.css?v=16">\n' +
+'  <link rel="stylesheet" href="../../css/styles.min.css?v=21">\n' +
 '  <meta name="theme-color" content="#2c2c2c">\n' +
 '</head>\n' +
 '<body>\n' +
@@ -551,7 +583,10 @@ function generateListingPage(item, slug) {
 '            <div class="listing-brand">' + escapeHtml(item.brand) + '</div>\n' +
 '            <h1 class="listing-title">' + escapeHtml(item.title) + '</h1>\n' +
 '            <p class="listing-description">' + escapeHtml(item.description) + '</p>\n' +
-(item.retailCompare ? '            <div class="listing-retail-compare">' + escapeHtml(item.retailCompare) + '</div>\n' : '') +
+(retailHTML      ? '            ' + retailHTML      + '\n' : '') +
+(featuresHTML    ? '            ' + featuresHTML    + '\n' : '') +
+(conditionHTML   ? '            ' + conditionHTML   + '\n' : '') +
+(configHTML      ? '            ' + configHTML      + '\n' : '') +
 '            <div class="listing-specs">' + specsHTML + '</div>\n' +
 '            <div class="listing-price">' + escapeHtml(item.price) + '</div>\n' +
 '            <a class="listing-cta" href="sms:7809651477">Text to Secure &rarr;</a>\n' +
@@ -779,7 +814,7 @@ function generateSitemap(items) {
 
   items.forEach(function(item) {
     if (item.comingSoon) return;
-    var slug = slugify(item.brand + '-' + item.title);
+    var slug = item.slug || slugify(item.brand + '-' + item.title);
     lines.push(
       '  <url>',
       '    <loc>https://edmonton-refreshed.com/listings/' + slug + '/</loc>',
@@ -842,7 +877,7 @@ var listingCount = 0;
 availableItems.forEach(function(item) {
   if (item.comingSoon) return;
 
-  var slug       = slugify(item.brand + '-' + item.title);
+  var slug       = item.slug || slugify(item.brand + '-' + item.title);
   var itemDir    = path.join(listingsDir, slug);
   if (!fs.existsSync(itemDir)) fs.mkdirSync(itemDir);
 
