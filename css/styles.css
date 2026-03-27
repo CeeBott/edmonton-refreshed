@@ -1012,8 +1012,8 @@ footer p { margin: 2px 0; }
 
 .lightbox-close {
   position: absolute;
-  top: 16px;
-  right: 20px;
+  top: 8px;
+  right: 12px;
   background: none;
   border: none;
   color: white;
@@ -1022,6 +1022,12 @@ footer p { margin: 2px 0; }
   line-height: 1;
   opacity: 0.7;
   transition: opacity 0.2s;
+  /* Minimum 44×44px touch target (iOS HIG) */
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .lightbox-close:hover { opacity: 1; }
@@ -1122,7 +1128,15 @@ footer p { margin: 2px 0; }
 
   /* Retail compare on mobile */
   .listing-retail-compare { font-size: 0.9rem; }
-  .listing-value-pill { font-size: 0.75rem; }
+
+  /* Value pill: prevent horizontal overflow; allow wrap and soften radius */
+  .listing-value-pill {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 100%;
+    border-radius: var(--radius);
+    font-size: 0.75rem;
+  }
 }
 
 @media (max-width: 400px) {
@@ -1135,6 +1149,9 @@ footer p { margin: 2px 0; }
     gap: 6px;
     padding: 7px 12px;
   }
+
+  /* Extra-small: shrink pill text further so it fits on 320px screens */
+  .listing-value-pill { font-size: 0.68rem; }
 }
 
 /* ── Breadcrumb ── */
@@ -1392,12 +1409,26 @@ footer p { margin: 2px 0; }
   /* Taller crop on mobile — 4/3 gives more vertical room */
   .listing-carousel .carousel { aspect-ratio: 4/3; }
 
-  /* Stack CTA buttons vertically */
+  /* Prevent long words in description and meta sections from causing horizontal overflow */
+  .listing-description,
+  .listing-meta-text {
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  /* Tighten spacing on the new Features / Condition / Includes sections */
+  .listing-meta-item { margin-top: 16px; margin-bottom: 16px; }
+  .listing-meta-label { margin-bottom: 6px; }
+  .listing-features li { font-size: 0.875rem; }
+
+  /* Stack CTA buttons vertically, full width */
   .listing-cta {
     display: block;
+    width: 100%;
     text-align: center;
     margin-right: 0;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+    box-sizing: border-box;
   }
 
   /* Smaller price on mobile */
@@ -1406,8 +1437,20 @@ footer p { margin: 2px 0; }
   /* Tighter specs on mobile */
   .listing-specs { margin-bottom: 24px; }
 
-  /* Back link spacing */
-  .listing-back { margin-top: 4px; }
+  /* Back link — block and centred, with clear breathing room after CTAs */
+  .listing-back {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  /* Breadcrumb — prevent long titles from overflowing the flex row */
+  .breadcrumb { flex-wrap: wrap; }
+  .breadcrumb-current {
+    overflow-wrap: break-word;
+    word-break: break-word;
+    max-width: 100%;
+  }
 }
 
 /* ── Service Area Note ── */
