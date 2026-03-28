@@ -436,8 +436,8 @@ function generateListingPage(item, slug) {
     return '<span class="spec-tag">' + escapeHtml(s) + '</span>';
   }).join('');
 
-  // Description collapsible section
-  var descriptionHTML = '<details class="listing-collapsible"><summary class="listing-meta-label">Description</summary><p class="listing-description">' + escapeHtml(item.description) + '</p></details>';
+  // Description collapsible section (open by default)
+  var descriptionHTML = '<details class="listing-collapsible" open><summary class="listing-meta-label">Description</summary><p class="listing-description">' + escapeHtml(item.description) + '</p></details>';
 
   // Optional features list (construction specs etc.)
   var featuresHTML = '';
@@ -584,16 +584,20 @@ function generateListingPage(item, slug) {
 '          </div>\n' +
 '          <div class="listing-body">\n' +
 '            <div class="listing-brand">' + escapeHtml(item.brand) + '</div>\n' +
-'            <h1 class="listing-title">' + escapeHtml(item.title) + '</h1>\n' +
-(retailHTML      ? '            ' + retailHTML      + '\n' : '') +
+'            <div class="listing-heading-row">\n' +
+'              <h1 class="listing-title">' + escapeHtml(item.title) + '</h1>\n' +
+(retailHTML ? '              ' + retailHTML + '\n' : '') +
+'            </div>\n' +
+'            <div class="listing-price">' + escapeHtml(item.price) + '</div>\n' +
+'            <div class="listing-ctas">\n' +
+'              <a class="listing-cta" href="sms:7809651477">Text to Secure &rarr;</a>\n' +
+'              <a class="listing-cta listing-cta--secondary" href="tel:7809651477">Call 780-965-1477</a>\n' +
+'            </div>\n' +
+'            <div class="listing-specs">' + specsHTML + '</div>\n' +
 '            ' + descriptionHTML + '\n' +
 (featuresHTML    ? '            ' + featuresHTML    + '\n' : '') +
 (conditionHTML   ? '            ' + conditionHTML   + '\n' : '') +
 (configHTML      ? '            ' + configHTML      + '\n' : '') +
-'            <div class="listing-specs">' + specsHTML + '</div>\n' +
-'            <div class="listing-price">' + escapeHtml(item.price) + '</div>\n' +
-'            <a class="listing-cta" href="sms:7809651477">Text to Secure &rarr;</a>\n' +
-'            <a class="listing-cta listing-cta--secondary" href="tel:7809651477">Call 780-965-1477</a>\n' +
 '            <a class="listing-back" href="/">&larr; All Available Pieces</a>\n' +
 '          </div>\n' +
 '        </div>\n' +

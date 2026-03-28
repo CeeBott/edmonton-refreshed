@@ -1264,20 +1264,36 @@ footer p { margin: 2px 0; }
   margin-bottom: 8px;
   font-weight: 500;
 }
+.listing-heading-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 24px;
+}
 .listing-title {
   font-family: var(--font-serif);
   font-size: 1.8rem;
   font-weight: 500;
   line-height: 1.2;
-  margin-bottom: 24px;
+  margin-bottom: 0;
   letter-spacing: -0.02em;
+  flex: 1;
+}
+.listing-heading-row .listing-value-pill {
+  margin: 0;
+  flex-shrink: 0;
+  align-self: center;
 }
 .listing-description {
   font-size: 0.95rem;
   color: var(--color-text-secondary);
   line-height: 1.8;
-  margin-bottom: 24px;
+  margin-bottom: 12px;
   white-space: pre-line;
+}
+.listing-ctas {
+  margin-bottom: 28px;
 }
 .listing-retail-compare {
   font-family: var(--font-serif);
@@ -1442,6 +1458,7 @@ footer p { margin: 2px 0; }
 .listing-back:hover { color: var(--color-text); }
 
 @media (max-width: 768px) {
+  .listing-heading-row { flex-direction: column; gap: 12px; }
   .listing-title { font-size: 1.4rem; }
   .listing-hero { padding: 20px 16px 16px; }
   .listing-carousel { margin-bottom: 20px; }
