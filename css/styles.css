@@ -1096,7 +1096,7 @@ footer p { margin: 2px 0; }
     grid-template-columns: 1fr;
     padding: 0 16px 60px;
   }
-  .section-label { padding: 0 16px 20px; }
+  .section-label { padding: 0 16px 20px; display: none; }
   .sell-hero h1,
   .sell-hero h2 { font-size: 1.6rem; }
   .sell-card { padding: 24px; }
@@ -1333,7 +1333,47 @@ footer p { margin: 2px 0; }
   opacity: 0.6;
 }
 
-/* Condition / Configuration meta sections */
+/* Collapsible meta sections (Description, Features, Condition, Includes) */
+.listing-collapsible {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 4px;
+}
+.listing-collapsible summary.listing-meta-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  margin-bottom: 0;
+  cursor: pointer;
+  list-style: none;
+  padding: 8px 0;
+  user-select: none;
+}
+.listing-collapsible summary.listing-meta-label::-webkit-details-marker { display: none; }
+.listing-collapsible summary.listing-meta-label::before {
+  content: '▶';
+  font-size: 0.5rem;
+  transition: transform 0.2s ease;
+  display: inline-block;
+}
+.listing-collapsible[open] > summary.listing-meta-label::before {
+  transform: rotate(90deg);
+}
+.listing-collapsible[open] > summary.listing-meta-label {
+  margin-bottom: 5px;
+}
+.listing-collapsible .listing-description,
+.listing-collapsible .listing-features,
+.listing-collapsible .listing-meta-text {
+  margin-bottom: 12px;
+}
+/* Legacy non-collapsible meta sections (guides etc.) */
 .listing-meta-item {
   margin-top: 20px;
   margin-bottom: 20px;

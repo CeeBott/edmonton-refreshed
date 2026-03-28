@@ -436,24 +436,27 @@ function generateListingPage(item, slug) {
     return '<span class="spec-tag">' + escapeHtml(s) + '</span>';
   }).join('');
 
-  // Optional features list (construction specs etc.) — wrapped with "Features" label
+  // Description collapsible section
+  var descriptionHTML = '<details class="listing-collapsible"><summary class="listing-meta-label">Description</summary><p class="listing-description">' + escapeHtml(item.description) + '</p></details>';
+
+  // Optional features list (construction specs etc.)
   var featuresHTML = '';
   if (item.features && item.features.length > 0) {
-    featuresHTML = '<div class="listing-meta-item"><span class="listing-meta-label">Features</span><ul class="listing-features">' +
+    featuresHTML = '<details class="listing-collapsible"><summary class="listing-meta-label">Features</summary><ul class="listing-features">' +
       item.features.map(function(f) { return '<li>' + escapeHtml(f) + '</li>'; }).join('') +
-      '</ul></div>';
+      '</ul></details>';
   }
 
   // Optional condition section
   var conditionHTML = '';
   if (item.condition) {
-    conditionHTML = '<div class="listing-meta-item"><span class="listing-meta-label">Condition</span><p class="listing-meta-text">' + escapeHtml(item.condition) + '</p></div>';
+    conditionHTML = '<details class="listing-collapsible"><summary class="listing-meta-label">Condition</summary><p class="listing-meta-text">' + escapeHtml(item.condition) + '</p></details>';
   }
 
   // Optional configuration / includes section
   var configHTML = '';
   if (item.configuration) {
-    configHTML = '<div class="listing-meta-item"><span class="listing-meta-label">Includes</span><p class="listing-meta-text">' + escapeHtml(item.configuration) + '</p></div>';
+    configHTML = '<details class="listing-collapsible"><summary class="listing-meta-label">Includes</summary><p class="listing-meta-text">' + escapeHtml(item.configuration) + '</p></details>';
   }
 
   // Retail value pill — split "X | Y" into two-part badge; fall back to plain text
@@ -582,8 +585,8 @@ function generateListingPage(item, slug) {
 '          <div class="listing-body">\n' +
 '            <div class="listing-brand">' + escapeHtml(item.brand) + '</div>\n' +
 '            <h1 class="listing-title">' + escapeHtml(item.title) + '</h1>\n' +
-'            <p class="listing-description">' + escapeHtml(item.description) + '</p>\n' +
 (retailHTML      ? '            ' + retailHTML      + '\n' : '') +
+'            ' + descriptionHTML + '\n' +
 (featuresHTML    ? '            ' + featuresHTML    + '\n' : '') +
 (conditionHTML   ? '            ' + conditionHTML   + '\n' : '') +
 (configHTML      ? '            ' + configHTML      + '\n' : '') +
