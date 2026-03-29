@@ -132,15 +132,19 @@ The build regenerates the homepage Product schema, the static fallback card, and
    ```
    The 400w and 800w variants move with it — they're already referenced by the sold page build.
 
-5. **Delete the listing page directory**:
-   ```bash
-   rm -rf listings/brand-slug/
-   ```
-   (e.g., `rm -rf listings/b-b-italia-charles-l-shaped-modular-sectional/`)
+5. **Do NOT delete the listing page directory.** The listing URL may still be indexed by Google. Instead, convert the listing page into a sold stub:
+
+   - Open `listings/brand-slug/index.html`
+   - Replace the full page body with a sold notice (see `listings/la-z-boy-emric-right-facing-sectional/index.html` as the canonical template)
+   - The stub must include: nav, credibility strip, breadcrumb, "This piece has sold" notice, links to `/` (available inventory) and `/sold/`, a soft sell-side prompt linking to `/sell/`
+   - In the `<head>`: keep GA4, canonical URL, and meta tags. Change the Product schema `"availability"` value to `"https://schema.org/SoldOut"` (not OutOfStock — SoldOut signals the item will not return, consistent with the "One of One" brand positioning)
+   - Keep `<meta name="robots" content="index, follow">` — the page stays indexed for brand/model search traffic
 
 6. Run `node build.js`
 
 7. Commit and push. The sold count in the sold page tagline (`"Over NN premium sofas..."`) is hardcoded in `sold/index.html` — update it manually if desired.
+
+**Note on internal links:** If any guide articles reference this piece by name or model, update those links. If they pointed to the now-sold listing page, they can remain — the stub handles the destination gracefully. If inventory is mentioned as "currently available," update that sentence to reflect the piece has sold or remove the inventory-specific call.
 
 ### Add a new guide article
 
@@ -204,7 +208,26 @@ The build regenerates the homepage Product schema, the static fallback card, and
 
 5. Run `node build.js` (to regenerate sitemap)
 
-6. Commit all new files and push.
+6. **Add internal links from guide content to relevant listing pages.** Any time a specific brand or model is mentioned by name in the article body, check whether there is a live listing page for that piece at `/listings/[slug]/`. If so, wrap the first mention with an anchor link. Keep links contextual — they should read naturally in prose, not as promotional inserts. One link per listing page per article is sufficient; don't link every mention.
+
+   Example: `The <a href="/listings/rove-concepts-milo-6-piece-modular-sectional/">Rove Concepts Milo 6-Piece Modular Sectional</a> is currently available in Edmonton.`
+
+   If the article refers to inventory generally ("pieces like this are available now"), update the `.guide-cta` at the bottom rather than inserting mid-article links.
+
+7. Commit all new files and push.
+
+### Update internal links when inventory changes
+
+When a piece sells (and its listing page is converted to a sold stub), scan all guide articles for links or sentences pointing to that listing:
+
+- Links that pointed to the sold listing page can remain — the stub page handles the destination gracefully.
+- Sentences that describe the piece as "currently available" should be updated to remove the availability claim, or replaced with a more evergreen reference (e.g., "pieces like this come through the shop regularly").
+- If a new piece from the same brand replaces it, update the link target and sentence to reference the new listing.
+
+To find all guide files linking to a specific listing slug:
+```bash
+grep -rl "listings/brand-slug" guides/
+```
 
 ### Edit CSS
 
