@@ -44,6 +44,27 @@ body {
   border: 0;
 }
 
+/* ── Skip to main content link ── */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  padding: 10px 20px;
+  background: var(--color-accent);
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  z-index: 9999;
+  border-radius: 0 0 var(--radius) 0;
+  transition: top 0.15s ease;
+}
+.skip-link:focus {
+  top: 0;
+  outline: 2px solid #fff;
+  outline-offset: -4px;
+}
+
 /* ── Navigation ── */
 .nav {
   position: fixed;
@@ -133,6 +154,11 @@ body {
   border: none;
   cursor: pointer;
   padding: 4px;
+}
+
+/* Phone number nav item — hidden on desktop, visible in mobile dropdown */
+.nav-phone-mobile {
+  display: none;
 }
 
 .nav-toggle span {
@@ -1090,6 +1116,22 @@ footer p { margin: 2px 0; }
     animation: fadeIn 0.2s ease;
   }
   .nav-toggle { display: block; }
+
+  /* Show phone number at bottom of mobile drawer */
+  .nav-phone-mobile {
+    display: list-item;
+    border-top: 1px solid var(--color-border);
+    padding-top: 16px;
+    margin-top: 4px;
+  }
+  .nav-phone-mobile a {
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--color-text);
+  }
+
   .hero h1 { font-size: 1.8rem; }
   .hero .tagline { font-size: 0.95rem; }
   .cards-grid {
@@ -1107,14 +1149,14 @@ footer p { margin: 2px 0; }
   /* On mobile, always show carousel arrows */
   .carousel .carousel-btn { opacity: 1; }
 
-  /* Credibility strip — single line on mobile */
+  /* Credibility strip — allow wrap, keep readable */
   .credibility-strip {
-    font-size: 0.65rem;
+    font-size: 0.75rem;
     padding: 8px 16px;
     gap: 10px;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
   }
-  .credibility-strip .credibility-sep { font-size: 0.5rem; }
+  .credibility-strip .credibility-sep { font-size: 0.55rem; }
 
   /* Divider text — tighter on mobile */
   .divider-text span { font-size: 0.9rem; }
@@ -1143,11 +1185,11 @@ footer p { margin: 2px 0; }
   .hero h1 { font-size: 1.5rem; }
   .hero { padding: 48px 16px 32px; }
 
-  /* Extra-small: further condense credibility strip */
+  /* Extra-small: condense credibility strip but keep readable */
   .credibility-strip {
-    font-size: 0.58rem;
-    gap: 6px;
-    padding: 7px 12px;
+    font-size: 0.72rem;
+    gap: 8px;
+    padding: 8px 12px;
   }
 
   /* Extra-small: shrink pill text further so it fits on 320px screens */
@@ -1457,6 +1499,50 @@ footer p { margin: 2px 0; }
 }
 .listing-back:hover { color: var(--color-text); }
 
+/* ── Sticky CTA bar — listing pages, mobile only ── */
+.listing-sticky-cta {
+  display: none;
+}
+@media (max-width: 768px) {
+  .listing-sticky-cta {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 500;
+    gap: 0;
+    border-top: 1px solid rgba(0,0,0,0.12);
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+  }
+  .listing-sticky-cta a {
+    flex: 1;
+    padding: 16px 12px;
+    text-align: center;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    letter-spacing: 0.01em;
+  }
+  .listing-sticky-cta .sticky-cta-primary {
+    background: var(--color-accent);
+    color: #fff;
+  }
+  .listing-sticky-cta .sticky-cta-secondary {
+    background: #fff;
+    color: var(--color-text);
+    border-left: 1px solid var(--color-border);
+  }
+  /* Add bottom padding to page content so sticky bar doesn't obscure it */
+  .listing-sticky-cta ~ footer,
+  body:has(.listing-sticky-cta) .newsletter-embed {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  body:has(.listing-sticky-cta) footer {
+    padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
 @media (max-width: 768px) {
   .listing-heading-row { flex-direction: column; gap: 12px; }
   .listing-title { font-size: 1.4rem; }
@@ -1465,6 +1551,13 @@ footer p { margin: 2px 0; }
 
   /* Taller crop on mobile — 4/3 gives more vertical room */
   .listing-carousel .carousel { aspect-ratio: 4/3; }
+
+  /* Larger thumbnail tap targets on mobile */
+  .listing-thumb {
+    flex: 0 0 80px;
+    width: 80px;
+    height: 60px;
+  }
 
   /* Prevent long words in description and meta sections from causing horizontal overflow */
   .listing-description,

@@ -422,7 +422,8 @@ function generateListingPage(item, slug) {
     "@type": "BreadcrumbList",
     "itemListElement": [
       { "@type": "ListItem", "position": 1, "name": "Home", "item": BASE_URL },
-      { "@type": "ListItem", "position": 2, "name": item.brand + ' ' + item.title, "item": listingUrl }
+      { "@type": "ListItem", "position": 2, "name": "Available", "item": BASE_URL },
+      { "@type": "ListItem", "position": 3, "name": item.brand + ' ' + item.title, "item": listingUrl }
     ]
   };
 
@@ -538,10 +539,12 @@ function generateListingPage(item, slug) {
 '  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel=\'stylesheet\'">\n' +
 '  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"></noscript>\n' +
 '  <link rel="preload" as="image" href="../../' + (item.images && item.images.length > 0 ? item.images[0].replace(/\.jpeg$/, '-800w.jpeg') : '') + '" fetchpriority="high">\n' +
-'  <link rel="stylesheet" href="../../css/styles.min.css?v=21">\n' +
+'  <link rel="stylesheet" href="../../css/styles.min.css?v=22">\n' +
 '  <meta name="theme-color" content="#2c2c2c">\n' +
 '</head>\n' +
 '<body>\n' +
+'\n' +
+'  <a href="#main-content" class="skip-link">Skip to main content</a>\n' +
 '\n' +
 '  <!-- ── Navigation ── -->\n' +
 '  <nav class="nav">\n' +
@@ -553,11 +556,12 @@ function generateListingPage(item, slug) {
 '        <li><a href="/sell/" data-page="sell">Sell Your Furniture</a></li>\n' +
 '        <li><a href="/guides/" data-page="guides">Guides</a></li>\n' +
 '        <li><a href="/about/" data-page="about">About</a></li>\n' +
+'        <li class="nav-phone-mobile"><a href="tel:7809651477">780-965-1477</a></li>\n' +
 '      </ul>\n' +
 '      <div class="nav-contact">\n' +
 '        <a href="tel:7809651477">780-965-1477</a>\n' +
 '      </div>\n' +
-'      <button class="nav-toggle" id="navToggle" aria-label="Menu">\n' +
+'      <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false">\n' +
 '        <span></span><span></span><span></span>\n' +
 '      </button>\n' +
 '    </div>\n' +
@@ -567,11 +571,13 @@ function generateListingPage(item, slug) {
 '    <span>We Deliver Anywhere in Edmonton and the Surrounding Area</span>\n' +
 '  </div>\n' +
 '\n' +
-'  <main>\n' +
+'  <main id="main-content">\n' +
 '    <div class="page">\n' +
 '\n' +
 '      <nav class="breadcrumb" aria-label="Breadcrumb">\n' +
 '        <a href="/">Home</a>\n' +
+'        <span class="breadcrumb-sep">/</span>\n' +
+'        <a href="/">Available</a>\n' +
 '        <span class="breadcrumb-sep">/</span>\n' +
 '        <span class="breadcrumb-current">' + escapeHtml(item.brand + ' ' + item.title) + '</span>\n' +
 '      </nav>\n' +
@@ -606,7 +612,8 @@ function generateListingPage(item, slug) {
 '      <div class="newsletter-embed">\n' +
 '        <p class="newsletter-heading">Get first access before pieces sell. Enter your email to hear about new arrivals before the public.</p>\n' +
 '        <form class="newsletter-form" action="https://app.kit.com/forms/9233085/subscriptions" method="post" data-sv-form="9233085" data-uid="47c0cc8b38">\n' +
-'          <input type="email" name="email_address" placeholder="Your email address" required>\n' +
+'          <label for="newsletter-email" class="sr-only">Email address</label>\n' +
+'          <input type="email" id="newsletter-email" name="email_address" placeholder="Your email address" autocomplete="email" required>\n' +
 '          <button type="submit">Subscribe</button>\n' +
 '        </form>\n' +
 '        <p class="newsletter-success">Thanks! You&rsquo;re on the list.</p>\n' +
@@ -614,6 +621,12 @@ function generateListingPage(item, slug) {
 '\n' +
 '    </div>\n' +
 '  </main>\n' +
+'\n' +
+'  <!-- Sticky CTA bar (mobile only) -->\n' +
+'  <div class="listing-sticky-cta">\n' +
+'    <a href="sms:7809651477" class="sticky-cta-primary">Text to Secure &rarr; ' + escapeHtml(item.price) + '</a>\n' +
+'    <a href="tel:7809651477" class="sticky-cta-secondary">Call</a>\n' +
+'  </div>\n' +
 '\n' +
 '  <footer>\n' +
 '    <p>&copy; 2026 Edmonton Refreshed Seating</p>\n' +
@@ -865,6 +878,16 @@ indexContent = injectBetweenMarkers(
   '<!-- PRODUCT_SCHEMA_END -->',
   productSchema
 );
+
+// Update LCP preload to always match the first available (non-coming-soon) item
+var firstVisible = availableItems.filter(function(i) { return !i.comingSoon; })[0];
+if (firstVisible && firstVisible.images && firstVisible.images.length > 0) {
+  var lcpImg = firstVisible.images[0].replace(/\.jpeg$/, '-800w.jpeg');
+  indexContent = indexContent.replace(
+    /<!-- LCP_PRELOAD_START -->.*?<!-- LCP_PRELOAD_END -->/,
+    '<!-- LCP_PRELOAD_START --><link rel="preload" as="image" href="' + lcpImg + '" fetchpriority="high"><!-- LCP_PRELOAD_END -->'
+  );
+}
 
 fs.writeFileSync(indexPath, indexContent, 'utf8');
 

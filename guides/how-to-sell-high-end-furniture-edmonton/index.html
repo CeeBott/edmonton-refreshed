@@ -128,10 +128,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="../../css/styles.min.css?v=21">
+  <link rel="stylesheet" href="../../css/styles.min.css?v=22">
   <meta name="theme-color" content="#2c2c2c">
 </head>
 <body>
+
+  <a href="#main-content" class="skip-link">Skip to main content</a>
 
   <!-- ── Navigation ── -->
   <nav class="nav">
@@ -143,11 +145,12 @@
         <li><a href="/sell/" data-page="sell">Sell Your Furniture</a></li>
         <li><a href="/guides/" data-page="guides">Guides</a></li>
         <li><a href="/about/" data-page="about">About</a></li>
+        <li class="nav-phone-mobile"><a href="tel:7809651477">780-965-1477</a></li>
       </ul>
       <div class="nav-contact">
         <a href="tel:7809651477">780-965-1477</a>
       </div>
-      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+      <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -161,7 +164,7 @@
     <span>Proudly Edmonton Owned &amp; Operated</span>
   </div>
 
-  <main>
+  <main id="main-content">
     <div class="page">
 
       <nav class="breadcrumb" aria-label="Breadcrumb">
@@ -310,7 +313,8 @@
   <div class="newsletter-embed">
     <p class="newsletter-heading">Get first access before pieces sell. Enter your email to hear about new arrivals before the public.</p>
     <form class="newsletter-form" action="https://app.kit.com/forms/9233085/subscriptions" method="post" data-sv-form="9233085" data-uid="47c0cc8b38">
-      <input type="email" name="email_address" placeholder="Your email address" required>
+      <label for="newsletter-email" class="sr-only">Email address</label>
+          <input type="email" id="newsletter-email" name="email_address" placeholder="Your email address" autocomplete="email" required>
       <button type="submit">Subscribe</button>
     </form>
     <p class="newsletter-success">Thanks! You&rsquo;re on the list.</p>
