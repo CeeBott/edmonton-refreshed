@@ -631,6 +631,7 @@ function generateListingPage(item, slug) {
 '  <footer>\n' +
 '    <p>&copy; 2026 Edmonton Refreshed Seating</p>\n' +
 '    <p>Serving Edmonton, Alberta and surrounding areas</p>\n' +
+'    <p><a href="/privacy/">Privacy Policy</a></p>\n' +
 '  </footer>\n' +
 '\n' +
 '  <!-- ── Lightbox ── -->\n' +
@@ -765,6 +766,12 @@ function generateSitemap(items) {
     '    <priority>0.6</priority>',
     '  </url>',
     '  <url>',
+    '    <loc>https://edmonton-refreshed.com/privacy/</loc>',
+    '    <lastmod>' + d + '</lastmod>',
+    '    <changefreq>yearly</changefreq>',
+    '    <priority>0.3</priority>',
+    '  </url>',
+  '  <url>',
     '    <loc>https://edmonton-refreshed.com/guides/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>weekly</changefreq>',
