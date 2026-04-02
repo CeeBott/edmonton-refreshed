@@ -539,7 +539,7 @@ function generateListingPage(item, slug) {
 '  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel=\'stylesheet\'">\n' +
 '  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"></noscript>\n' +
 '  <link rel="preload" as="image" href="../../' + (item.images && item.images.length > 0 ? item.images[0].replace(/\.jpeg$/, '-800w.jpeg') : '') + '" fetchpriority="high">\n' +
-'  <link rel="stylesheet" href="../../css/styles.min.css?v=22">\n' +
+'  <link rel="stylesheet" href="../../css/styles.min.css?v=23">\n' +
 '  <meta name="theme-color" content="#2c2c2c">\n' +
 '</head>\n' +
 '<body>\n' +
@@ -833,6 +833,18 @@ function generateSitemap(items) {
     '  </url>',
     '  <url>',
     '    <loc>https://edmonton-refreshed.com/guides/how-to-measure-sectional-sofa-edmonton/</loc>',
+    '    <lastmod>' + d + '</lastmod>',
+    '    <changefreq>monthly</changefreq>',
+    '    <priority>0.8</priority>',
+    '  </url>',
+    '  <url>',
+    '    <loc>https://edmonton-refreshed.com/guides/sell-couch-sectional-fast-edmonton/</loc>',
+    '    <lastmod>' + d + '</lastmod>',
+    '    <changefreq>monthly</changefreq>',
+    '    <priority>0.8</priority>',
+    '  </url>',
+    '  <url>',
+    '    <loc>https://edmonton-refreshed.com/guides/who-buys-used-couches-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.8</priority>',

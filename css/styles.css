@@ -1776,6 +1776,8 @@ h3.faq-question,
   transition: color 0.2s;
 }
 .guide-body a:hover { color: var(--color-text-secondary); }
+.guide-body .listing-cta,
+.guide-body .listing-cta:hover { color: white; }
 .guide-callout {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
