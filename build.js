@@ -849,6 +849,12 @@ function generateSitemap(items) {
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.8</priority>',
     '  </url>',
+    '  <url>',
+    '    <loc>https://edmonton-refreshed.com/guides/selling-sectional-sofa-edmonton/</loc>',
+    '    <lastmod>' + d + '</lastmod>',
+    '    <changefreq>monthly</changefreq>',
+    '    <priority>0.8</priority>',
+    '  </url>',
   ];
 
   items.forEach(function(item) {
