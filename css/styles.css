@@ -714,7 +714,7 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
 }
 
 .sell-content {
-  max-width: 580px;
+  max-width: var(--max-width);
   margin: 40px auto 64px;
   padding: 0 24px;
 }
@@ -1677,7 +1677,7 @@ h3.faq-question,
   line-height: 1.7;
 }
 .about-content {
-  max-width: 680px;
+  max-width: var(--max-width);
   margin: 0 auto;
   padding: 0 24px 24px;
 }
@@ -1714,7 +1714,7 @@ h3.faq-question,
 
 /* ── Guide / Article Pages ── */
 .guide-article {
-  max-width: 720px;
+  max-width: var(--max-width);
   margin: 0 auto;
   padding: 48px 24px 48px;
 }
@@ -1808,7 +1808,7 @@ h3.faq-question,
 
 /* Guides index page */
 .guides-list {
-  max-width: 720px;
+  max-width: var(--max-width);
   margin: 0 auto;
   padding: 0 24px 72px;
 }
