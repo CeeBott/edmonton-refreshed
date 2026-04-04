@@ -714,7 +714,7 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
 }
 
 .sell-content {
-  max-width: var(--max-width);
+  max-width: 580px;
   margin: 40px auto 64px;
   padding: 0 24px;
 }
@@ -1783,7 +1783,8 @@ h3.faq-question,
   border: 1px solid var(--color-border);
   border-left: 3px solid var(--color-accent);
   padding: 1.25rem 1.5rem;
-  margin: 2rem 0;
+  margin: 2rem auto;
+  max-width: 850px;
   border-radius: 2px;
 }
 .guide-callout p {
@@ -1796,7 +1797,8 @@ h3.faq-question,
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   padding: 2rem;
-  margin-top: 3rem;
+  margin: 3rem auto 0;
+  max-width: 850px;
   text-align: center;
   border-radius: var(--radius);
 }
@@ -1846,7 +1848,8 @@ h3.faq-question,
 /* Scoped overrides: faq-section and section-label inside guide articles */
 .guide-table-wrap {
   overflow-x: auto;
-  margin: 1.75rem 0 2rem;
+  margin: 1.75rem auto 2rem;
+  max-width: 850px;
   -webkit-overflow-scrolling: touch;
 }
 .guide-table {
