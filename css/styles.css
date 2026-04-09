@@ -153,7 +153,9 @@ body {
   background: none;
   border: none;
   cursor: pointer;
-  padding: 4px;
+  padding: 10px;
+  min-width: 44px;
+  min-height: 44px;
 }
 
 /* Phone number nav item — hidden on desktop, visible in mobile dropdown */
@@ -474,8 +476,8 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: rgba(255,255,255,0.85);
   backdrop-filter: blur(4px);
@@ -503,8 +505,8 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
 .carousel-btn.next { right: 10px; }
 
 .carousel-btn svg {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   stroke: var(--color-text);
   stroke-width: 2.5;
   fill: none;
@@ -529,7 +531,7 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   border-radius: 50%;
   background: rgba(255,255,255,0.5);
   border: none;
-  padding: 12px;
+  padding: 18px;
   background-clip: content-box;
   cursor: pointer;
   transition: background 0.2s, transform 0.2s;
@@ -1924,4 +1926,47 @@ h3.faq-question,
 
 @media (max-width: 768px) {
   .about-hero h1 { font-size: 1.7rem; }
+}
+
+/* ── Reduced Motion ── */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Focus-Visible ── */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+.nav-links a:focus-visible,
+.breadcrumb a:focus-visible,
+.guide-body a:focus-visible,
+.faq-answer a:focus-visible,
+footer a:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+.carousel-btn:focus-visible,
+.carousel-dots .dot:focus-visible,
+.lightbox-close:focus-visible,
+.lightbox-nav:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+.newsletter-form button:focus-visible,
+.listing-cta:focus-visible,
+.hero-sell-cta a:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+.card-title-link:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+  border-radius: var(--radius);
 }

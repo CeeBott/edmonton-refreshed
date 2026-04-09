@@ -503,6 +503,7 @@ function generateListingPage(item, slug) {
 '\n' +
 '  <title>' + titleTag + '</title>\n' +
 '  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">\n' +
+'  <link rel="apple-touch-icon" href="../../apple-touch-icon.png">\n' +
 '  <link rel="canonical" href="' + listingUrl + '">\n' +
 '  <meta name="description" content="' + metaDesc + '">\n' +
 '  <meta name="robots" content="index, follow">\n' +
@@ -517,12 +518,14 @@ function generateListingPage(item, slug) {
 '  <meta property="og:description" content="' + metaDesc + '">\n' +
 '  <meta property="og:site_name" content="Edmonton Refreshed Seating">\n' +
 '  <meta property="og:image" content="' + ogImageUrl + '">\n' +
+'  <meta property="og:image:alt" content="' + escapeHtml(item.brand + ' ' + item.title) + ' — pre-owned furniture in Edmonton">\n' +
 '\n' +
 '  <!-- Twitter / X -->\n' +
 '  <meta name="twitter:card" content="summary_large_image">\n' +
 '  <meta name="twitter:title" content="' + titleTag + '">\n' +
 '  <meta name="twitter:description" content="' + metaDesc + '">\n' +
 '  <meta name="twitter:image" content="' + ogImageUrl + '">\n' +
+'  <meta name="twitter:image:alt" content="' + escapeHtml(item.brand + ' ' + item.title) + ' — pre-owned furniture in Edmonton">\n' +
 '\n' +
 '  <!-- Product Schema -->\n' +
 '  <script type="application/ld+json">\n' +
@@ -647,7 +650,7 @@ function generateListingPage(item, slug) {
 '    <div class="lightbox-counter" id="lightbox-counter"></div>\n' +
 '  </div>\n' +
 '\n' +
-'  <script src="../../js/shared.min.js"></script>\n' +
+'  <script src="../../js/shared.min.js?v=25"></script>\n' +
 '  <script>\n' +
 '  (function() {\n' +
 '    var thumbs = document.querySelectorAll(".listing-thumb:not(.listing-thumb-more)");\n' +

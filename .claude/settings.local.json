@@ -27,7 +27,13 @@
       "Bash(rm -f .git/index)",
       "Bash(git reset:*)",
       "Bash(rm -f .git/index.lock)",
-      "Bash(xargs sed:*)"
+      "Bash(xargs sed:*)",
+      "Bash(grep -r \"sr-only\\\\|skip-link\" /Users/collinbottrell/Desktop/edmonton-refreshed/*.html)",
+      "Bash(find /Users/collinbottrell/Desktop/edmonton-refreshed -name \"*.html\" -exec grep -l \"sr-only\\\\|aria-label\\\\|skip-link\" {} \\\\;)",
+      "Bash(xargs ls:*)",
+      "Bash(ls -d /Users/collinbottrell/Desktop/edmonton-refreshed/guides/*/)",
+      "Bash(qlmanage -t -s 180 -o /tmp favicon.svg)",
+      "Bash(sips -s format png -z 180 180 /tmp/favicon.svg.png --out apple-touch-icon.png)"
     ]
   }
 }
