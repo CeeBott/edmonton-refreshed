@@ -153,7 +153,9 @@ function renderAvailable() {
   }).join('');
 }
 
-renderAvailable();
+// Defer rendering so the static fallback paints as LCP first
+if ('requestIdleCallback' in window) { requestIdleCallback(renderAvailable); }
+else { setTimeout(renderAvailable, 0); }
 
 
 // Product schema is injected as static <script> tags in index.html <head>

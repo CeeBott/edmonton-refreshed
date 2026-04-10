@@ -101,4 +101,6 @@ function renderReviews() {
     '</div>';
 }
 
-renderReviews();
+// Defer rendering so the static fallback paints first
+if ('requestIdleCallback' in window) { requestIdleCallback(renderReviews); }
+else { setTimeout(renderReviews, 0); }
