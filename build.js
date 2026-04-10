@@ -47,6 +47,12 @@ function webpSrcsetFor(imgPath, prefix) {
   return prefix + base + '-400w.webp 400w, ' + prefix + base + '-800w.webp 800w, ' + prefix + base + '.webp 1200w';
 }
 
+function avifSrcsetFor(imgPath, prefix) {
+  prefix = prefix || '';
+  var base = imgPath.replace(/\.jpeg$/, '');
+  return prefix + base + '-400w.avif 400w, ' + prefix + base + '-800w.avif 800w, ' + prefix + base + '.avif 1200w';
+}
+
 function slugify(str) {
   return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 }
@@ -109,7 +115,7 @@ function generateAvailableHTML(items) {
 
     var fetchPri = idx === 0 ? ' fetchpriority="high" width="800" height="600"' : '';
     var imgHtml = imgSrc
-      ? '          <div class="card-image-placeholder"><picture><source type="image/webp" srcset="' + webpSrcsetFor(imgSrc) + '" sizes="(max-width: 768px) 100vw, 530px"><img src="' + imgSrc + '" srcset="' + srcsetFor(imgSrc) + '" sizes="(max-width: 768px) 100vw, 530px" alt="' + alt + '" loading="' + loading + '"' + fetchPri + '></picture></div>'
+      ? '          <div class="card-image-placeholder"><picture><source type="image/avif" srcset="' + avifSrcsetFor(imgSrc) + '" sizes="(max-width: 768px) 100vw, 530px"><source type="image/webp" srcset="' + webpSrcsetFor(imgSrc) + '" sizes="(max-width: 768px) 100vw, 530px"><img src="' + imgSrc + '" srcset="' + srcsetFor(imgSrc) + '" sizes="(max-width: 768px) 100vw, 530px" alt="' + alt + '" loading="' + loading + '"' + fetchPri + '></picture></div>'
       : '          <div class="card-image-placeholder">Photos coming soon</div>';
 
     var brandLine = item.comingSoon
@@ -154,7 +160,7 @@ function generateSoldHTML(items) {
 
     lines.push(
       '        <div class="card sold">',
-      '          <div class="card-image-placeholder"><picture><source type="image/webp" srcset="' + webpSrcsetFor(imgSrc) + '" sizes="(max-width: 768px) 100vw, 530px"><img src="' + imgSrc + '" srcset="' + srcsetFor(imgSrc) + '" sizes="(max-width: 768px) 100vw, 530px" alt="' + alt + '" loading="lazy"></picture></div>',
+      '          <div class="card-image-placeholder"><picture><source type="image/avif" srcset="' + avifSrcsetFor(imgSrc) + '" sizes="(max-width: 768px) 100vw, 530px"><source type="image/webp" srcset="' + webpSrcsetFor(imgSrc) + '" sizes="(max-width: 768px) 100vw, 530px"><img src="' + imgSrc + '" srcset="' + srcsetFor(imgSrc) + '" sizes="(max-width: 768px) 100vw, 530px" alt="' + alt + '" loading="lazy"></picture></div>',
       '          <div class="card-body">',
       '            <div class="card-meta"><div class="card-brand">' + escapeHtml(item.brand) + '</div><span class="sold-badge">Sold</span></div>',
       '            <div class="card-title">' + escapeHtml(item.title) + '</div>' + descLine,
@@ -316,7 +322,7 @@ function buildCarouselHTML(images, alt, prefix) {
     var absSrc = prefix + src;
     var loadAttr = i === 0 ? 'eager' : 'lazy';
     var fetchPri = i === 0 ? ' fetchpriority="high"' : '';
-    return '<picture><source type="image/webp" srcset="' + webpSrcsetFor(src, prefix) + '" sizes="(max-width: 768px) 100vw, 550px"><img src="' + absSrc + '" srcset="' + srcsetFor(src, prefix) + '" sizes="(max-width: 768px) 100vw, 550px" alt="' + escapeHtml(alt) + ' &mdash; photo ' + (i + 1) + '" loading="' + loadAttr + '"' + fetchPri + ' draggable="false"></picture>';
+    return '<picture><source type="image/avif" srcset="' + avifSrcsetFor(src, prefix) + '" sizes="(max-width: 768px) 100vw, 550px"><source type="image/webp" srcset="' + webpSrcsetFor(src, prefix) + '" sizes="(max-width: 768px) 100vw, 550px"><img src="' + absSrc + '" srcset="' + srcsetFor(src, prefix) + '" sizes="(max-width: 768px) 100vw, 550px" alt="' + escapeHtml(alt) + ' &mdash; photo ' + (i + 1) + '" loading="' + loadAttr + '"' + fetchPri + ' draggable="false"></picture>';
   }).join('');
 
   var dots = images.map(function(_, i) {
@@ -489,16 +495,14 @@ function generateListingPage(item, slug) {
 '  <meta charset="UTF-8">\n' +
 '  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
 '\n' +
-'  <link rel="preconnect" href="https://www.googletagmanager.com">\n' +
-'  <link rel="dns-prefetch" href="https://www.googletagmanager.com">\n' +
-'\n' +
-'  <!-- Google tag (gtag.js) -->\n' +
-'  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8MN82PPZRZ"></script>\n' +
+'  <!-- Google tag (gtag.js) — deferred until idle -->\n' +
 '  <script>\n' +
 '    window.dataLayer = window.dataLayer || [];\n' +
 '    function gtag(){dataLayer.push(arguments);}\n' +
 '    gtag(\'js\', new Date());\n' +
 '    gtag(\'config\', \'G-8MN82PPZRZ\');\n' +
+'    function _loadGA(){var s=document.createElement(\'script\');s.src=\'https://www.googletagmanager.com/gtag/js?id=G-8MN82PPZRZ\';s.async=true;document.head.appendChild(s)}\n' +
+'    if(\'requestIdleCallback\' in window){requestIdleCallback(_loadGA)}else{addEventListener(\'load\',_loadGA)}\n' +
 '  </script>\n' +
 '\n' +
 '  <title>' + titleTag + '</title>\n' +
@@ -541,8 +545,10 @@ function generateListingPage(item, slug) {
 '  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n' +
 '  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel=\'stylesheet\'">\n' +
 '  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"></noscript>\n' +
-'  <link rel="preload" as="image" href="../../' + (item.images && item.images.length > 0 ? item.images[0].replace(/\.jpeg$/, '-800w.jpeg') : '') + '" fetchpriority="high">\n' +
-'  <link rel="stylesheet" href="../../css/styles.min.css?v=25">\n' +
+'  <link rel="preload" as="image" imagesrcset="' + (item.images && item.images.length > 0 ? avifSrcsetFor(item.images[0], '../../') : '') + '" imagesizes="(max-width: 768px) 100vw, 550px" fetchpriority="high" type="image/avif">\n' +
+'  <style>:root{--color-bg:#fafaf9;--color-surface:#fff;--color-text:#1a1a1a;--color-text-secondary:#6b6b6b;--color-accent:#2c2c2c;--color-border:#e8e8e8;--font-sans:\'Inter\',-apple-system,BlinkMacSystemFont,\'Segoe UI\',sans-serif;--font-serif:\'Playfair Display\',Georgia,serif;--shadow-sm:0 1px 3px rgba(0,0,0,.06);--radius:8px;--max-width:1100px;--nav-height:64px}*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:var(--font-sans);background:var(--color-bg);color:var(--color-text);line-height:1.6;-webkit-font-smoothing:antialiased}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.skip-link{position:absolute;top:-100%}.nav{position:fixed;top:0;left:0;right:0;height:var(--nav-height);background:rgba(255,255,255,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--color-border);z-index:1000;display:flex;align-items:center;justify-content:center}.nav-inner{width:100%;max-width:var(--max-width);padding:0 24px;display:flex;align-items:center;justify-content:space-between}.nav-logo{font-family:var(--font-serif);font-size:1.1rem;font-weight:500;letter-spacing:-.02em;color:var(--color-text);white-space:nowrap;text-decoration:none}.nav-links{display:flex;gap:32px;list-style:none}.nav-links a{text-decoration:none;color:var(--color-text-secondary);font-size:.875rem;font-weight:500;letter-spacing:.02em;text-transform:uppercase;position:relative}.nav-contact{font-size:.8rem;color:var(--color-text-secondary)}.nav-contact a{color:var(--color-text-secondary);text-decoration:none}.nav-toggle{display:none;background:none;border:none;cursor:pointer;padding:10px;min-width:44px;min-height:44px}.nav-phone-mobile{display:none}.nav-toggle span{display:block;width:22px;height:2px;background:var(--color-text);margin:5px 0}.credibility-strip{background:var(--color-accent);color:rgba(255,255,255,.9);text-align:center;padding:10px 24px;font-size:.8rem;font-weight:500;letter-spacing:.04em;display:flex;justify-content:center;align-items:center;gap:24px;margin-top:var(--nav-height)}main{padding-top:0}.page{animation:fadeIn .3s ease}@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}.breadcrumb{max-width:var(--max-width);margin:0 auto;padding:24px 24px 16px;font-size:.8rem}.breadcrumb a{color:var(--color-text-secondary);text-decoration:none}.breadcrumb-current{color:var(--color-text)}.breadcrumb-sep{margin:0 8px;color:var(--color-border)}.carousel{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#f0f0f0;touch-action:pan-y}.carousel-track{display:flex;height:100%;will-change:transform}.carousel-track picture{width:100%;height:100%;flex-shrink:0;display:block}.carousel-track img{width:100%;height:100%;object-fit:cover;object-position:center bottom;display:block}@media(max-width:768px){.nav-links,.nav-contact{display:none}.nav-toggle{display:block}.carousel{aspect-ratio:4/3}.credibility-strip{font-size:.75rem;padding:8px 16px}}</style>\n' +
+'  <link rel="stylesheet" href="../../css/styles.min.css?v=25" media="print" onload="this.onload=null;this.media=\'all\'">\n' +
+'  <noscript><link rel="stylesheet" href="../../css/styles.min.css?v=25"></noscript>\n' +
 '  <meta name="theme-color" content="#2c2c2c">\n' +
 '</head>\n' +
 '<body>\n' +
@@ -952,10 +958,10 @@ indexContent = injectBetweenMarkers(
 // Update LCP preload to always match the first available (non-coming-soon) item
 var firstVisible = availableItems.filter(function(i) { return !i.comingSoon; })[0];
 if (firstVisible && firstVisible.images && firstVisible.images.length > 0) {
-  var lcpImg = firstVisible.images[0].replace(/\.jpeg$/, '-800w.jpeg');
+  var lcpAvifSrcset = avifSrcsetFor(firstVisible.images[0]);
   indexContent = indexContent.replace(
     /<!-- LCP_PRELOAD_START -->.*?<!-- LCP_PRELOAD_END -->/,
-    '<!-- LCP_PRELOAD_START --><link rel="preload" as="image" href="' + lcpImg + '" fetchpriority="high"><!-- LCP_PRELOAD_END -->'
+    '<!-- LCP_PRELOAD_START --><link rel="preload" as="image" imagesrcset="' + lcpAvifSrcset + '" imagesizes="(max-width: 768px) 100vw, 530px" fetchpriority="high" type="image/avif"><!-- LCP_PRELOAD_END -->'
   );
 }
 
