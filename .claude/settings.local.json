@@ -41,7 +41,9 @@
       "Bash(command -v cwebp)",
       "Bash(command -v avifenc)",
       "Bash(pip install:*)",
-      "Bash(python3 -c \"from PIL import Image; import pillow_avif; print\\('avif support available'\\)\")"
+      "Bash(python3 -c \"from PIL import Image; import pillow_avif; print\\('avif support available'\\)\")",
+      "Bash(python3)",
+      "Bash(gzip -c /Users/collinbottrell/Desktop/edmonton-refreshed/index.html)"
     ]
   }
 }
