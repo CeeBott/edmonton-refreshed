@@ -33,7 +33,15 @@
       "Bash(xargs ls:*)",
       "Bash(ls -d /Users/collinbottrell/Desktop/edmonton-refreshed/guides/*/)",
       "Bash(qlmanage -t -s 180 -o /tmp favicon.svg)",
-      "Bash(sips -s format png -z 180 180 /tmp/favicon.svg.png --out apple-touch-icon.png)"
+      "Bash(sips -s format png -z 180 180 /tmp/favicon.svg.png --out apple-touch-icon.png)",
+      "WebFetch(domain:www.googleapis.com)",
+      "Bash(ls -lh /Users/collinbottrell/Desktop/edmonton-refreshed/images/RC-043/rove-concepts-01*.jpeg /Users/collinbottrell/Desktop/edmonton-refreshed/images/RC-043/rove-concepts-01*.webp)",
+      "Bash(dig edmonton-refreshed.com +short)",
+      "Bash(nslookup edmonton-refreshed.com)",
+      "Bash(command -v cwebp)",
+      "Bash(command -v avifenc)",
+      "Bash(pip install:*)",
+      "Bash(python3 -c \"from PIL import Image; import pillow_avif; print\\('avif support available'\\)\")"
     ]
   }
 }
