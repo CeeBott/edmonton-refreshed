@@ -10,6 +10,11 @@
 
 var reviews = [
   {
+    name: "Sharon",
+    rating: 5,
+    text: "Quality sofa! Collin was great to work with!"
+  },
+  {
     name: "Leila",
     rating: 4,
     text: "Detailed listing, pointed out benefits as well as flaws. Excellent knowledge of the product. Great customer service — delivered my sofa next day in extremely cold weather, which I did not expect. Highly recommended. I would definitely buy from Collin again."
@@ -43,8 +48,8 @@ var reviews = [
 
 // ── Aggregate (includes written + ratings-only) ──────────────
 var reviewAggregate = {
-  totalCount: 16,
-  ratingValue: 4.9    // (15 × 5 + 1 × 4) / 16 = 4.9375 → 4.9
+  totalCount: 17,
+  ratingValue: 4.9    // (16 × 5 + 1 × 4) / 17 = 4.9412 → 4.9
 };
 
 
