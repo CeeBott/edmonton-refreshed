@@ -258,7 +258,7 @@ function generateProductSchemas(items) {
       "offers": {
         "@type": "Offer",
         "priceCurrency": "CAD",
-        "price": numericPrice,
+        "price": parseFloat(numericPrice),
         "priceValidUntil": priceValidUntil,
         "availability": "https://schema.org/InStock",
         "url": listingUrl,
@@ -271,7 +271,7 @@ function generateProductSchemas(items) {
           "@type": "OfferShippingDetails",
           "shippingRate": {
             "@type": "MonetaryAmount",
-            "value": "200",
+            "value": 200,
             "currency": "CAD"
           },
           "shippingDestination": {
@@ -381,7 +381,7 @@ function generateListingPage(item, slug) {
     "offers": {
       "@type": "Offer",
       "priceCurrency": "CAD",
-      "price": numericPrice,
+      "price": parseFloat(numericPrice),
       "priceValidUntil": priceValidUntil,
       "availability": "https://schema.org/InStock",
       "url": listingUrl,
@@ -394,7 +394,7 @@ function generateListingPage(item, slug) {
         "@type": "OfferShippingDetails",
         "shippingRate": {
           "@type": "MonetaryAmount",
-          "value": "200",
+          "value": 200,
           "currency": "CAD"
         },
         "shippingDestination": {
