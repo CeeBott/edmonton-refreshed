@@ -654,7 +654,7 @@ function generateListingPage(item, slug) {
 '    <div class="lightbox-counter" id="lightbox-counter"></div>\n' +
 '  </div>\n' +
 '\n' +
-'  <script src="../../js/shared.min.js?v=27"></script>\n' +
+'  <script src="../../js/shared.min.js?v=28"></script>\n' +
 '  <script>\n' +
 '  (function() {\n' +
 '    var thumbs = document.querySelectorAll(".listing-thumb:not(.listing-thumb-more)");\n' +
