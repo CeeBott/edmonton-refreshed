@@ -2011,6 +2011,20 @@ footer a:focus-visible {
   line-height: 1.6;
   letter-spacing: 0.01em;
 }
+.sell-hero-cta {
+  display: inline-block;
+  margin-top: 28px;
+  padding: 14px 32px;
+  background: var(--color-text);
+  color: var(--color-bg);
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  border-radius: 2px;
+  transition: opacity 0.15s ease;
+}
+.sell-hero-cta:hover { opacity: 0.82; }
 
 /* Fit Grid — What we buy / Not a fit */
 .sell-fit-grid {

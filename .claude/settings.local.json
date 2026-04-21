@@ -43,7 +43,12 @@
       "Bash(pip install:*)",
       "Bash(python3 -c \"from PIL import Image; import pillow_avif; print\\('avif support available'\\)\")",
       "Bash(python3)",
-      "Bash(gzip -c /Users/collinbottrell/Desktop/edmonton-refreshed/index.html)"
+      "Bash(gzip -c /Users/collinbottrell/Desktop/edmonton-refreshed/index.html)",
+      "Read(//Users/collinbottrell/Library/Application Support/Claude/local-agent-mode-sessions/skills-plugin/5c4e140f-4cdb-407c-ac51-fba1b38e90b4/2f9812ef-c5ba-4e28-997e-d5106a958b86/skills/docx/**)",
+      "Bash(pandoc --track-changes=all \"/Users/collinbottrell/Downloads/coin_collection_v6.docx\" -o /tmp/coin_collection.md)",
+      "Read(//tmp/**)",
+      "Bash(python scripts/office/unpack.py \"/Users/collinbottrell/Downloads/coin_collection_v6.docx\" /tmp/coin_unpacked/)",
+      "Bash(python scripts/office/pack.py /tmp/coin_unpacked/ \"/Users/collinbottrell/Downloads/coin_collection_v7.docx\" --original \"/Users/collinbottrell/Downloads/coin_collection_v6.docx\")"
     ]
   }
 }
