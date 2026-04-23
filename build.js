@@ -546,7 +546,7 @@ function generateListingPage(item, slug) {
 '  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel=\'stylesheet\'">\n' +
 '  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"></noscript>\n' +
 '  <link rel="preload" as="image" imagesrcset="' + (item.images && item.images.length > 0 ? avifSrcsetFor(item.images[0], '../../') : '') + '" imagesizes="(max-width: 768px) 100vw, 550px" fetchpriority="high" type="image/avif">\n' +
-'  <link rel="stylesheet" href="../../css/styles.min.css?v=28">\n' +
+'  <link rel="stylesheet" href="../../css/styles.min.css?v=29">\n' +
 '  <meta name="theme-color" content="#2c2c2c">\n' +
 '</head>\n' +
 '<body>\n' +
@@ -654,7 +654,7 @@ function generateListingPage(item, slug) {
 '    <div class="lightbox-counter" id="lightbox-counter"></div>\n' +
 '  </div>\n' +
 '\n' +
-'  <script src="../../js/shared.min.js?v=28"></script>\n' +
+'  <script src="../../js/shared.min.js?v=29"></script>\n' +
 '  <script>\n' +
 '  (function() {\n' +
 '    var thumbs = document.querySelectorAll(".listing-thumb:not(.listing-thumb-more)");\n' +
@@ -882,24 +882,6 @@ function generateSitemap(items) {
     '  </url>',
     '  <url>',
     '    <loc>https://edmonton-refreshed.com/guides/selling-loveseat-sofa-set-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.8</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmonton-refreshed.com/guides/selling-modular-sectional-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.8</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmonton-refreshed.com/guides/selling-u-shaped-sectional-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.8</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmonton-refreshed.com/guides/selling-l-shaped-sectional-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.8</priority>',

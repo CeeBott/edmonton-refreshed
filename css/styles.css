@@ -1832,11 +1832,26 @@ h3.faq-question,
 }
 
 /* Guides index page */
+.guides-section {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+.guides-section + .guides-section { margin-top: 48px; }
+.guides-section:last-of-type { padding-bottom: 72px; }
+.guides-section-heading {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.01em;
+}
 .guides-list {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 0 24px 72px;
+  padding: 0;
 }
+.guides-section .guides-list { padding: 0; }
 .guide-card {
   display: block;
   text-decoration: none;
@@ -1912,6 +1927,53 @@ h3.faq-question,
   padding: 0 0 20px;
 }
 
+/* Related guides block — appears at the bottom of each guide article, above the CTA */
+.guide-related {
+  max-width: 850px;
+  margin: 3rem auto 0;
+}
+.guide-related-heading {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 500;
+  margin: 0 0 1rem;
+  letter-spacing: -0.01em;
+}
+.guide-related-list {
+  border-top: 1px solid var(--color-border);
+}
+.guide-related-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--color-border);
+  transition: opacity 0.2s;
+}
+.guide-related-card:hover { opacity: 0.7; }
+.guide-related-category {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  margin: 0 0 4px;
+}
+.guide-related-title {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+/* About page — Helpful guides strip */
+.about-related {
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 48px 24px 16px;
+}
+
 @media (max-width: 768px) {
   .guide-article { padding: 32px 16px 32px; }
   .guide-header h1 { font-size: 1.5rem; }
@@ -1920,10 +1982,16 @@ h3.faq-question,
   .guide-body h3 { font-size: 1rem; }
   .guide-callout { padding: 1rem 1.25rem; }
   .guide-cta { padding: 1.5rem; }
-  .guides-list { padding: 0 16px 60px; }
+  .guides-section { padding: 0 16px; }
+  .guides-section:last-of-type { padding-bottom: 60px; }
+  .guides-section + .guides-section { margin-top: 36px; }
+  .guides-section-heading { font-size: 1.25rem; }
   .guide-table tbody td:first-child { white-space: normal; }
   .breadcrumb { padding: 16px 16px 0; }
   .about-hero { padding: 40px 16px 32px; }
+  .guide-related-heading { font-size: 1.2rem; }
+  .guide-related-title { font-size: 1rem; }
+  .about-related { padding: 32px 16px 8px; }
 }
 
 /* Card title link — stretched to make entire card clickable */
