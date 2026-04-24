@@ -292,33 +292,6 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   margin: 0 auto 28px;
 }
 
-.divider-text {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  max-width: var(--max-width);
-  margin: 0 auto 28px;
-  padding: 0 24px;
-}
-
-.divider-text::before,
-.divider-text::after {
-  content: '';
-  flex: 1;
-  max-width: 48px;
-  height: 1px;
-  background: var(--color-border);
-}
-
-.divider-text span {
-  font-family: var(--font-serif);
-  font-size: 1rem;
-  font-weight: 500;
-  color: var(--color-text);
-  white-space: nowrap;
-  letter-spacing: -0.01em;
-}
 
 /* ── Newsletter Embed ── */
 .newsletter-embed {
@@ -391,18 +364,6 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   color: var(--color-success);
   margin-top: 12px;
 }
-
-/* ── Page Intro ── */
-.page-intro {
-  max-width: 560px;
-  margin: 0 auto 32px;
-  padding: 0 24px;
-  text-align: center;
-  font-size: 0.95rem;
-  color: var(--color-text-secondary);
-  line-height: 1.7;
-}
-
 /* ── Section Label ── */
 .section-label {
   max-width: var(--max-width);
@@ -496,6 +457,24 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
 .carousel-btn:hover { background: rgba(255,255,255,1); }
 
 /* Show carousel arrows on touch devices (no hover capability) */
+
+.listing-brand-guide-link {
+  margin-top: 12px;
+  font-size: 0.9rem;
+  color: var(--color-accent);
+}
+.listing-brand-guide-link a {
+  color: var(--color-accent);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(0,0,0,0.15);
+  padding-bottom: 1px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.listing-brand-guide-link a:hover {
+  color: var(--color-accent-hover);
+  border-bottom-color: var(--color-accent-hover);
+}
+
 @media (hover: none) {
   .carousel .carousel-btn { opacity: 0.7; }
   .carousel .carousel-btn:active { opacity: 1; }
@@ -634,20 +613,6 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   margin-bottom: 12px;
 }
 
-.card-cta {
-  display: inline-block;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--color-accent);
-  font-weight: 500;
-  cursor: pointer;
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-.card-cta:hover { color: var(--color-accent-hover); }
-
 /* ── Sold Badge ── */
 .card-meta {
   display: flex;
@@ -721,21 +686,6 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   padding: 0 24px;
 }
 
-.sell-card {
-  background: var(--color-surface);
-  border-radius: var(--radius);
-  padding: 36px;
-  box-shadow: var(--shadow-sm);
-}
-
-.sell-card h2,
-.sell-card h3 {
-  font-family: var(--font-serif);
-  font-size: 1.15rem;
-  font-weight: 500;
-  margin-bottom: 12px;
-}
-
 .sell-section-heading {
   font-family: var(--font-serif);
   font-size: 1.15rem;
@@ -743,15 +693,6 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   text-align: center;
   margin: 36px 0 12px;
 }
-
-.sell-content .brands-list {
-  font-size: 0.95rem;
-  color: var(--color-text-secondary);
-  line-height: 1.8;
-  text-align: center;
-  margin-bottom: 0;
-}
-
 .sell-content .sell-list {
   list-style: none;
   margin-bottom: 0;
@@ -775,59 +716,7 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   color: var(--color-text-secondary);
 }
 
-.sell-card ul {
-  list-style: none;
-  margin-bottom: 20px;
-}
 
-
-.sell-card ul li {
-  position: relative;
-  padding-left: 20px;
-  font-size: 0.95rem;
-  color: var(--color-text-secondary);
-  line-height: 1.8;
-}
-
-.sell-card ul li::before {
-  content: '\2022';
-  position: absolute;
-  left: 0;
-  color: var(--color-text-secondary);
-}
-
-.sell-card .closing {
-  font-size: 0.95rem;
-  color: var(--color-text-secondary);
-  line-height: 1.7;
-  margin-bottom: 24px;
-}
-
-.sell-contact {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding-top: 20px;
-  border-top: 1px solid var(--color-border);
-}
-
-.sell-contact a {
-  font-size: 0.95rem;
-  color: var(--color-text);
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s;
-}
-
-.sell-contact a:hover { color: var(--color-accent-hover); }
-
-.sell-contact .label {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--color-text-secondary);
-  font-weight: 500;
-}
 
 /* ── Sell Steps ── */
 .sell-steps {
@@ -1145,7 +1034,6 @@ footer p { margin: 2px 0; }
   .section-label { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
   .sell-hero h1,
   .sell-hero h2 { font-size: 1.6rem; }
-  .sell-card { padding: 24px; }
 
   .reviews-inner { padding: 0 0 60px; position: relative; }
   .reviews-inner .reviews-aggregate { padding: 0 16px; }
@@ -1180,9 +1068,6 @@ footer p { margin: 2px 0; }
     flex-wrap: wrap;
   }
   .credibility-strip .credibility-sep { font-size: 0.55rem; }
-
-  /* Divider text — tighter on mobile */
-  .divider-text span { font-size: 0.9rem; }
 
   /* Newsletter — stack on narrow screens */
   .newsletter-embed { margin: 24px auto; padding: 0 16px; }
@@ -1454,11 +1339,6 @@ footer p { margin: 2px 0; }
 .listing-collapsible .listing-meta-text {
   margin-bottom: 12px;
 }
-/* Legacy non-collapsible meta sections (guides etc.) */
-.listing-meta-item {
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
 .listing-meta-label {
   display: block;
   font-size: 0.7rem;
@@ -1590,7 +1470,6 @@ footer p { margin: 2px 0; }
   }
 
   /* Tighten spacing on the new Features / Condition / Includes sections */
-  .listing-meta-item { margin-top: 16px; margin-bottom: 16px; }
   .listing-meta-label { margin-bottom: 6px; }
   .listing-features li { font-size: 0.875rem; }
 

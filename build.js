@@ -444,7 +444,19 @@ function generateListingPage(item, slug) {
   }).join('');
 
   // Description collapsible section (open by default)
-  var descriptionHTML = '<details class="listing-collapsible" open><summary class="listing-meta-label">Description</summary><p class="listing-description">' + escapeHtml(item.description) + '</p></details>';
+  var brandGuideHTML = '';
+  var brandGuideMap = {
+    'Natuzzi': { slug: 'natuzzi-sofa-review-edmonton', label: 'Read our full Natuzzi buyer&rsquo;s guide for Edmonton' },
+    'Natuzzi Editions': { slug: 'natuzzi-sofa-review-edmonton', label: 'Read our full Natuzzi buyer&rsquo;s guide for Edmonton' },
+    'Natuzzi Italia': { slug: 'natuzzi-sofa-review-edmonton', label: 'Read our full Natuzzi buyer&rsquo;s guide for Edmonton' },
+    'B&B Italia': { slug: 'bb-italia-sofa-review-edmonton', label: 'Read our full B&amp;B Italia buyer&rsquo;s guide for Edmonton' },
+    'Rove Concepts': { slug: 'rove-concepts-sofa-review-edmonton', label: 'Read our full Rove Concepts buyer&rsquo;s guide for Edmonton' }
+  };
+  if (brandGuideMap[item.brand]) {
+    var bg = brandGuideMap[item.brand];
+    brandGuideHTML = '<p class="listing-brand-guide-link"><a href="/guides/' + bg.slug + '/">' + bg.label + ' &rarr;</a></p>';
+  }
+  var descriptionHTML = '<details class="listing-collapsible" open><summary class="listing-meta-label">Description</summary><p class="listing-description">' + escapeHtml(item.description) + '</p>' + brandGuideHTML + '</details>';
 
   // Optional features list (construction specs etc.)
   var featuresHTML = '';
@@ -477,14 +489,16 @@ function generateListingPage(item, slug) {
     }
   }
 
-  var titleTag    = escapeHtml(item.brand) + ' ' + escapeHtml(item.title) + ' in Edmonton | Edmonton Refreshed';
-  // SEO-optimized meta description: price, condition, city, then first sentence of description
+  // Strip variant spec (anything after em-dash) from title for concise SEO title
+  var cleanTitle  = item.title.split(/\s+[—–-]\s+/)[0];
+  var titleTag    = escapeHtml(item.brand) + ' ' + escapeHtml(cleanTitle) + ' — Edmonton';
+  // Persuasive meta description: price + cleaned/inspected + first sentence (trimmed to 150)
   var condSpec    = (item.specs || []).filter(function(s) { return /condition/i.test(s); })[0];
   var condition   = condSpec || ((item.specs && item.specs.length > 0) ? item.specs[item.specs.length - 1] : '');
   var firstSentence = item.description.replace(/\n/g, ' ').replace(/\s+/g, ' ').trim().split(/\.(?:\s|$)/)[0];
-  var rawDesc     = item.brand + ' ' + item.title + ' — ' + item.price + ' — ' + condition + '. Pre-owned, professionally inspected, available in Edmonton. ' + firstSentence + '.';
-  if (rawDesc.length > 160) {
-    rawDesc = rawDesc.substring(0, 160).replace(/\s+\S*$/, '') + '…';
+  var rawDesc     = 'Pre-owned ' + item.brand + ' ' + cleanTitle + ' in Edmonton — ' + item.price + '. Inspected, cleaned, delivery available. ' + firstSentence + '.';
+  if (rawDesc.length > 155) {
+    rawDesc = rawDesc.substring(0, 152).replace(/\s+\S*$/, '') + '…';
   }
   var metaDesc    = escapeHtml(rawDesc);
   var ogImageUrl  = imageUrl;
@@ -546,7 +560,7 @@ function generateListingPage(item, slug) {
 '  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel=\'stylesheet\'">\n' +
 '  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"></noscript>\n' +
 '  <link rel="preload" as="image" imagesrcset="' + (item.images && item.images.length > 0 ? avifSrcsetFor(item.images[0], '../../') : '') + '" imagesizes="(max-width: 768px) 100vw, 550px" fetchpriority="high" type="image/avif">\n' +
-'  <link rel="stylesheet" href="../../css/styles.min.css?v=29">\n' +
+'  <link rel="stylesheet" href="../../css/styles.min.css?v=30">\n' +
 '  <meta name="theme-color" content="#2c2c2c">\n' +
 '</head>\n' +
 '<body>\n' +
@@ -654,7 +668,7 @@ function generateListingPage(item, slug) {
 '    <div class="lightbox-counter" id="lightbox-counter"></div>\n' +
 '  </div>\n' +
 '\n' +
-'  <script src="../../js/shared.min.js?v=29"></script>\n' +
+'  <script src="../../js/shared.min.js?v=30"></script>\n' +
 '  <script>\n' +
 '  (function() {\n' +
 '    var thumbs = document.querySelectorAll(".listing-thumb:not(.listing-thumb-more)");\n' +
