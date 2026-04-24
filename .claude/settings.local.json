@@ -48,7 +48,19 @@
       "Bash(pandoc --track-changes=all \"/Users/collinbottrell/Downloads/coin_collection_v6.docx\" -o /tmp/coin_collection.md)",
       "Read(//tmp/**)",
       "Bash(python scripts/office/unpack.py \"/Users/collinbottrell/Downloads/coin_collection_v6.docx\" /tmp/coin_unpacked/)",
-      "Bash(python scripts/office/pack.py /tmp/coin_unpacked/ \"/Users/collinbottrell/Downloads/coin_collection_v7.docx\" --original \"/Users/collinbottrell/Downloads/coin_collection_v6.docx\")"
+      "Bash(python scripts/office/pack.py /tmp/coin_unpacked/ \"/Users/collinbottrell/Downloads/coin_collection_v7.docx\" --original \"/Users/collinbottrell/Downloads/coin_collection_v6.docx\")",
+      "Bash(awk -F'?v=' '{print $2}')",
+      "Bash(sips -g pixelWidth -g pixelHeight /Users/collinbottrell/Desktop/edmonton-refreshed/images/BB-030/bb-italia-14.jpeg /Users/collinbottrell/Desktop/edmonton-refreshed/images/RC-043/rove-concepts-04.jpeg \"/Users/collinbottrell/Desktop/edmonton-refreshed/images/Sold Inventory/NE-029/natuzzi-editions-01.jpeg\")",
+      "Bash(sips -g pixelWidth -g pixelHeight \"/Users/collinbottrell/Desktop/edmonton-refreshed/images/Sold Inventory/NE-025/natuzzi-editions-01.jpeg\" \"/Users/collinbottrell/Desktop/edmonton-refreshed/images/Sold Inventory/NE-025/natuzzi-editions-02.jpeg\" \"/Users/collinbottrell/Desktop/edmonton-refreshed/images/Sold Inventory/NE-025/natuzzi-editions-03.jpeg\" \"/Users/collinbottrell/Desktop/edmonton-refreshed/images/Sold Inventory/NE-025/natuzzi-editions-04.jpeg\" \"/Users/collinbottrell/Desktop/edmonton-refreshed/images/Sold Inventory/NE-025/natuzzi-editions-05.jpeg\" \"/Users/collinbottrell/Desktop/edmonton-refreshed/images/Sold Inventory/NE-025/natuzzi-editions-06.jpeg\")",
+      "Bash(sips -g pixelWidth -g pixelHeight \"/Users/collinbottrell/Desktop/edmonton-refreshed/images/Sold Inventory/RC-033/rove-concepts-01.jpeg\" \"/Users/collinbottrell/Desktop/edmonton-refreshed/images/Sold Inventory/RC-033/rove-concepts-02.jpeg\" \"/Users/collinbottrell/Desktop/edmonton-refreshed/images/Sold Inventory/RC-033/rove-concepts-03.jpeg\" \"/Users/collinbottrell/Desktop/edmonton-refreshed/images/Sold Inventory/RC-033/rove-concepts-04.jpeg\" \"/Users/collinbottrell/Desktop/edmonton-refreshed/images/Sold Inventory/RC-033/rove-concepts-05.jpeg\")",
+      "Bash(sips -g pixelWidth -g pixelHeight /Users/collinbottrell/Desktop/edmonton-refreshed/images/BB-030/bb-italia-01.jpeg /Users/collinbottrell/Desktop/edmonton-refreshed/images/BB-030/bb-italia-03.jpeg /Users/collinbottrell/Desktop/edmonton-refreshed/images/BB-030/bb-italia-07.jpeg /Users/collinbottrell/Desktop/edmonton-refreshed/images/BB-030/bb-italia-12.jpeg)",
+      "Bash(node /Users/collinbottrell/Desktop/edmonton-refreshed/build.js)",
+      "Bash(python3 -c \"from PIL import Image; print\\('PIL ok'\\)\")",
+      "Bash(ffmpeg -version)",
+      "Bash(python3 -c \"from PIL import Image, features; print\\('AVIF:', features.check_codec\\('avif'\\)\\); print\\('WEBP:', features.check_codec\\('webp'\\)\\); print\\('Pillow:', __import__\\('PIL'\\).__version__\\)\")",
+      "Bash(python3 -c \"import PIL; print\\(PIL.__version__\\); from PIL import Image; img = Image.open\\('/Users/collinbottrell/Desktop/edmonton-refreshed/images/BB-030/bb-italia-14.jpeg'\\); img.save\\('/tmp/test.webp'\\); print\\('WEBP ok'\\)\")",
+      "Bash(python3 -c \"from PIL import Image; img = Image.open\\('/Users/collinbottrell/Desktop/edmonton-refreshed/images/BB-030/bb-italia-14.jpeg'\\); img.save\\('/tmp/test.avif'\\); print\\('AVIF ok'\\)\")",
+      "Bash(ffmpeg -encoders)"
     ]
   }
 }
