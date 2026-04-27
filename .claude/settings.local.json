@@ -64,7 +64,9 @@
       "Bash(grep -v \"^$\")",
       "Bash(python3 -c ' *)",
       "Bash(find /Users/collinbottrell/Desktop/edmonton-refreshed/guides -name \"index.html\" -exec sed -i '' 's/By Collin Bottrell &middot; Edmonton Refreshed/Edmonton Refreshed/g' {} +)",
-      "Bash(python3 -c \"from PIL import Image; img=Image.open\\('/Users/collinbottrell/Desktop/edmonton-refreshed/images/Sold Inventory/RC-033/rove-concepts-01.jpeg'\\); print\\(img.size\\)\")"
+      "Bash(python3 -c \"from PIL import Image; img=Image.open\\('/Users/collinbottrell/Desktop/edmonton-refreshed/images/Sold Inventory/RC-033/rove-concepts-01.jpeg'\\); print\\(img.size\\)\")",
+      "Bash(python3 -c \"from PIL import Image; img=Image.open\\('/Users/collinbottrell/Desktop/edmonton-refreshed/images/Sold Inventory/UB-019/urban-barn-01.jpeg'\\); print\\(img.size\\)\")",
+      "Bash(python3 -c \"from PIL import Image; img=Image.open\\('/Users/collinbottrell/Desktop/edmonton-refreshed/images/Sold Inventory/UB-019/urban-barn-08.jpeg'\\); print\\(img.size\\)\")"
     ]
   }
 }
