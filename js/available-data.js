@@ -25,8 +25,8 @@ var availableItems = [
     ],
     condition: "Excellent. Fabric, cushions, and legs all present as virtually new with no visible wear.",
     configuration: "1 corner piece, 2 armless middle pieces, 1 ottoman, 1 arm piece, 1 additional armless sofa module, and 2 throw cushions.\n\nDelivery available for an additional fee.",
-    retailCompare: "Est. Retail: $7,400+ | Buy it Today: $4,499",
-    price: "$4,499",
+    retailCompare: "Est. Retail: $7,400+ | Buy it Today: $3,800",
+    price: "$3,800",
     specs: ["Rove Concepts", "Sectional: 126.5 \u00d7 126.5 \u00d7 31.5 in", "Extra Module: 39 \u00d7 39.5 \u00d7 31.5 in", "Seat Depth: 25.2 in", "Pearl Chatou Boucl\u00e9", "Excellent Condition"],
     images: [
       "images/RC-043/rove-concepts-01.jpeg",
