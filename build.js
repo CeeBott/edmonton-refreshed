@@ -492,13 +492,18 @@ function generateListingPage(item, slug) {
   // Strip variant spec (anything after em-dash) from title for concise SEO title
   var cleanTitle  = item.title.split(/\s+[—–-]\s+/)[0];
   var titleTag    = escapeHtml(item.brand) + ' ' + escapeHtml(cleanTitle) + ' — Edmonton';
-  // Persuasive meta description: price + cleaned/inspected + first sentence (trimmed to 150)
-  var condSpec    = (item.specs || []).filter(function(s) { return /condition/i.test(s); })[0];
-  var condition   = condSpec || ((item.specs && item.specs.length > 0) ? item.specs[item.specs.length - 1] : '');
-  var firstSentence = item.description.replace(/\n/g, ' ').replace(/\s+/g, ' ').trim().split(/\.(?:\s|$)/)[0];
-  var rawDesc     = 'Pre-owned ' + item.brand + ' ' + cleanTitle + ' in Edmonton — ' + item.price + '. Inspected, cleaned, delivery available. ' + firstSentence + '.';
-  if (rawDesc.length > 155) {
-    rawDesc = rawDesc.substring(0, 152).replace(/\s+\S*$/, '') + '…';
+  // Meta description: use item.metaDescription if provided, otherwise auto-generate
+  var rawDesc;
+  if (item.metaDescription) {
+    rawDesc = item.metaDescription;
+  } else {
+    var condSpec    = (item.specs || []).filter(function(s) { return /condition/i.test(s); })[0];
+    var condition   = condSpec || ((item.specs && item.specs.length > 0) ? item.specs[item.specs.length - 1] : '');
+    var firstSentence = item.description.replace(/\n/g, ' ').replace(/\s+/g, ' ').trim().split(/\.(?:\s|$)/)[0];
+    rawDesc = 'Pre-owned ' + item.brand + ' ' + cleanTitle + ' in Edmonton — ' + item.price + '. Inspected, cleaned, delivery available. ' + firstSentence + '.';
+    if (rawDesc.length > 155) {
+      rawDesc = rawDesc.substring(0, 152).replace(/\s+\S*$/, '') + '…';
+    }
   }
   var metaDesc    = escapeHtml(rawDesc);
   var ogImageUrl  = imageUrl;
