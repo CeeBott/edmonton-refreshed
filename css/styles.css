@@ -662,7 +662,7 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
 .sell-hero {
   text-align: center;
   padding: 64px 24px 16px;
-  max-width: 640px;
+  max-width: 860px;
   margin: 0 auto;
 }
 
@@ -2073,6 +2073,25 @@ footer a:focus-visible {
     padding: 0 16px;
   }
   .sell-fit-col { padding: 22px; }
+}
+
+/* Qualification banner */
+.sell-qualification {
+  max-width: var(--max-width);
+  margin: 0 auto 8px;
+  padding: 0;
+}
+.sell-qualification-inner {
+  background: #f5f4f1;
+  border-left: 3px solid #bdb8b0;
+  border-radius: var(--radius);
+  padding: 13px 24px;
+  font-size: 0.9rem;
+  color: var(--color-text);
+  line-height: 1.6;
+}
+@media (max-width: 640px) {
+  .sell-qualification { padding: 0 16px; }
 }
 
 /* Method + comparison callout */
