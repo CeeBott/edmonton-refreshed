@@ -183,7 +183,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="../css/styles.min.css?v=35">
+  <link rel="stylesheet" href="../css/styles.min.css?v=36">
   <meta name="theme-color" content="#2c2c2c">
 </head>
 <body>
@@ -317,31 +317,84 @@
           </div>
         </div>
 
-        <!-- Send details CTA -->
+        <!-- Send details — form -->
         <h2 class="sell-section-heading" id="sell-details">Send us your details</h2>
-        <p class="sell-send-lead">Text or email &mdash; whatever&rsquo;s easier. Both buttons below open a pre-filled template in your messaging app. Fill in the blanks, attach a few photos, send. We reply within 24 hours.</p>
+        <p class="sell-send-lead">Fill out the form below &mdash; we reply within 24 hours with a firm offer. The more detail you give, the faster and more accurate the offer.</p>
 
-        <div class="sell-checklist">
-          <p class="sell-checklist-label">What helps us make a fair offer</p>
-          <ul>
-            <li>Brand and model (if known)</li>
-            <li>Approximate age</li>
-            <li>Condition &mdash; any known flaws</li>
-            <li>Your location in the Edmonton area</li>
-            <li>3&ndash;5 clear photos: front, side, and close-ups of any wear</li>
-          </ul>
+        <div id="sell-form-success" class="sell-form-success" hidden>
+          <p><strong>Thanks &mdash; your details are in.</strong></p>
+          <p>We'll review your photos and reply within 24 hours with a firm offer. If you don't see anything by tomorrow, check your spam folder or text us at <a href="sms:7809651477">780-965-1477</a>.</p>
         </div>
 
-        <div class="sell-cta-buttons">
-          <a class="sell-cta-button sell-cta-primary" href="sms:7809651477?&body=Hi%2C%20I%27d%20like%20to%20sell%20a%20sofa%20or%20sectional.%0A%0ABrand%3A%20%0AModel%3A%20%0AApproximate%20age%3A%20%0ACondition%3A%20%0ALocation%3A%20%0ANotes%3A%20%0A%0APhotos%20attached.">
-            <span class="sell-cta-label">Text</span>
-            <span class="sell-cta-value">780-965-1477</span>
-          </a>
-          <a class="sell-cta-button" href="mailto:info@edmonton-refreshed.com?subject=Selling%20my%20sofa%20%E2%80%94%20Edmonton%20Refreshed&amp;body=Hi%2C%0A%0AI%27d%20like%20to%20sell%20a%20sofa%20or%20sectional.%0A%0ABrand%3A%20%0AModel%3A%20%0AApproximate%20age%3A%20%0ACondition%3A%20%0ALocation%3A%20%0ANotes%3A%20%0A%0A%28Attaching%20photos%29">
-            <span class="sell-cta-label">Email</span>
-            <span class="sell-cta-value">info@edmonton-refreshed.com</span>
-          </a>
-        </div>
+        <form class="sell-form" id="sell-form" method="POST" enctype="multipart/form-data" novalidate>
+          <input type="text" name="_honey" class="sell-form-honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+          <div class="sell-form-row">
+            <label for="sf-brand">Brand</label>
+            <input type="text" id="sf-brand" name="Brand" placeholder="e.g. Natuzzi, EQ3, Rove Concepts (or 'unsure')" autocomplete="off" required>
+          </div>
+
+          <div class="sell-form-row">
+            <label for="sf-age">Approximate age</label>
+            <select id="sf-age" name="Approximate age" required>
+              <option value="">Select age range</option>
+              <option>0&ndash;3 years</option>
+              <option>4&ndash;7 years</option>
+              <option>8&ndash;10 years</option>
+              <option>11&ndash;15 years</option>
+              <option>15+ years</option>
+            </select>
+          </div>
+
+          <div class="sell-form-row">
+            <label for="sf-price">Original purchase price</label>
+            <select id="sf-price" name="Original purchase price" required>
+              <option value="">Select a range</option>
+              <option>Under $1,500</option>
+              <option>$1,500&ndash;$2,999</option>
+              <option>$3,000&ndash;$4,999</option>
+              <option>$5,000+</option>
+              <option>Unsure</option>
+            </select>
+          </div>
+
+          <div class="sell-form-row">
+            <fieldset class="sell-form-radio">
+              <legend>Condition</legend>
+              <label><input type="radio" name="Condition" value="Excellent" required> <span><strong>Excellent</strong> &mdash; like new, no visible wear</span></label>
+              <label><input type="radio" name="Condition" value="Good"> <span><strong>Good</strong> &mdash; minor wear consistent with light, careful use</span></label>
+              <label><input type="radio" name="Condition" value="Fair"> <span><strong>Fair</strong> &mdash; noticeable wear or one to two visible flaws</span></label>
+              <label><input type="radio" name="Condition" value="Poor"> <span><strong>Poor</strong> &mdash; significant damage, staining, or structural issues</span></label>
+            </fieldset>
+          </div>
+
+          <div class="sell-form-row">
+            <label for="sf-photos">Photos <span class="sell-form-req-note">(3 to 5 required)</span></label>
+            <input type="file" id="sf-photos" name="photos" accept="image/*" multiple required>
+            <p class="sell-form-hint">Front, side, and close-ups of any wear. Total upload limit: 25 MB.</p>
+            <p class="sell-form-error" id="sf-photos-error" hidden></p>
+          </div>
+
+          <div class="sell-form-row">
+            <label for="sf-name">Your name</label>
+            <input type="text" id="sf-name" name="Name" autocomplete="name" required>
+          </div>
+
+          <div class="sell-form-row">
+            <label for="sf-contact">Best contact (phone or email)</label>
+            <input type="text" id="sf-contact" name="Best contact" placeholder="Phone number or email" required>
+          </div>
+
+          <div class="sell-form-row">
+            <label for="sf-notes">Anything we should know?</label>
+            <textarea id="sf-notes" name="Notes" rows="4" placeholder="Anything we should know?"></textarea>
+          </div>
+
+          <button type="submit" class="sell-form-submit">Send for a Firm Offer</button>
+          <p class="sell-form-disclaimer">We reply within 24 hours. Your details are only used to evaluate your piece &mdash; never shared.</p>
+        </form>
+
+        <p class="sell-form-secondary">Prefer to text? <a href="sms:7809651477">780-965-1477</a></p>
 
         <p class="sell-proof">We've bought more than 39 sofas and sectionals directly from Edmonton sellers &mdash; mid-century pieces, well-built sectionals, contemporary designs, and everything in between. Past purchases have included pieces from Natuzzi, B&amp;B Italia, Rove Concepts, EQ3, Crate &amp; Barrel, American Leather, Brentwood Classics, La-Z-Boy, Urban Barn, and many others. If you have a sofa or sectional from a recognized maker, it's worth reaching out.</p>
 
@@ -408,6 +461,99 @@
   </footer>
 
   <script src="../js/shared.min.js?v=30"></script>
+
+  <script>
+    (function () {
+      // Update this once the Cloudflare Worker is deployed (see worker/README.md)
+      var SELL_FORM_ENDPOINT = 'https://edmonton-refreshed-sell.YOUR-SUBDOMAIN.workers.dev/';
+
+      var form = document.getElementById('sell-form');
+      var success = document.getElementById('sell-form-success');
+      if (!form) return;
+
+      var photos = document.getElementById('sf-photos');
+      var photosErr = document.getElementById('sf-photos-error');
+      var submit = form.querySelector('.sell-form-submit');
+
+      function showPhotosError(msg) {
+        if (!photosErr) return;
+        photosErr.textContent = msg;
+        photosErr.hidden = !msg;
+      }
+
+      function showFormError(msg) {
+        var existing = form.querySelector('.sell-form-toplevel-error');
+        if (existing) existing.remove();
+        if (!msg) return;
+        var p = document.createElement('p');
+        p.className = 'sell-form-error sell-form-toplevel-error';
+        p.textContent = msg;
+        submit.insertAdjacentElement('beforebegin', p);
+      }
+
+      photos.addEventListener('change', function () {
+        showPhotosError('');
+      });
+
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        showPhotosError('');
+        showFormError('');
+
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
+
+        var files = photos.files;
+        if (!files || files.length < 3) {
+          showPhotosError('Please attach at least 3 photos.');
+          photos.focus();
+          return;
+        }
+        if (files.length > 5) {
+          showPhotosError('Please attach no more than 5 photos.');
+          photos.focus();
+          return;
+        }
+
+        var total = 0;
+        for (var i = 0; i < files.length; i++) total += files[i].size;
+        if (total > 25 * 1024 * 1024) {
+          showPhotosError('Photos total ' + (total / 1024 / 1024).toFixed(1) + ' MB. Please keep the total under 25 MB — try lower-resolution photos from your phone.');
+          photos.focus();
+          return;
+        }
+
+        if (submit) {
+          submit.disabled = true;
+          submit.textContent = 'Sending…';
+        }
+
+        try {
+          var fd = new FormData(form);
+          var res = await fetch(SELL_FORM_ENDPOINT, { method: 'POST', body: fd });
+          var data = {};
+          try { data = await res.json(); } catch (_) {}
+          if (!res.ok || !data.ok) {
+            throw new Error(data.error || 'Send failed.');
+          }
+          if (success) {
+            success.hidden = false;
+            form.hidden = true;
+            success.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+          if (window.gtag) gtag('event', 'sell_form_submit', { event_category: 'sell' });
+        } catch (err) {
+          showFormError(err && err.message ? err.message : 'Could not send. Please text us at 780-965-1477.');
+          if (submit) {
+            submit.disabled = false;
+            submit.textContent = 'Send for a Firm Offer';
+          }
+        }
+      });
+    })();
+  </script>
 
 </body>
 </html>

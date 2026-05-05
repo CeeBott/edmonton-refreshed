@@ -1,0 +1,10 @@
+name = "edmonton-refreshed-sell"
+main = "index.js"
+compatibility_date = "2026-05-04"
+
+# Set these to match your setup. RESEND_API_KEY is set as a secret, not here.
+# Run: wrangler secret put RESEND_API_KEY
+[vars]
+TO_EMAIL = "info@edmonton-refreshed.com"
+FROM_EMAIL = "onboarding@resend.dev"
+ALLOWED_ORIGIN = "https://edmonton-refreshed.com"

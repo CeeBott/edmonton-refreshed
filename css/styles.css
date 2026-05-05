@@ -2222,3 +2222,207 @@ footer a:focus-visible {
   padding-bottom: 32px;
   max-width: 580px;
 }
+
+/* Sell form */
+.sell-form {
+  max-width: 580px;
+  margin: 0 auto 24px;
+  padding: 28px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.sell-form[hidden] { display: none; }
+.sell-form-honey {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+.sell-form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.sell-form-row > label,
+.sell-form-radio > legend {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-text);
+  letter-spacing: 0.01em;
+}
+.sell-form-req-note {
+  font-weight: 400;
+  color: var(--color-text-secondary);
+  font-size: 0.78rem;
+}
+.sell-form input[type="text"],
+.sell-form input[type="file"],
+.sell-form select,
+.sell-form textarea {
+  width: 100%;
+  padding: 11px 12px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+  box-sizing: border-box;
+}
+.sell-form input[type="text"]:focus,
+.sell-form select:focus,
+.sell-form textarea:focus,
+.sell-form input[type="file"]:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(44,44,44,0.08);
+}
+.sell-form textarea {
+  resize: vertical;
+  min-height: 96px;
+  line-height: 1.5;
+}
+.sell-form input[type="file"] {
+  padding: 9px 12px;
+  font-size: 0.88rem;
+}
+.sell-form-radio {
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.sell-form-radio legend {
+  margin-bottom: 4px;
+  padding: 0;
+}
+.sell-form-radio label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.92rem;
+  line-height: 1.4;
+  transition: border-color 150ms ease, background 150ms ease;
+}
+.sell-form-radio label:hover {
+  border-color: var(--color-accent);
+}
+.sell-form-radio input[type="radio"] {
+  margin-top: 3px;
+  flex-shrink: 0;
+  accent-color: var(--color-accent);
+}
+.sell-form-radio label span {
+  color: var(--color-text);
+}
+.sell-form-radio label span strong {
+  font-weight: 600;
+}
+.sell-form-radio input[type="radio"]:checked + span {
+  color: var(--color-text);
+}
+.sell-form-radio label:has(input[type="radio"]:checked) {
+  border-color: var(--color-accent);
+  background: #ffffff;
+}
+.sell-form-hint {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  margin: 4px 0 0 0;
+  line-height: 1.4;
+}
+.sell-form-error {
+  font-size: 0.85rem;
+  color: var(--color-sold-badge);
+  margin: 4px 0 0 0;
+  font-weight: 500;
+}
+.sell-form-submit {
+  margin-top: 6px;
+  padding: 14px 24px;
+  background: var(--color-accent);
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 150ms ease, transform 150ms ease;
+}
+.sell-form-submit:hover {
+  background: var(--color-accent-hover);
+  transform: translateY(-1px);
+}
+.sell-form-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+.sell-form-disclaimer {
+  font-size: 0.78rem;
+  color: var(--color-text-secondary);
+  text-align: center;
+  margin: 0;
+  line-height: 1.5;
+}
+.sell-form-secondary {
+  max-width: 580px;
+  margin: 0 auto 40px;
+  text-align: center;
+  font-size: 0.92rem;
+  color: var(--color-text-secondary);
+}
+.sell-form-secondary a {
+  color: var(--color-text);
+  font-weight: 500;
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-border);
+  transition: border-color 150ms ease;
+}
+.sell-form-secondary a:hover {
+  border-color: var(--color-accent);
+}
+.sell-form-success {
+  max-width: 580px;
+  margin: 0 auto 32px;
+  padding: 24px 28px;
+  background: #f0f9f1;
+  border: 1px solid #86c293;
+  border-left: 4px solid var(--color-success);
+  border-radius: var(--radius);
+}
+.sell-form-success p {
+  margin: 0 0 8px 0;
+  color: var(--color-text);
+  line-height: 1.6;
+}
+.sell-form-success p:last-child {
+  margin-bottom: 0;
+  font-size: 0.92rem;
+}
+.sell-form-success a {
+  color: var(--color-text);
+  font-weight: 500;
+}
+@media (max-width: 640px) {
+  .sell-form { margin-left: 16px; margin-right: 16px; padding: 22px 18px; }
+  .sell-form-secondary { padding: 0 16px; }
+  .sell-form-success { margin-left: 16px; margin-right: 16px; padding: 20px; }
+}
