@@ -661,8 +661,8 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
 /* ── Sell Page ── */
 .sell-hero {
   text-align: center;
-  padding: 64px 24px 16px;
-  max-width: 860px;
+  padding: 64px 24px 12px;
+  max-width: var(--max-width);
   margin: 0 auto;
 }
 
@@ -2012,7 +2012,7 @@ footer a:focus-visible {
   grid-template-columns: 1fr 1fr;
   gap: 20px;
   max-width: 860px;
-  margin: 40px auto 8px;
+  margin: 30px auto 8px;
   padding: 0 24px;
 }
 .sell-fit-col {
@@ -2078,7 +2078,7 @@ footer a:focus-visible {
 /* Qualification banner */
 .sell-qualification {
   max-width: var(--max-width);
-  margin: 0 auto 8px;
+  margin: 0 auto 4px;
   padding: 0;
 }
 .sell-qualification-inner {
