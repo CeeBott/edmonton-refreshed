@@ -13,7 +13,6 @@
 const REQUIRED_FIELDS = [
   'Brand',
   'Approximate age',
-  'Original purchase price',
   'Condition',
   'Name',
   'Best contact',
@@ -85,7 +84,6 @@ export default {
     const lines = [
       `Brand: ${get('Brand')}`,
       `Approximate age: ${get('Approximate age')}`,
-      `Original purchase price: ${get('Original purchase price')}`,
       `Condition: ${get('Condition')}`,
       '',
       `Name: ${get('Name')}`,
