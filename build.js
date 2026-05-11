@@ -565,7 +565,7 @@ function generateListingPage(item, slug) {
 '  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel=\'stylesheet\'">\n' +
 '  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"></noscript>\n' +
 '  <link rel="preload" as="image" imagesrcset="' + (item.images && item.images.length > 0 ? avifSrcsetFor(item.images[0], '../../') : '') + '" imagesizes="(max-width: 768px) 100vw, 550px" fetchpriority="high" type="image/avif">\n' +
-'  <link rel="stylesheet" href="../../css/styles.min.css?v=37">\n' +
+'  <link rel="stylesheet" href="../../css/styles.min.css?v=38">\n' +
 '  <meta name="theme-color" content="#2c2c2c">\n' +
 '</head>\n' +
 '<body>\n' +
@@ -630,9 +630,15 @@ function generateListingPage(item, slug) {
 (featuresHTML    ? '            ' + featuresHTML    + '\n' : '') +
 (conditionHTML   ? '            ' + conditionHTML   + '\n' : '') +
 (configHTML      ? '            ' + configHTML      + '\n' : '') +
+'            <p class="listing-sell-line">Have one like this? We&rsquo;d buy yours back &mdash; <a href="/sell/">sell your sofa &rarr;</a></p>\n' +
 '            <a class="listing-back" href="/">&larr; All Available Pieces</a>\n' +
 '          </div>\n' +
 '        </div>\n' +
+'      </div>\n' +
+'\n' +
+'      <div class="guide-cta">\n' +
+'        <p>Selling a piece like this one? Get a firm offer in 24 hours &mdash; pickup included.</p>\n' +
+'        <a class="listing-cta" href="/sell/">Get an Offer</a>\n' +
 '      </div>\n' +
 '\n' +
 '      <div class="newsletter-embed">\n' +

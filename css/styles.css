@@ -1402,6 +1402,17 @@ footer p { margin: 2px 0; }
 }
 .listing-back:hover { color: var(--color-text); }
 
+.listing-sell-line {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  margin: 24px 0 16px;
+  line-height: 1.6;
+}
+.listing-sell-line a {
+  color: var(--color-text);
+  text-decoration: underline;
+}
+
 /* ── Sticky CTA bar — listing pages, mobile only ── */
 .listing-sticky-cta {
   display: none;
