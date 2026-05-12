@@ -565,7 +565,7 @@ function generateListingPage(item, slug) {
 '  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel=\'stylesheet\'">\n' +
 '  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"></noscript>\n' +
 '  <link rel="preload" as="image" imagesrcset="' + (item.images && item.images.length > 0 ? avifSrcsetFor(item.images[0], '../../') : '') + '" imagesizes="(max-width: 768px) 100vw, 550px" fetchpriority="high" type="image/avif">\n' +
-'  <link rel="stylesheet" href="../../css/styles.min.css?v=38">\n' +
+'  <link rel="stylesheet" href="../../css/styles.min.css?v=39">\n' +
 '  <meta name="theme-color" content="#2c2c2c">\n' +
 '</head>\n' +
 '<body>\n' +
@@ -579,7 +579,32 @@ function generateListingPage(item, slug) {
 '      <ul class="nav-links" id="navLinks">\n' +
 '        <li><a href="/" data-page="available">Available</a></li>\n' +
 '        <li><a href="/sold/" data-page="sold">Sold</a></li>\n' +
-'        <li><a href="/sell/" data-page="sell">Sell Your Furniture</a></li>\n' +
+'        <li class="nav-dropdown">\n' +
+'          <div class="nav-dropdown-wrap">\n' +
+'            <a href="/sell/" data-page="sell">Sell Your Furniture</a>\n' +
+'            <button class="nav-dropdown-toggle" aria-label="Toggle sell menu" aria-expanded="false" aria-controls="sell-submenu" type="button">\n' +
+'              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><polyline points="6 9 12 15 18 9"/></svg>\n' +
+'            </button>\n' +
+'          </div>\n' +
+'          <ul class="nav-dropdown-menu" id="sell-submenu" role="menu">\n' +
+'            <li class="nav-dropdown-section"><span>By brand</span></li>\n' +
+'            <li><a href="/sell/natuzzi-edmonton/">Natuzzi</a></li>\n' +
+'            <li><a href="/sell/rove-concepts-edmonton/">Rove Concepts</a></li>\n' +
+'            <li><a href="/sell/eq3-edmonton/">EQ3</a></li>\n' +
+'            <li><a href="/sell/crate-and-barrel-edmonton/">Crate &amp; Barrel</a></li>\n' +
+'            <li><a href="/sell/restoration-hardware-edmonton/">Restoration Hardware</a></li>\n' +
+'            <li><a href="/sell/american-leather-edmonton/">American Leather</a></li>\n' +
+'            <li><a href="/sell/west-elm-edmonton/">West Elm</a></li>\n' +
+'            <li><a href="/sell/bb-italia-edmonton/">B&amp;B Italia</a></li>\n' +
+'            <li class="nav-dropdown-section"><span>By piece</span></li>\n' +
+'            <li><a href="/sell/sectional-edmonton/">Sectional</a></li>\n' +
+'            <li><a href="/sell/leather-sectional-edmonton/">Leather Sectional</a></li>\n' +
+'            <li><a href="/sell/sofa-edmonton/">Sofa</a></li>\n' +
+'            <li><a href="/sell/leather-sofa-edmonton/">Leather Sofa</a></li>\n' +
+'            <li><a href="/sell/couch-edmonton/">Couch</a></li>\n' +
+'            <li><a href="/sell/leather-couch-edmonton/">Leather Couch</a></li>\n' +
+'          </ul>\n' +
+'        </li>\n' +
 '        <li><a href="/guides/" data-page="guides">Guides</a></li>\n' +
 '        <li><a href="/about/" data-page="about">About</a></li>\n' +
 '        <li class="nav-phone-mobile"><a href="tel:7809651477">780-965-1477</a></li>\n' +
@@ -637,7 +662,7 @@ function generateListingPage(item, slug) {
 '      </div>\n' +
 '\n' +
 '      <div class="guide-cta">\n' +
-'        <p>Selling a piece like this one? Get a firm offer in 24 hours &mdash; pickup included.</p>\n' +
+'        <p>Selling a piece like this one? Get an offer in 24 hours &mdash; pickup included.</p>\n' +
 '        <a class="listing-cta" href="/sell/">Get an Offer</a>\n' +
 '      </div>\n' +
 '\n' +
@@ -679,7 +704,7 @@ function generateListingPage(item, slug) {
 '    <div class="lightbox-counter" id="lightbox-counter"></div>\n' +
 '  </div>\n' +
 '\n' +
-'  <script src="../../js/shared.min.js?v=30"></script>\n' +
+'  <script src="../../js/shared.min.js?v=31"></script>\n' +
 '  <script>\n' +
 '  (function() {\n' +
 '    var thumbs = document.querySelectorAll(".listing-thumb:not(.listing-thumb-more)");\n' +
@@ -787,6 +812,90 @@ function generateSitemap(items) {
     '  </url>',
     '  <url>',
     '    <loc>https://edmonton-refreshed.com/sell/</loc>',
+    '    <lastmod>' + d + '</lastmod>',
+    '    <changefreq>monthly</changefreq>',
+    '    <priority>0.7</priority>',
+    '  </url>',
+    '  <url>',
+    '    <loc>https://edmonton-refreshed.com/sell/natuzzi-edmonton/</loc>',
+    '    <lastmod>' + d + '</lastmod>',
+    '    <changefreq>monthly</changefreq>',
+    '    <priority>0.7</priority>',
+    '  </url>',
+    '  <url>',
+    '    <loc>https://edmonton-refreshed.com/sell/rove-concepts-edmonton/</loc>',
+    '    <lastmod>' + d + '</lastmod>',
+    '    <changefreq>monthly</changefreq>',
+    '    <priority>0.7</priority>',
+    '  </url>',
+    '  <url>',
+    '    <loc>https://edmonton-refreshed.com/sell/eq3-edmonton/</loc>',
+    '    <lastmod>' + d + '</lastmod>',
+    '    <changefreq>monthly</changefreq>',
+    '    <priority>0.7</priority>',
+    '  </url>',
+    '  <url>',
+    '    <loc>https://edmonton-refreshed.com/sell/crate-and-barrel-edmonton/</loc>',
+    '    <lastmod>' + d + '</lastmod>',
+    '    <changefreq>monthly</changefreq>',
+    '    <priority>0.7</priority>',
+    '  </url>',
+    '  <url>',
+    '    <loc>https://edmonton-refreshed.com/sell/restoration-hardware-edmonton/</loc>',
+    '    <lastmod>' + d + '</lastmod>',
+    '    <changefreq>monthly</changefreq>',
+    '    <priority>0.7</priority>',
+    '  </url>',
+    '  <url>',
+    '    <loc>https://edmonton-refreshed.com/sell/american-leather-edmonton/</loc>',
+    '    <lastmod>' + d + '</lastmod>',
+    '    <changefreq>monthly</changefreq>',
+    '    <priority>0.7</priority>',
+    '  </url>',
+    '  <url>',
+    '    <loc>https://edmonton-refreshed.com/sell/west-elm-edmonton/</loc>',
+    '    <lastmod>' + d + '</lastmod>',
+    '    <changefreq>monthly</changefreq>',
+    '    <priority>0.7</priority>',
+    '  </url>',
+    '  <url>',
+    '    <loc>https://edmonton-refreshed.com/sell/bb-italia-edmonton/</loc>',
+    '    <lastmod>' + d + '</lastmod>',
+    '    <changefreq>monthly</changefreq>',
+    '    <priority>0.7</priority>',
+    '  </url>',
+    '  <url>',
+    '    <loc>https://edmonton-refreshed.com/sell/sectional-edmonton/</loc>',
+    '    <lastmod>' + d + '</lastmod>',
+    '    <changefreq>monthly</changefreq>',
+    '    <priority>0.7</priority>',
+    '  </url>',
+    '  <url>',
+    '    <loc>https://edmonton-refreshed.com/sell/leather-sectional-edmonton/</loc>',
+    '    <lastmod>' + d + '</lastmod>',
+    '    <changefreq>monthly</changefreq>',
+    '    <priority>0.7</priority>',
+    '  </url>',
+    '  <url>',
+    '    <loc>https://edmonton-refreshed.com/sell/sofa-edmonton/</loc>',
+    '    <lastmod>' + d + '</lastmod>',
+    '    <changefreq>monthly</changefreq>',
+    '    <priority>0.7</priority>',
+    '  </url>',
+    '  <url>',
+    '    <loc>https://edmonton-refreshed.com/sell/leather-sofa-edmonton/</loc>',
+    '    <lastmod>' + d + '</lastmod>',
+    '    <changefreq>monthly</changefreq>',
+    '    <priority>0.7</priority>',
+    '  </url>',
+    '  <url>',
+    '    <loc>https://edmonton-refreshed.com/sell/couch-edmonton/</loc>',
+    '    <lastmod>' + d + '</lastmod>',
+    '    <changefreq>monthly</changefreq>',
+    '    <priority>0.7</priority>',
+    '  </url>',
+    '  <url>',
+    '    <loc>https://edmonton-refreshed.com/sell/leather-couch-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.7</priority>',
@@ -1036,7 +1145,7 @@ function minifyJS(src) {
     .split('\n').map(function(l) { return l.trim(); }).filter(Boolean).join('\n');
 }
 
-var jsFiles = ['shared.js', 'available-data.js', 'sold-data.js', 'reviews-data.js'];
+var jsFiles = ['shared.js', 'available-data.js', 'sold-data.js', 'reviews-data.js', 'sell-form.js'];
 var jsMinCount = 0;
 jsFiles.forEach(function(file) {
   var srcPath = path.join(ROOT, 'js', file);

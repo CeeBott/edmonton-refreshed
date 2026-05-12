@@ -1,0 +1,216 @@
+// ═══════════════════════════════════════════════════════════
+//  SELL FORM HANDLER
+//
+//  Used on /sell/ and every /sell/[slug]-edmonton/ landing page.
+//  Posts a multipart form (Brand, Age, Condition, Name, Contact,
+//  Notes, 3–5 photos) to the Cloudflare Worker endpoint.
+//
+//  The form's "Brand" field can be pre-filled by setting its
+//  value in HTML — that's how the brand-specific landing pages
+//  pass context to the dispatcher (e.g. "Natuzzi", "Rove Concepts").
+// ═══════════════════════════════════════════════════════════
+
+(function () {
+  var SELL_FORM_ENDPOINT = 'https://edmonton-refreshed-sell.cbottrell1990.workers.dev/';
+  var MIN_PHOTOS = 3;
+  var MAX_PHOTOS = 5;
+  var MAX_TOTAL_BYTES = 25 * 1024 * 1024;
+
+  var form = document.getElementById('sell-form');
+  var success = document.getElementById('sell-form-success');
+  if (!form) return;
+
+  var photosInput = document.getElementById('sf-photos');
+  var photosAdd = document.getElementById('sf-photos-add');
+  var photosList = document.getElementById('sf-photos-list');
+  var photosCount = document.getElementById('sf-photos-count');
+  var photosErr = document.getElementById('sf-photos-error');
+  var submit = form.querySelector('.sell-form-submit');
+
+  var selectedPhotos = [];
+  var objectUrls = [];
+
+  function fmtSize(bytes) {
+    if (bytes >= 1024 * 1024) return (bytes / 1024 / 1024).toFixed(1) + ' MB';
+    return Math.max(1, Math.round(bytes / 1024)) + ' KB';
+  }
+
+  function totalBytes() {
+    var t = 0;
+    for (var i = 0; i < selectedPhotos.length; i++) t += selectedPhotos[i].size;
+    return t;
+  }
+
+  function showPhotosError(msg) {
+    if (!photosErr) return;
+    photosErr.textContent = msg || '';
+    photosErr.hidden = !msg;
+  }
+
+  function showFormError(msg) {
+    var existing = form.querySelector('.sell-form-toplevel-error');
+    if (existing) existing.remove();
+    if (!msg) return;
+    var p = document.createElement('p');
+    p.className = 'sell-form-error sell-form-toplevel-error';
+    p.textContent = msg;
+    submit.insertAdjacentElement('beforebegin', p);
+  }
+
+  function revokeUrls() {
+    for (var i = 0; i < objectUrls.length; i++) URL.revokeObjectURL(objectUrls[i]);
+    objectUrls = [];
+  }
+
+  function renderPhotos() {
+    revokeUrls();
+    photosList.innerHTML = '';
+
+    if (!selectedPhotos.length) {
+      photosList.hidden = true;
+      photosCount.hidden = true;
+      photosAdd.textContent = '+ Add photos';
+    } else {
+      photosList.hidden = false;
+      photosCount.hidden = false;
+      photosAdd.textContent = selectedPhotos.length >= MAX_PHOTOS ? 'Maximum reached' : '+ Add more photos';
+
+      selectedPhotos.forEach(function (file, idx) {
+        var item = document.createElement('li');
+        item.className = 'sell-photo-item';
+
+        var url = URL.createObjectURL(file);
+        objectUrls.push(url);
+
+        var img = document.createElement('img');
+        img.alt = file.name || ('Photo ' + (idx + 1));
+        img.src = url;
+        img.loading = 'lazy';
+
+        var meta = document.createElement('span');
+        meta.className = 'sell-photo-meta';
+        meta.textContent = fmtSize(file.size);
+
+        var remove = document.createElement('button');
+        remove.type = 'button';
+        remove.className = 'sell-photo-remove';
+        remove.setAttribute('aria-label', 'Remove photo ' + (idx + 1));
+        remove.innerHTML = '&times;';
+        remove.addEventListener('click', function () {
+          selectedPhotos.splice(idx, 1);
+          showPhotosError('');
+          renderPhotos();
+        });
+
+        item.appendChild(img);
+        item.appendChild(meta);
+        item.appendChild(remove);
+        photosList.appendChild(item);
+      });
+
+      var word = selectedPhotos.length === 1 ? 'photo' : 'photos';
+      photosCount.textContent = selectedPhotos.length + ' of ' + MAX_PHOTOS + ' ' + word + ' (' + fmtSize(totalBytes()) + ')';
+    }
+
+    photosAdd.disabled = selectedPhotos.length >= MAX_PHOTOS;
+  }
+
+  photosAdd.addEventListener('click', function () {
+    if (photosAdd.disabled) return;
+    photosInput.click();
+  });
+
+  photosInput.addEventListener('change', function () {
+    var newFiles = Array.from(photosInput.files || []);
+    var added = 0;
+    var skipped = 0;
+
+    for (var i = 0; i < newFiles.length; i++) {
+      var f = newFiles[i];
+      if (selectedPhotos.length >= MAX_PHOTOS) { skipped++; continue; }
+      if (!/^image\//i.test(f.type)) { skipped++; continue; }
+      var dup = selectedPhotos.some(function (s) {
+        return s.name === f.name && s.size === f.size && s.lastModified === f.lastModified;
+      });
+      if (dup) { skipped++; continue; }
+      selectedPhotos.push(f);
+      added++;
+    }
+
+    photosInput.value = '';
+
+    if (added === 0 && skipped > 0 && selectedPhotos.length >= MAX_PHOTOS) {
+      showPhotosError('Maximum of ' + MAX_PHOTOS + ' photos. Remove one to add another.');
+    } else {
+      showPhotosError('');
+    }
+
+    renderPhotos();
+  });
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    showPhotosError('');
+    showFormError('');
+
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    if (selectedPhotos.length < MIN_PHOTOS) {
+      showPhotosError('Please attach at least ' + MIN_PHOTOS + ' photos.');
+      photosAdd.focus();
+      return;
+    }
+    if (selectedPhotos.length > MAX_PHOTOS) {
+      showPhotosError('Please attach no more than ' + MAX_PHOTOS + ' photos.');
+      photosAdd.focus();
+      return;
+    }
+
+    var total = totalBytes();
+    if (total > MAX_TOTAL_BYTES) {
+      showPhotosError('Photos total ' + (total / 1024 / 1024).toFixed(1) + ' MB. Please keep the total under 25 MB — try lower-resolution photos from your phone.');
+      photosAdd.focus();
+      return;
+    }
+
+    if (submit) {
+      submit.disabled = true;
+      submit.textContent = 'Sending…';
+    }
+
+    try {
+      var fd = new FormData(form);
+      fd.delete('photos');
+      for (var i = 0; i < selectedPhotos.length; i++) {
+        fd.append('photos', selectedPhotos[i], selectedPhotos[i].name || ('photo-' + (i + 1) + '.jpg'));
+      }
+      var res = await fetch(SELL_FORM_ENDPOINT, { method: 'POST', body: fd });
+      var data = {};
+      try { data = await res.json(); } catch (_) {}
+      if (!res.ok || !data.ok) {
+        throw new Error(data.error || 'Send failed.');
+      }
+      if (success) {
+        success.hidden = false;
+        form.hidden = true;
+        success.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      if (window.gtag) {
+        var brandField = form.querySelector('[name="Brand"]');
+        gtag('event', 'sell_form_submit', {
+          event_category: 'sell',
+          event_label: brandField && brandField.value ? brandField.value : 'unknown'
+        });
+      }
+    } catch (err) {
+      showFormError(err && err.message ? err.message : 'Could not send. Please text us at 780-965-1477.');
+      if (submit) {
+        submit.disabled = false;
+        submit.textContent = 'Get an Offer';
+      }
+    }
+  });
+})();

@@ -278,6 +278,50 @@ if (navToggle && navLinks) {
   });
 }
 
+// ═══════════════════════════════════════════════════════════
+//  NAV DROPDOWN (Sell Your Furniture submenu)
+//  Desktop opens on hover/focus-within via CSS; this script
+//  drives the mobile/keyboard toggle and outside-click close.
+// ═══════════════════════════════════════════════════════════
+
+(function() {
+  var dropdowns = document.querySelectorAll('.nav-dropdown');
+  if (!dropdowns.length) return;
+
+  function closeAll(except) {
+    dropdowns.forEach(function(d) {
+      if (d === except) return;
+      d.setAttribute('data-open', 'false');
+      var t = d.querySelector('.nav-dropdown-toggle');
+      if (t) t.setAttribute('aria-expanded', 'false');
+    });
+  }
+
+  dropdowns.forEach(function(d) {
+    var toggle = d.querySelector('.nav-dropdown-toggle');
+    if (!toggle) return;
+    toggle.setAttribute('aria-expanded', 'false');
+    d.setAttribute('data-open', 'false');
+
+    toggle.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var isOpen = d.getAttribute('data-open') === 'true';
+      closeAll(d);
+      d.setAttribute('data-open', isOpen ? 'false' : 'true');
+      toggle.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+    });
+  });
+
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.nav-dropdown')) closeAll(null);
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeAll(null);
+  });
+})();
+
 
 // ═══════════════════════════════════════════════════════════
 //  ACTIVE NAV LINK DETECTION

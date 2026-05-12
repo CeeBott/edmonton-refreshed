@@ -154,7 +154,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="../../css/styles.min.css?v=38">
+  <link rel="stylesheet" href="../../css/styles.min.css?v=39">
   <meta name="theme-color" content="#2c2c2c">
 </head>
 <body>
@@ -168,7 +168,32 @@
       <ul class="nav-links" id="navLinks">
         <li><a href="/" data-page="available">Available</a></li>
         <li><a href="/sold/" data-page="sold">Sold</a></li>
-        <li><a href="/sell/" data-page="sell">Sell Your Furniture</a></li>
+        <li class="nav-dropdown">
+          <div class="nav-dropdown-wrap">
+            <a href="/sell/" data-page="sell">Sell Your Furniture</a>
+            <button class="nav-dropdown-toggle" aria-label="Toggle sell menu" aria-expanded="false" aria-controls="sell-submenu" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+          </div>
+          <ul class="nav-dropdown-menu" id="sell-submenu" role="menu">
+            <li class="nav-dropdown-section"><span>By brand</span></li>
+            <li><a href="/sell/natuzzi-edmonton/">Natuzzi</a></li>
+            <li><a href="/sell/rove-concepts-edmonton/">Rove Concepts</a></li>
+            <li><a href="/sell/eq3-edmonton/">EQ3</a></li>
+            <li><a href="/sell/crate-and-barrel-edmonton/">Crate &amp; Barrel</a></li>
+            <li><a href="/sell/restoration-hardware-edmonton/">Restoration Hardware</a></li>
+            <li><a href="/sell/american-leather-edmonton/">American Leather</a></li>
+            <li><a href="/sell/west-elm-edmonton/">West Elm</a></li>
+            <li><a href="/sell/bb-italia-edmonton/">B&amp;B Italia</a></li>
+            <li class="nav-dropdown-section"><span>By piece</span></li>
+            <li><a href="/sell/sectional-edmonton/">Sectional</a></li>
+            <li><a href="/sell/leather-sectional-edmonton/">Leather Sectional</a></li>
+            <li><a href="/sell/sofa-edmonton/">Sofa</a></li>
+            <li><a href="/sell/leather-sofa-edmonton/">Leather Sofa</a></li>
+            <li><a href="/sell/couch-edmonton/">Couch</a></li>
+            <li><a href="/sell/leather-couch-edmonton/">Leather Couch</a></li>
+          </ul>
+        </li>
         <li><a href="/guides/" data-page="guides">Guides</a></li>
         <li><a href="/about/" data-page="about">About</a></li>
         <li class="nav-phone-mobile"><a href="tel:7809651477">780-965-1477</a></li>
@@ -261,8 +286,8 @@
 
 
           <div class="guide-cta">
-            <p><strong>If you want to skip the inspection entirely</strong> and move forward with confidence, we make cash offers on quality sofas and sectionals with premium frames. Send photos, get a price, no negotiation.</p>
-            <a class="listing-cta" href="/sell/">Get a Cash Offer</a>
+            <p><strong>If you want to skip the inspection entirely</strong> and move forward with confidence, we make offers on quality sofas and sectionals with premium frames. Send photos, get a price, no negotiation.</p>
+            <a class="listing-cta" href="/sell/">Get an Offer</a>
           </div>
 
           <h2>The Frame Materials Spectrum</h2>
@@ -346,8 +371,8 @@
           <p><strong>Particle board:</strong> Unstable and possibly wobbling. It flexes significantly, and the return might be slow or uneven. You might feel the structure shifting rather than just flexing.</p>
 
           <div class="guide-cta">
-            <p><strong>Done evaluating?</strong> If you know your frame material now, you know what you&rsquo;re actually selling. If it&rsquo;s premium quality, get a cash offer that reflects its durability. Send photos, get a price, accept the offer same day.</p>
-            <a class="listing-cta" href="/sell/">Get a Cash Offer</a>
+            <p><strong>Done evaluating?</strong> If you know your frame material now, you know what you&rsquo;re actually selling. If it&rsquo;s premium quality, get an offer that reflects its durability. Send photos, get a price, accept the offer same day.</p>
+            <a class="listing-cta" href="/sell/">Get an Offer</a>
           </div>
 
           
@@ -434,8 +459,8 @@
         </section>
 
         <div class="guide-cta">
-          <p><strong>Now that you understand what makes a frame quality,</strong> you can identify what you have and price accordingly. If it&rsquo;s kiln-dried hardwood or premium steel, that&rsquo;s a significant asset. We pay top dollar for sofas with premium frames because we know they&rsquo;ll perform for another 10+ years. Send photos, get a cash offer, get paid.</p>
-          <a class="listing-cta" href="/sell/">Get a Cash Offer</a>
+          <p><strong>Now that you understand what makes a frame quality,</strong> you can identify what you have and price accordingly. If it&rsquo;s kiln-dried hardwood or premium steel, that&rsquo;s a significant asset. We pay top dollar for sofas with premium frames because we know they&rsquo;ll perform for another 10+ years. Send photos, get an offer, get paid.</p>
+          <a class="listing-cta" href="/sell/">Get an Offer</a>
         </div>
 
       </div>
@@ -475,7 +500,7 @@
     <p><a href="/privacy/">Privacy Policy</a></p>
   </footer>
 
-  <script src="../../js/shared.min.js?v=30"></script>
+  <script src="../../js/shared.min.js?v=31"></script>
 
 </body>
 </html>

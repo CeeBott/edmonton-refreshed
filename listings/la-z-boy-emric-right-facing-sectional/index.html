@@ -90,7 +90,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="../../css/styles.min.css?v=38">
+  <link rel="stylesheet" href="../../css/styles.min.css?v=39">
   <meta name="theme-color" content="#2c2c2c">
 </head>
 <body>
@@ -104,7 +104,32 @@
       <ul class="nav-links" id="navLinks">
         <li><a href="/" data-page="available">Available</a></li>
         <li><a href="/sold/" data-page="sold">Sold</a></li>
-        <li><a href="/sell/" data-page="sell">Sell Your Furniture</a></li>
+        <li class="nav-dropdown">
+          <div class="nav-dropdown-wrap">
+            <a href="/sell/" data-page="sell">Sell Your Furniture</a>
+            <button class="nav-dropdown-toggle" aria-label="Toggle sell menu" aria-expanded="false" aria-controls="sell-submenu" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+          </div>
+          <ul class="nav-dropdown-menu" id="sell-submenu" role="menu">
+            <li class="nav-dropdown-section"><span>By brand</span></li>
+            <li><a href="/sell/natuzzi-edmonton/">Natuzzi</a></li>
+            <li><a href="/sell/rove-concepts-edmonton/">Rove Concepts</a></li>
+            <li><a href="/sell/eq3-edmonton/">EQ3</a></li>
+            <li><a href="/sell/crate-and-barrel-edmonton/">Crate &amp; Barrel</a></li>
+            <li><a href="/sell/restoration-hardware-edmonton/">Restoration Hardware</a></li>
+            <li><a href="/sell/american-leather-edmonton/">American Leather</a></li>
+            <li><a href="/sell/west-elm-edmonton/">West Elm</a></li>
+            <li><a href="/sell/bb-italia-edmonton/">B&amp;B Italia</a></li>
+            <li class="nav-dropdown-section"><span>By piece</span></li>
+            <li><a href="/sell/sectional-edmonton/">Sectional</a></li>
+            <li><a href="/sell/leather-sectional-edmonton/">Leather Sectional</a></li>
+            <li><a href="/sell/sofa-edmonton/">Sofa</a></li>
+            <li><a href="/sell/leather-sofa-edmonton/">Leather Sofa</a></li>
+            <li><a href="/sell/couch-edmonton/">Couch</a></li>
+            <li><a href="/sell/leather-couch-edmonton/">Leather Couch</a></li>
+          </ul>
+        </li>
         <li><a href="/guides/" data-page="guides">Guides</a></li>
         <li><a href="/about/" data-page="about">About</a></li>
         <li class="nav-phone-mobile"><a href="tel:7809651477">780-965-1477</a></li>
@@ -148,7 +173,7 @@
             <a href="/sold/" class="listing-cta" style="flex:1; min-width:200px; text-align:center; background:#fff; color:#2c2c2c; border:1px solid #2c2c2c;">View Sold Pieces</a>
           </div>
 
-          <p style="margin-top:24px; color:#6b6b6b; font-size:0.9rem; line-height:1.7;">Have a quality sofa or sectional to sell? <a href="/sell/" style="color:#2c2c2c; text-decoration:underline; text-underline-offset:3px;">Get a cash offer &rarr;</a></p>
+          <p style="margin-top:24px; color:#6b6b6b; font-size:0.9rem; line-height:1.7;">Have a quality sofa or sectional to sell? <a href="/sell/" style="color:#2c2c2c; text-decoration:underline; text-underline-offset:3px;">Get an offer &rarr;</a></p>
         </div>
       </div>
 
@@ -175,6 +200,6 @@
     </div>
   </footer>
 
-  <script src="../../js/shared.min.js?v=30"></script>
+  <script src="../../js/shared.min.js?v=31"></script>
 </body>
 </html>

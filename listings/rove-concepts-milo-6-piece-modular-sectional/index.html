@@ -57,7 +57,7 @@
       "@type": "Offer",
       "priceCurrency": "CAD",
       "price": 3900,
-      "priceValidUntil": "2026-08-09",
+      "priceValidUntil": "2026-08-10",
       "availability": "https://schema.org/InStock",
       "url": "https://edmonton-refreshed.com/listings/rove-concepts-milo-6-piece-modular-sectional/",
       "hasMerchantReturnPolicy": {
@@ -131,7 +131,7 @@
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"></noscript>
   <link rel="preload" as="image" imagesrcset="../../images/RC-043/rove-concepts-01-400w.avif 400w, ../../images/RC-043/rove-concepts-01-800w.avif 800w, ../../images/RC-043/rove-concepts-01.avif 1200w" imagesizes="(max-width: 768px) 100vw, 550px" fetchpriority="high" type="image/avif">
-  <link rel="stylesheet" href="../../css/styles.min.css?v=38">
+  <link rel="stylesheet" href="../../css/styles.min.css?v=39">
   <meta name="theme-color" content="#2c2c2c">
 </head>
 <body>
@@ -145,7 +145,32 @@
       <ul class="nav-links" id="navLinks">
         <li><a href="/" data-page="available">Available</a></li>
         <li><a href="/sold/" data-page="sold">Sold</a></li>
-        <li><a href="/sell/" data-page="sell">Sell Your Furniture</a></li>
+        <li class="nav-dropdown">
+          <div class="nav-dropdown-wrap">
+            <a href="/sell/" data-page="sell">Sell Your Furniture</a>
+            <button class="nav-dropdown-toggle" aria-label="Toggle sell menu" aria-expanded="false" aria-controls="sell-submenu" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+          </div>
+          <ul class="nav-dropdown-menu" id="sell-submenu" role="menu">
+            <li class="nav-dropdown-section"><span>By brand</span></li>
+            <li><a href="/sell/natuzzi-edmonton/">Natuzzi</a></li>
+            <li><a href="/sell/rove-concepts-edmonton/">Rove Concepts</a></li>
+            <li><a href="/sell/eq3-edmonton/">EQ3</a></li>
+            <li><a href="/sell/crate-and-barrel-edmonton/">Crate &amp; Barrel</a></li>
+            <li><a href="/sell/restoration-hardware-edmonton/">Restoration Hardware</a></li>
+            <li><a href="/sell/american-leather-edmonton/">American Leather</a></li>
+            <li><a href="/sell/west-elm-edmonton/">West Elm</a></li>
+            <li><a href="/sell/bb-italia-edmonton/">B&amp;B Italia</a></li>
+            <li class="nav-dropdown-section"><span>By piece</span></li>
+            <li><a href="/sell/sectional-edmonton/">Sectional</a></li>
+            <li><a href="/sell/leather-sectional-edmonton/">Leather Sectional</a></li>
+            <li><a href="/sell/sofa-edmonton/">Sofa</a></li>
+            <li><a href="/sell/leather-sofa-edmonton/">Leather Sofa</a></li>
+            <li><a href="/sell/couch-edmonton/">Couch</a></li>
+            <li><a href="/sell/leather-couch-edmonton/">Leather Couch</a></li>
+          </ul>
+        </li>
         <li><a href="/guides/" data-page="guides">Guides</a></li>
         <li><a href="/about/" data-page="about">About</a></li>
         <li class="nav-phone-mobile"><a href="tel:7809651477">780-965-1477</a></li>
@@ -215,7 +240,7 @@ Delivery available for an additional fee.</p></details>
       </div>
 
       <div class="guide-cta">
-        <p>Selling a piece like this one? Get a firm offer in 24 hours &mdash; pickup included.</p>
+        <p>Selling a piece like this one? Get an offer in 24 hours &mdash; pickup included.</p>
         <a class="listing-cta" href="/sell/">Get an Offer</a>
       </div>
 
@@ -257,7 +282,7 @@ Delivery available for an additional fee.</p></details>
     <div class="lightbox-counter" id="lightbox-counter"></div>
   </div>
 
-  <script src="../../js/shared.min.js?v=30"></script>
+  <script src="../../js/shared.min.js?v=31"></script>
   <script>
   (function() {
     var thumbs = document.querySelectorAll(".listing-thumb:not(.listing-thumb-more)");
