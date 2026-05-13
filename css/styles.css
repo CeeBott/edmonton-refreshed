@@ -740,6 +740,28 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   margin-left: auto;
 }
 
+/* ── Sold page load-more ── */
+.sold-load-more-wrap {
+  text-align: center;
+  padding: 0 24px 60px;
+  margin-top: -40px;
+}
+#sold-load-more {
+  display: inline-block;
+  padding: 13px 36px;
+  background: var(--color-text);
+  color: var(--color-bg);
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+  font-family: var(--font-sans);
+}
+#sold-load-more:hover { opacity: 0.82; }
+
 /* ── Coming Soon Badge ── */
 .coming-soon-badge {
   display: inline-block;
@@ -2865,8 +2887,8 @@ footer a:focus-visible {
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--color-sold-badge);
-  border: 1px solid var(--color-sold-badge);
+  background: var(--color-sold-badge);
+  color: white;
   padding: 2px 6px;
   border-radius: 3px;
 }

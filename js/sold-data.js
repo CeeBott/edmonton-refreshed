@@ -407,6 +407,37 @@ var soldItems = [
 //  RENDER
 // ═══════════════════════════════════════════════════════════
 
+var SOLD_PAGE_SIZE = 9;
+var soldOffset = 0;
+
+function buildSoldCard(item) {
+  return '<div class="card sold">' +
+    (item.images && item.images.length > 0
+      ? buildCarousel(item.images, item.brand + ' ' + item.title)
+      : '<div class="card-image-placeholder">Photo</div>'
+    ) +
+    '<div class="card-body">' +
+      '<div class="card-meta">' +
+        '<div class="card-brand">' + item.brand + '</div>' +
+        '<span class="sold-badge">Sold</span>' +
+      '</div>' +
+      '<div class="card-title">' + item.title + '</div>' +
+      (item.description ? '<div class="card-description">' + item.description + '</div>' : '') +
+    '</div>' +
+  '</div>';
+}
+
+function renderSoldBatch() {
+  var grid = document.getElementById('sold-grid');
+  var wrap = document.getElementById('sold-load-more-wrap');
+  var batch = soldItems.slice(soldOffset, soldOffset + SOLD_PAGE_SIZE);
+  soldOffset += batch.length;
+  grid.insertAdjacentHTML('beforeend', batch.map(buildSoldCard).join(''));
+  if (soldOffset >= soldItems.length && wrap) {
+    wrap.style.display = 'none';
+  }
+}
+
 function renderSold() {
   var grid = document.getElementById('sold-grid');
 
@@ -417,22 +448,14 @@ function renderSold() {
     return;
   }
 
-  grid.innerHTML = soldItems.map(function(item) {
-    return '<div class="card sold">' +
-      (item.images && item.images.length > 0
-        ? buildCarousel(item.images, item.brand + ' ' + item.title)
-        : '<div class="card-image-placeholder">Photo</div>'
-      ) +
-      '<div class="card-body">' +
-        '<div class="card-meta">' +
-          '<div class="card-brand">' + item.brand + '</div>' +
-          '<span class="sold-badge">Sold</span>' +
-        '</div>' +
-        '<div class="card-title">' + item.title + '</div>' +
-        (item.description ? '<div class="card-description">' + item.description + '</div>' : '') +
-      '</div>' +
-    '</div>';
-  }).join('');
+  grid.innerHTML = '';
+  soldOffset = 0;
+  renderSoldBatch();
+
+  var btn = document.getElementById('sold-load-more');
+  if (btn) {
+    btn.addEventListener('click', renderSoldBatch);
+  }
 }
 
 renderSold();
