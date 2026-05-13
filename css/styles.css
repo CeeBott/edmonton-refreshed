@@ -2781,12 +2781,13 @@ footer a:focus-visible {
   line-height: 1.85;
 }
 .sell-landing-body ul li::before {
-  content: '\2014';
+  content: '•';
   position: absolute;
   left: 0;
-  top: 0;
+  top: 2px;
+  font-size: 0.75rem;
   color: var(--color-text-secondary);
-  font-weight: 400;
+  opacity: 0.6;
 }
 .sell-landing-body a {
   color: var(--color-text);
