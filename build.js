@@ -593,9 +593,7 @@ function generateListingPage(item, slug) {
 '            <li><a href="/sell/eq3-edmonton/">EQ3</a></li>\n' +
 '            <li><a href="/sell/crate-and-barrel-edmonton/">Crate &amp; Barrel</a></li>\n' +
 '            <li><a href="/sell/restoration-hardware-edmonton/">Restoration Hardware</a></li>\n' +
-'            <li><a href="/sell/american-leather-edmonton/">American Leather</a></li>\n' +
 '            <li><a href="/sell/west-elm-edmonton/">West Elm</a></li>\n' +
-'            <li><a href="/sell/bb-italia-edmonton/">B&amp;B Italia</a></li>\n' +
 '            <li class="nav-dropdown-section"><span>By piece</span></li>\n' +
 '            <li><a href="/sell/sectional-edmonton/">Sectional</a></li>\n' +
 '            <li><a href="/sell/leather-sectional-edmonton/">Leather Sectional</a></li>\n' +
@@ -847,19 +845,7 @@ function generateSitemap(items) {
     '    <priority>0.7</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/sell/american-leather-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.7</priority>',
-    '  </url>',
-    '  <url>',
     '    <loc>https://edmonton-refreshed.com/sell/west-elm-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.7</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmonton-refreshed.com/sell/bb-italia-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.7</priority>',
