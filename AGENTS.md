@@ -9,7 +9,7 @@ index.html              Homepage (available inventory, reviews, FAQ)
 about/index.html        About page
 sold/index.html         Sold inventory archive
 sell/index.html         Sell-your-furniture page (main hub)
-sell/[slug]-edmonton/   Brand-specific, piece-type, and situational sell landing pages
+sell/[slug]-edmonton/   Brand-specific and piece-type sell landing pages
                           (manually maintained; see "Sell-side landing pages" below)
 privacy/index.html      Privacy policy
 404.html                Custom 404
@@ -53,7 +53,7 @@ The build script never edits guide pages or other manually maintained HTML. Thos
 
 ## Keeping This File Current
 
-This `CLAUDE.md` is the source of truth for every convention on this site — schemas, build rules, file layout, data shapes, workflows, cache versions. Whenever a new convention is introduced or an existing one changes — a new schema added to a page type, a new field added to the inventory data, a new build step, a new manually maintained page, a new image format, a CSS or JS cache version bump, a new rule for sold-stub listings, a new guide article workflow, a new component on listing pages, anything — `CLAUDE.md` must be updated in the same change.
+This `AGENTS.md` is the source of truth for every convention on this site — schemas, build rules, file layout, data shapes, workflows, cache versions. Whenever a new convention is introduced or an existing one changes — a new schema added to a page type, a new field added to the inventory data, a new build step, a new manually maintained page, a new image format, a CSS or JS cache version bump, a new rule for sold-stub listings, a new guide article workflow, a new component on listing pages, anything — `AGENTS.md` must be updated in the same change.
 
 The documentation update is part of the work, not a follow-up task. A change that ships without the corresponding doc update is a half-finished change.
 
@@ -387,19 +387,7 @@ A cluster of hand-maintained landing pages sits under `/sell/`, intended to supp
 - `/sell/couch-edmonton/`
 - `/sell/leather-couch-edmonton/`
 
-**Situational pages (6):**
-- `/sell/furniture-consignment-edmonton/`
-- `/sell/selling-furniture-before-moving-edmonton/`
-- `/sell/downsizing-furniture-edmonton/`
-- `/sell/sell-furniture-fast-edmonton/`
-- `/sell/estate-furniture-edmonton/`
-- `/sell/sell-designer-furniture-edmonton/`
-
-The situational pages target high-intent seller queries built around a circumstance (move date, downsizing, estate clear-out, designer inventory, etc.) rather than a brand or piece type. They use a different page order than the brand/piece pages: the form sits **higher** on the page (immediately below the hero and a single qualification block) because the searches that land here represent stronger immediate seller intent. Long-form explanatory body content sits **below** the form rather than above it. Tone is knowledgeable, practical, and honest about tradeoffs (consignment can outperform on the right piece; Marketplace can produce higher prices for some sellers; direct purchase prioritizes simplicity and speed over maximum value). Avoid AI filler, exaggerated luxury language, fake urgency, and "we buy everything" positioning.
-
 **Page structure (in order):**
-
-*Brand and piece-type pages:*
 1. Standard nav (with the Sell dropdown), credibility strip, breadcrumb.
 2. `.sell-landing-hero` — H1, intro paragraph, hero CTA scrolling to `#sell-details`.
 3. `.sell-landing-body` — `<h2>` sections: "What we look for", "What affects the offer" (bulleted list), and "Pieces that typically qualify" (bulleted list). Keep tone knowledgeable, practical, and selective. No generic AI filler. Brand pages reference specific models; piece-type pages reference specific configurations.
@@ -413,19 +401,6 @@ The situational pages target high-intent seller queries built around a circumsta
 11. Standard newsletter embed, footer.
 12. Scripts: `shared.min.js` (provides nav dropdown toggle + carousel + GA4 tracking) and `sell-form.min.js` (provides form submission/photo upload).
 
-*Situational pages (form-first variant):*
-1. Standard nav (with the Sell dropdown), credibility strip, breadcrumb.
-2. `.sell-landing-hero` — H1, situationally-specific intro paragraph(s), hero CTA scrolling to `#sell-details`.
-3. `.sell-qualification` — single short trust/qualification block that frames the buy zone and reinforces the timeline promise.
-4. "Send us your details" heading with `id="sell-details"`, lead paragraph, `.sell-form-prelude`, and the embedded sell form (same field IDs as `/sell/`, `sf-brand` left blank).
-5. `.sell-landing-body` — `<h2>` sections that frame the operational friction of the seller's situation, an honest comparison with alternatives (Marketplace, consignment, donation, etc.), where direct purchase fits, and what the page typically purchases.
-6. `.sell-landing-sold` — grid of up to 6 sold cards using real entries from `js/sold-data.js`, weighted toward inventory relevant to the situation. **Never fabricate sold examples.**
-7. FAQ section (4–5 page-specific Q&A grounded in real seller concerns: pickup logistics, timeline expectations, condition, incomplete sets, older pieces, response time) with matching `FAQPage` schema in `<head>`.
-8. `.sell-landing-cluster` — 4–6 cross-link cards to the main `/sell/` page, related situational pages, related brand or piece-type pages, and relevant guides.
-9. `.sell-landing-back-cta` — closing link back to `/sell/` for the full method.
-10. Standard newsletter embed, footer.
-11. Scripts: `shared.min.js` and `sell-form.min.js`.
-
 **Schemas (mandatory on every landing page):**
 - `BreadcrumbList` — three levels: Home → Sell Your Furniture → this page.
 - `Service` — with `name`, `description`, `url`, `dateModified` (today's date in ISO format), `provider`, `areaServed`.
@@ -433,11 +408,10 @@ The situational pages target high-intent seller queries built around a circumsta
 
 **Cross-linking rules:**
 - Every landing page must link back to `/sell/` (both the mid-page `.sell-landing-back-cta` and the breadcrumb satisfy this).
-- The main `/sell/` page must link to every landing page (three `.sell-landing-cluster` sections — "Sell by brand", "Sell by piece type", and "Sell by situation" — handle this).
+- The main `/sell/` page must link to every landing page (two `.sell-landing-cluster` sections — "Sell by brand" and "Sell by piece type" — handle this).
 - Brand pages cross-link to relevant piece-type pages and one or two related brand pages.
 - Piece-type pages cross-link to relevant brand pages.
 - Brand pages with an existing guide also link to that guide (e.g., Natuzzi page → `/guides/natuzzi-sofa-review-edmonton/`).
-- Situational pages cross-link to other situational pages, relevant brand or piece-type pages, and at least one relevant guide where one exists (consignment page → `/guides/edmonton-furniture-consignment-resale-guide/`, moving page → `/guides/selling-furniture-before-moving-edmonton/` and `/guides/moving-edmonton-furniture-keep-sell-replace/`, designer page → `/guides/how-to-sell-high-end-furniture-edmonton/` and `/guides/best-sofa-brands-resale-value-edmonton/`, fast page → `/guides/sell-couch-sectional-fast-edmonton/`, estate page → `/guides/selling-inherited-estate-furniture-edmonton/`, downsizing page → `/guides/moving-edmonton-furniture-keep-sell-replace/`).
 
 **Recently sold cards:** use absolute URLs of the form `/images/Sold%20Inventory/[XX-NNN]/[file].jpeg` (URL-encoded space). Cards link to `/sold/` (not back to individual items). Use the existing `.card.sold` styling via the `.sell-landing-sold-grid` class.
 

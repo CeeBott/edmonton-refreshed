@@ -73,7 +73,9 @@
       "Bash(grep -v \"^--$\")",
       "Bash(grep -n \"price\\\\|retailCompare\\\\|\\\\\\\\$\" /Users/collinbottrell/Desktop/edmonton-refreshed/js/available-data.js)",
       "Bash(awk -F'v=' '{print $2}')",
-      "Bash(awk -F'\"' '{print $1}')"
+      "Bash(awk -F'\"' '{print $1}')",
+      "Bash(node update-nav.js)",
+      "Bash(node bump-dates.js)"
     ]
   }
 }

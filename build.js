@@ -605,6 +605,13 @@ function generateListingPage(item, slug) {
 '            <li><a href="/sell/leather-sofa-edmonton/">Leather Sofa</a></li>\n' +
 '            <li><a href="/sell/couch-edmonton/">Couch</a></li>\n' +
 '            <li><a href="/sell/leather-couch-edmonton/">Leather Couch</a></li>\n' +
+'            <li class="nav-dropdown-section"><span>By situation</span></li>\n' +
+'            <li><a href="/sell/furniture-consignment-edmonton/">Consignment</a></li>\n' +
+'            <li><a href="/sell/selling-furniture-before-moving-edmonton/">Before a move</a></li>\n' +
+'            <li><a href="/sell/downsizing-furniture-edmonton/">Downsizing</a></li>\n' +
+'            <li><a href="/sell/sell-furniture-fast-edmonton/">Sell fast</a></li>\n' +
+'            <li><a href="/sell/estate-furniture-edmonton/">Estate</a></li>\n' +
+'            <li><a href="/sell/sell-designer-furniture-edmonton/">Designer</a></li>\n' +
 '          </ul>\n' +
 '        </li>\n' +
 '        <li><a href="/guides/" data-page="guides">Guides</a></li>\n' +
@@ -886,6 +893,42 @@ function generateSitemap(items) {
     '  </url>',
     '  <url>',
     '    <loc>https://edmonton-refreshed.com/sell/leather-couch-edmonton/</loc>',
+    '    <lastmod>' + d + '</lastmod>',
+    '    <changefreq>monthly</changefreq>',
+    '    <priority>0.7</priority>',
+    '  </url>',
+    '  <url>',
+    '    <loc>https://edmonton-refreshed.com/sell/furniture-consignment-edmonton/</loc>',
+    '    <lastmod>' + d + '</lastmod>',
+    '    <changefreq>monthly</changefreq>',
+    '    <priority>0.7</priority>',
+    '  </url>',
+    '  <url>',
+    '    <loc>https://edmonton-refreshed.com/sell/selling-furniture-before-moving-edmonton/</loc>',
+    '    <lastmod>' + d + '</lastmod>',
+    '    <changefreq>monthly</changefreq>',
+    '    <priority>0.7</priority>',
+    '  </url>',
+    '  <url>',
+    '    <loc>https://edmonton-refreshed.com/sell/downsizing-furniture-edmonton/</loc>',
+    '    <lastmod>' + d + '</lastmod>',
+    '    <changefreq>monthly</changefreq>',
+    '    <priority>0.7</priority>',
+    '  </url>',
+    '  <url>',
+    '    <loc>https://edmonton-refreshed.com/sell/sell-furniture-fast-edmonton/</loc>',
+    '    <lastmod>' + d + '</lastmod>',
+    '    <changefreq>monthly</changefreq>',
+    '    <priority>0.7</priority>',
+    '  </url>',
+    '  <url>',
+    '    <loc>https://edmonton-refreshed.com/sell/estate-furniture-edmonton/</loc>',
+    '    <lastmod>' + d + '</lastmod>',
+    '    <changefreq>monthly</changefreq>',
+    '    <priority>0.7</priority>',
+    '  </url>',
+    '  <url>',
+    '    <loc>https://edmonton-refreshed.com/sell/sell-designer-furniture-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.7</priority>',
