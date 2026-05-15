@@ -128,7 +128,7 @@ function generateAvailableHTML(items) {
 
     var priceCta = item.comingSoon
       ? '            <div class="card-price card-price--muted">Listing coming soon</div>'
-      : '            <div class="card-price">' + escapeHtml(item.price) + '</div>';
+      : '            <div class="card-price">' + escapeHtml(item.price) + ' <span class="card-price-currency">CAD</span></div>';
 
     lines.push(
       '        <div class="card">',
@@ -262,6 +262,8 @@ function generateProductSchemas(items) {
         "priceValidUntil": priceValidUntil,
         "availability": "https://schema.org/InStock",
         "url": listingUrl,
+        "eligibleRegion": { "@type": "Country", "name": "CA" },
+        "areaServed": { "@type": "Country", "name": "CA" },
         "hasMerchantReturnPolicy": {
           "@type": "MerchantReturnPolicy",
           "applicableCountry": "CA",
@@ -385,6 +387,8 @@ function generateListingPage(item, slug) {
       "priceValidUntil": priceValidUntil,
       "availability": "https://schema.org/InStock",
       "url": listingUrl,
+      "eligibleRegion": { "@type": "Country", "name": "CA" },
+      "areaServed": { "@type": "Country", "name": "CA" },
       "hasMerchantReturnPolicy": {
         "@type": "MerchantReturnPolicy",
         "applicableCountry": "CA",
@@ -483,9 +487,9 @@ function generateListingPage(item, slug) {
   if (item.retailCompare) {
     var pillParts = item.retailCompare.split(' | ');
     if (pillParts.length === 2) {
-      retailHTML = '<div class="listing-value-pill"><span class="pill-retail">' + escapeHtml(pillParts[0]) + '</span><span class="pill-now">' + escapeHtml(pillParts[1]) + '</span></div>';
+      retailHTML = '<div class="listing-value-pill"><span class="pill-retail">' + escapeHtml(pillParts[0]) + ' CAD</span><span class="pill-now">' + escapeHtml(pillParts[1]) + ' CAD</span></div>';
     } else {
-      retailHTML = '<div class="listing-retail-compare">' + escapeHtml(item.retailCompare) + '</div>';
+      retailHTML = '<div class="listing-retail-compare">' + escapeHtml(item.retailCompare) + ' CAD</div>';
     }
   }
 
@@ -509,7 +513,7 @@ function generateListingPage(item, slug) {
   var ogImageUrl  = imageUrl;
 
   return '<!DOCTYPE html>\n' +
-'<html lang="en">\n' +
+'<html lang="en-CA">\n' +
 '<head>\n' +
 '  <meta charset="UTF-8">\n' +
 '  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
@@ -565,7 +569,7 @@ function generateListingPage(item, slug) {
 '  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel=\'stylesheet\'">\n' +
 '  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"></noscript>\n' +
 '  <link rel="preload" as="image" imagesrcset="' + (item.images && item.images.length > 0 ? avifSrcsetFor(item.images[0], '../../') : '') + '" imagesizes="(max-width: 768px) 100vw, 550px" fetchpriority="high" type="image/avif">\n' +
-'  <link rel="stylesheet" href="../../css/styles.min.css?v=42">\n' +
+'  <link rel="stylesheet" href="../../css/styles.min.css?v=43">\n' +
 '  <meta name="theme-color" content="#2c2c2c">\n' +
 '</head>\n' +
 '<body>\n' +
@@ -643,7 +647,7 @@ function generateListingPage(item, slug) {
 '              <h1 class="listing-title">' + escapeHtml(item.title) + '</h1>\n' +
 (retailHTML ? '              ' + retailHTML + '\n' : '') +
 '            </div>\n' +
-'            <div class="listing-price">' + escapeHtml(item.price) + '</div>\n' +
+'            <div class="listing-price">' + escapeHtml(item.price) + ' <span class="listing-price-currency">CAD</span></div>\n' +
 '            <div class="listing-ctas">\n' +
 '              <a class="listing-cta" href="sms:7809651477">Text to Secure &rarr;</a>\n' +
 '              <a class="listing-cta listing-cta--secondary" href="tel:7809651477">Call 780-965-1477</a>\n' +
@@ -679,7 +683,7 @@ function generateListingPage(item, slug) {
 '\n' +
 '  <!-- Sticky CTA bar (mobile only) -->\n' +
 '  <div class="listing-sticky-cta">\n' +
-'    <a href="sms:7809651477" class="sticky-cta-primary">Text to Secure &rarr; ' + escapeHtml(item.price) + '</a>\n' +
+'    <a href="sms:7809651477" class="sticky-cta-primary">Text to Secure &rarr; ' + escapeHtml(item.price) + ' CAD</a>\n' +
 '    <a href="tel:7809651477" class="sticky-cta-secondary">Call</a>\n' +
 '  </div>\n' +
 '\n' +

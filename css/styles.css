@@ -716,6 +716,13 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   font-weight: 600;
   margin-bottom: 12px;
 }
+.card-price-currency {
+  font-size: 0.7em;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--color-text-secondary);
+  margin-left: 2px;
+}
 
 /* ── Sold Badge ── */
 .card-meta {
@@ -1553,6 +1560,13 @@ footer p { margin: 2px 0; }
   font-size: 1.6rem;
   font-weight: 600;
   margin-bottom: 20px;
+}
+.listing-price-currency {
+  font-size: 0.65em;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--color-text-secondary);
+  margin-left: 2px;
 }
 .listing-cta {
   display: inline-block;

@@ -59,7 +59,7 @@ var availableItems = [
     ],
     condition: "Structurally excellent — frame, cushions, and down fill all intact. The Rattier fabric shows subtle tonal variation on the seating surface from previous spot-cleaning; the effect is minor and reads as natural textile variation at conversational distance. Covers are removable and can be professionally laundered or replaced as desired.",
     configuration: "Left-facing chaise module, sofa body, all original back cushions and seat cushions.\n\nDelivery available for an additional fee.",
-    retailCompare: "Est. Retail: CA$28,000 | Buy it Today: $7,500",
+    retailCompare: "Est. Retail: $28,000 | Buy it Today: $7,500",
     price: "$7,500",
     specs: ["B&B Italia", "128¾ × 90½ × 28¾ in", "Seat Depth: 38.25 in", "Seat Height: ~15–16 in", "Good Condition"],
     images: [
@@ -136,7 +136,7 @@ function renderAvailable() {
 
     var priceCta = item.comingSoon
       ? '<div class="card-price card-price--muted">Listing coming soon</div>'
-      : '<div class="card-price">' + item.price + '</div>';
+      : '<div class="card-price">' + item.price + ' <span class="card-price-currency">CAD</span></div>';
 
     return '<div class="card">' +
       (item.images && item.images.length > 0

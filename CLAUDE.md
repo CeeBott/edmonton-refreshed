@@ -131,7 +131,8 @@ The build regenerates the homepage Product schema, the static fallback card, and
    - `condition` (optional): plain string describing structural and cosmetic state. Renders under a "Condition" label, below the features list.
    - `configuration` (optional): what modules/pieces are included, plus the delivery note. Renders under an "Includes" label, below condition.
    - `metaDescription` (optional): overrides the auto-generated `<meta name="description">` on the listing page (also used for OG and Twitter description). When omitted, build.js synthesizes one from the brand, title, price, and first sentence of the description, truncated to ~155 chars. Provide a custom one whenever you want tighter control of the search snippet — particularly for high-traffic pieces.
-   - `retailCompare` (required): renders as a two-part visual pill — left side (muted grey) shows the retail figure, right side (dark background, white text) shows the asking price. The `|` separator is the split point. **Always use the format `"Est. Retail: $X,XXX | Buy it Today: $X,XXX"`.** Use `Est. Retail: $X,XXX+` when the figure is an estimate. The asking price must match the `price` field.
+   - `retailCompare` (required): renders as a two-part visual pill — left side (muted grey) shows the retail figure, right side (dark background, white text) shows the asking price. The `|` separator is the split point. **Always use the format `"Est. Retail: $X,XXX | Buy it Today: $X,XXX"`.** Use `Est. Retail: $X,XXX+` when the figure is an estimate. The asking price must match the `price` field. **Do not include `CAD`, `CA$`, or `C$` in the string** — the build appends ` CAD` to each side of the pill at render time. See the **Currency** section below for the full convention.
+   - `price` (required): plain dollar string like `"$3,900"`. **No `CAD`, `CA$`, or `C$` suffix** — the renderer appends ` CAD` automatically wherever the price is shown (homepage card, listing page price, sticky CTA).
    - `specs` array: each element renders as its own grey pill. Include brand, dimensions, seat depth/height as needed, and a brief condition summary (e.g. `"Good Condition"`). Keep each pill short — it appears on both the homepage card and the listing page.
    - `images` paths are relative to root (no leading `../`).
    - To list as "Coming Soon" instead, add `comingSoon: true` and set `price: ""`. This shows a badge, hides the price, and skips listing page generation.
@@ -271,7 +272,7 @@ grep -rl "listings/brand-slug" guides/
    ```bash
    cat css/styles.css | tr -s ' \t' ' ' | sed 's/ *{ */{/g; s/ *} */}/g; s/ *: */:/g; s/ *; */;/g; s/ *, */,/g; s/;}/}/g' | tr -d '\n' | sed 's|/\*[^*]*\*[^/]*\*/||g' > css/styles.min.css
    ```
-3. Bump the CSS cache version parameter (`?v=N`) in all HTML files and in `build.js` (search globally for `styles.min.css?v=`). Every page references this, including the listing page template in build.js. **Current version: `v=39`.**
+3. Bump the CSS cache version parameter (`?v=N`) in all HTML files and in `build.js` (search globally for `styles.min.css?v=`). Every page references this, including the listing page template in build.js. **Current version: `v=43`.**
 4. Run `node build.js` (to regenerate listing pages with the new version, and to re-minify JS bundles)
 5. Commit the changes. Collin handles pushing to GitHub.
 
@@ -279,7 +280,7 @@ grep -rl "listings/brand-slug" guides/
 
 1. Edit the source file (e.g., `js/shared.js`, `js/available-data.js`, `js/sold-data.js`, `js/reviews-data.js`, `js/sell-form.js`)
 2. Run `node build.js` — this re-minifies the source into the matching `*.min.js` file. There is no separate minify step.
-3. Bump the JS cache version parameter (`?v=N`) on every page that references the minified bundle. The listing page template in `build.js` references `shared.min.js?v=N` — bump that string too. **Current versions: `shared.min.js?v=31`, `sell-form.min.js?v=1`.**
+3. Bump the JS cache version parameter (`?v=N`) on every page that references the minified bundle. The listing page template in `build.js` references `shared.min.js?v=N` — bump that string too. **Current versions: `shared.min.js?v=31`, `available-data.min.js?v=27`, `sold-data.min.js?v=27`, `reviews-data.min.js?v=26`, `sell-form.min.js?v=1`.**
 4. Re-run `node build.js` so listing pages pick up the bumped reference.
 5. Commit the changes. Collin handles pushing to GitHub.
 
@@ -299,6 +300,21 @@ The landing pages at `sell/[brand-or-piece]-edmonton/` are **hand-maintained**. 
 ### Deploy
 
 **Collin handles pushing to GitHub personally.** Do not run `git push`. Your job ends at a clean commit on the local `main` branch with the build artifacts regenerated and ready to ship. Collin reviews the commit and pushes when ready. GitHub Pages auto-deploys from the main branch within ~60 seconds of his push.
+
+## Currency
+
+**Every price on the site is in Canadian Dollars (CAD).** This is a Canadian business serving Edmonton — there is no other currency in play. The convention applies in three places:
+
+1. **Schemas (machine-readable).** Every `Offer` block uses `"priceCurrency": "CAD"`, and every `MonetaryAmount` (shipping rate, etc.) uses `"currency": "CAD"`. Every `Offer` also carries `eligibleRegion` and `areaServed` set to `{ "@type": "Country", "name": "CA" }` so search engines never have to guess the locale. `MerchantReturnPolicy.applicableCountry` and `shippingDestination.addressCountry` are both `"CA"`.
+
+2. **Locale signals (machine-readable).** `<html lang="en-CA">` on every page (not bare `en`). `<meta property="og:locale" content="en_CA">`. `<meta name="geo.region" content="CA-AB">` and `<meta name="geo.placename" content="Edmonton">`. `Organization`/`FurnitureStore` schemas include `address.addressCountry: "CA"`.
+
+3. **Visible text (human-readable).** Every visible price renders with a trailing ` CAD` so the on-page text reinforces the schema. Google's rich-result snippets and AI overviews often read the visible text rather than the schema, and an unlabeled `$3,900` reads as USD to a non-Canadian crawler. The CAD suffix is appended at the **rendering layer**, not in the data:
+   - Homepage cards: `js/available-data.js` `renderAvailable()` and `build.js` `generateAvailableHTML()` both wrap the price as `$X,XXX <span class="card-price-currency">CAD</span>`.
+   - Listing pages: `build.js` `generateListingPage()` emits `<div class="listing-price">$X,XXX <span class="listing-price-currency">CAD</span></div>`, the value pill (`pill-retail` and `pill-now`) gets ` CAD` appended to each side, and the sticky mobile CTA reads `Text to Secure → $X,XXX CAD`.
+   - Data files (`js/available-data.js`): `price` and `retailCompare` strings are stored **without** the CAD suffix (e.g., `price: "$3,900"`, `retailCompare: "Est. Retail: $7,400+ | Buy it Today: $3,900"`). The renderer adds ` CAD`. Do not bake `CA$`, `C$`, or ` CAD` into the data — it will double-print.
+
+If a new visible price surface is added (a new card type, a new pill, a new CTA), it must follow the same pattern. If a new schema with a price/monetary field is added, it must use `CAD`. There is no scenario in which USD or any other currency appears on this site.
 
 ## Schema & dateModified Standards
 
