@@ -75,7 +75,8 @@
       "Bash(awk -F'v=' '{print $2}')",
       "Bash(awk -F'\"' '{print $1}')",
       "Bash(node update-nav.js)",
-      "Bash(node bump-dates.js)"
+      "Bash(node bump-dates.js)",
+      "Bash(grep -n \"Current version: \\\\`v=43\\\\`\" CLAUDE.md)"
     ]
   }
 }

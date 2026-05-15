@@ -569,7 +569,7 @@ function generateListingPage(item, slug) {
 '  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel=\'stylesheet\'">\n' +
 '  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"></noscript>\n' +
 '  <link rel="preload" as="image" imagesrcset="' + (item.images && item.images.length > 0 ? avifSrcsetFor(item.images[0], '../../') : '') + '" imagesizes="(max-width: 768px) 100vw, 550px" fetchpriority="high" type="image/avif">\n' +
-'  <link rel="stylesheet" href="../../css/styles.min.css?v=43">\n' +
+'  <link rel="stylesheet" href="../../css/styles.min.css?v=44">\n' +
 '  <meta name="theme-color" content="#2c2c2c">\n' +
 '</head>\n' +
 '<body>\n' +
@@ -1172,7 +1172,7 @@ fs.writeFileSync(sitemapPath, generateSitemap(availableItems), 'utf8');
 function minifyJS(src) {
   // Strip single-line comments but not :// inside strings (e.g. https://)
   return src
-    .replace(/(?<![:'"])\/\/[^\n]*/g, '')  // strip // comments, skip ://, '//', "//"]
+    .replace(/(?<![:'"\\])\/\/[^\n]*/g, '')  // strip // comments, skip ://, '//', "//", and \// (escaped slash + closing / in a regex literal)
     .replace(/\/\*[\s\S]*?\*\//g, '')      // strip multi-line comments
     .replace(/\n\s*\n/g, '\n')             // collapse blank lines
     .split('\n').map(function(l) { return l.trim(); }).filter(Boolean).join('\n');

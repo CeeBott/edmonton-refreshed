@@ -272,7 +272,7 @@ grep -rl "listings/brand-slug" guides/
    ```bash
    cat css/styles.css | tr -s ' \t' ' ' | sed 's/ *{ */{/g; s/ *} */}/g; s/ *: */:/g; s/ *; */;/g; s/ *, */,/g; s/;}/}/g' | tr -d '\n' | sed 's|/\*[^*]*\*[^/]*\*/||g' > css/styles.min.css
    ```
-3. Bump the CSS cache version parameter (`?v=N`) in all HTML files and in `build.js` (search globally for `styles.min.css?v=`). Every page references this, including the listing page template in build.js. **Current version: `v=43`.**
+3. Bump the CSS cache version parameter (`?v=N`) in all HTML files and in `build.js` (search globally for `styles.min.css?v=`). Every page references this, including the listing page template in build.js. **Current version: `v=44`.**
 4. Run `node build.js` (to regenerate listing pages with the new version, and to re-minify JS bundles)
 5. Commit the changes. Collin handles pushing to GitHub.
 
@@ -280,7 +280,7 @@ grep -rl "listings/brand-slug" guides/
 
 1. Edit the source file (e.g., `js/shared.js`, `js/available-data.js`, `js/sold-data.js`, `js/reviews-data.js`, `js/sell-form.js`)
 2. Run `node build.js` — this re-minifies the source into the matching `*.min.js` file. There is no separate minify step.
-3. Bump the JS cache version parameter (`?v=N`) on every page that references the minified bundle. The listing page template in `build.js` references `shared.min.js?v=N` — bump that string too. **Current versions: `shared.min.js?v=31`, `available-data.min.js?v=27`, `sold-data.min.js?v=27`, `reviews-data.min.js?v=26`, `sell-form.min.js?v=1`.**
+3. Bump the JS cache version parameter (`?v=N`) on every page that references the minified bundle. The listing page template in `build.js` references `shared.min.js?v=N` — bump that string too. **Current versions: `shared.min.js?v=31`, `available-data.min.js?v=27`, `sold-data.min.js?v=27`, `reviews-data.min.js?v=26`, `sell-form.min.js?v=2`.**
 4. Re-run `node build.js` so listing pages pick up the bumped reference.
 5. Commit the changes. Collin handles pushing to GitHub.
 

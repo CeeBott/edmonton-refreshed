@@ -233,6 +233,15 @@ body {
   transition: opacity 0.15s ease, transform 0.15s ease, visibility 0s linear 0.15s;
   z-index: 1100;
 }
+.nav-dropdown-menu::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 0;
+  right: 0;
+  height: 10px;
+  background: transparent;
+}
 .nav-dropdown:hover .nav-dropdown-menu,
 .nav-dropdown:focus-within .nav-dropdown-menu,
 .nav-dropdown[data-open="true"] .nav-dropdown-menu {
@@ -1194,6 +1203,7 @@ footer p { margin: 2px 0; }
     display: none;
     width: 100%;
   }
+  .nav-dropdown-menu::before { display: none; }
   .nav-dropdown[data-open="true"] .nav-dropdown-menu {
     display: block;
   }
