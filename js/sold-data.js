@@ -5,6 +5,25 @@
 
 var soldItems = [
   {
+    brand: "Rove Concepts",
+    title: "Milo 6-Piece Modular Sectional — Pearl Chatou Bouclé",
+    description: "Rove Concepts' flagship sectional in its fullest configuration — six modules in Pearl Chatou Bouclé. Low and flat at 31.5\" tall with a 25.2\" seat depth, kiln-dried hardwood frame, three-layer high-density foam cushioning topped with a 100% goose feather finish, and solid stainless steel legs. Acquired and resold in excellent condition.",
+    images: [
+      "../images/Sold Inventory/RC-043/rove-concepts-01.jpeg",
+      "../images/Sold Inventory/RC-043/rove-concepts-02.jpeg",
+      "../images/Sold Inventory/RC-043/rove-concepts-03.jpeg",
+      "../images/Sold Inventory/RC-043/rove-concepts-04.jpeg",
+      "../images/Sold Inventory/RC-043/rove-concepts-05.jpeg",
+      "../images/Sold Inventory/RC-043/rove-concepts-06.jpeg",
+      "../images/Sold Inventory/RC-043/rove-concepts-07.jpeg",
+      "../images/Sold Inventory/RC-043/rove-concepts-08.jpeg",
+      "../images/Sold Inventory/RC-043/rove-concepts-09.jpeg",
+      "../images/Sold Inventory/RC-043/rove-concepts-10.jpeg",
+      "../images/Sold Inventory/RC-043/rove-concepts-11.jpeg",
+      "../images/Sold Inventory/RC-043/rove-concepts-12.jpeg",
+    ]
+  },
+  {
     brand: "La-Z-Boy",
     title: "Emric 2-Piece Sectional with Right-Facing Chaise",
     description: "The Emric is one of the more design-forward pieces La-Z-Boy has produced — and at this point, a discontinued one. A contemporary frame with slim shelter-style track arms, a low back, and clean lines. Like-new condition, performance fabric, covered by La-Z-Boy's Limited Lifetime Warranty on the frame and spring systems.",
