@@ -292,7 +292,7 @@ grep -rl "listings/brand-slug" guides/
 
 1. Edit the source file (e.g., `js/shared.js`, `js/available-data.js`, `js/sold-data.js`, `js/reviews-data.js`, `js/sell-form.js`)
 2. Run `node build.js` — this re-minifies the source into the matching `*.min.js` file. There is no separate minify step.
-3. Bump the JS cache version parameter (`?v=N`) on every page that references the minified bundle. The listing page template in `build.js` references `shared.min.js?v=N` — bump that string too. **Current versions: `shared.min.js?v=31`, `available-data.min.js?v=27`, `sold-data.min.js?v=27`, `reviews-data.min.js?v=26`, `sell-form.min.js?v=2`.**
+3. Bump the JS cache version parameter (`?v=N`) on every page that references the minified bundle. The listing page template in `build.js` references `shared.min.js?v=N` — bump that string too. **Current versions: `shared.min.js?v=31`, `available-data.min.js?v=27`, `sold-data.min.js?v=27`, `reviews-data.min.js?v=27`, `sell-form.min.js?v=2`.**
 4. Re-run `node build.js` so listing pages pick up the bumped reference.
 5. Commit the changes. Collin handles pushing to GitHub.
 

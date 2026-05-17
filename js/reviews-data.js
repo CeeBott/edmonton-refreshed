@@ -43,13 +43,18 @@ var reviews = [
     name: "Fiona",
     rating: 5,
     text: "Friendly, very communicative, easy to deal with."
+  },
+  {
+    name: "Dave Schmidt",
+    rating: 5,
+    text: "Collin is the owner of the company and he is a joy to work with. He communicates well, he is incredibly helpful, and made himself readily available for the purchase of the furniture."
   }
 ];
 
 // ── Aggregate (includes written + ratings-only) ──────────────
 var reviewAggregate = {
-  totalCount: 17,
-  ratingValue: 4.9    // (16 × 5 + 1 × 4) / 17 = 4.9412 → 4.9
+  totalCount: 18,
+  ratingValue: 4.9    // (17 × 5 + 1 × 4) / 18 = 4.9444 → 4.9
 };
 
 

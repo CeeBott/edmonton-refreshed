@@ -1,6 +1,6 @@
 # Edmonton Refreshed Seating
 
-Edmonton Refreshed is a curated pre-owned furniture dealer based in Edmonton, Alberta, Canada. The business specializes in quality sofas and sectionals from recognized brands — Natuzzi, B&B Italia, Rove Concepts, Crate & Barrel, EQ3, West Elm, American Leather, La-Z-Boy, Urban Barn, and Brentwood Classics. All pieces are professionally inspected, cleaned, and available for viewing by appointment in Edmonton.
+Edmonton Refreshed is a curated pre-owned furniture dealer based in Edmonton, Alberta, Canada. The business specializes in quality sofas and sectionals from recognized brands — B&B Italia, Natuzzi, Rove Concepts, Crate & Barrel, EQ3, West Elm, American Leather, Restoration Hardware, La-Z-Boy, Urban Barn, and Brentwood Classics. All pieces are professionally inspected, cleaned, and available for viewing by appointment in Edmonton.
 
 ## What We Do
 
@@ -21,6 +21,32 @@ Edmonton Refreshed is a curated pre-owned furniture dealer based in Edmonton, Al
 - Sold Inventory Archive: https://edmonton-refreshed.com/sold/
 - About: https://edmonton-refreshed.com/about/
 - Buyer & Seller Guides: https://edmonton-refreshed.com/guides/
+
+## Sell-Side Landing Pages
+
+**By brand**
+- Sell a Natuzzi piece in Edmonton: https://edmonton-refreshed.com/sell/natuzzi-edmonton/
+- Sell a Rove Concepts piece in Edmonton: https://edmonton-refreshed.com/sell/rove-concepts-edmonton/
+- Sell an EQ3 piece in Edmonton: https://edmonton-refreshed.com/sell/eq3-edmonton/
+- Sell a Crate & Barrel piece in Edmonton: https://edmonton-refreshed.com/sell/crate-and-barrel-edmonton/
+- Sell a Restoration Hardware piece in Edmonton: https://edmonton-refreshed.com/sell/restoration-hardware-edmonton/
+- Sell a West Elm piece in Edmonton: https://edmonton-refreshed.com/sell/west-elm-edmonton/
+
+**By piece type**
+- Sell a sectional in Edmonton: https://edmonton-refreshed.com/sell/sectional-edmonton/
+- Sell a leather sectional in Edmonton: https://edmonton-refreshed.com/sell/leather-sectional-edmonton/
+- Sell a sofa in Edmonton: https://edmonton-refreshed.com/sell/sofa-edmonton/
+- Sell a leather sofa in Edmonton: https://edmonton-refreshed.com/sell/leather-sofa-edmonton/
+- Sell a couch in Edmonton: https://edmonton-refreshed.com/sell/couch-edmonton/
+- Sell a leather couch in Edmonton: https://edmonton-refreshed.com/sell/leather-couch-edmonton/
+
+**By situation**
+- Furniture consignment alternative in Edmonton: https://edmonton-refreshed.com/sell/furniture-consignment-edmonton/
+- Selling furniture before a move in Edmonton: https://edmonton-refreshed.com/sell/selling-furniture-before-moving-edmonton/
+- Downsizing furniture in Edmonton: https://edmonton-refreshed.com/sell/downsizing-furniture-edmonton/
+- Sell furniture fast in Edmonton: https://edmonton-refreshed.com/sell/sell-furniture-fast-edmonton/
+- Estate furniture sale in Edmonton: https://edmonton-refreshed.com/sell/estate-furniture-edmonton/
+- Sell designer furniture in Edmonton: https://edmonton-refreshed.com/sell/sell-designer-furniture-edmonton/
 
 ## Guides
 
@@ -56,5 +82,5 @@ Edmonton Refreshed is a curated pre-owned furniture dealer based in Edmonton, Al
 - Founded: April 2025
 - Owner: Collin Bottrell
 - Service area: Edmonton, St. Albert, Sherwood Park, Spruce Grove, Leduc, Fort Saskatchewan
-- Rating: 4.9 stars (16 ratings)
-- Pieces sold to date: 40+
+- Rating: 4.9 stars (18 ratings)
+- Pieces sold to date: 41+
