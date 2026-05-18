@@ -1344,8 +1344,11 @@ footer p { margin: 2px 0; }
 .listing-carousel .carousel {
   border-radius: var(--radius);
   overflow: hidden;
-  aspect-ratio: 16/9;
+  aspect-ratio: 4/3;
+  background: #f0f0f0;
 }
+/* Show full image inside the uniform listing frame — never crop */
+.listing-carousel .carousel-track img { object-fit: contain; }
 /* Always show arrows on listing page carousels */
 .listing-carousel .carousel .carousel-btn {
   opacity: 0.7;
@@ -1363,8 +1366,6 @@ footer p { margin: 2px 0; }
 /* Hide dots on listing carousel (thumbnails replace them) */
 .listing-carousel .carousel-dots { display: none; }
 
-/* Anchor images to bottom so furniture is always fully visible in the crop */
-.listing-carousel .carousel-track img { object-position: center bottom; }
 
 /* ── Thumbnail Strip ── */
 .listing-thumbnails {
@@ -1622,6 +1623,79 @@ footer p { margin: 2px 0; }
 .listing-sell-line a {
   color: var(--color-text);
   text-decoration: underline;
+}
+
+/* ── Authenticity / inspection trust statement ── */
+.listing-trust {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 32px 0 16px;
+  padding: 14px 16px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-accent);
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  line-height: 1.55;
+}
+.listing-trust-icon {
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  color: var(--color-accent);
+  margin-top: 2px;
+}
+
+/* ── Related Pieces — below listing body ── */
+.listing-related {
+  max-width: var(--max-width);
+  margin: 72px auto 56px;
+  padding: 0 24px;
+}
+.listing-related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+.listing-related-card {
+  display: block;
+  padding: 20px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.listing-related-card:hover {
+  border-color: var(--color-text-secondary);
+  transform: translateY(-2px);
+}
+.listing-related-eyebrow {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  margin: 0 0 8px;
+}
+.listing-related-title {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-text);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ── FAQ on listing pages — reuses .faq-section/.faq-list patterns.
+       Specificity bumped to .faq-section.listing-faq so it overrides the
+       generic .faq-section padding/margin that appears later in the file. ── */
+.faq-section.listing-faq {
+  margin-top: 72px;
+  padding-bottom: 24px;
 }
 
 /* ── Sticky CTA bar — listing pages, mobile only ── */

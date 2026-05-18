@@ -94,29 +94,38 @@ The build regenerates the homepage Product schema, the static fallback card, and
    ```
    `build.js` will reference all three formats automatically via `<picture>` tags. If any variant is missing on disk, the browser will fall through to the next format — but missing AVIF disables LCP preload, so always generate the full set.
 
-4. **Add entry to `js/available-data.js`**:
+4. **Add entry to `js/available-data.js`**. Every new listing should include the full standard treatment — slug, metaTitle, metaDescription, availabilityStarts, dimensions, faq — not just the technically required fields. These are what make a listing page rank for transactional queries, render rich snippets, and present the kind of detail buyers and crawlers expect. Skipping them on a new listing means leaving SEO equity on the table.
    ```javascript
    {
      brand: "Brand Name",
      title: "Model Name — Fabric/Finish/Variant",
-     slug: "brand-name-model-name",          // optional — only needed to lock a URL that differs from the auto-generated slug
+     slug: "brand-name-model-piece-edmonton",     // standard — follow {brand}-{model}-{piece-type}-edmonton for transactional search intent
+     metaTitle: "Pre-Owned Brand Model Piece for Sale in Edmonton",  // standard — lead with "Pre-Owned" + brand + model + piece + city
+     metaDescription: "Pre-owned Brand Model in Edmonton. Professionally inspected and cleaned. Delivery available across Alberta. $X,XXX CAD.",  // standard — keep under 155 chars, include price + CAD
+     availabilityStarts: "2026-05-15",            // standard — ISO date the listing went live, emits offers.availabilityStarts
+     dimensions: { width: "128.75", depth: "90.5", height: "28.75" },  // standard when dimensions are known — emits Product.width/depth/height as QuantitativeValue (inches)
      description: "Opening paragraph.\n\nSecond paragraph.\n\nThird paragraph.",
-     features: [                              // optional — renders as a bulleted list with a "Features" label, below the retail pill
+     features: [                                  // optional — renders as a bulleted list with a "Features" label, below the retail pill
        "Frame construction detail",
        "Spring/cushion detail",
        "Leg/finish detail",
      ],
      condition: "One or two sentences on structural and cosmetic condition.",   // optional — renders with a "Condition" label below the features list
      configuration: "What's included. Delivery available for an additional fee.",  // optional — renders with an "Includes" label below condition
-     metaDescription: "Pre-owned Brand Model — Edmonton. Condition, $X,XXX. Delivery available.",  // optional — overrides the auto-generated <meta name="description"> on the listing page. Keep under 155 chars.
+     faq: [                                       // standard — 4–5 questions grounded in real buyer concerns. Emits FAQPage schema + visible section. Plain-text answers only (no HTML entities).
+       { question: "Is this authentic?",          answer: "Yes. Inspected for construction, materials, and manufacturer consistency before listing." },
+       { question: "What condition is it in?",    answer: "..." },
+       { question: "Do you deliver?",             answer: "Yes. Delivery available across Edmonton and Alberta for an additional fee." },
+       { question: "...piece-specific concern...",answer: "..." },
+     ],
      retailCompare: "Est. Retail: $XX,XXX | Buy it Today: $X,XXX",
      price: "$X,XXX",
      specs: [
        "Brand Name",
-       "000 × 000 × 00 in",                  // one pill per dimension grouping
+       "000 × 000 × 00 in",                       // one pill per dimension grouping
        "Seat Depth: 00 in",
        "Seat Height: 00 in",
-       "Good Condition",                      // brief condition summary
+       "Good Condition",                          // brief condition summary
      ],
      images: [
        "images/XX-NNN/slug-01.jpeg",
@@ -124,13 +133,17 @@ The build regenerates the homepage Product schema, the static fallback card, and
      ]
    },
    ```
-   - `title`: include the full variant name (fabric, finish, colourway) in the title after an em dash, e.g. `"Milo 6-Piece Modular Sectional — Pearl Chatou Bouclé"`. This appears in the H1, page title, and breadcrumb.
-   - `slug` (optional): only set this if you need to preserve an existing URL. When omitted, the slug is auto-generated from brand + title. Format: `"brand-name-model-name"` (lowercase, hyphens, no special characters).
+   - `title`: include the full variant name (fabric, finish, colourway) in the title after an em dash, e.g. `"Milo 6-Piece Modular Sectional — Pearl Chatou Bouclé"`. This appears in the H1 and breadcrumb.
+   - `slug` (standard): set this on every new listing using the `{brand}-{model}-{piece-type}-edmonton` pattern (lowercase, hyphens, no special characters). Examples: `b-b-italia-charles-sectional-edmonton`, `la-z-boy-roundabout-ottoman-edmonton`. The trailing `-edmonton` reinforces the local-search signal and prevents collisions with broader queries. When omitted, build.js auto-generates a slug from brand + title, but the auto-generated form rarely reads cleanly — set the slug explicitly.
    - `description`: use `\n\n` for paragraph breaks — the listing page renders with `white-space: pre-line`. Pure narrative only: what makes this piece notable, fabric/material detail, any standout design or configuration notes. Do not include condition, configuration, includes, or delivery notes here — those go in their own fields.
    - `features` (optional): array of construction or specification highlights. Renders as a bulleted list under a "Features" label, positioned after the retail pill. Use for frame, spring, cushion, and leg details.
    - `condition` (optional): plain string describing structural and cosmetic state. Renders under a "Condition" label, below the features list.
    - `configuration` (optional): what modules/pieces are included, plus the delivery note. Renders under an "Includes" label, below condition.
-   - `metaDescription` (optional): overrides the auto-generated `<meta name="description">` on the listing page (also used for OG and Twitter description). When omitted, build.js synthesizes one from the brand, title, price, and first sentence of the description, truncated to ~155 chars. Provide a custom one whenever you want tighter control of the search snippet — particularly for high-traffic pieces.
+   - `metaTitle` (standard): the page `<title>` (also used for OG and Twitter). Lead with `"Pre-Owned {brand} {model} {piece-type} for Sale in Edmonton"`. When omitted, build.js falls back to `"{brand} {clean-title} — Edmonton"` — which is less transactional and shouldn't be relied on for new pieces.
+   - `metaDescription` (standard): the `<meta name="description">` and OG/Twitter description. Under 155 chars. Should include the brand, model, condition status, delivery note, and price + CAD. Custom every time — the auto-generated fallback often truncates mid-sentence.
+   - `availabilityStarts` (standard): ISO date string (`YYYY-MM-DD`) for when the listing went live. Emits `offers.availabilityStarts` in the Product schema as a freshness signal alongside `dateModified`.
+   - `dimensions` (standard when known): `{ width, depth, height }` in inches (strings or numbers). Emitted as Product `width` / `depth` / `height` `QuantitativeValue` blocks with `unitCode: "INH"`. Helps Google's product knowledge panel and shopping experiences. Use the actual measured overall dimensions, not the spec pill text.
+   - `faq` (standard): array of `{ question, answer }` objects — aim for 4–5 questions grounded in real buyer concerns specific to the piece (authenticity, fabric/leather type, removable covers, casters, delivery, warranty, condition). Emits `FAQPage` schema in `<head>` *and* a visible "Frequently Asked Questions" section below the listing body, using the same `.faq-section`/`.faq-list`/`.faq-item` markup as the homepage and guide FAQ — heading text is exactly `"Frequently Asked Questions"` for sitewide uniformity. Answer text must be plain text (no HTML entities — use literal `—`, `"`, etc.).
    - `retailCompare` (required): renders as a two-part visual pill — left side (muted grey) shows the retail figure, right side (dark background, white text) shows the asking price. The `|` separator is the split point. **Always use the format `"Est. Retail: $X,XXX | Buy it Today: $X,XXX"`.** Use `Est. Retail: $X,XXX+` when the figure is an estimate. The asking price must match the `price` field. **Do not include `CAD`, `CA$`, or `C$` in the string** — the build appends ` CAD` to each side of the pill at render time. See the **Currency** section below for the full convention.
    - `price` (required): plain dollar string like `"$3,900"`. **No `CAD`, `CA$`, or `C$` suffix** — the renderer appends ` CAD` automatically wherever the price is shown (homepage card, listing page price, sticky CTA).
    - `specs` array: each element renders as its own grey pill. Include brand, dimensions, seat depth/height as needed, and a brief condition summary (e.g. `"Good Condition"`). Keep each pill short — it appears on both the homepage card and the listing page.
@@ -264,6 +277,31 @@ The build regenerates the homepage Product schema, the static fallback card, and
 
 7. Commit all new files. Collin handles pushing to GitHub.
 
+### Change a listing's URL slug
+
+When a listing's URL needs to change (e.g., for transactional-intent SEO improvements), preserve the old URL's indexed equity by converting it to a meta-refresh redirect rather than deleting it.
+
+1. **Update the `slug` field** in `js/available-data.js` for that item.
+
+2. **Run `node build.js`** — this creates the new listing directory at `/listings/[new-slug]/`. The old directory still exists with its previously generated page.
+
+3. **Replace the old directory's `index.html` with a redirect stub** containing:
+   - `<meta http-equiv="refresh" content="0; url=https://edmonton-refreshed.com/listings/[new-slug]/">` in `<head>`
+   - The canonical link, og:url, and twitter:url all pointing at the **new** slug (not the old one) so any crawl that hits the old URL consolidates link equity to the new page.
+   - The canonical-static GA snippet (same as sold stubs — `<script async src="https://www.googletagmanager.com/gtag/js?id=G-8MN82PPZRZ">`), not the deferred-until-idle pattern, so GA Tag Coverage detects the tag on this low-traffic URL.
+   - A `<script>window.location.replace("...")</script>` fallback as the body's only meaningful content, plus a single visible paragraph linking to the new URL for users with slow-loading meta-refresh.
+   - Keep `<meta name="robots" content="index, follow">` — the page stays indexable so Google can process the redirect signal.
+
+4. **Update every internal link** in the codebase that points to the old slug. Run:
+   ```bash
+   grep -rln "listings/[old-slug]" --include="*.html" --include="*.js" .
+   ```
+   Bump `dateModified` on any guide or sell page you edit (per the **Schema & dateModified Standards** rule above).
+
+5. **Sitemap regenerates automatically** — `build.js` only emits the new slug.
+
+6. Commit and let Collin push.
+
 ### Update internal links when inventory changes
 
 When a piece sells (and its listing page is converted to a sold stub), scan all guide articles for links or sentences pointing to that listing:
@@ -277,6 +315,28 @@ To find all guide files linking to a specific listing slug:
 grep -rl "listings/brand-slug" guides/
 ```
 
+### Add a new customer review
+
+New reviews always go at the **top** of the list (first visible). Render order on the homepage is data order, so the newest review must be the first entry in the `reviews` array.
+
+1. **Edit `js/reviews-data.js`** — insert the new review at the top of the `reviews` array (above all existing entries):
+   ```javascript
+   {
+     name: "First Last",
+     rating: 5,
+     text: "Quote text."
+   },
+   ```
+2. **Bump `reviewAggregate`** — increment `totalCount` by 1 and recompute `ratingValue` as `(sum of all ratings) / totalCount`, rounded to one decimal. Update the inline math comment.
+3. **Update the FurnitureStore schema in `index.html`** — bump `aggregateRating.reviewCount` and **prepend** the new `Review` block to the top of the `review` array so the schema order matches the visible order.
+4. **Update the FurnitureStore schema in `sell/index.html`** — same treatment (`reviewCount` + prepend the new `Review` block).
+5. **Update `llms.txt`** — bump the "Rating: 4.9 stars (NN ratings)" count under Business Facts.
+6. **Run `node build.js`** — regenerates the static fallback in `index.html` from the data file.
+7. **Bump `reviews-data.min.js?v=N`** — increment the version on `index.html` (and update the "Current versions" entry below).
+8. **Re-run `node build.js`** so listing pages pick up the bumped reference.
+
+The credibility strip (`★ 4.9 Rating`) does not include a review count, so no other pages need a copy change.
+
 ### Edit CSS
 
 1. Edit `css/styles.css`
@@ -284,7 +344,7 @@ grep -rl "listings/brand-slug" guides/
    ```bash
    cat css/styles.css | tr -s ' \t' ' ' | sed 's/ *{ */{/g; s/ *} */}/g; s/ *: */:/g; s/ *; */;/g; s/ *, */,/g; s/;}/}/g' | tr -d '\n' | sed 's|/\*[^*]*\*[^/]*\*/||g' > css/styles.min.css
    ```
-3. Bump the CSS cache version parameter (`?v=N`) in all HTML files and in `build.js` (search globally for `styles.min.css?v=`). Every page references this, including the listing page template in build.js. **Current version: `v=44`.**
+3. Bump the CSS cache version parameter (`?v=N`) in all HTML files and in `build.js` (search globally for `styles.min.css?v=`). Every page references this, including the listing page template in build.js. **Current version: `v=48`.**
 4. Run `node build.js` (to regenerate listing pages with the new version, and to re-minify JS bundles)
 5. Commit the changes. Collin handles pushing to GitHub.
 
@@ -292,7 +352,7 @@ grep -rl "listings/brand-slug" guides/
 
 1. Edit the source file (e.g., `js/shared.js`, `js/available-data.js`, `js/sold-data.js`, `js/reviews-data.js`, `js/sell-form.js`)
 2. Run `node build.js` — this re-minifies the source into the matching `*.min.js` file. There is no separate minify step.
-3. Bump the JS cache version parameter (`?v=N`) on every page that references the minified bundle. The listing page template in `build.js` references `shared.min.js?v=N` — bump that string too. **Current versions: `shared.min.js?v=31`, `available-data.min.js?v=27`, `sold-data.min.js?v=27`, `reviews-data.min.js?v=27`, `sell-form.min.js?v=2`.**
+3. Bump the JS cache version parameter (`?v=N`) on every page that references the minified bundle. The listing page template in `build.js` references `shared.min.js?v=N` — bump that string too. **Current versions: `shared.min.js?v=31`, `available-data.min.js?v=29`, `sold-data.min.js?v=27`, `reviews-data.min.js?v=28`, `sell-form.min.js?v=2`.**
 4. Re-run `node build.js` so listing pages pick up the bumped reference.
 5. Commit the changes. Collin handles pushing to GitHub.
 
@@ -340,7 +400,7 @@ Every page on the site carries structured data in the `<head>`. This is one of t
 | `sell/index.html` | `FurnitureStore` (with `aggregateRating`), `BreadcrumbList`, `FAQPage`, `Service` |
 | `sell/[slug]-edmonton/index.html` | `BreadcrumbList`, `Service` (with `dateModified`), `FAQPage` |
 | `privacy/index.html` | `BreadcrumbList` |
-| `listings/[slug]/index.html` (active) | `Product` (with `offers.availability = InStock`, `offers.priceValidUntil` = today + 90d, `offers.hasMerchantReturnPolicy`, `offers.shippingDetails`, `sku` extracted from image folder), `BreadcrumbList` |
+| `listings/[slug]/index.html` (active) | `Product` (with `offers.availability = InStock`, `offers.priceValidUntil` = today + 90d, optional `offers.availabilityStarts`, `offers.hasMerchantReturnPolicy`, `offers.shippingDetails`, `sku` extracted from image folder, `dateModified`, optional `width`/`depth`/`height` `QuantitativeValue` blocks), `BreadcrumbList`, `FurnitureStore` (LocalBusiness — sitewide), `Organization` (sitewide), optional `FAQPage` (when `item.faq` is provided) |
 | `listings/[slug]/index.html` (sold stub) | `Product` (with `offers.availability = SoldOut` — **not** `OutOfStock`), `BreadcrumbList` |
 | `guides/index.html` | `BreadcrumbList`, `CollectionPage` (recommended; verify present) |
 | `guides/[slug]/index.html` | `Article` (with `datePublished` and `dateModified`), `BreadcrumbList`, optional `FAQPage` |
@@ -469,11 +529,15 @@ The situational pages target high-intent seller queries built around a circumsta
 - **Google Analytics**: GA4 tag `G-8MN82PPZRZ` is on every page except 404.html.
 - **Newsletter signup**: A Kit (ConvertKit) email form appears on the homepage (between reviews and FAQ), sold page (between hero and inventory), about page (above footer), and individual listing pages (below listing content, above footer). The form posts to `https://app.kit.com/forms/9233085/subscriptions` via AJAX (handled in shared.js). The heading text above each form reads: "Get first access before pieces sell. Enter your email to hear about new arrivals before the public."
 - **Retail comparison**: Each available item has a `retailCompare` field that renders as a two-part pill positioned between the description and the features list. The string is split at ` | ` — left side (muted grey) shows the retail figure, right side (dark background, white text) shows the asking price. **Always use the format `"Est. Retail: $X,XXX | Buy it Today: $X,XXX"`** — no other phrasing. Use `Est. Retail: $X,XXX+` when the figure is an estimate. The pill has equal top and bottom margin (`margin: 20px 0`) to give visual breathing room. If no `|` separator is present, it falls back to plain serif text.
-- **Listing page structure** (top to bottom): breadcrumb, full-width carousel + thumbnail strip, brand, title, retail value pill (no label), price, "Text to Secure" CTA, "Call" CTA, spec pills, then collapsible `<details>` sections in this order — **Description** (open by default, includes brand-guide cross-link footer where applicable), **Features**, **Condition**, **Includes** — followed by a sell-side prompt line, back link to homepage, a "Selling a piece like this?" call-out block, newsletter signup, footer, and a sticky mobile CTA bar fixed at the bottom of the viewport.
+- **Listing page structure** (top to bottom): breadcrumb, full-width carousel + thumbnail strip, brand, title, retail value pill (no label), price, "Text to Secure" CTA, "Call" CTA, spec pills, then collapsible `<details>` sections in this order — **Description** (open by default, includes brand-guide cross-link footer where applicable), **Features**, **Condition**, **Includes** — followed by an authenticity / inspection trust statement (`.listing-trust`, sitewide), a sell-side prompt line, back link to homepage. Below the hero block: an optional **Frequently Asked Questions** section (`.listing-faq`, only when `faq` data is provided), the "Selling a piece like this?" call-out (`.guide-cta`), an optional **Related Pieces** grid (`.listing-related`, only when real related inventory exists), then the newsletter signup, footer, and a sticky mobile CTA bar fixed at the bottom of the viewport.
+- **Listing page trust statement**: every active listing carries a single-line authenticity/inspection block (`<p class="listing-trust">`) immediately after the collapsible content. The copy reads: _"All designer pieces are inspected for construction, materials, and manufacturer consistency before listing."_ Generated by `build.js` for every listing — do not duplicate it inline in data.
+- **Listing page Related Pieces section**: `build.js` renders `.listing-related` only when **real related inventory** exists — defined as at least one other live piece (`availableItems` minus self + coming-soon) **or** at least one sold piece in the same brand family (e.g. `Natuzzi` matches `Natuzzi Editions`). The brand guide (`brandGuideMap`) is added as a supplemental card whenever the section is shown, but it never triggers the section on its own — the brand-guide link is already surfaced inside the Description collapsible, and a section that contains only a guide link with no actual inventory reads as empty. If neither condition is met, the section is skipped entirely. The section renders below the "Get an Offer" CTA and above the newsletter signup.
+- **Listing page sitewide schemas**: every active listing carries `Product`, `BreadcrumbList`, `FurnitureStore` (LocalBusiness), and `Organization` schemas in `<head>`, plus optional `FAQPage` when `item.faq` is provided. The FurnitureStore and Organization schemas are constants in `build.js` (`generateListingPage`) — update them there when business info changes (phone, address, social profiles, hours). They reinforce local-Edmonton signals on every product URL crawlers hit.
+- **Sitewide heading uniformity**: every section heading on the site uses `<h2 class="section-label">…</h2>` with the same site-wide styling (small uppercase tracked type on desktop; visually hidden on mobile, where the section's own spacing carries the hierarchy). FAQ section headings use the exact text `"Frequently Asked Questions"` (matches every guide article). Do not override `.section-label` per-section — uniformity matters more than visual variation here.
 - **Listing page collapsible sections**: each optional content section (Description, Features, Condition, Includes) is wrapped in `<details class="listing-collapsible">` with a `<summary class="listing-meta-label">` label. Description is `open` by default; the others are collapsed on initial render. If you change this behavior, update `build.js` (`generateListingPage`) — not the HTML output.
 - **Listing page brand-guide cross-link**: `build.js` contains a `brandGuideMap` that auto-injects a "Read our full [Brand] buyer's guide for Edmonton" link inside the Description collapsible section for items from brands with a published guide. Current mapped brands: Natuzzi (and Natuzzi Editions, Natuzzi Italia), B&B Italia, Rove Concepts. When a new brand-specific guide is published, add an entry to this map in `build.js`.
 - **Listing page sticky CTA bar (mobile only)**: a fixed-position bar at the bottom of the viewport with a "Text to Secure → $price" primary action and a "Call" secondary action. Generated by `build.js` for every active listing page. Hidden on desktop via CSS.
-- **Listing page layout**: images sit full-width above the text content (stacked, not side-by-side). The carousel uses a 16:9 aspect ratio on desktop and 4:3 on mobile. Images use `object-position: center bottom` so the bottom of the furniture piece is always anchored in the frame — the ceiling/top of the room is cropped before the sofa is.
+- **Listing page layout**: images sit full-width above the text content (stacked, not side-by-side). The carousel uses a uniform 4:3 aspect ratio on both desktop and mobile so every listing presents at the same frame size. Images use `object-fit: contain` so the entire image is always visible — odd-aspect photos (portrait, near-square) letterbox against the carousel background instead of being cropped. The 4:3 frame matches the natural aspect ratio of most listing photos, so letterboxing is the exception, not the rule.
 - **Skip-to-content links**: every page has `<a href="#main-content" class="skip-link">Skip to main content</a>` as the first body element for keyboard/screen-reader accessibility. Don't remove.
 - **AI/LLM entity summary**: the homepage includes a `<div class="sr-only" aria-hidden="false">` block immediately below the skip link containing a plain-text summary of the business, brands, location, and contact. This is visible to AI crawlers and accessibility tools but hidden visually. Update it whenever the brand list or contact info changes.
 - **Homepage divider**: Between hero/tagline and inventory, a decorative divider reads "One of One. Once it's Gone, it's Gone." in serif font with horizontal lines on either side.

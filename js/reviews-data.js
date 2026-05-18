@@ -10,6 +10,11 @@
 
 var reviews = [
   {
+    name: "Dave Schmidt",
+    rating: 5,
+    text: "Collin is the owner of the company and he is a joy to work with. He communicates well, he is incredibly helpful, and made himself readily available for the purchase of the furniture."
+  },
+  {
     name: "Sharon",
     rating: 5,
     text: "Quality sofa! Collin was great to work with!"
@@ -43,11 +48,6 @@ var reviews = [
     name: "Fiona",
     rating: 5,
     text: "Friendly, very communicative, easy to deal with."
-  },
-  {
-    name: "Dave Schmidt",
-    rating: 5,
-    text: "Collin is the owner of the company and he is a joy to work with. He communicates well, he is incredibly helpful, and made himself readily available for the purchase of the furniture."
   }
 ];
 

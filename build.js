@@ -356,7 +356,7 @@ function buildThumbnailStrip(images, alt, prefix) {
   return '<div class="listing-thumbnails">' + thumbs + overflow + '</div>';
 }
 
-function generateListingPage(item, slug) {
+function generateListingPage(item, slug, allItems, soldItems) {
   var BASE_URL       = 'https://edmonton-refreshed.com/';
   var listingUrl     = BASE_URL + 'listings/' + slug + '/';
   var validUntilDate = new Date();
@@ -372,6 +372,51 @@ function generateListingPage(item, slug) {
     ? item.images[0].split('/')[1]
     : null;
 
+  var offers = {
+    "@type": "Offer",
+    "priceCurrency": "CAD",
+    "price": parseFloat(numericPrice),
+    "priceValidUntil": priceValidUntil,
+    "availability": "https://schema.org/InStock",
+    "url": listingUrl,
+    "eligibleRegion": { "@type": "Country", "name": "CA" },
+    "areaServed": { "@type": "Country", "name": "CA" },
+    "hasMerchantReturnPolicy": {
+      "@type": "MerchantReturnPolicy",
+      "applicableCountry": "CA",
+      "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted"
+    },
+    "shippingDetails": {
+      "@type": "OfferShippingDetails",
+      "shippingRate": {
+        "@type": "MonetaryAmount",
+        "value": 200,
+        "currency": "CAD"
+      },
+      "shippingDestination": {
+        "@type": "DefinedRegion",
+        "addressCountry": "CA",
+        "addressRegion": "AB"
+      },
+      "deliveryTime": {
+        "@type": "ShippingDeliveryTime",
+        "handlingTime": {
+          "@type": "QuantitativeValue",
+          "minValue": 0,
+          "maxValue": 3,
+          "unitCode": "DAY"
+        },
+        "transitTime": {
+          "@type": "QuantitativeValue",
+          "minValue": 1,
+          "maxValue": 7,
+          "unitCode": "DAY"
+        }
+      }
+    }
+  };
+  if (item.availabilityStarts) offers["availabilityStarts"] = item.availabilityStarts;
+
   var productSchema = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -380,50 +425,16 @@ function generateListingPage(item, slug) {
     "brand": { "@type": "Brand", "name": item.brand },
     "image": imageUrl,
     "itemCondition": "https://schema.org/UsedCondition",
-    "offers": {
-      "@type": "Offer",
-      "priceCurrency": "CAD",
-      "price": parseFloat(numericPrice),
-      "priceValidUntil": priceValidUntil,
-      "availability": "https://schema.org/InStock",
-      "url": listingUrl,
-      "eligibleRegion": { "@type": "Country", "name": "CA" },
-      "areaServed": { "@type": "Country", "name": "CA" },
-      "hasMerchantReturnPolicy": {
-        "@type": "MerchantReturnPolicy",
-        "applicableCountry": "CA",
-        "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted"
-      },
-      "shippingDetails": {
-        "@type": "OfferShippingDetails",
-        "shippingRate": {
-          "@type": "MonetaryAmount",
-          "value": 200,
-          "currency": "CAD"
-        },
-        "shippingDestination": {
-          "@type": "DefinedRegion",
-          "addressCountry": "CA",
-          "addressRegion": "AB"
-        },
-        "deliveryTime": {
-          "@type": "ShippingDeliveryTime",
-          "handlingTime": {
-            "@type": "QuantitativeValue",
-            "minValue": 0,
-            "maxValue": 3,
-            "unitCode": "DAY"
-          },
-          "transitTime": {
-            "@type": "QuantitativeValue",
-            "minValue": 1,
-            "maxValue": 7,
-            "unitCode": "DAY"
-          }
-        }
-      }
-    }
+    "dateModified": today(),
+    "offers": offers
   };
+
+  // Physical dimensions as QuantitativeValue (Schema.org Product width/depth/height)
+  if (item.dimensions) {
+    if (item.dimensions.width)  productSchema["width"]  = { "@type": "QuantitativeValue", "value": String(item.dimensions.width),  "unitCode": "INH" };
+    if (item.dimensions.depth)  productSchema["depth"]  = { "@type": "QuantitativeValue", "value": String(item.dimensions.depth),  "unitCode": "INH" };
+    if (item.dimensions.height) productSchema["height"] = { "@type": "QuantitativeValue", "value": String(item.dimensions.height), "unitCode": "INH" };
+  }
 
   if (listingSku) productSchema["sku"] = listingSku;
 
@@ -434,6 +445,96 @@ function generateListingPage(item, slug) {
       { "@type": "ListItem", "position": 1, "name": "Home", "item": BASE_URL },
       { "@type": "ListItem", "position": 2, "name": "Available", "item": BASE_URL },
       { "@type": "ListItem", "position": 3, "name": item.brand + ' ' + item.title, "item": listingUrl }
+    ]
+  };
+
+  // FAQ schema — emitted from optional item.faq array
+  var faqSchemaBlock = '';
+  var faqVisibleBlock = '';
+  if (item.faq && item.faq.length > 0) {
+    var faqSchema = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": item.faq.map(function(qa) {
+        return {
+          "@type": "Question",
+          "name": qa.question,
+          "acceptedAnswer": { "@type": "Answer", "text": qa.answer }
+        };
+      })
+    };
+    faqSchemaBlock =
+      '\n  <!-- FAQPage Schema -->\n' +
+      '  <script type="application/ld+json">\n' +
+      '  ' + JSON.stringify(faqSchema, null, 2).replace(/\n/g, '\n  ') + '\n' +
+      '  </script>';
+
+    faqVisibleBlock =
+      '\n      <section class="faq-section listing-faq" aria-labelledby="listing-faq-heading">\n' +
+      '        <h2 class="section-label" id="listing-faq-heading">Frequently Asked Questions</h2>\n' +
+      '        <div class="faq-list">\n' +
+      item.faq.map(function(qa) {
+        return '          <div class="faq-item">\n' +
+               '            <h3 class="faq-question">' + escapeHtml(qa.question) + '</h3>\n' +
+               '            <p class="faq-answer">' + escapeHtml(qa.answer) + '</p>\n' +
+               '          </div>';
+      }).join('\n') +
+      '\n        </div>\n' +
+      '      </section>\n';
+  }
+
+  // LocalBusiness + Organization schemas — sitewide on every listing
+  var localBusinessSchema = {
+    "@context": "https://schema.org",
+    "@type": "FurnitureStore",
+    "@id": BASE_URL + "#business",
+    "name": "Edmonton Refreshed Seating",
+    "url": BASE_URL,
+    "telephone": "+1-780-965-1477",
+    "image": BASE_URL + "favicon.svg",
+    "logo": BASE_URL + "favicon.svg",
+    "priceRange": "$$-$$$",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Edmonton",
+      "addressRegion": "AB",
+      "addressCountry": "CA"
+    },
+    "areaServed": [
+      { "@type": "City", "name": "Edmonton" },
+      { "@type": "AdministrativeArea", "name": "Alberta" }
+    ],
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+        "opens": "09:00",
+        "closes": "20:00"
+      }
+    ],
+    "sameAs": [
+      "https://www.instagram.com/edmontonrefreshed/",
+      "https://www.facebook.com/edmontonrefreshed/"
+    ]
+  };
+
+  var organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": BASE_URL + "#organization",
+    "name": "Edmonton Refreshed Seating",
+    "url": BASE_URL,
+    "logo": BASE_URL + "favicon.svg",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+1-780-965-1477",
+      "contactType": "customer service",
+      "areaServed": "CA",
+      "availableLanguage": "English"
+    },
+    "sameAs": [
+      "https://www.instagram.com/edmontonrefreshed/",
+      "https://www.facebook.com/edmontonrefreshed/"
     ]
   };
 
@@ -495,7 +596,13 @@ function generateListingPage(item, slug) {
 
   // Strip variant spec (anything after em-dash) from title for concise SEO title
   var cleanTitle  = item.title.split(/\s+[—–-]\s+/)[0];
-  var titleTag    = escapeHtml(item.brand) + ' ' + escapeHtml(cleanTitle) + ' — Edmonton';
+  // Title: use item.metaTitle if provided, otherwise auto-generate
+  var titleTag;
+  if (item.metaTitle) {
+    titleTag = escapeHtml(item.metaTitle);
+  } else {
+    titleTag = escapeHtml(item.brand) + ' ' + escapeHtml(cleanTitle) + ' — Edmonton';
+  }
   // Meta description: use item.metaDescription if provided, otherwise auto-generate
   var rawDesc;
   if (item.metaDescription) {
@@ -511,6 +618,70 @@ function generateListingPage(item, slug) {
   }
   var metaDesc    = escapeHtml(rawDesc);
   var ogImageUrl  = imageUrl;
+
+  // Trust statement — sitewide on every listing
+  var trustStatementHTML =
+    '<p class="listing-trust"><svg class="listing-trust-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2 4 5v6c0 5 3.5 9.5 8 11 4.5-1.5 8-6 8-11V5l-8-3z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><polyline points="9 12 11 14 15 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>All designer pieces are inspected for construction, materials, and manufacturer consistency before listing.</span></p>';
+
+  // Related Pieces — only renders when real related inventory exists.
+  // Real inventory = other live pieces OR sold pieces in the same brand family.
+  // The brand guide is an optional supplemental card; it doesn't trigger the section on its own
+  // (it already appears inside the Description collapsible via brandGuideMap).
+  var relatedHTML = '';
+  if (allItems && allItems.length > 0) {
+    var brandKey = (item.brand || '').toLowerCase();
+    var otherLive = allItems.filter(function(i) {
+      if (i.comingSoon) return false;
+      var iSlug = i.slug || slugify(i.brand + '-' + i.title);
+      return iSlug !== slug;
+    }).slice(0, 3);
+
+    var brandFamily = brandKey.split(' ')[0];
+    var soldSameBrand = (soldItems || []).filter(function(s) {
+      return (s.brand || '').toLowerCase().indexOf(brandFamily) !== -1;
+    }).slice(0, 2);
+
+    var hasRealInventory = otherLive.length > 0 || soldSameBrand.length > 0;
+
+    if (hasRealInventory) {
+      var brandGuideEntry = brandGuideMap[item.brand];
+      var relatedCards = [];
+
+      otherLive.forEach(function(i) {
+        var iSlug = i.slug || slugify(i.brand + '-' + i.title);
+        relatedCards.push(
+          '<a class="listing-related-card" href="/listings/' + iSlug + '/">' +
+            '<p class="listing-related-eyebrow">Also Available</p>' +
+            '<p class="listing-related-title">' + escapeHtml(i.brand + ' ' + i.title.split(/\s+[—–-]\s+/)[0]) + '</p>' +
+          '</a>'
+        );
+      });
+      soldSameBrand.forEach(function(s) {
+        relatedCards.push(
+          '<a class="listing-related-card" href="/sold/">' +
+            '<p class="listing-related-eyebrow">Recently Sold</p>' +
+            '<p class="listing-related-title">' + escapeHtml(s.brand + ' ' + s.title) + '</p>' +
+          '</a>'
+        );
+      });
+      if (brandGuideEntry) {
+        relatedCards.push(
+          '<a class="listing-related-card" href="/guides/' + brandGuideEntry.slug + '/">' +
+            '<p class="listing-related-eyebrow">Buyer&rsquo;s Guide</p>' +
+            '<p class="listing-related-title">' + brandGuideEntry.label + '</p>' +
+          '</a>'
+        );
+      }
+
+      relatedHTML =
+        '\n      <section class="listing-related" aria-labelledby="listing-related-heading">\n' +
+        '        <h2 class="section-label" id="listing-related-heading">Related Pieces</h2>\n' +
+        '        <div class="listing-related-grid">\n          ' +
+        relatedCards.join('\n          ') +
+        '\n        </div>\n' +
+        '      </section>\n';
+    }
+  }
 
   return '<!DOCTYPE html>\n' +
 '<html lang="en-CA">\n' +
@@ -564,12 +735,22 @@ function generateListingPage(item, slug) {
 '  ' + JSON.stringify(breadcrumbSchema, null, 2).replace(/\n/g, '\n  ') + '\n' +
 '  </script>\n' +
 '\n' +
+'  <!-- LocalBusiness Schema -->\n' +
+'  <script type="application/ld+json">\n' +
+'  ' + JSON.stringify(localBusinessSchema, null, 2).replace(/\n/g, '\n  ') + '\n' +
+'  </script>\n' +
+'\n' +
+'  <!-- Organization Schema -->\n' +
+'  <script type="application/ld+json">\n' +
+'  ' + JSON.stringify(organizationSchema, null, 2).replace(/\n/g, '\n  ') + '\n' +
+'  </script>' + faqSchemaBlock + '\n' +
+'\n' +
 '  <link rel="preconnect" href="https://fonts.googleapis.com">\n' +
 '  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n' +
 '  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel=\'stylesheet\'">\n' +
 '  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"></noscript>\n' +
 '  <link rel="preload" as="image" imagesrcset="' + (item.images && item.images.length > 0 ? avifSrcsetFor(item.images[0], '../../') : '') + '" imagesizes="(max-width: 768px) 100vw, 550px" fetchpriority="high" type="image/avif">\n' +
-'  <link rel="stylesheet" href="../../css/styles.min.css?v=44">\n' +
+'  <link rel="stylesheet" href="../../css/styles.min.css?v=48">\n' +
 '  <meta name="theme-color" content="#2c2c2c">\n' +
 '</head>\n' +
 '<body>\n' +
@@ -664,16 +845,19 @@ function generateListingPage(item, slug) {
 (featuresHTML    ? '            ' + featuresHTML    + '\n' : '') +
 (conditionHTML   ? '            ' + conditionHTML   + '\n' : '') +
 (configHTML      ? '            ' + configHTML      + '\n' : '') +
+'            ' + trustStatementHTML + '\n' +
 '            <p class="listing-sell-line">Have one like this? We&rsquo;d buy yours back &mdash; <a href="/sell/">sell your sofa &rarr;</a></p>\n' +
 '            <a class="listing-back" href="/">&larr; All Available Pieces</a>\n' +
 '          </div>\n' +
 '        </div>\n' +
 '      </div>\n' +
+faqVisibleBlock +
 '\n' +
 '      <div class="guide-cta">\n' +
 '        <p>Selling a piece like this one? Get an offer in 24 hours &mdash; pickup included.</p>\n' +
 '        <a class="listing-cta" href="/sell/">Get an Offer</a>\n' +
 '      </div>\n' +
+relatedHTML +
 '\n' +
 '      <div class="newsletter-embed">\n' +
 '        <p class="newsletter-heading">Get first access before pieces sell. Enter your email to hear about new arrivals before the public.</p>\n' +
@@ -1158,7 +1342,7 @@ availableItems.forEach(function(item) {
   var itemDir    = path.join(listingsDir, slug);
   if (!fs.existsSync(itemDir)) fs.mkdirSync(itemDir);
 
-  var html = generateListingPage(item, slug);
+  var html = generateListingPage(item, slug, availableItems, soldItems);
   fs.writeFileSync(path.join(itemDir, 'index.html'), html, 'utf8');
   listingCount++;
 });
