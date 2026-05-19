@@ -2628,10 +2628,34 @@ footer a:focus-visible {
   .sell-qualification-inner { padding: 14px 18px; }
 }
 
-/* Method + comparison callout */
+/* Method + comparison callout.
+
+   The `.sell-method` wrapper on `/sell/` is the column that holds the
+   intro paragraph, section headings, "How it works" steps, form, FAQ,
+   and "We work with" list. It used to have no horizontal padding, which
+   meant every bare child (h2 headings, the steps grid, the inline lists,
+   the intro/proof paragraphs) sat flush against the viewport edge on
+   mobile while other sections had their own --page-x inset. Adding the
+   padding here gives the whole column one consistent inset; nested
+   children that bring their own horizontal padding/margin (form, FAQ,
+   form-success, form-secondary, send-lead) get scoped resets so they
+   don't double up. */
 .sell-method {
   max-width: 580px;
   margin: 0 auto 16px;
+  padding: 0 var(--page-x);
+}
+.sell-method > .sell-method { padding: 0; }
+.sell-method > .sell-form,
+.sell-method > .sell-form-success {
+  margin-left: auto;
+  margin-right: auto;
+}
+.sell-method > .sell-send-lead,
+.sell-method > .sell-form-secondary,
+.sell-method > .faq-section {
+  padding-left: 0;
+  padding-right: 0;
 }
 .sell-method > p {
   font-size: 0.95rem;
