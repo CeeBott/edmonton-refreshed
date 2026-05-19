@@ -433,7 +433,7 @@ The credibility strip (`★ 4.9 Rating`) does not include a review count, so no 
 
 1. Edit the source file (e.g., `js/shared.js`, `js/available-data.js`, `js/sold-data.js`, `js/reviews-data.js`, `js/sell-form.js`)
 2. Run `node build.js` — this re-minifies the source into the matching `*.min.js` file. There is no separate minify step.
-3. Bump the JS cache version parameter (`?v=N`) on every page that references the minified bundle. The listing page template in `build.js` references `shared.min.js?v=N` — bump that string too. **Current versions: `shared.min.js?v=31`, `available-data.min.js?v=29`, `sold-data.min.js?v=27`, `reviews-data.min.js?v=28`, `sell-form.min.js?v=2`.**
+3. Bump the JS cache version parameter (`?v=N`) on every page that references the minified bundle. The listing page template in `build.js` references `shared.min.js?v=N` — bump that string too. **Current versions: `shared.min.js?v=31`, `available-data.min.js?v=29`, `sold-data.min.js?v=27`, `reviews-data.min.js?v=28`, `sell-form.min.js?v=3`.**
 4. Re-run `node build.js` so listing pages pick up the bumped reference.
 5. Commit the changes. Collin handles pushing to GitHub.
 
@@ -449,6 +449,21 @@ The landing pages at `sell/[brand-or-piece]-edmonton/` are **hand-maintained**. 
    - Add a cross-link card to the appropriate cluster on `sell/index.html` and on related landing pages.
 3. If you modify the form, update **both** `js/sell-form.js` (source) and run `node build.js` to regenerate the minified file. The form HTML must remain identical across `sell/index.html` and every `sell/[slug]-edmonton/index.html` — same field IDs (`sf-brand`, `sf-age`, `sf-photos`, etc.) and same overall structure. Brand-specific pages pre-fill `sf-brand` via the `value=""` attribute on the input; piece-type pages leave it blank.
 4. After any edit, refresh `dateModified` on schemas that carry it (Service schema on these pages has a `dateModified` field).
+
+### Sell-form bot protection & worker contract
+
+The form posts to a Cloudflare Worker (`worker/index.js`, deployed at `https://edmonton-refreshed-sell.cbottrell1990.workers.dev/`), which validates and forwards the submission to `info@edmontonrefreshed.com` via Resend.
+
+**Spam defenses (silent-drop pattern — Worker returns `{ok: true}` either way so bots can't distinguish a drop from a real send):**
+
+1. **Checkbox honeypot** — every form has `<input type="checkbox" name="_honey" class="sell-form-honey" tabindex="-1" autocomplete="off" aria-hidden="true">` positioned off-screen via CSS. **Keep this as a checkbox, not a text input.** Text-input honeypots get filled by browser autofill / password managers and silently drop real submissions (this is what bit us before). Checkboxes are almost never auto-ticked.
+2. **Page-load timing** — `js/sell-form.js` captures `Date.now()` at script load and appends `_elapsed_ms` (ms since page load) to the FormData on submit. The Worker drops any submission where `_elapsed_ms < 2000` (i.e., under 2 seconds) as suspected bot.
+
+**Source-page tracking:** `js/sell-form.js` also appends `Source page` (the page's pathname + querystring) to every submission. The Worker prepends this to the email subject (`New Sell Inquiry — Brand — Name (from /sell/natuzzi-edmonton/)`) and includes it as the first line of the email body. This is how you can tell which landing page produced each lead.
+
+**If you add a new form field**, update both the HTML (every sell page) and the Worker's `REQUIRED_FIELDS` / email body builder. If you add a new honeypot or timing rule, do not change the silent-drop contract — the Worker must keep returning `{ok: true}` on suspected-bot paths so real bots can't probe for the rules.
+
+**Deploying Worker changes**: changes to `worker/index.js` or `worker/wrangler.toml` are deployed from the `worker/` directory via `wrangler deploy`. The static site (GitHub Pages) and the Worker (Cloudflare) deploy independently — pushing to `main` does not redeploy the Worker. Tell Collin when Worker code has changed so he can run the deploy.
 
 ### Deploy
 

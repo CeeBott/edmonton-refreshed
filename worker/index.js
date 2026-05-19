@@ -21,6 +21,7 @@ const REQUIRED_FIELDS = [
 const MAX_PHOTOS = 5;
 const MIN_PHOTOS = 3;
 const MAX_TOTAL_BYTES = 38 * 1024 * 1024; // Resend allows 40 MB per email; leave headroom.
+const MIN_FORM_FILL_MS = 2000; // Reject submissions filled in under 2 seconds — naive bots.
 
 export default {
   async fetch(request, env) {
@@ -45,8 +46,17 @@ export default {
       return json({ error: 'Could not read form data.' }, 400, cors);
     }
 
-    // Honeypot — silently drop bots, return success
-    if ((formData.get('_honey') || '').toString().trim() !== '') {
+    // Honeypot — checkbox that real browsers / password managers basically
+    // never tick. Any value present = drop silently and return success so
+    // bots can't distinguish real failure.
+    if (formData.get('_honey')) {
+      return json({ ok: true }, 200, cors);
+    }
+
+    // Timing check — naive bots POST the form in well under a second.
+    // Real humans take at least a few seconds to type name + contact + notes.
+    const elapsedMs = parseInt((formData.get('_elapsed_ms') || '').toString(), 10);
+    if (!Number.isFinite(elapsedMs) || elapsedMs < MIN_FORM_FILL_MS) {
       return json({ ok: true }, 200, cors);
     }
 
@@ -81,7 +91,10 @@ export default {
     }
 
     const get = (k) => (formData.get(k) || '').toString().trim();
+    const sourcePage = get('Source page') || '(unknown)';
     const lines = [
+      `Submitted from: ${sourcePage}`,
+      '',
       `Brand: ${get('Brand')}`,
       `Approximate age: ${get('Approximate age')}`,
       `Condition: ${get('Condition')}`,
@@ -93,7 +106,7 @@ export default {
       get('Notes') || '(none)',
     ];
 
-    const subject = `New Sell Inquiry — ${get('Brand')} — ${get('Name')}`;
+    const subject = `New Sell Inquiry — ${get('Brand')} — ${get('Name')} (from ${sourcePage})`;
     const replyTo = looksLikeEmail(get('Best contact')) ? get('Best contact') : undefined;
 
     const payload = {

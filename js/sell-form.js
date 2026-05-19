@@ -16,6 +16,10 @@
   var MAX_PHOTOS = 5;
   var MAX_TOTAL_BYTES = 25 * 1024 * 1024;
 
+  // Captured at script load so the worker can reject submissions that arrive
+  // implausibly fast (naive bots that POST in well under a second).
+  var pageLoadedAt = Date.now();
+
   var form = document.getElementById('sell-form');
   var success = document.getElementById('sell-form-success');
   if (!form) return;
@@ -187,6 +191,8 @@
       for (var i = 0; i < selectedPhotos.length; i++) {
         fd.append('photos', selectedPhotos[i], selectedPhotos[i].name || ('photo-' + (i + 1) + '.jpg'));
       }
+      fd.set('Source page', window.location.pathname + window.location.search);
+      fd.set('_elapsed_ms', String(Date.now() - pageLoadedAt));
       var res = await fetch(SELL_FORM_ENDPOINT, { method: 'POST', body: fd });
       var data = {};
       try { data = await res.json(); } catch (_) {}
