@@ -1,4 +1,4 @@
-# edmonton-refreshed.com — Performance Audit
+# edmontonrefreshed.com — Performance Audit
 
 **Audit date:** May 9, 2026
 **Period analyzed:** Feb 9 – May 9, 2026 (last 3 months) with 12-month trend context
@@ -255,4 +255,4 @@ The unmissed revenue play is publishing your own transaction data. You are sitti
 
 ---
 
-*Audit data pulled via Supermetrics MCP — Google Search Console (`sc-domain:edmonton-refreshed.com`) and GA4 property `Edmonton Refreshed Seating` (526743452). Site code reviewed read-only at /Users/collinbottrell/Desktop/edmonton-refreshed.*
+*Audit data pulled via Supermetrics MCP — Google Search Console (`sc-domain:edmontonrefreshed.com`) and GA4 property `Edmonton Refreshed Seating` (526743452). Site code reviewed read-only at /Users/collinbottrell/Desktop/edmonton-refreshed.*

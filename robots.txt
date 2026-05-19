@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://edmonton-refreshed.com/sitemap.xml
+Sitemap: https://edmontonrefreshed.com/sitemap.xml

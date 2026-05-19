@@ -226,7 +226,7 @@ function generateReviewsHTML(reviews, aggregate) {
 // ── Product schema (static, for index.html <head>) ───────
 
 function generateProductSchemas(items) {
-  var BASE_URL       = 'https://edmonton-refreshed.com/';
+  var BASE_URL       = 'https://edmontonrefreshed.com/';
   var validUntilDate = new Date();
   validUntilDate.setDate(validUntilDate.getDate() + 90);
   var priceValidUntil = validUntilDate.toISOString().split('T')[0];
@@ -357,7 +357,7 @@ function buildThumbnailStrip(images, alt, prefix) {
 }
 
 function generateListingPage(item, slug, allItems, soldItems) {
-  var BASE_URL       = 'https://edmonton-refreshed.com/';
+  var BASE_URL       = 'https://edmontonrefreshed.com/';
   var listingUrl     = BASE_URL + 'listings/' + slug + '/';
   var validUntilDate = new Date();
   validUntilDate.setDate(validUntilDate.getDate() + 90);
@@ -675,7 +675,7 @@ function generateListingPage(item, slug, allItems, soldItems) {
 
       relatedHTML =
         '\n      <section class="listing-related" aria-labelledby="listing-related-heading">\n' +
-        '        <h2 class="section-label" id="listing-related-heading">Related Pieces</h2>\n' +
+        '        <h2 class="section-label" id="listing-related-heading">Related Links</h2>\n' +
         '        <div class="listing-related-grid">\n          ' +
         relatedCards.join('\n          ') +
         '\n        </div>\n' +
@@ -750,7 +750,7 @@ function generateListingPage(item, slug, allItems, soldItems) {
 '  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel=\'stylesheet\'">\n' +
 '  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"></noscript>\n' +
 '  <link rel="preload" as="image" imagesrcset="' + (item.images && item.images.length > 0 ? avifSrcsetFor(item.images[0], '../../') : '') + '" imagesizes="(max-width: 768px) 100vw, 550px" fetchpriority="high" type="image/avif">\n' +
-'  <link rel="stylesheet" href="../../css/styles.min.css?v=48">\n' +
+'  <link rel="stylesheet" href="../../css/styles.min.css?v=49">\n' +
 '  <meta name="theme-color" content="#2c2c2c">\n' +
 '</head>\n' +
 '<body>\n' +
@@ -852,11 +852,6 @@ function generateListingPage(item, slug, allItems, soldItems) {
 '        </div>\n' +
 '      </div>\n' +
 faqVisibleBlock +
-'\n' +
-'      <div class="guide-cta">\n' +
-'        <p>Selling a piece like this one? Get an offer in 24 hours &mdash; pickup included.</p>\n' +
-'        <a class="listing-cta" href="/sell/">Get an Offer</a>\n' +
-'      </div>\n' +
 relatedHTML +
 '\n' +
 '      <div class="newsletter-embed">\n' +
@@ -878,10 +873,60 @@ relatedHTML +
 '    <a href="tel:7809651477" class="sticky-cta-secondary">Call</a>\n' +
 '  </div>\n' +
 '\n' +
-'  <footer>\n' +
-'    <p>&copy; 2026 Edmonton Refreshed Seating</p>\n' +
-'    <p>Serving Edmonton, Alberta and surrounding areas</p>\n' +
-'    <p><a href="/privacy/">Privacy Policy</a></p>\n' +
+'  <footer class="site-footer">\n' +
+'    <div class="footer-inner">\n' +
+'      <div class="footer-statement">\n' +
+'        <p class="footer-lead">Edmonton Refreshed buys and resells premium pre-owned sofas and sectionals across Edmonton and surrounding areas.</p>\n' +
+'        <p class="footer-sub">Viewings by appointment. Professionally inspected pieces from recognized brands.</p>\n' +
+'      </div>\n' +
+'      <nav class="footer-taxonomy" aria-label="Footer navigation">\n' +
+'        <div class="footer-col">\n' +
+'          <h2 class="footer-heading">Sell By Piece</h2>\n' +
+'          <ul class="footer-links">\n' +
+'            <li><a href="/sell/sectional-edmonton/">Sectionals</a></li>\n' +
+'            <li><a href="/sell/leather-sectional-edmonton/">Leather Sectionals</a></li>\n' +
+'            <li><a href="/sell/sofa-edmonton/">Sofas</a></li>\n' +
+'            <li><a href="/sell/leather-sofa-edmonton/">Leather Sofas</a></li>\n' +
+'            <li><a href="/sell/couch-edmonton/">Couches</a></li>\n' +
+'            <li><a href="/sell/leather-couch-edmonton/">Leather Couches</a></li>\n' +
+'          </ul>\n' +
+'        </div>\n' +
+'        <div class="footer-col">\n' +
+'          <h2 class="footer-heading">Sell By Situation</h2>\n' +
+'          <ul class="footer-links">\n' +
+'            <li><a href="/sell/furniture-consignment-edmonton/">Furniture Consignment</a></li>\n' +
+'            <li><a href="/sell/selling-furniture-before-moving-edmonton/">Selling Before Moving</a></li>\n' +
+'            <li><a href="/sell/downsizing-furniture-edmonton/">Downsizing Furniture</a></li>\n' +
+'            <li><a href="/sell/estate-furniture-edmonton/">Estate Furniture</a></li>\n' +
+'            <li><a href="/sell/sell-furniture-fast-edmonton/">Sell Furniture Fast</a></li>\n' +
+'            <li><a href="/sell/sell-designer-furniture-edmonton/">Sell Designer Furniture</a></li>\n' +
+'          </ul>\n' +
+'        </div>\n' +
+'        <div class="footer-col">\n' +
+'          <h2 class="footer-heading">Sell By Brand</h2>\n' +
+'          <ul class="footer-links">\n' +
+'            <li><a href="/sell/natuzzi-edmonton/">Natuzzi</a></li>\n' +
+'            <li><a href="/sell/restoration-hardware-edmonton/">Restoration Hardware</a></li>\n' +
+'            <li><a href="/sell/eq3-edmonton/">EQ3</a></li>\n' +
+'            <li><a href="/sell/crate-and-barrel-edmonton/">Crate &amp; Barrel</a></li>\n' +
+'            <li><a href="/sell/rove-concepts-edmonton/">Rove Concepts</a></li>\n' +
+'            <li><a href="/sell/west-elm-edmonton/">West Elm</a></li>\n' +
+'          </ul>\n' +
+'        </div>\n' +
+'      </nav>\n' +
+'      <div class="footer-bottom">\n' +
+'        <ul class="footer-utility">\n' +
+'          <li><a href="/sold/">Recently Sold</a></li>\n' +
+'          <li><a href="/guides/">Guides</a></li>\n' +
+'          <li><a href="/about/">About</a></li>\n' +
+'          <li><a href="/privacy/">Privacy Policy</a></li>\n' +
+'        </ul>\n' +
+'        <div class="footer-meta">\n' +
+'          <p class="footer-copy">&copy; 2026 Edmonton Refreshed Seating</p>\n' +
+'          <p class="footer-tagline">Better furniture. Better experience.</p>\n' +
+'        </div>\n' +
+'      </div>\n' +
+'    </div>\n' +
 '  </footer>\n' +
 '\n' +
 '  <!-- ── Lightbox ── -->\n' +
@@ -992,271 +1037,271 @@ function generateSitemap(items) {
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/</loc>',
+    '    <loc>https://edmontonrefreshed.com/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>weekly</changefreq>',
     '    <priority>1.0</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/sold/</loc>',
+    '    <loc>https://edmontonrefreshed.com/sold/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>weekly</changefreq>',
     '    <priority>0.8</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/sell/</loc>',
+    '    <loc>https://edmontonrefreshed.com/sell/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.7</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/sell/natuzzi-edmonton/</loc>',
+    '    <loc>https://edmontonrefreshed.com/sell/natuzzi-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.7</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/sell/rove-concepts-edmonton/</loc>',
+    '    <loc>https://edmontonrefreshed.com/sell/rove-concepts-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.7</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/sell/eq3-edmonton/</loc>',
+    '    <loc>https://edmontonrefreshed.com/sell/eq3-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.7</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/sell/crate-and-barrel-edmonton/</loc>',
+    '    <loc>https://edmontonrefreshed.com/sell/crate-and-barrel-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.7</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/sell/restoration-hardware-edmonton/</loc>',
+    '    <loc>https://edmontonrefreshed.com/sell/restoration-hardware-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.7</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/sell/west-elm-edmonton/</loc>',
+    '    <loc>https://edmontonrefreshed.com/sell/west-elm-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.7</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/sell/sectional-edmonton/</loc>',
+    '    <loc>https://edmontonrefreshed.com/sell/sectional-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.7</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/sell/leather-sectional-edmonton/</loc>',
+    '    <loc>https://edmontonrefreshed.com/sell/leather-sectional-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.7</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/sell/sofa-edmonton/</loc>',
+    '    <loc>https://edmontonrefreshed.com/sell/sofa-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.7</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/sell/leather-sofa-edmonton/</loc>',
+    '    <loc>https://edmontonrefreshed.com/sell/leather-sofa-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.7</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/sell/couch-edmonton/</loc>',
+    '    <loc>https://edmontonrefreshed.com/sell/couch-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.7</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/sell/leather-couch-edmonton/</loc>',
+    '    <loc>https://edmontonrefreshed.com/sell/leather-couch-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.7</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/sell/furniture-consignment-edmonton/</loc>',
+    '    <loc>https://edmontonrefreshed.com/sell/furniture-consignment-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.7</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/sell/selling-furniture-before-moving-edmonton/</loc>',
+    '    <loc>https://edmontonrefreshed.com/sell/selling-furniture-before-moving-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.7</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/sell/downsizing-furniture-edmonton/</loc>',
+    '    <loc>https://edmontonrefreshed.com/sell/downsizing-furniture-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.7</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/sell/sell-furniture-fast-edmonton/</loc>',
+    '    <loc>https://edmontonrefreshed.com/sell/sell-furniture-fast-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.7</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/sell/estate-furniture-edmonton/</loc>',
+    '    <loc>https://edmontonrefreshed.com/sell/estate-furniture-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.7</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/sell/sell-designer-furniture-edmonton/</loc>',
+    '    <loc>https://edmontonrefreshed.com/sell/sell-designer-furniture-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.7</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/about/</loc>',
+    '    <loc>https://edmontonrefreshed.com/about/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.6</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/privacy/</loc>',
+    '    <loc>https://edmontonrefreshed.com/privacy/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>yearly</changefreq>',
     '    <priority>0.3</priority>',
     '  </url>',
   '  <url>',
-    '    <loc>https://edmonton-refreshed.com/guides/</loc>',
+    '    <loc>https://edmontonrefreshed.com/guides/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>weekly</changefreq>',
     '    <priority>0.7</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/guides/how-to-tell-if-your-sofa-is-high-quality-edmonton/</loc>',
+    '    <loc>https://edmontonrefreshed.com/guides/how-to-tell-if-your-sofa-is-high-quality-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.8</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/guides/what-condition-means-furniture-grading-edmonton/</loc>',
+    '    <loc>https://edmontonrefreshed.com/guides/what-condition-means-furniture-grading-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.8</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/guides/moving-edmonton-furniture-keep-sell-replace/</loc>',
+    '    <loc>https://edmontonrefreshed.com/guides/moving-edmonton-furniture-keep-sell-replace/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.8</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/guides/best-sofa-brands-resale-value-edmonton/</loc>',
+    '    <loc>https://edmontonrefreshed.com/guides/best-sofa-brands-resale-value-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.8</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/guides/facebook-marketplace-sofa-vs-curated-reseller/</loc>',
+    '    <loc>https://edmontonrefreshed.com/guides/facebook-marketplace-sofa-vs-curated-reseller/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.8</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/guides/selling-furniture-facebook-marketplace-edmonton/</loc>',
+    '    <loc>https://edmontonrefreshed.com/guides/selling-furniture-facebook-marketplace-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.8</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/guides/how-to-buy-used-sofa-edmonton/</loc>',
+    '    <loc>https://edmontonrefreshed.com/guides/how-to-buy-used-sofa-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.8</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/guides/bb-italia-sofa-review-edmonton/</loc>',
+    '    <loc>https://edmontonrefreshed.com/guides/bb-italia-sofa-review-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.8</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/guides/rove-concepts-sofa-review-edmonton/</loc>',
+    '    <loc>https://edmontonrefreshed.com/guides/rove-concepts-sofa-review-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.8</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/guides/natuzzi-sofa-review-edmonton/</loc>',
+    '    <loc>https://edmontonrefreshed.com/guides/natuzzi-sofa-review-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.8</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/guides/edmonton-furniture-consignment-resale-guide/</loc>',
+    '    <loc>https://edmontonrefreshed.com/guides/edmonton-furniture-consignment-resale-guide/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.8</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/guides/sectional-sofa-cost-edmonton/</loc>',
+    '    <loc>https://edmontonrefreshed.com/guides/sectional-sofa-cost-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.8</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/guides/how-to-measure-sectional-sofa-edmonton/</loc>',
+    '    <loc>https://edmontonrefreshed.com/guides/how-to-measure-sectional-sofa-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.8</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/guides/who-buys-used-couches-edmonton/</loc>',
+    '    <loc>https://edmontonrefreshed.com/guides/who-buys-used-couches-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.8</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/guides/used-sofa-couch-value-edmonton/</loc>',
+    '    <loc>https://edmontonrefreshed.com/guides/used-sofa-couch-value-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.8</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/guides/selling-sectional-sofa-edmonton/</loc>',
+    '    <loc>https://edmontonrefreshed.com/guides/selling-sectional-sofa-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.8</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/guides/selling-furniture-before-moving-edmonton/</loc>',
+    '    <loc>https://edmontonrefreshed.com/guides/selling-furniture-before-moving-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.8</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/guides/selling-inherited-estate-furniture-edmonton/</loc>',
+    '    <loc>https://edmontonrefreshed.com/guides/selling-inherited-estate-furniture-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.8</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/guides/selling-loveseat-sofa-set-edmonton/</loc>',
+    '    <loc>https://edmontonrefreshed.com/guides/selling-loveseat-sofa-set-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.8</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/guides/selling-fabric-boucle-velvet-sofa-edmonton/</loc>',
+    '    <loc>https://edmontonrefreshed.com/guides/selling-fabric-boucle-velvet-sofa-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.8</priority>',
     '  </url>',
     '  <url>',
-    '    <loc>https://edmonton-refreshed.com/guides/selling-leather-sofa-sectional-edmonton/</loc>',
+    '    <loc>https://edmontonrefreshed.com/guides/selling-leather-sofa-sectional-edmonton/</loc>',
     '    <lastmod>' + d + '</lastmod>',
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.8</priority>',
@@ -1268,7 +1313,7 @@ function generateSitemap(items) {
     var slug = item.slug || slugify(item.brand + '-' + item.title);
     lines.push(
       '  <url>',
-      '    <loc>https://edmonton-refreshed.com/listings/' + slug + '/</loc>',
+      '    <loc>https://edmontonrefreshed.com/listings/' + slug + '/</loc>',
       '    <lastmod>' + d + '</lastmod>',
       '    <changefreq>weekly</changefreq>',
       '    <priority>0.9</priority>',

@@ -204,7 +204,7 @@ The build regenerates the homepage Product schema, the static fallback card, and
    - GA4 script block (`G-8MN82PPZRZ`)
    - `<title>` — format: `Article Title | Edmonton Refreshed`
    - `<link rel="icon">` pointing to `../../favicon.svg`
-   - `<link rel="canonical">` with the full `https://edmonton-refreshed.com/guides/article-slug/` URL
+   - `<link rel="canonical">` with the full `https://edmontonrefreshed.com/guides/article-slug/` URL
    - `<meta name="description">` — concise, keyword-rich, under 160 characters
    - `<meta name="robots" content="index, follow">`
    - `<meta name="geo.region" content="CA-AB">` and `<meta name="geo.placename" content="Edmonton">`
@@ -247,7 +247,7 @@ The build regenerates the homepage Product schema, the static fallback card, and
 4. **Add the guide URL to `build.js`** in the sitemap generation section, alongside the existing guide URLs:
    ```javascript
    '  <url>',
-   '    <loc>https://edmonton-refreshed.com/guides/article-slug/</loc>',
+   '    <loc>https://edmontonrefreshed.com/guides/article-slug/</loc>',
    '    <lastmod>' + d + '</lastmod>',
    '    <changefreq>monthly</changefreq>',
    '    <priority>0.8</priority>',
