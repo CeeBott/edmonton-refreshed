@@ -16,7 +16,7 @@ You don't need to move DNS, change the GitHub Pages site, or run any servers. Th
 2. Verify the email.
 3. Open **API Keys** → **Create API Key**. Name it `edmonton-refreshed-sell`. Permission: **Sending access**. Copy the key (starts with `re_…`). You'll paste it once below.
 
-For first-time use, **leave domain verification for later.** Resend lets you send emails *to your own signup email* (your Gmail) using their built-in `onboarding@resend.dev` sender — no DNS setup required. That's what `wrangler.toml` is preconfigured for. When you're ready, you can verify `edmonton-refreshed.com` to send from a custom address; that requires adding 3 DNS records.
+For first-time use, **leave domain verification for later.** Resend lets you send emails *to your own signup email* (your Gmail) using their built-in `onboarding@resend.dev` sender — no DNS setup required. That's what `wrangler.toml` is preconfigured for. When you're ready, you can verify `edmontonrefreshed.com` to send from a custom address; that requires adding 3 DNS records.
 
 ## Step 2 — Install Wrangler
 
@@ -59,7 +59,7 @@ Replace `https://edmonton-refreshed-sell.YOUR-SUBDOMAIN.workers.dev/` with the U
 
 ## Step 5 — Test it
 
-Submit the form yourself with 3+ test photos. You should receive an email at `info@edmonton-refreshed.com` (or whatever `TO_EMAIL` is set to in `wrangler.toml`) with all photos as attachments. Reply-to is set to the email the seller provided, so hitting Reply goes straight to them.
+Submit the form yourself with 3+ test photos. You should receive an email at `info@edmontonrefreshed.com` (or whatever `TO_EMAIL` is set to in `wrangler.toml`) with all photos as attachments. Reply-to is set to the email the seller provided, so hitting Reply goes straight to them.
 
 If something fails, check Cloudflare's worker log:
 
@@ -76,7 +76,7 @@ wrangler tail
 
 ## Verifying your domain in Resend (optional, recommended later)
 
-Once the form is working, verify `edmonton-refreshed.com` in Resend so the from-address is `forms@edmonton-refreshed.com` instead of `onboarding@resend.dev`. Resend will give you 3 DNS records to add wherever your DNS lives. After verification, change `FROM_EMAIL` in `wrangler.toml` to your custom address and redeploy.
+Once the form is working, verify `edmontonrefreshed.com` in Resend so the from-address is `forms@edmontonrefreshed.com` instead of `onboarding@resend.dev`. Resend will give you 3 DNS records to add wherever your DNS lives. After verification, change `FROM_EMAIL` in `wrangler.toml` to your custom address and redeploy.
 
 ## Cost
 

@@ -8,7 +8,7 @@
 //   FROM_EMAIL       — Resend-verified sender; for first-time use,
 //                      set to "onboarding@resend.dev" (works only when
 //                      TO_EMAIL is the same address you signed up with).
-//   ALLOWED_ORIGIN   — e.g. "https://edmonton-refreshed.com"
+//   ALLOWED_ORIGIN   — e.g. "https://edmontonrefreshed.com"
 
 const REQUIRED_FIELDS = [
   'Brand',
