@@ -881,7 +881,7 @@ relatedHTML +
 '      </div>\n' +
 '      <nav class="footer-taxonomy" aria-label="Footer navigation">\n' +
 '        <div class="footer-col">\n' +
-'          <h2 class="footer-heading">Sell By Piece</h2>\n' +
+'          <h2 class="footer-heading">Sell by Furniture Type</h2>\n' +
 '          <ul class="footer-links">\n' +
 '            <li><a href="/sell/sectional-edmonton/">Sectionals</a></li>\n' +
 '            <li><a href="/sell/leather-sectional-edmonton/">Leather Sectionals</a></li>\n' +
