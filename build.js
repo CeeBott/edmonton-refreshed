@@ -18,6 +18,11 @@ var path = require('path');
 
 var ROOT = __dirname;
 
+// ── Partials (sitewide layout: nav, credibility strip, footer) ──
+var renderNav         = require('./partials/nav').renderNav;
+var renderFooter      = require('./partials/footer').renderFooter;
+var renderCredibility = require('./partials/credibility').renderCredibility;
+
 
 // ── Utilities ────────────────────────────────────────────
 
@@ -757,60 +762,9 @@ function generateListingPage(item, slug, allItems, soldItems) {
 '\n' +
 '  <a href="#main-content" class="skip-link">Skip to main content</a>\n' +
 '\n' +
-'  <!-- ── Navigation ── -->\n' +
-'  <nav class="nav">\n' +
-'    <div class="nav-inner">\n' +
-'      <a href="/" class="nav-logo">Edmonton Refreshed</a>\n' +
-'      <ul class="nav-links" id="navLinks">\n' +
-'        <li><a href="/" data-page="available">Available</a></li>\n' +
-'        <li><a href="/sold/" data-page="sold">Sold</a></li>\n' +
-'        <li class="nav-dropdown">\n' +
-'          <div class="nav-dropdown-wrap">\n' +
-'            <a href="/sell/" data-page="sell">Sell Your Furniture</a>\n' +
-'            <button class="nav-dropdown-toggle" aria-label="Toggle sell menu" aria-expanded="false" aria-controls="sell-submenu" type="button">\n' +
-'              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><polyline points="6 9 12 15 18 9"/></svg>\n' +
-'            </button>\n' +
-'          </div>\n' +
-'          <ul class="nav-dropdown-menu" id="sell-submenu" role="menu">\n' +
-'            <li class="nav-dropdown-section"><span>By brand</span></li>\n' +
-'            <li><a href="/sell/natuzzi-edmonton/">Natuzzi</a></li>\n' +
-'            <li><a href="/sell/rove-concepts-edmonton/">Rove Concepts</a></li>\n' +
-'            <li><a href="/sell/eq3-edmonton/">EQ3</a></li>\n' +
-'            <li><a href="/sell/crate-and-barrel-edmonton/">Crate &amp; Barrel</a></li>\n' +
-'            <li><a href="/sell/restoration-hardware-edmonton/">Restoration Hardware</a></li>\n' +
-'            <li><a href="/sell/west-elm-edmonton/">West Elm</a></li>\n' +
-'            <li class="nav-dropdown-section"><span>By piece</span></li>\n' +
-'            <li><a href="/sell/sectional-edmonton/">Sectional</a></li>\n' +
-'            <li><a href="/sell/leather-sectional-edmonton/">Leather Sectional</a></li>\n' +
-'            <li><a href="/sell/sofa-edmonton/">Sofa</a></li>\n' +
-'            <li><a href="/sell/leather-sofa-edmonton/">Leather Sofa</a></li>\n' +
-'            <li><a href="/sell/couch-edmonton/">Couch</a></li>\n' +
-'            <li><a href="/sell/leather-couch-edmonton/">Leather Couch</a></li>\n' +
-'            <li class="nav-dropdown-section"><span>By situation</span></li>\n' +
-'            <li><a href="/sell/furniture-consignment-edmonton/">Consignment</a></li>\n' +
-'            <li><a href="/sell/selling-furniture-before-moving-edmonton/">Before a move</a></li>\n' +
-'            <li><a href="/sell/downsizing-furniture-edmonton/">Downsizing</a></li>\n' +
-'            <li><a href="/sell/sell-furniture-fast-edmonton/">Sell fast</a></li>\n' +
-'            <li><a href="/sell/estate-furniture-edmonton/">Estate</a></li>\n' +
-'            <li><a href="/sell/sell-designer-furniture-edmonton/">Designer</a></li>\n' +
-'          </ul>\n' +
-'        </li>\n' +
-'        <li><a href="/guides/" data-page="guides">Guides</a></li>\n' +
-'        <li><a href="/about/" data-page="about">About</a></li>\n' +
-'        <li class="nav-phone-mobile"><a href="tel:7809651477">780-965-1477</a></li>\n' +
-'      </ul>\n' +
-'      <div class="nav-contact">\n' +
-'        <a href="tel:7809651477">780-965-1477</a>\n' +
-'      </div>\n' +
-'      <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false">\n' +
-'        <span></span><span></span><span></span>\n' +
-'      </button>\n' +
-'    </div>\n' +
-'  </nav>\n' +
+renderNav() + '\n' +
 '\n' +
-'  <div class="credibility-strip">\n' +
-'    <span>We Deliver Anywhere in Edmonton and the Surrounding Area</span>\n' +
-'  </div>\n' +
+renderCredibility('listing') + '\n' +
 '\n' +
 '  <main id="main-content">\n' +
 '    <div class="page">\n' +
@@ -873,61 +827,7 @@ relatedHTML +
 '    <a href="tel:7809651477" class="sticky-cta-secondary">Call</a>\n' +
 '  </div>\n' +
 '\n' +
-'  <footer class="site-footer">\n' +
-'    <div class="footer-inner">\n' +
-'      <div class="footer-statement">\n' +
-'        <p class="footer-lead">Edmonton Refreshed buys and resells premium pre-owned sofas and sectionals across Edmonton and surrounding areas.</p>\n' +
-'        <p class="footer-sub">Viewings by appointment. Professionally inspected pieces from recognized brands.</p>\n' +
-'      </div>\n' +
-'      <nav class="footer-taxonomy" aria-label="Footer navigation">\n' +
-'        <div class="footer-col">\n' +
-'          <h2 class="footer-heading">Sell by Furniture Type</h2>\n' +
-'          <ul class="footer-links">\n' +
-'            <li><a href="/sell/sectional-edmonton/">Sectionals</a></li>\n' +
-'            <li><a href="/sell/leather-sectional-edmonton/">Leather Sectionals</a></li>\n' +
-'            <li><a href="/sell/sofa-edmonton/">Sofas</a></li>\n' +
-'            <li><a href="/sell/leather-sofa-edmonton/">Leather Sofas</a></li>\n' +
-'            <li><a href="/sell/couch-edmonton/">Couches</a></li>\n' +
-'            <li><a href="/sell/leather-couch-edmonton/">Leather Couches</a></li>\n' +
-'          </ul>\n' +
-'        </div>\n' +
-'        <div class="footer-col">\n' +
-'          <h2 class="footer-heading">Sell By Situation</h2>\n' +
-'          <ul class="footer-links">\n' +
-'            <li><a href="/sell/furniture-consignment-edmonton/">Furniture Consignment</a></li>\n' +
-'            <li><a href="/sell/selling-furniture-before-moving-edmonton/">Selling Before Moving</a></li>\n' +
-'            <li><a href="/sell/downsizing-furniture-edmonton/">Downsizing Furniture</a></li>\n' +
-'            <li><a href="/sell/estate-furniture-edmonton/">Estate Furniture</a></li>\n' +
-'            <li><a href="/sell/sell-furniture-fast-edmonton/">Sell Furniture Fast</a></li>\n' +
-'            <li><a href="/sell/sell-designer-furniture-edmonton/">Sell Designer Furniture</a></li>\n' +
-'          </ul>\n' +
-'        </div>\n' +
-'        <div class="footer-col">\n' +
-'          <h2 class="footer-heading">Sell By Brand</h2>\n' +
-'          <ul class="footer-links">\n' +
-'            <li><a href="/sell/natuzzi-edmonton/">Natuzzi</a></li>\n' +
-'            <li><a href="/sell/restoration-hardware-edmonton/">Restoration Hardware</a></li>\n' +
-'            <li><a href="/sell/eq3-edmonton/">EQ3</a></li>\n' +
-'            <li><a href="/sell/crate-and-barrel-edmonton/">Crate &amp; Barrel</a></li>\n' +
-'            <li><a href="/sell/rove-concepts-edmonton/">Rove Concepts</a></li>\n' +
-'            <li><a href="/sell/west-elm-edmonton/">West Elm</a></li>\n' +
-'          </ul>\n' +
-'        </div>\n' +
-'      </nav>\n' +
-'      <div class="footer-bottom">\n' +
-'        <ul class="footer-utility">\n' +
-'          <li><a href="/sold/">Recently Sold</a></li>\n' +
-'          <li><a href="/guides/">Guides</a></li>\n' +
-'          <li><a href="/about/">About</a></li>\n' +
-'          <li><a href="/privacy/">Privacy Policy</a></li>\n' +
-'        </ul>\n' +
-'        <div class="footer-meta">\n' +
-'          <p class="footer-copy">&copy; 2026 Edmonton Refreshed Seating</p>\n' +
-'          <p class="footer-tagline">Better furniture. Better experience.</p>\n' +
-'        </div>\n' +
-'      </div>\n' +
-'    </div>\n' +
-'  </footer>\n' +
+renderFooter() + '\n' +
 '\n' +
 '  <!-- ── Lightbox ── -->\n' +
 '  <div class="lightbox" id="lightbox">\n' +
@@ -1026,6 +926,53 @@ function injectBetweenMarkers(html, startMarker, endMarker, newContent) {
   return html.substring(0, startIdx + startMarker.length) +
     '\n' + newContent + '\n  ' +
     html.substring(endIdx);
+}
+
+// Partial-injection: replaces content between named markers, parsing any
+// attributes on the start marker so render() can vary by context.
+//
+// Marker form:
+//   <!-- NAME_START [attr="value" ...] -->
+//   ...replaced content...
+//   <!-- NAME_END -->
+//
+// Files without the markers are left untouched.
+function injectPartial(html, name, render) {
+  var re = new RegExp(
+    '(<!--\\s*' + name + '_START(?:\\s+([^>-]*?))?\\s*-->)[\\s\\S]*?(<!--\\s*' + name + '_END\\s*-->)',
+    'g'
+  );
+  return html.replace(re, function (_match, openTag, attrs, closeTag) {
+    var attrMap = {};
+    if (attrs) {
+      var attrRe = /(\w+)\s*=\s*"([^"]*)"/g;
+      var m;
+      while ((m = attrRe.exec(attrs)) !== null) attrMap[m[1]] = m[2];
+    }
+    return openTag + '\n' + render(attrMap) + '\n  ' + closeTag;
+  });
+}
+
+function injectAllPartials(html) {
+  html = injectPartial(html, 'NAV',         function ()      { return renderNav(); });
+  html = injectPartial(html, 'CREDIBILITY', function (attrs) { return renderCredibility(attrs.variant || 'buyer'); });
+  html = injectPartial(html, 'FOOTER',      function ()      { return renderFooter(); });
+  return html;
+}
+
+// Recursively collect all HTML files under `dir`, skipping vendor/build dirs.
+function walkHtml(dir, files) {
+  files = files || [];
+  var entries = fs.readdirSync(dir, { withFileTypes: true });
+  for (var i = 0; i < entries.length; i++) {
+    var e = entries[i];
+    if (e.name.charAt(0) === '.') continue;
+    if (e.name === 'node_modules' || e.name === 'worker') continue;
+    var full = path.join(dir, e.name);
+    if (e.isDirectory()) walkHtml(full, files);
+    else if (e.name.length > 5 && e.name.slice(-5) === '.html') files.push(full);
+  }
+  return files;
 }
 
 
@@ -1396,7 +1343,24 @@ availableItems.forEach(function(item) {
 var sitemapPath = path.join(ROOT, 'sitemap.xml');
 fs.writeFileSync(sitemapPath, generateSitemap(availableItems), 'utf8');
 
-// ── 5. Minify JS files ──────────────────────────────
+// ── 5. Inject partials (nav / credibility / footer) into every HTML file
+//      that carries the marker comments. Files without markers are skipped,
+//      so 404 (no credibility) and redirect stubs (no markers at all) are
+//      handled transparently. Listings are skipped because the listing
+//      template already renders the partials inline at generate time.
+var partialFiles = walkHtml(ROOT);
+var partialUpdated = 0;
+for (var pi = 0; pi < partialFiles.length; pi++) {
+  var pPath = partialFiles[pi];
+  var pOrig = fs.readFileSync(pPath, 'utf8');
+  var pNext = injectAllPartials(pOrig);
+  if (pNext !== pOrig) {
+    fs.writeFileSync(pPath, pNext, 'utf8');
+    partialUpdated++;
+  }
+}
+
+// ── 6. Minify JS files ──────────────────────────────
 //  Simple minification: strip comments, collapse whitespace, trim lines.
 function minifyJS(src) {
   // Strip single-line comments but not :// inside strings (e.g. https://)
@@ -1424,4 +1388,5 @@ console.log('  index.html      — ' + availableItems.length + ' available items
 console.log('  sold/index.html — ' + soldItems.length + ' sold items');
 console.log('  listings/       — ' + listingCount + ' individual listing pages generated');
 console.log('  sitemap.xml     — updated with lastmod ' + today());
+console.log('  partials        — ' + partialUpdated + ' HTML files updated via marker injection');
 console.log('  js/             — ' + jsMinCount + ' JS files minified');
