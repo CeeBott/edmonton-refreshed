@@ -1390,13 +1390,16 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   }
 
   /* ── Mobile spacing scale ──
-     Overrides the desktop defaults declared on :root. Body text, cards,
-     FAQ content, related blocks, and CTA sections all draw from the same
-     padding token so nothing feels edge-to-edge on small viewports.
-     Vertical rhythm is intentionally looser than desktop — mobile screens
-     stack content vertically, and tight gaps read as cramped. */
+     Body text, cards, FAQ content, related blocks, and CTA sections all
+     draw from the same padding token. We deliberately keep `--page-x` at
+     24px (the desktop value) on mobile rather than reducing it — many
+     sections previously hardcoded 16px on mobile, which read as
+     edge-to-edge. Holding 24px sitewide bumps every section up to a
+     consistent, breathable inset. `--section-y` goes UP on mobile
+     (80px vs 72px desktop) because stacked content needs more rhythm
+     to feel deliberate. */
   :root {
-    --page-x: 22px;
+    --page-x: 24px;
     --section-y: 80px;
   }
 
@@ -1509,14 +1512,18 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   .listing-collapsible { margin-top: 20px; }
 }
 
-@media (max-width: 400px) {
-  /* Extra-small: tighten horizontal padding slightly so cards/text still get
-     useful content width on 320px–400px viewports, without feeling cramped.
-     Vertical rhythm stays generous. */
+@media (max-width: 360px) {
+  /* Sub-360px viewports only: a small bump down to 20px so 320–360px screens
+     (iPhone SE 1st gen, older Android) don't lose too much content width.
+     iPhone SE/iPhone 12 mini (375px) and modern phones (390px+) stay at the
+     full 24px mobile padding — that's the value the rest of the page rhythm
+     is calibrated against. */
   :root {
     --page-x: 20px;
   }
+}
 
+@media (max-width: 400px) {
   .hero h1 { font-size: 1.5rem; }
   .hero { padding: 48px var(--page-x) 32px; }
 
