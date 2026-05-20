@@ -64,22 +64,18 @@
   }
   </script>
 
-  <!-- FAQPage Schema -->
+  <!-- FAQ_SCHEMA_START id="about" -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "speakable": {
-      "@type": "SpeakableSpecification",
-      "cssSelector": [".faq-answer", ".about-hero p"]
-    },
     "mainEntity": [
       {
         "@type": "Question",
         "name": "Where can I view pieces in Edmonton?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "All available pieces are in Edmonton and viewings are by appointment. There are no set hours — text or call 780-965-1477 and we'll arrange a time that works."
+          "text": "All available pieces are in Edmonton and viewings are by appointment. There are no set hours — text or call 780-965-1477 and we’ll arrange a time that works."
         }
       },
       {
@@ -111,7 +107,7 @@
         "name": "What condition does furniture need to be in?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "We buy pieces with no major damage, significant staining, or structural issues. Minor wear consistent with normal use is fine — we assess each piece honestly and price accordingly. We're transparent about condition in every listing."
+          "text": "We buy pieces with no major damage, significant staining, or structural issues. Minor wear consistent with normal use is fine — we assess each piece honestly and price accordingly. We’re transparent about condition in every listing."
         }
       },
       {
@@ -119,7 +115,7 @@
         "name": "How do you price the furniture you sell?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Pricing reflects the piece's original retail value, brand reputation, age, and current condition. We research comparable sales and aim to price fairly — offering genuine value versus retail while ensuring the quality justifies the price."
+          "text": "Pricing reflects the piece’s original retail value, brand reputation, age, and current condition. We research comparable sales and aim to price fairly — offering genuine value versus retail while ensuring the quality justifies the price."
         }
       },
       {
@@ -133,6 +129,7 @@
     ]
   }
   </script>
+  <!-- FAQ_SCHEMA_END -->
 
   <!-- Organization Schema -->
   <script type="application/ld+json">
@@ -170,7 +167,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="../css/styles.min.css?v=56">
+  <link rel="stylesheet" href="../css/styles.min.css?v=8ba3ecd8">
   <meta name="theme-color" content="#2c2c2c">
 </head>
 <body>
@@ -302,34 +299,36 @@
         <div class="about-section">
           <h2>Frequently Asked Questions</h2>
           <div class="faq-list">
-            <div class="faq-item">
-              <h3 class="faq-question">Where can I view pieces?</h3>
-              <div class="faq-answer">All available pieces are in Edmonton. Viewings are by appointment &mdash; there are no set hours. Text or call 780-965-1477 and we&rsquo;ll arrange a time that works.</div>
-            </div>
-            <div class="faq-item">
-              <h3 class="faq-question">What brands do you carry?</h3>
-              <div class="faq-answer">We focus on well-built pieces from recognized makers: Natuzzi, B&amp;B Italia, La-Z-Boy, Rove Concepts, Brentwood Classics, Crate &amp; Barrel, Urban Barn, EQ3, American Leather, and similar. If it&rsquo;s a well-built piece from a known manufacturer, we&rsquo;re likely interested.</div>
-            </div>
-            <div class="faq-item">
-              <h3 class="faq-question">Do you deliver?</h3>
-              <div class="faq-answer">Delivery is available at an additional fee determined by distance to your home from our location, and complexity of delivery - are you in an apartment? Or is your desired room located anywhere other than the main floor of your home? This is the main factor determining complexity, but not the only one.</div>
-            </div>
-            <div class="faq-item">
-              <h3 class="faq-question">How do I sell my sofa or sectional?</h3>
-              <div class="faq-answer">Text or email photos along with the brand, approximate age, and any condition notes. We respond within 24 hours. If we proceed, we handle pickup at your convenience and pay cash or e-transfer on the spot. See the <a href="/sell/">Sell Your Furniture</a> page for details.</div>
-            </div>
-            <div class="faq-item">
-              <h3 class="faq-question">What condition does a piece need to be in?</h3>
-              <div class="faq-answer">No major damage, significant staining, or structural problems. Normal wear consistent with age is fine &mdash; we assess each piece honestly and price it accordingly. We&rsquo;re transparent about condition in every listing.</div>
-            </div>
-            <div class="faq-item">
-              <h3 class="faq-question">How do you set prices?</h3>
-              <div class="faq-answer">Based on original retail value, brand, age, and current condition. We research comparable listings and price to offer genuine value without overpaying or underpricing. Descriptions include what you&rsquo;d pay new so you can judge the savings yourself.</div>
-            </div>
-            <div class="faq-item">
-              <h3 class="faq-question">Do you serve areas outside Edmonton?</h3>
-              <div class="faq-answer">Yes. We regularly work with buyers and sellers from St. Albert, Sherwood Park, Spruce Grove, Leduc, and Fort Saskatchewan, as well as all areas of Edmonton.</div>
-            </div>
+            <!-- FAQ_VISIBLE_START id="about" -->
+          <div class="faq-item">
+            <h3 class="faq-question">Where can I view pieces?</h3>
+            <p class="faq-answer">All available pieces are in Edmonton. Viewings are by appointment &mdash; there are no set hours. Text or call 780-965-1477 and we&rsquo;ll arrange a time that works.</p>
+          </div>
+          <div class="faq-item">
+            <h3 class="faq-question">What brands do you carry?</h3>
+            <p class="faq-answer">We focus on well-built pieces from recognized makers: Natuzzi, B&amp;B Italia, La-Z-Boy, Rove Concepts, Brentwood Classics, Crate &amp; Barrel, Urban Barn, EQ3, American Leather, and similar. If it&rsquo;s a well-built piece from a known manufacturer, we&rsquo;re likely interested.</p>
+          </div>
+          <div class="faq-item">
+            <h3 class="faq-question">Do you deliver?</h3>
+            <p class="faq-answer">Delivery is available at an additional fee determined by distance to your home from our location, and complexity of delivery - are you in an apartment? Or is your desired room located anywhere other than the main floor of your home? This is the main factor determining complexity, but not the only one.</p>
+          </div>
+          <div class="faq-item">
+            <h3 class="faq-question">How do I sell my sofa or sectional?</h3>
+            <p class="faq-answer">Text or email photos along with the brand, approximate age, and any condition notes. We respond within 24 hours. If we proceed, we handle pickup at your convenience and pay cash or e-transfer on the spot. See the <a href="/sell/">Sell Your Furniture</a> page for details.</p>
+          </div>
+          <div class="faq-item">
+            <h3 class="faq-question">What condition does a piece need to be in?</h3>
+            <p class="faq-answer">No major damage, significant staining, or structural problems. Normal wear consistent with age is fine &mdash; we assess each piece honestly and price it accordingly. We&rsquo;re transparent about condition in every listing.</p>
+          </div>
+          <div class="faq-item">
+            <h3 class="faq-question">How do you set prices?</h3>
+            <p class="faq-answer">Based on original retail value, brand, age, and current condition. We research comparable listings and price to offer genuine value without overpaying or underpricing. Descriptions include what you&rsquo;d pay new so you can judge the savings yourself.</p>
+          </div>
+          <div class="faq-item">
+            <h3 class="faq-question">Do you serve areas outside Edmonton?</h3>
+            <p class="faq-answer">Yes. We regularly work with buyers and sellers from St. Albert, Sherwood Park, Spruce Grove, Leduc, and Fort Saskatchewan, as well as all areas of Edmonton.</p>
+          </div>
+          <!-- FAQ_VISIBLE_END -->
           </div>
         </div>
 
@@ -423,7 +422,7 @@
   </footer>
   <!-- FOOTER_END -->
 
-  <script src="../js/shared.min.js?v=31"></script>
+  <script src="../js/shared.min.js?v=0b7831bd"></script>
 
 </body>
 </html>

@@ -1,16 +1,240 @@
-# Edmonton Refreshed — Project Guide
+# Edmonton Refreshed — Operating Manual
 
-Static site for a curated pre-owned furniture dealer in Edmonton, AB. Built with vanilla HTML/CSS/JS and a Node.js build script. Hosted on GitHub Pages — Collin handles all pushes to `main`; see the **Deploy** section.
+Canonical engineering, SEO, and operations handbook for the Edmonton Refreshed
+codebase and business systems.
 
-## Architecture
+---
+
+## Reading This Document
+
+This file is organized so that the most stable information sits at the top and
+the most frequently changing information sits lower:
+
+1. **Header / Meta** — what this document is and how it is maintained.
+2. **Business Vision & Strategic Direction** — durable strategic intent.
+3. **Core Architectural Principles** — foundational invariants. Rarely changes.
+4. **Repository Architecture** — system topology, ownership, data flow.
+5. **Canonical Conventions** — the single authoritative source for every recurring rule.
+6. **SEO & Discovery Systems** — *why* the site is shaped the way it is.
+7. **UI & Layout Architecture** — frontend layout philosophy and invariants.
+8. **Operational Playbooks** — mutable step-by-step workflows.
+9. **Historical Notes & Gotchas** — institutional memory and known quirks.
+10. **Deprecated Patterns** — quarantined obsolete approaches.
+
+**Weight labels.** Where helpful, content is tagged so not everything reads as
+equally important:
+
+- `[Core Invariant]` — foundational; changing it is a major architectural decision.
+- `[Canonical]` — the authoritative definition of a rule; do not restate it elsewhere.
+- `[Operational]` — a mutable workflow expected to evolve.
+- `[Historical]` — preserved context, not active guidance.
+- `[Deprecated]` — do not use for new implementation.
+
+When a rule is referenced from a workflow, the workflow points to its canonical
+home rather than restating it (e.g., "see Canonical Conventions → Image
+Standards").
+
+---
+
+# 1. Header / Meta
+
+## 1.1 Document Purpose & Authority
+
+This `CLAUDE.md` is the **single canonical operating manual** for Edmonton
+Refreshed — a static site for a curated pre-owned furniture dealer in Edmonton,
+AB, built with vanilla HTML/CSS/JS and a Node.js build script, hosted on GitHub
+Pages.
+
+It is the source of truth for every convention on the site: schemas, build
+rules, file layout, data shapes, workflows, SEO architecture, layout
+architecture, and asset versions. Where the document and the codebase disagree,
+that is a bug in one of them — see §1.3.
+
+The document is a **single file** by design and should remain one unless a
+compelling future reason to modularize emerges.
+
+## 1.2 Documentation Is Part of the Work
+
+Documentation maintenance is part of implementation, not a follow-up task. A
+change that ships without the corresponding documentation update is a
+half-finished change.
+
+When a system evolves, the full unit of work is:
+
+1. Update the implementation.
+2. Update the canonical section of this document.
+3. Relocate or deprecate any obsolete guidance (move it to §9 or §10).
+4. Eliminate any duplication the change introduced.
+5. Preserve the rationale — record *why*, not only *what*.
+
+## 1.3 Canonical-Source Philosophy
+
+This document is infrastructure. Treat unnecessary growth as architectural debt.
+
+- **Do not** treat the file as append-only. Prefer consolidation, replacement,
+  refactoring, and canonicalization over accumulation, repeated clarifications,
+  and scattered exceptions.
+- **No duplicate canonical rules.** Each recurring rule has exactly one
+  canonical explanation, which lives in §5. Other sections reference it.
+- **Separate current truth from history.** When a system changes, update the
+  canonical section and move the old guidance to §9 (Historical) or §10
+  (Deprecated). Never leave old and new logic intermixed.
+- **Preserve rationale.** Important systems document what, why, and exceptions —
+  not implementation steps alone.
+- **Every new system needs a canonical home.** Before adding guidance, ask
+  where it belongs permanently. Never append randomly.
+- **Avoid snapshot data in narrative.** Rapidly changing values (asset
+  versions, counts, metrics) are centralized — see §5.7 and §2.4 — rather than
+  scattered through prose.
+
+When uncertain whether information is canonical, operational, historical, or
+deprecated, **preserve it** by relocating it to the most appropriate section
+rather than deleting it.
+
+## 1.4 Maintenance Protocol
+
+- If you notice drift between this file and the codebase during any session,
+  fix the documentation before continuing the original task. The same standard
+  of accuracy that applies to code applies to this file.
+- Periodically (treat it like a quarterly infrastructure pass) do a dedicated
+  refactor: merge duplicates, relocate legacy notes, simplify wording, verify
+  that canonicals are still accurate, remove drift, and consolidate overlapping
+  systems.
+- Strategic direction (§2) may only be changed by explicit human direction —
+  see §2.3.
+
+---
+
+# 2. Business Vision & Strategic Direction
+
+> Strategic context in this section may only be modified by explicit human
+> direction. See §2.3 for what AI systems may and may not do here.
+
+## 2.1 What This Business Is
+
+Edmonton Refreshed is a curated pre-owned furniture reseller in Edmonton, AB.
+The owner (Collin Bottrell) buys quality pieces outright from sellers, inspects
+and cleans them, photographs them, prices them against market value, and
+resells with delivery.
+
+The key differentiator versus Facebook Marketplace / Kijiji is **curation,
+accountability, and convenience** — on both the buy side and the sell side.
+Primary inventory is sofas, sectionals, and seating from recognized brands.
+When brands are listed, top-tier names lead: B&B Italia, Natuzzi, Rove
+Concepts, Crate & Barrel, EQ3, West Elm, American Leather. La-Z-Boy is accepted
+selectively and represents the lower end of what the business takes — it should
+appear at the end of any brand list, never as the primary example.
+
+## 2.2 Strategic Direction
+
+The platform is intended to evolve toward higher-trust, higher-signal local
+commerce systems for premium secondhand furniture.
+
+Long-term possibilities **may** include multi-city operations,
+facilitator/curation systems, seller qualification systems, and
+transaction-quality infrastructure. However:
+
+- Future organizational structure is intentionally undefined.
+- Marketplace expansion is **not** a committed roadmap item.
+- Preserving trust and signal quality is more important than maximizing
+  inventory volume.
+
+The platform should **not** evolve toward open classifieds systems, low-quality
+inventory aggregation, engagement-driven marketplace mechanics, or spam-heavy
+user-generated ecosystems.
+
+## 2.3 Constraints on AI-Authored Strategy
+
+AI systems working in this document **may** reorganize, clarify, compress, and
+cross-reference strategic content.
+
+AI systems **may not** invent strategic direction, infer roadmap commitments,
+extrapolate business models, fabricate market positioning, or synthesize
+startup narratives. Do not include startup hype, motivational fluff,
+unrealistic projections, or vanity metrics.
+
+## 2.4 Durable Strategic Principles
+
+These principles remain durable unless intentionally redefined by human
+direction:
+
+- Trust-first commerce.
+- High-signal inventory over volume.
+- Curated quality.
+- SEO integrity.
+- Structured, deliberate presentation.
+- Operational seriousness.
+- Transaction quality over engagement metrics.
+
+> **Volatile business data is not stored here.** Live counts (pieces sold /
+> bought), rating, and offer range live in `config/site.js` and render into the
+> credibility strip and schemas. Update them there once; do not hardcode them
+> into narrative documentation.
+
+---
+
+# 3. Core Architectural Principles
+
+`[Core Invariant]` — This section defines foundational system behavior and
+should rarely change. Implementation details may evolve; the reasoning behind
+these decisions is preserved even when it does.
+
+- **Static-site-first.** The site is plain static HTML/CSS/JS. There is no
+  runtime server for page rendering. This keeps hosting trivial (GitHub Pages),
+  keeps the site fast, and keeps it fully crawlable.
+
+- **Deterministic build.** `build.js` is the single build step. Running it
+  regenerates all derived artifacts deterministically from source data and
+  partials. Generated files are never hand-edited; source files and partials
+  are. See §4.
+
+- **Vanilla stack preference.** No frameworks, no bundler beyond the in-house
+  minification in `build.js`. New work should stay within vanilla
+  HTML/CSS/JS unless there is a compelling reason otherwise.
+
+- **SEO-first architecture.** The site's structure exists to be discovered.
+  Structured data, local-search signals, semantic markup, static fallbacks for
+  crawlers, and a long-tail page taxonomy are first-class architectural
+  concerns, not afterthoughts. See §6 for the reasoning.
+
+- **Local-first SEO strategy.** Edmonton is the anchor. URLs, copy, schema, and
+  locale signals all reinforce the Edmonton/Alberta/Canada signal. See §6.1.
+
+- **Structured-data philosophy.** Every page carries structured data in
+  `<head>`. This is one of the strongest discoverability levers available and
+  is kept current as a matter of course. See §5.4 and §6.4.
+
+- **Single sources of truth.** Recurring content (city, contact, stats, brand
+  statement, taxonomy of brands / furniture types / situations) lives in
+  `config/` and is rendered everywhere from there. No content is duplicated
+  across pages by hand. See §4.4.
+
+- **Partial injection architecture.** Sitewide layout blocks (nav, credibility
+  strip, footer) are generated from `partials/` and injected at build time into
+  every page that carries the marker comments. This eliminates the
+  "update every copy" maintenance pattern. See §4.5.
+
+- **Documentation as infrastructure.** This file is maintained to the same
+  standard as production code. See §1.
+
+- **Maintainability and scalability.** Conventions exist so the site can grow
+  (more inventory, more guides, more landing pages, eventually more cities)
+  without proportional growth in manual effort. The multi-city path is a fork
+  of `config/site.js`, not a rewrite — see §4.4.
+
+---
+
+# 4. Repository Architecture
+
+## 4.1 File & Directory Map
 
 ```
 index.html              Homepage (available inventory, reviews, FAQ)
 about/index.html        About page
 sold/index.html         Sold inventory archive
 sell/index.html         Sell-your-furniture page (main hub)
-sell/[slug]-edmonton/   Brand-specific, piece-type, and situational sell landing pages
-                          (manually maintained; see "Sell-side landing pages" below)
+sell/[slug]-edmonton/   Brand, piece-type, and situational sell landing pages
+                          (manually maintained — see §5.10)
 privacy/index.html      Privacy policy
 404.html                Custom 404
 listings/[slug]/        Individual listing pages (auto-generated by build.js)
@@ -23,77 +247,118 @@ js/shared.js            Carousel, lightbox, GA4 tracking, mobile nav, nav dropdo
 js/sell-form.js         Sell-form handler (used on /sell/ and every sell landing page)
 js/*.min.js             Minified JS bundles (regenerated by build.js)
 css/styles.css          Source stylesheet
-css/styles.min.css      Minified stylesheet (regenerate after any CSS edit)
+css/styles.min.css      Minified stylesheet (regenerated by build.js)
 images/[XX-NNN]/        Per-piece image folders. Each .jpeg has matching
                           -400w.jpeg / -800w.jpeg / .jpeg full-size variants,
                           PLUS .webp / -400w.webp / -800w.webp and
                           .avif / -400w.avif / -800w.avif companions.
 images/Sold Inventory/  Same structure, archived after sale
-build.js                Build script — regenerates static HTML, schemas, listing pages, sitemap, minified JS
-sitemap.xml             Auto-generated by build.js (root, sold, sell, sell landing pages,
-                          about, privacy, guides index, individual guides, listings)
-config/site.js          Site-wide config: city, contact, brand statement, business stats
-config/taxonomy.js      Single source of truth for brands, furniture types, and seller
-                          situations — drives nav dropdown + footer columns + sell-landing URLs
+build.js                Build script — regenerates static HTML, schemas,
+                          listing pages, sitemap, minified JS + CSS
+sitemap.xml             Auto-generated by build.js
+.build-state.json       Sidecar: per-URL content hash + lastmod (committed)
+config/site.js          Site-wide config: city, contact, brand statement, stats
+config/taxonomy.js      Single source of truth for brands, furniture types,
+                          and seller situations
+config/faqs.js          FAQ source of truth for homepage / sell hub / about
 partials/nav.js         renderNav() — sitewide top navigation
 partials/footer.js      renderFooter() — sitewide global footer
-partials/credibility.js renderCredibility(variant) — buyer / seller / listing variants
+partials/credibility.js renderCredibility(variant) — buyer / seller / listing
+worker/index.js         Cloudflare Worker — sell-form handler
+worker/wrangler.toml    Worker deploy config
+llms.txt                Plain-text business summary for LLM crawlers
 ```
 
-## Build
+## 4.2 Generated vs Authored Files
 
-After **any** change to data files or build.js, run:
+**Authored (edit these):** all `js/*.js` source files, `css/styles.css`,
+`config/*.js`, `partials/*.js`, `build.js`, `worker/*`, all manually maintained
+HTML pages (`about/`, `sell/index.html`, every `sell/[slug]-edmonton/`,
+`privacy/`, `404.html`, `guides/index.html`, every `guides/[slug]/`), and
+sold-stub / redirect-stub listing pages.
 
-```
-node build.js
-```
+**Generated by `build.js` (never hand-edit):** `index.html` and
+`sold/index.html` content between marker comments, all active
+`listings/[slug]/index.html` pages, `sitemap.xml`, `.build-state.json`,
+`css/styles.min.css`, all `js/*.min.js` bundles, the nav / credibility /
+footer blocks inside every page's marker pairs, every `?v=…` query string,
+and the FAQ visible/schema blocks between `FAQ_VISIBLE_*` / `FAQ_SCHEMA_*`
+markers on the homepage, sell hub, and about page.
 
-This regenerates:
-- `index.html` — static fallback cards + Product schemas + LCP preload, between marker comments
-- `sold/index.html` — static fallback sold cards
-- `listings/*/index.html` — individual listing pages (one per non-coming-soon item)
-- `sitemap.xml` — all page URLs with `lastmod` set to today's date
-- **Partial injection** — walks every `*.html` file in the repo and rewrites the
+`.build-state.json` is the sidecar that powers content-hash sitemap
+freshness — commit it alongside source so dates persist across machines.
+See §5.8.
+
+## 4.3 `build.js` Responsibilities
+
+Running `node build.js` regenerates, in one deterministic pass:
+
+- **Assets** — `css/styles.min.css` and every `js/*.min.js` bundle are
+  minified from their source files. Each minified bundle gets a short
+  content hash (first 8 hex of SHA-256) injected automatically as a `?v=…`
+  query string everywhere it's referenced. No manual version registry.
+- `index.html` — static fallback cards + `Product` schemas + LCP preload,
+  between marker comments.
+- `sold/index.html` — static fallback sold cards.
+- `listings/*/index.html` — one individual listing page per non-coming-soon
+  available item.
+- **FAQ injection** — `index.html`, `sell/index.html`, and `about/index.html`
+  have FAQ visible markup and `FAQPage` JSON-LD generated from
+  `config/faqs.js` between marker pairs. Visible and schema cannot drift —
+  they share one source. See §5.7.
+- `sitemap.xml` — driven by `config/taxonomy.js` (sell cluster) plus
+  filesystem discovery of `guides/*/index.html` and the active listings.
+  `<lastmod>` only advances when a page's canonical content actually
+  changes; pure rebuilds leave dates stable. See §5.8.
+- **Partial injection** — walks every `*.html` file in the repo and rewrites
   content between `<!-- NAV_START -->`/`<!-- NAV_END -->`,
   `<!-- CREDIBILITY_START variant="..." -->`/`<!-- CREDIBILITY_END -->`, and
-  `<!-- FOOTER_START -->`/`<!-- FOOTER_END -->` markers from the partials in
-  `partials/`. Files without a given marker pair are left alone for that
-  partial (so 404 has no credibility, redirect stubs have no markers at all).
-- `js/shared.min.js`, `js/available-data.min.js`, `js/sold-data.min.js`, `js/reviews-data.min.js`, `js/sell-form.min.js` — minified bundles
+  `<!-- FOOTER_START -->`/`<!-- FOOTER_END -->` markers from `partials/`. The
+  same walk rewrites every `?v=…` query string to the current asset hash.
+  Files without a given marker pair are left untouched for that partial (404
+  has no credibility; redirect stubs have no markers at all). Manually
+  authored content outside marker pairs is preserved exactly.
 
-The build script edits **every** HTML file that carries partial markers (nav,
-credibility, footer). Manually authored content outside the marker pairs is
-preserved untouched. Guide articles still require a manual `dateModified` bump
-in their Article schema when their body content changes — see **Schema &
-dateModified Standards** below.
+The marker matcher parses any attributes on the start tag, so adding new
+credibility variant slots later is a one-line change in the partial.
 
-## Sitewide layout partials (nav, credibility, footer)
+`build.js` does **not** regenerate guide article bodies — guide `dateModified`
+values are bumped manually (see §5.4).
+
+## 4.4 Config Ownership (`config/`)
+
+`[Core Invariant]` — These files are the single sources of truth that drive
+everything generated.
+
+- **`config/site.js`** — city, contact, brand statement, and business stats
+  (`piecesSold`, `piecesBought`, `rating`, `offerRange`). `citySlug` drives
+  every URL template in the taxonomy and the credibility-strip city name.
+  **Multi-city future:** forking the repo for a new city is "edit `site.js`,
+  swap the content data files, rebuild" — not a mass find/replace.
+
+- **`config/taxonomy.js`** — `brands`, `furnitureTypes`, and `situations`
+  arrays. Each entry is `{ name, nav, slug, displayName? }`. Adding an entry
+  automatically threads the page into the nav dropdown, the matching footer
+  column, and the sitemap. Array order is the render order everywhere.
+
+- **`config/faqs.js`** — `home`, `sell`, and `about` FAQ arrays. Each entry
+  produces BOTH the visible `.faq-item` markup and the `FAQPage` JSON-LD
+  schema on its corresponding page. See §5.7.
+
+## 4.5 Partial Injection System (`partials/`)
 
 Three sitewide blocks are generated from `partials/` and injected at build
-time, with all underlying content driven by `config/`. This eliminates the
-"update every copy" pattern that previously applied whenever a new sell-side
-landing page or footer link was added.
+time, with underlying content driven by `config/`. Each partial is a
+`render*()` function taking config + context.
 
-**Single source of truth:**
-- `config/site.js` — city, contact, brand statement, stats (`piecesSold`,
-  `piecesBought`, `rating`, `offerRange`). To spin up a new city deployment,
-  fork this file — URL templates in taxonomy use `citySlug` so every link
-  rewrites automatically.
-- `config/taxonomy.js` — `brands`, `furnitureTypes`, `situations`. Each entry
-  is `{ name, nav, slug, displayName? }`. Adding an entry here automatically
-  adds it to the nav dropdown, the matching footer column, and the sitemap
-  helper. Order in this file is the order rendered everywhere.
-
-**Partials (each is a `render*()` function that takes config + context):**
-- `partials/nav.js` — `renderNav()`. No variants. Active state is applied
+- **`partials/nav.js`** — `renderNav()`. No variants. Active state is applied
   client-side by `shared.js` via `data-page` attributes.
-- `partials/footer.js` — `renderFooter()`. No variants.
-- `partials/credibility.js` — `renderCredibility(variant)`. Three variants:
-  - `buyer` (default) — `41+ Pieces Sold | ★ 4.9 Rating | Proudly Edmonton Owned & Operated`. Used on `index.html`, `sold/`, `about/`, `guides/`, every guide article, `privacy/`.
-  - `seller` — `41+ Pieces Bought | ★ 4.9 Rating | Proudly Edmonton Owned & Operated | Most Offers $500–$2,500`. Used on `sell/` + every `sell/[slug]-edmonton/`.
-  - `listing` — `We Deliver Anywhere in Edmonton and the Surrounding Area`. Used on every active listing page and sold-stub listing.
+- **`partials/footer.js`** — `renderFooter()`. No variants.
+- **`partials/credibility.js`** — `renderCredibility(variant)`. Three variants;
+  see §5.9 for the canonical variant definitions.
 
-**Marker form (in manually-maintained pages):**
+**Marker form** (in manually maintained pages):
+
 ```html
 <!-- NAV_START -->
 …(rewritten by build.js)…
@@ -108,237 +373,1051 @@ landing page or footer link was added.
 <!-- FOOTER_END -->
 ```
 
-The build script's marker matcher parses any attributes on the start tag,
-so adding new variant slots later is a one-line change in the partial.
+Listing pages (generated entirely by `build.js`) call the partial functions
+directly inside the listing template — no markers needed in the output.
 
-**Listing pages** (generated entirely by `build.js`) call the partial
-functions directly inside the listing template — no markers needed in the
-output.
+To rename a footer heading, swap an offer line, or change brand-statement copy,
+edit the partial or config once and rebuild — never per-page.
 
-**To add a new sell-side landing page:**
-1. Add an entry to `config/taxonomy.js` (in the right array — brands /
-   furnitureTypes / situations) with `{ name, nav, slug, displayName? }`.
-2. Create the HTML file at `sell/[slug]-edmonton/index.html` with the marker
-   comments around nav, credibility (`variant="seller"`), and footer blocks.
-3. Run `node build.js` — nav dropdown, footer columns, and sitemap update
-   automatically across the entire site.
+## 4.6 Asset Pipeline
 
-**To rename a footer heading, swap an offer line, change copy in the brand
-statement,** etc. — edit the partial or config once and rebuild. No per-page
-edits.
+- **Images** — every per-piece `.jpeg` is accompanied by responsive variants in
+  three formats (AVIF, WebP, JPEG) at three sizes (400w, 800w, full). See §5.3
+  for the canonical image standard. `build.js` references all formats via
+  `<picture>` tags.
+- **JavaScript** — source `js/*.js` files are minified into `js/*.min.js` by
+  `build.js` on every run.
+- **CSS** — `css/styles.css` is minified into `css/styles.min.css` by
+  `build.js` on every run.
+- **Cache-busting** — all minified assets are referenced with `?v=<hash>`
+  query strings where `<hash>` is the first 8 hex of SHA-256 over the
+  minified content. `build.js` computes the hash on every run and rewrites
+  every reference across every HTML file. Editing source bumps the hash
+  automatically; no manual version tracking. See §5.7.
 
-**Multi-city future:** `config/site.js` `citySlug` drives every URL in the
-taxonomy and the credibility-strip city name. Forking the repo for a new
-city is "edit `site.js`, swap content data files, rebuild" rather than a
-mass find/replace.
+## 4.7 Worker Architecture (`worker/`)
 
-## Keeping This File Current
+The sell form posts to a Cloudflare Worker (`worker/index.js`, deployed at
+`https://edmonton-refreshed-sell.cbottrell1990.workers.dev/`). The Worker
+validates the submission, applies spam defenses, and forwards valid leads to
+`info@edmontonrefreshed.com` via Resend. See §5.11 for the canonical worker
+contract and spam-defense rules, and §8.11 for the deploy procedure.
 
-This `CLAUDE.md` is the source of truth for every convention on this site — schemas, build rules, file layout, data shapes, workflows, cache versions. Whenever a new convention is introduced or an existing one changes — a new schema added to a page type, a new field added to the inventory data, a new build step, a new manually maintained page, a new image format, a CSS or JS cache version bump, a new rule for sold-stub listings, a new guide article workflow, a new component on listing pages, anything — `CLAUDE.md` must be updated in the same change.
+## 4.8 Deployment Architecture
 
-The documentation update is part of the work, not a follow-up task. A change that ships without the corresponding doc update is a half-finished change.
+The static site and the Worker deploy **independently**:
 
-If you notice drift between what this file describes and what the codebase actually does during any session, fix the doc before continuing the original task. The same standard of accuracy that applies to the code applies to this file.
+- **Static site** — GitHub Pages auto-deploys from the `main` branch within
+  ~60 seconds of a push. Collin handles all pushes personally.
+- **Worker** — deployed separately from the `worker/` directory via
+  `wrangler deploy`. Pushing to `main` does **not** redeploy the Worker.
 
-## Common Workflows
+See §8.12 for the deploy playbook and the AI/Collin responsibility boundary.
 
-### Change a price
+---
 
-1. Edit `js/available-data.js` — change the `price` field on the item
-2. Run `node build.js`
-3. Commit the changes. Collin handles pushing to GitHub.
+# 5. Canonical Conventions
 
-The build regenerates the homepage Product schema, the static fallback card, and the individual listing page — all with the new price.
+`[Canonical]` — This is the authoritative source for every recurring rule. If a
+rule appears to be needed elsewhere, reference this section rather than
+restating it.
 
-### Add new available inventory
+## 5.1 URL & Slug Conventions
 
-1. **Create image folder**: `images/XX-NNN/` where `XX` is a brand abbreviation and `NNN` is the next sequential number (check existing folders for the current highest). Examples: `BB-030` (B&B Italia), `LB-041` (La-Z-Boy), `RC-043` (Rove Concepts), `NE-040` (Natuzzi Editions).
+- **Listing slugs** follow `{brand}-{model}-{piece-type}-edmonton` — lowercase,
+  hyphens, no special characters. Examples:
+  `b-b-italia-charles-sectional-edmonton`,
+  `la-z-boy-roundabout-ottoman-edmonton`. The trailing `-edmonton` reinforces
+  the local-search signal and prevents collisions with broader queries. Set the
+  `slug` explicitly on every new listing; the `build.js` auto-generated
+  fallback (brand + title) rarely reads cleanly.
+- **Guide slugs** are a URL-friendly version of the title — lowercase, hyphens,
+  no stop words. Example: `how-to-buy-used-sofa-edmonton`.
+- **Sell landing pages** live at `sell/[slug]-edmonton/`. The `slug` comes from
+  the matching `config/taxonomy.js` entry.
+- **Changing a listing slug** preserves the old URL's indexed equity via a
+  redirect stub — see §8.7. Never simply delete a URL that may be indexed.
 
-2. **Name images**: `brand-slug-NN.jpeg` (e.g., `natuzzi-editions-01.jpeg`, `la-z-boy-07.jpeg`). The first image listed in the data array is the cover photo.
+## 5.2 Currency
 
-3. **Generate responsive variants** for each image. The site serves AVIF first, WebP as fallback, JPEG as final fallback — every original needs all three formats at 400w, 800w, and full size:
+`[Core Invariant]` — **Every price on the site is in Canadian Dollars (CAD).**
+This is a Canadian business serving Edmonton; no other currency ever appears.
+The convention applies in three layers:
+
+1. **Schemas (machine-readable).** Every `Offer` uses `"priceCurrency": "CAD"`;
+   every `MonetaryAmount` (shipping rate, etc.) uses `"currency": "CAD"`. Every
+   `Offer` carries `eligibleRegion` and `areaServed` set to
+   `{ "@type": "Country", "name": "CA" }`. `MerchantReturnPolicy.applicableCountry`
+   and `shippingDestination.addressCountry` are both `"CA"`.
+
+2. **Locale signals (machine-readable).** `<html lang="en-CA">` on every page
+   (not bare `en`). `<meta property="og:locale" content="en_CA">`.
+   `<meta name="geo.region" content="CA-AB">` and
+   `<meta name="geo.placename" content="Edmonton">`. `Organization` /
+   `FurnitureStore` schemas include `address.addressCountry: "CA"`.
+
+3. **Visible text (human-readable).** Every visible price renders with a
+   trailing ` CAD`. Google's rich-result snippets and AI overviews often read
+   visible text rather than schema, and an unlabeled `$3,900` reads as USD to a
+   non-Canadian crawler. The CAD suffix is appended at the **rendering layer**,
+   never stored in data:
+   - **Data shape.** `price` and `retailEstimate` are stored as **pure
+     numbers** (e.g. `price: 7500`, `retailEstimate: 28000`) — no `$`, no
+     thousands separator, no string quoting. Schemas use the numeric value
+     directly; visible markup goes through a render-time formatter.
+   - **The render-time helper.** `formatPrice(n)` lives in `build.js`
+     (server-side) and `js/available-data.js` (browser-side). It uses
+     `Intl.NumberFormat('en-CA', { maximumFractionDigits: 0 })` and returns
+     `"$X,XXX"`. The CAD suffix is appended at the markup boundary as
+     `<span class="card-price-currency">CAD</span>` or literal ` CAD`.
+   - Homepage cards: `js/available-data.js` `renderAvailable()` and `build.js`
+     `generateAvailableHTML()` both wrap the price as
+     `$X,XXX <span class="card-price-currency">CAD</span>`.
+   - Listing pages: `build.js` `generateListingPage()` emits
+     `<div class="listing-price">$X,XXX <span class="listing-price-currency">CAD</span></div>`,
+     the value pill (`pill-retail` / `pill-now`) gets ` CAD` appended to each
+     side, and the sticky mobile CTA reads `Text to Secure → $X,XXX CAD`.
+
+Any new visible price surface must call `formatPrice()` and append ` CAD`;
+any new schema with a price/monetary field uses the numeric value directly
+with `priceCurrency: "CAD"`.
+
+## 5.3 Image Standards
+
+Every per-piece original `.jpeg` requires responsive variants because the site
+serves **AVIF first, WebP fallback, JPEG final fallback** via `<picture>` tags.
+Every original needs all three formats at 400w, 800w, and full size.
+
+Generation command (run from repo root):
+
+```bash
+for img in images/XX-NNN/*.jpeg; do
+  base="${img%.jpeg}"
+  # JPEG: 400w + 800w (original full-size .jpeg already exists)
+  convert "$img" -resize 400x -quality 82 "${base}-400w.jpeg"
+  convert "$img" -resize 800x -quality 82 "${base}-800w.jpeg"
+  # WebP: full + 400w + 800w
+  convert "$img"             -quality 80 "${base}.webp"
+  convert "$img" -resize 400x -quality 80 "${base}-400w.webp"
+  convert "$img" -resize 800x -quality 80 "${base}-800w.webp"
+  # AVIF: full + 400w + 800w (powers LCP preload + <picture> primary source)
+  convert "$img"             -quality 55 "${base}.avif"
+  convert "$img" -resize 400x -quality 55 "${base}-400w.avif"
+  convert "$img" -resize 800x -quality 55 "${base}-800w.avif"
+done
+```
+
+If a variant is missing on disk the browser falls through to the next format —
+but **missing AVIF disables LCP preload**, so always generate the full set.
+`build.js`'s `srcsetFor()` helper builds the `srcset` attribute. The JS render
+in `available-data.js` does not use `srcset` — it uses full-size images in
+carousels.
+
+**Image folders** are named `images/XX-NNN/` where `XX` is a brand abbreviation
+and `NNN` is the next sequential number. Examples: `BB-030` (B&B Italia),
+`LB-041` (La-Z-Boy), `RC-043` (Rove Concepts), `NE-040` (Natuzzi Editions).
+Individual image files are named `brand-slug-NN.jpeg`. The first image in a
+data array is the cover photo. After a sale the folder moves to
+`images/Sold Inventory/XX-NNN/` (variants move with it).
+
+## 5.4 Schema & `dateModified` Standards
+
+`[Canonical]` — Every page carries structured data in `<head>`. This table is
+the source of truth for which schemas appear on each page type.
+
+| Page | Schemas present in `<head>` |
+|---|---|
+| `index.html` (homepage) | `BreadcrumbList`, `FurnitureStore` (with `aggregateRating` + embedded `review` array), `FAQPage`, plus N `Product` schemas (one per non-coming-soon item, injected between `<!-- PRODUCT_SCHEMA_START -->` and `<!-- PRODUCT_SCHEMA_END -->`) |
+| `about/index.html` | `BreadcrumbList`, `FAQPage`, `Organization` |
+| `sold/index.html` | `BreadcrumbList` |
+| `sell/index.html` | `FurnitureStore` (with `aggregateRating`), `BreadcrumbList`, `FAQPage`, `Service` |
+| `sell/[slug]-edmonton/index.html` | `BreadcrumbList`, `Service` (with `dateModified`), `FAQPage` |
+| `privacy/index.html` | `BreadcrumbList` |
+| `listings/[slug]/index.html` (active) | `Product` (with `offers.availability = InStock`, `offers.priceValidUntil` = today + 90d, optional `offers.availabilityStarts`, `offers.hasMerchantReturnPolicy`, `offers.shippingDetails`, `sku` from image folder, `dateModified`, optional `width`/`depth`/`height` `QuantitativeValue`), `BreadcrumbList`, `FurnitureStore` (LocalBusiness — sitewide), `Organization` (sitewide), optional `FAQPage` (when `item.faq` provided) |
+| `listings/[slug]/index.html` (sold stub) | `Product` (with `offers.availability = SoldOut` — **not** `OutOfStock`), `BreadcrumbList` |
+| `guides/index.html` | `BreadcrumbList`, `CollectionPage` (recommended; verify present) |
+| `guides/[slug]/index.html` | `Article` (with `datePublished` and `dateModified`), `BreadcrumbList`, optional `FAQPage` |
+
+**Schema/visible-content sync.** On the homepage, sell hub, and about page,
+the visible FAQ section AND the `FAQPage` schema are generated from a single
+source — `config/faqs.js`. Edit there; both render in lockstep. See §5.14.
+On every active listing page the `Product` `FAQPage` schema and the visible
+FAQ section are both generated from `item.faq` in `js/available-data.js`
+(see §5.10). The `FurnitureStore` (LocalBusiness) and `Organization`
+schemas on listing pages are constants inside `build.js`
+(`generateListingPage`) — update them there when business info changes
+(phone, address, social profiles, hours); they reinforce the local-Edmonton
+signal on every product URL crawlers hit.
+
+**`dateModified` rule — mandatory.** Whenever any HTML page is edited — content,
+copy, structure, schema, anything — that page's `dateModified` must be updated
+to today's date in ISO format (`YYYY-MM-DD`), even for small changes. Search
+engines weight freshness; a stale `dateModified` misrepresents the site.
+
+How it is handled per page class:
+
+1. **Auto-regenerated by `build.js`.** `index.html`, `sold/index.html`, every
+   active `listings/[slug]/index.html`, and `sitemap.xml`. Date handling lives
+   inside `build.js`:
+   - `sitemap.xml` — `<lastmod>` only advances when the canonical content
+     hash for that URL has changed since the previous build. See §5.15.
+   - Listing-page `Product` schemas — `offers.priceValidUntil` = `today() + 90d`,
+     plus a root `dateModified` of `today()`.
+   - Homepage `FurnitureStore` and marker-injected `Product` schemas — root
+     `dateModified` of `today()`. For the `FurnitureStore` schema that lives in
+     raw HTML, `build.js` regex-updates its `"dateModified"` on every build.
+   - `sell/index.html` `FurnitureStore` schema — same treatment.
+   If `build.js` does not yet do all of the above, treat it as a maintenance
+   gap and fix it; the first build touching a page must bring its
+   `dateModified` current.
+
+2. **Manually maintained pages.** Editing `about/index.html`,
+   `sell/index.html`, `privacy/index.html`, `guides/index.html`,
+   `guides/[slug]/index.html`, or `404.html` requires updating `dateModified`
+   in every schema on that page that supports it (`Article`, `Organization`,
+   `Service`, `CollectionPage`, `WebPage`, etc.). `BreadcrumbList` and
+   `FAQPage` do not natively carry `dateModified` — leave them alone unless
+   wrapped in a `WebPage` that does.
+
+3. **Guide articles.** Update `dateModified` on every save. Update
+   `datePublished` only if the original was wrong.
+
+4. **Verification** (run after any session that touches HTML):
    ```bash
-   for img in images/XX-NNN/*.jpeg; do
-     base="${img%.jpeg}"
-     # JPEG: 400w + 800w (the original full-size .jpeg already exists)
-     convert "$img" -resize 400x -quality 82 "${base}-400w.jpeg"
-     convert "$img" -resize 800x -quality 82 "${base}-800w.jpeg"
-     # WebP: full + 400w + 800w
-     convert "$img"             -quality 80 "${base}.webp"
-     convert "$img" -resize 400x -quality 80 "${base}-400w.webp"
-     convert "$img" -resize 800x -quality 80 "${base}-800w.webp"
-     # AVIF: full + 400w + 800w (powers LCP preload + <picture> primary source)
-     convert "$img"             -quality 55 "${base}.avif"
-     convert "$img" -resize 400x -quality 55 "${base}-400w.avif"
-     convert "$img" -resize 800x -quality 55 "${base}-800w.avif"
-   done
+   grep -rn '"dateModified"' --include="*.html" . | grep -v '"dateModified": "'"$(date +%Y-%m-%d)"'"'
    ```
-   `build.js` will reference all three formats automatically via `<picture>` tags. If any variant is missing on disk, the browser will fall through to the next format — but missing AVIF disables LCP preload, so always generate the full set.
+   Any remaining line pointing to a page you edited this session is a bug.
+   Lines on pages you did not touch are fine.
 
-4. **Add entry to `js/available-data.js`**. Every new listing should include the full standard treatment — slug, metaTitle, metaDescription, availabilityStarts, dimensions, faq — not just the technically required fields. These are what make a listing page rank for transactional queries, render rich snippets, and present the kind of detail buyers and crawlers expect. Skipping them on a new listing means leaving SEO equity on the table.
-   ```javascript
-   {
-     brand: "Brand Name",
-     title: "Model Name — Fabric/Finish/Variant",
-     slug: "brand-name-model-piece-edmonton",     // standard — follow {brand}-{model}-{piece-type}-edmonton for transactional search intent
-     metaTitle: "Pre-Owned Brand Model Piece for Sale in Edmonton",  // standard — lead with "Pre-Owned" + brand + model + piece + city
-     metaDescription: "Pre-owned Brand Model in Edmonton. Professionally inspected and cleaned. Delivery available across Alberta. $X,XXX CAD.",  // standard — keep under 155 chars, include price + CAD
-     availabilityStarts: "2026-05-15",            // standard — ISO date the listing went live, emits offers.availabilityStarts
-     dimensions: { width: "128.75", depth: "90.5", height: "28.75" },  // standard when dimensions are known — emits Product.width/depth/height as QuantitativeValue (inches)
-     description: "Opening paragraph.\n\nSecond paragraph.\n\nThird paragraph.",
-     features: [                                  // optional — renders as a bulleted list with a "Features" label, below the retail pill
-       "Frame construction detail",
-       "Spring/cushion detail",
-       "Leg/finish detail",
-     ],
-     condition: "One or two sentences on structural and cosmetic condition.",   // optional — renders with a "Condition" label below the features list
-     configuration: "What's included. Delivery available for an additional fee.",  // optional — renders with an "Includes" label below condition
-     faq: [                                       // standard — 4–5 questions grounded in real buyer concerns. Emits FAQPage schema + visible section. Plain-text answers only (no HTML entities).
-       { question: "Is this authentic?",          answer: "Yes. Inspected for construction, materials, and manufacturer consistency before listing." },
-       { question: "What condition is it in?",    answer: "..." },
-       { question: "Do you deliver?",             answer: "Yes. Delivery available across Edmonton and Alberta for an additional fee." },
-       { question: "...piece-specific concern...",answer: "..." },
-     ],
-     retailCompare: "Est. Retail: $XX,XXX | Buy it Today: $X,XXX",
-     price: "$X,XXX",
-     specs: [
-       "Brand Name",
-       "000 × 000 × 00 in",                       // one pill per dimension grouping
-       "Seat Depth: 00 in",
-       "Seat Height: 00 in",
-       "Good Condition",                          // brief condition summary
-     ],
-     images: [
-       "images/XX-NNN/slug-01.jpeg",
-       "images/XX-NNN/slug-02.jpeg",
-     ]
-   },
-   ```
-   - `title`: include the full variant name (fabric, finish, colourway) in the title after an em dash, e.g. `"Milo 6-Piece Modular Sectional — Pearl Chatou Bouclé"`. This appears in the H1 and breadcrumb.
-   - `slug` (standard): set this on every new listing using the `{brand}-{model}-{piece-type}-edmonton` pattern (lowercase, hyphens, no special characters). Examples: `b-b-italia-charles-sectional-edmonton`, `la-z-boy-roundabout-ottoman-edmonton`. The trailing `-edmonton` reinforces the local-search signal and prevents collisions with broader queries. When omitted, build.js auto-generates a slug from brand + title, but the auto-generated form rarely reads cleanly — set the slug explicitly.
-   - `description`: use `\n\n` for paragraph breaks — the listing page renders with `white-space: pre-line`. Pure narrative only: what makes this piece notable, fabric/material detail, any standout design or configuration notes. Do not include condition, configuration, includes, or delivery notes here — those go in their own fields.
-   - `features` (optional): array of construction or specification highlights. Renders as a bulleted list under a "Features" label, positioned after the retail pill. Use for frame, spring, cushion, and leg details.
-   - `condition` (optional): plain string describing structural and cosmetic state. Renders under a "Condition" label, below the features list.
-   - `configuration` (optional): what modules/pieces are included, plus the delivery note. Renders under an "Includes" label, below condition.
-   - `metaTitle` (standard): the page `<title>` (also used for OG and Twitter). Lead with `"Pre-Owned {brand} {model} {piece-type} for Sale in Edmonton"`. When omitted, build.js falls back to `"{brand} {clean-title} — Edmonton"` — which is less transactional and shouldn't be relied on for new pieces.
-   - `metaDescription` (standard): the `<meta name="description">` and OG/Twitter description. Under 155 chars. Should include the brand, model, condition status, delivery note, and price + CAD. Custom every time — the auto-generated fallback often truncates mid-sentence.
-   - `availabilityStarts` (standard): ISO date string (`YYYY-MM-DD`) for when the listing went live. Emits `offers.availabilityStarts` in the Product schema as a freshness signal alongside `dateModified`.
-   - `dimensions` (standard when known): `{ width, depth, height }` in inches (strings or numbers). Emitted as Product `width` / `depth` / `height` `QuantitativeValue` blocks with `unitCode: "INH"`. Helps Google's product knowledge panel and shopping experiences. Use the actual measured overall dimensions, not the spec pill text.
-   - `faq` (standard): array of `{ question, answer }` objects — aim for 4–5 questions grounded in real buyer concerns specific to the piece (authenticity, fabric/leather type, removable covers, casters, delivery, warranty, condition). Emits `FAQPage` schema in `<head>` *and* a visible "Frequently Asked Questions" section below the listing body, using the same `.faq-section`/`.faq-list`/`.faq-item` markup as the homepage and guide FAQ — heading text is exactly `"Frequently Asked Questions"` for sitewide uniformity. Answer text must be plain text (no HTML entities — use literal `—`, `"`, etc.).
-   - `retailCompare` (required): renders as a two-part visual pill — left side (muted grey) shows the retail figure, right side (dark background, white text) shows the asking price. The `|` separator is the split point. **Always use the format `"Est. Retail: $X,XXX | Buy it Today: $X,XXX"`.** Use `Est. Retail: $X,XXX+` when the figure is an estimate. The asking price must match the `price` field. **Do not include `CAD`, `CA$`, or `C$` in the string** — the build appends ` CAD` to each side of the pill at render time. See the **Currency** section below for the full convention.
-   - `price` (required): plain dollar string like `"$3,900"`. **No `CAD`, `CA$`, or `C$` suffix** — the renderer appends ` CAD` automatically wherever the price is shown (homepage card, listing page price, sticky CTA).
-   - `specs` array: each element renders as its own grey pill. Include brand, dimensions, seat depth/height as needed, and a brief condition summary (e.g. `"Good Condition"`). Keep each pill short — it appears on both the homepage card and the listing page.
-   - `images` paths are relative to root (no leading `../`).
-   - To list as "Coming Soon" instead, add `comingSoon: true` and set `price: ""`. This shows a badge, hides the price, and skips listing page generation.
+**Schema validation.** Before committing significant schema changes, validate
+with Google's Rich Results Test (`https://search.google.com/test/rich-results`)
+on at least one affected URL. Common breakage: missing required `Product`
+fields (`name`, `image`, `offers.price`, `offers.priceCurrency`), invalid date
+formats, mismatched `availability` values, missing `image` URLs on `Article`.
 
-5. Run `node build.js`
+## 5.5 Metadata Standards
 
-6. Commit all new files (images, variants, data change, generated HTML). Collin handles pushing to GitHub.
+- **Listing pages** — `metaTitle` leads with
+  `"Pre-Owned {brand} {model} {piece-type} for Sale in Edmonton"`;
+  `metaDescription` is under 155 characters and includes brand, model,
+  condition status, delivery note, and price + CAD. Both are custom on every
+  new listing — the `build.js` fallbacks are weaker and may truncate.
+- **Guide pages** — `<title>` is `Article Title | Edmonton Refreshed`;
+  `<meta name="description">` is concise, keyword-rich, under 160 characters.
+- **Open Graph / Twitter** — every page carries OG and Twitter card tags.
+  `og:locale` is `en_CA` (see §5.2).
+- **Seller-page OG copy convention** — every page under `/sell/` (the hub plus
+  every `/sell/[slug]-edmonton/` landing page, including the redirected
+  `american-leather-edmonton` and `bb-italia-edmonton` stubs) leads its
+  `meta name="description"`, `og:description`, and `twitter:description` with
+  the phrase `Skip Marketplace.` followed by a page-specific seller-journey
+  sentence (photos in → offer back → pickup → paid). The supporting sentence
+  describes what the **seller** does and receives ("Send photos"), not what the
+  business does ("We buy"). Buyer-facing pages (homepage, sold, about, listing
+  pages, guides) do **not** use the `Skip Marketplace.` prefix — their OG copy
+  stays focused on what buyers see (curated inventory, brand list, inspection).
 
-### Move a sold item from available to sold
+## 5.6 Heading Hierarchy
+
+Every section heading sitewide uses `<h2 class="section-label">…</h2>` with
+uniform styling (small uppercase tracked type). On desktop all `.section-label`
+headings render visibly. On mobile most are visually hidden (the section's own
+spacing carries hierarchy) — **FAQ section labels are the explicit exception**
+and stay visible at every breakpoint. The mobile reveal rule lives at
+`.faq-section .section-label, .listing-faq .section-label` inside the
+`@media (max-width: 768px)` block in `css/styles.css`.
+
+FAQ section headings always use the exact text `"Frequently Asked Questions"`
+(matching every guide article). Never override `.section-label` per section —
+uniformity matters more than visual variation.
+
+## 5.7 Cache-Busting
+
+Every minified asset is referenced with a `?v=<hash>` query string where
+`<hash>` is the first 8 hex characters of SHA-256 over the minified output.
+`build.js` computes the hash on every run and rewrites every reference
+across every HTML file (including its own listing-page template) so editing
+a CSS or JS source file is enough — the hash bumps itself.
+
+**No manual version registry.** Hash values are not tracked in narrative
+documentation; they change too often and a registry just drifts. The
+canonical current values are emitted in the `build.js` summary line and
+present in every HTML page's asset URLs. To see them, run `node build.js`
+or `grep -h '?v=' index.html`.
+
+## 5.8 Internal Linking Rules
+
+- **Guide → listing.** When a guide body names a specific brand or model,
+  check for a live listing page at `/listings/[slug]/` and wrap the first
+  mention in a contextual anchor. One link per listing per article; links must
+  read naturally in prose, never as promotional inserts. If a guide refers to
+  inventory only in general terms, update the `.guide-cta` instead of inserting
+  mid-article links.
+- **Listing → guide.** `build.js`'s `brandGuideMap` auto-injects a
+  "Read our full [Brand] buyer's guide for Edmonton" link inside the
+  Description collapsible for brands with a published guide. Currently mapped:
+  Natuzzi (and Natuzzi Editions / Natuzzi Italia), B&B Italia, Rove Concepts.
+  Add an entry when a new brand guide is published.
+- **Inventory churn.** When a piece sells, scan guides for links/sentences
+  pointing to it — see §8.8.
+- **Sell-cluster cross-linking** — see §5.10.
+
+## 5.9 Credibility Strip Variants
+
+`renderCredibility(variant)` produces three variants; copy lives in
+`config/site.js`:
+
+- **`buyer`** (default) — `41+ Pieces Sold | ★ 4.9 Rating | Proudly Edmonton Owned & Operated`.
+  Used on `index.html`, `sold/`, `about/`, `guides/`, every guide article,
+  `privacy/`.
+- **`seller`** — `41+ Pieces Bought | ★ 4.9 Rating | Proudly Edmonton Owned & Operated | Most Offers $500–$2,500`.
+  Used on `sell/` and every `sell/[slug]-edmonton/`.
+- **`listing`** — `We Deliver Anywhere in Edmonton and the Surrounding Area`.
+  Used on every active listing page and every sold-stub listing.
+
+The variant is selected by the `variant="..."` attribute on the page's
+`<!-- CREDIBILITY_START -->` marker. The numeric values shown above are driven
+by `config/site.js` (`piecesSold` / `piecesBought` / `rating` / `offerRange`) —
+change them there once and rebuild; they are not edited per page.
+
+## 5.10 Listing Data Standard (`js/available-data.js`)
+
+Every new available listing should include the **full standard treatment** —
+not only the technically required fields. The optional/standard fields are what
+make a listing rank for transactional queries, render rich snippets, and
+present the detail buyers and crawlers expect.
+
+```javascript
+{
+  brand: "Brand Name",
+  title: "Model Name — Fabric/Finish/Variant",
+  slug: "brand-name-model-piece-edmonton",     // standard — see §5.1
+  metaTitle: "Pre-Owned Brand Model Piece for Sale in Edmonton",   // standard — see §5.5
+  metaDescription: "Pre-owned Brand Model in Edmonton. Professionally inspected and cleaned. Delivery available across Alberta. $X,XXX CAD.",  // standard — see §5.5
+  availabilityStarts: "2026-05-15",            // standard — ISO date listing went live; emits offers.availabilityStarts
+  dimensions: { width: "128.75", depth: "90.5", height: "28.75" },  // standard when known — emits Product width/depth/height QuantitativeValue (inches)
+  description: "Opening paragraph.\n\nSecond paragraph.\n\nThird paragraph.",
+  features: [                                  // optional — bulleted list under a "Features" label, below the retail pill
+    "Frame construction detail",
+    "Spring/cushion detail",
+    "Leg/finish detail",
+  ],
+  condition: "One or two sentences on structural and cosmetic condition.",   // optional — "Condition" label below features
+  configuration: "What's included. Delivery available for an additional fee.",  // optional — "Includes" label below condition
+  faq: [                                       // standard — 4–5 questions; emits FAQPage schema + visible section
+    { question: "Is this authentic?",          answer: "Yes. Inspected for construction, materials, and manufacturer consistency before listing." },
+    { question: "What condition is it in?",    answer: "..." },
+    { question: "Do you deliver?",             answer: "Yes. Delivery available across Edmonton and Alberta for an additional fee." },
+    { question: "...piece-specific concern...",answer: "..." },
+  ],
+  retailEstimate: 28000,                       // optional — pure number, no currency formatting; emits the left side of the value pill
+  retailEstimateApprox: false,                 // optional — set true to render the retail figure as "$X,XXX+"; default exact
+  price: 7500,                                 // required — pure number
+  specs: [
+    "Brand Name",
+    "000 × 000 × 00 in",                       // one pill per dimension grouping
+    "Seat Depth: 00 in",
+    "Seat Height: 00 in",
+    "Good Condition",                          // brief condition summary
+  ],
+  images: [
+    "images/XX-NNN/slug-01.jpeg",
+    "images/XX-NNN/slug-02.jpeg",
+  ]
+},
+```
+
+Field rules:
+
+- **`title`** — include the full variant name (fabric, finish, colourway) after
+  an em dash, e.g. `"Milo 6-Piece Modular Sectional — Pearl Chatou Bouclé"`.
+  Appears in the H1 and breadcrumb.
+- **`slug`** (standard) — see §5.1.
+- **`description`** — use `\n\n` for paragraph breaks (rendered with
+  `white-space: pre-line`). Pure narrative only: what makes the piece notable,
+  fabric/material detail, standout design notes. Do **not** put condition,
+  configuration, includes, or delivery notes here — they have their own fields.
+- **`features`** (optional) — construction/spec highlights; renders as a
+  bulleted list under a "Features" label after the retail pill.
+- **`condition`** (optional) — plain string; renders under a "Condition" label.
+- **`configuration`** (optional) — modules/pieces included plus the delivery
+  note; renders under an "Includes" label.
+- **`metaTitle` / `metaDescription`** (standard) — see §5.5.
+- **`availabilityStarts`** (standard) — ISO date the listing went live; emits
+  `offers.availabilityStarts` as a freshness signal alongside `dateModified`.
+- **`dimensions`** (standard when known) — `{ width, depth, height }` in inches;
+  emitted as Product `width`/`depth`/`height` `QuantitativeValue` blocks with
+  `unitCode: "INH"`. Use actual measured overall dimensions, not spec-pill text.
+- **`faq`** (standard) — 4–5 `{ question, answer }` objects grounded in real
+  buyer concerns (authenticity, fabric/leather type, removable covers, casters,
+  delivery, warranty, condition). Emits `FAQPage` schema in `<head>` and a
+  visible "Frequently Asked Questions" section using the sitewide
+  `.faq-section`/`.faq-list`/`.faq-item` markup (heading exactly
+  `"Frequently Asked Questions"`, per §5.6). Answer text must be plain text —
+  no HTML entities; use literal `—`, `"`, etc.
+- **`price`** (required) — **pure number** like `7500` — no currency symbol,
+  no thousands separator, no string quoting. Rendered through
+  `formatPrice()` everywhere it's displayed: card price, listing hero, sticky
+  CTA, meta description, etc. The schema `offers.price` field uses the same
+  numeric value directly. The CAD invariant (§5.2) is preserved at the render
+  boundary — never bake `$`, `CAD`, or any formatting into the data.
+- **`retailEstimate`** (optional) — pure number, original retail value. When
+  present, generates the two-part value pill (`Est. Retail: $X,XXX CAD` |
+  `Buy it Today: $X,XXX CAD`) above the description. Omit to suppress the
+  pill entirely. Format via the rendering helper; never store as a string.
+- **`retailEstimateApprox`** (optional) — set `true` when the retail figure
+  is approximate; renders as `$X,XXX+`. Default false (exact figure).
+- **`specs`** — each element renders as its own grey pill on both the homepage
+  card and the listing page. Include brand, dimensions, seat depth/height, and
+  a brief condition summary. Keep each pill short.
+- **`images`** — paths relative to root (no leading `../`).
+- **Coming Soon** — add `comingSoon: true` and omit `price` (or set to `0`).
+  Shows a badge, hides the price, and skips listing-page generation.
+
+**Sold data shape** (`js/sold-data.js`) — `{ brand, title, description, images }`
+only. No `price`, no `specs`, no `comingSoon`. Image paths use the
+`../images/Sold Inventory/` prefix.
+
+### Listing page anatomy
+
+Generated entirely by `build.js` (`generateListingPage`). Structure, top to
+bottom:
+
+- Breadcrumb; full-width carousel + thumbnail strip; brand; title; retail value
+  pill (no label); price; "Text to Secure" CTA; "Call" CTA; spec pills.
+- Collapsible `<details class="listing-collapsible">` sections in order —
+  **Description** (`open` by default; includes the brand-guide cross-link
+  footer where applicable, per §5.8), **Features**, **Condition**, **Includes**
+  (all collapsed initially). Each has a `<summary class="listing-meta-label">`.
+- `.listing-trust` — sitewide single-line authenticity statement, generated for
+  every listing (never duplicated in data). Copy: *"All designer pieces are
+  inspected for construction, materials, and manufacturer consistency before
+  listing."*
+- `.listing-sell-line` — sell-side prompt directly under the trust statement.
+- Back link to homepage.
+- Optional `.listing-faq` "Frequently Asked Questions" section — only when
+  `faq` data is provided.
+- Optional `.listing-related` "Related Links" grid — see rule below.
+- Newsletter signup; footer; sticky mobile CTA bar.
+
+Listing pages do **not** carry the "Selling a piece like this?" `.guide-cta`
+block — sell-side intent is already covered by `.listing-sell-line`, and a
+second sell CTA between FAQ and Related breaks reading flow.
+
+**Related Links rule.** `build.js` renders `.listing-related` only when **real
+related inventory** exists — at least one other live piece (`availableItems`
+minus self + coming-soon) **or** at least one sold piece in the same brand
+family (`Natuzzi` matches `Natuzzi Editions`). The brand guide is added as a
+supplemental card whenever the section shows but never triggers it alone (the
+brand-guide link is already in the Description collapsible). If neither
+condition is met, the section is skipped. It renders directly below the FAQ
+section and above the newsletter signup.
+
+**Layout & carousel.** Images sit full-width above the text (stacked, not
+side-by-side). The carousel uses a uniform 4:3 aspect ratio on desktop and
+mobile so every listing presents at the same frame size. Images use
+`object-fit: contain` — odd-aspect photos letterbox against the carousel
+background rather than crop. The sticky mobile CTA bar is fixed at the bottom of
+the viewport ("Text to Secure → $price" primary + "Call" secondary) and is
+hidden on desktop via CSS. Behavior changes to collapsible defaults, the sticky
+bar, or related-links logic are made in `build.js` (`generateListingPage`), not
+in generated HTML.
+
+## 5.11 Sell-Form & Worker Contract
+
+The sell form posts to the Cloudflare Worker (§4.7), which validates, applies
+spam defenses, and forwards to `info@edmontonrefreshed.com` via Resend.
+
+**Form HTML must be identical** across `sell/index.html` and every
+`sell/[slug]-edmonton/index.html` — same field IDs (`sf-brand`, `sf-age`,
+`sf-photos`, etc.) and same structure. Brand landing pages pre-fill `sf-brand`
+via the `value="Brand Name"` attribute; piece-type and situational pages leave
+it blank.
+
+**Spam defenses — silent-drop pattern.** The Worker returns `{ok: true}` on
+both real sends and suspected-bot drops so bots cannot distinguish them. Never
+change this contract.
+
+1. **Checkbox honeypot** — every form has
+   `<input type="checkbox" name="_honey" class="sell-form-honey" tabindex="-1" autocomplete="off" aria-hidden="true">`,
+   positioned off-screen via CSS. **It must stay a checkbox, not a text input**
+   — see §9.1.
+2. **Page-load timing** — `js/sell-form.js` captures `Date.now()` at script
+   load and appends `_elapsed_ms` on submit. The Worker drops submissions with
+   `_elapsed_ms < 2000` (under 2 seconds) as suspected bot.
+
+**Source-page tracking.** `js/sell-form.js` appends `Source page` (pathname +
+querystring) to every submission. The Worker prepends it to the email subject
+(`New Sell Inquiry — Brand — Name (from /sell/natuzzi-edmonton/)`) and as the
+first line of the body — this is how each lead is attributed to a landing page.
+
+**Adding a form field** — update the HTML on every sell page *and* the Worker's
+`REQUIRED_FIELDS` / email-body builder. Adding a honeypot or timing rule must
+not change the silent-drop contract.
+
+## 5.12 Guide Article Standard
+
+Guide articles live at `guides/[slug]/index.html` and are manually created (not
+generated by `build.js`). The canonical reference example is
+`guides/how-to-buy-used-sofa-edmonton/index.html`.
+
+`<head>` must include, in order: `<meta charset>` + viewport; `preconnect` /
+`dns-prefetch` for `googletagmanager.com`; the GA4 script block (`G-8MN82PPZRZ`);
+`<title>` (`Article Title | Edmonton Refreshed`); `<link rel="icon">` →
+`../../favicon.svg`; `<link rel="canonical">` (full
+`https://edmontonrefreshed.com/guides/[slug]/` URL); `<meta name="description">`
+(under 160 chars); `<meta name="robots" content="index, follow">`;
+`geo.region` = `CA-AB` and `geo.placename` = `Edmonton`; Open Graph tags
+(`og:locale`, `og:type` = `article`, `og:url`, `og:title`, `og:description`,
+`og:site_name`, `og:image`); Twitter card tags (`summary_large_image`);
+`Article` schema (`headline`, `description`, `author` = Collin Bottrell,
+`publisher` = Edmonton Refreshed, `datePublished`, `dateModified`, `url`);
+`BreadcrumbList` schema (Home → Guides → Article); `FAQPage` schema if the
+article has an FAQ section; the font preload/onload pattern with `<noscript>`
+fallback; `<link rel="stylesheet" href="../../css/styles.min.css?v=N">` (current
+version, §5.7); `<meta name="theme-color" content="#2c2c2c">`.
+
+`<body>` structure: site nav (Available, Sold, Sell Your Furniture, Guides,
+About + phone + mobile toggle); credibility strip (`buyer` variant, §5.9);
+`<main>` → `<div class="page">` → breadcrumb nav; `<div class="guide-article">`
+containing `<header class="guide-header">` (`.guide-category`, `<h1>`,
+`.guide-meta`) and `<article class="guide-body">`; optional FAQ section
+(`.faq-section`/`.faq-list`/`.faq-item`); `.guide-cta` box (links to inventory
+or `/sell/` per audience); newsletter signup (Kit form ID `9233085`); footer;
+`<script src="../../js/shared.min.js">`.
+
+**Guide body components:** `.guide-callout` — highlighted aside with a left
+accent border, holds a single `<p>`, used for key rules/caveats/summaries.
+`.guide-table-wrap` wrapping `<table class="guide-table">` — comparison tables;
+the wrap provides mobile horizontal scroll, first column renders muted, even
+rows get a subtle background (live example:
+`guides/edmonton-furniture-consignment-resale-guide/index.html`).
+
+## 5.13 Sell-Side Landing Page Standard
+
+A cluster of hand-maintained landing pages sits under `/sell/`, supporting
+brand-, piece-type-, and situation-level commercial-intent queries. They are
+**not** auto-generated by `build.js`.
+
+**Current cluster inventory:**
+
+- *Brand pages (6):* `/sell/natuzzi-edmonton/`, `/sell/rove-concepts-edmonton/`,
+  `/sell/eq3-edmonton/`, `/sell/crate-and-barrel-edmonton/`,
+  `/sell/restoration-hardware-edmonton/`, `/sell/west-elm-edmonton/`.
+- *Redirected brand pages (no longer active):*
+  `/sell/american-leather-edmonton/` and `/sell/bb-italia-edmonton/` — both
+  redirect to `/sell/` via meta refresh + canonical. They retain the seller-page
+  OG copy convention (§5.5).
+- *Piece-type pages (6):* `/sell/sectional-edmonton/`,
+  `/sell/leather-sectional-edmonton/`, `/sell/sofa-edmonton/`,
+  `/sell/leather-sofa-edmonton/`, `/sell/couch-edmonton/`,
+  `/sell/leather-couch-edmonton/`.
+- *Situational pages (6):* `/sell/furniture-consignment-edmonton/`,
+  `/sell/selling-furniture-before-moving-edmonton/`,
+  `/sell/downsizing-furniture-edmonton/`, `/sell/sell-furniture-fast-edmonton/`,
+  `/sell/estate-furniture-edmonton/`, `/sell/sell-designer-furniture-edmonton/`.
+
+**Tone.** Knowledgeable, practical, honest about tradeoffs (consignment can
+outperform on the right piece; Marketplace can produce higher prices for some
+sellers; direct purchase prioritizes simplicity and speed over maximum value).
+Avoid AI filler, exaggerated luxury language, fake urgency, and "we buy
+everything" positioning.
+
+**Page structure — brand & piece-type pages:**
+
+1. Standard nav (with Sell dropdown), credibility strip (`seller`), breadcrumb.
+2. `.sell-landing-hero` — H1, intro paragraph, hero CTA scrolling to
+   `#sell-details`.
+3. `.sell-landing-body` — `<h2>` sections: "What we look for", "What affects
+   the offer" (bulleted), "Pieces that typically qualify" (bulleted). Brand
+   pages reference specific models; piece-type pages reference specific
+   configurations.
+4. `.sell-landing-sold` — grid of up to 6 sold cards from real `js/sold-data.js`
+   entries. **Never fabricate sold examples.** If no sold inventory exists for
+   the category, replace with a `.sell-landing-sourcing` note.
+5. `.sell-landing-back-cta` — mid-page link back to `/sell/`.
+6. "Send us your details" heading with `id="sell-details"`.
+7. `.sell-form-prelude` — **mandatory verbatim text:** *"We primarily purchase
+   higher-quality sofas and sectionals from design-oriented and premium
+   retailers. If you're unsure whether your piece is a fit, send photos anyway
+   — we're happy to take a look."*
+8. Embedded sell form (§5.11).
+9. `.sell-landing-cluster` — cross-link cards (typically 5).
+10. FAQ section (3–4 page-specific Q&A) + matching `FAQPage` schema.
+11. Newsletter embed, footer.
+12. Scripts: `shared.min.js` + `sell-form.min.js`.
+
+**Page structure — situational pages (form-first variant).** Situational pages
+target high-intent seller queries built around a circumstance; the form sits
+**higher** because intent is stronger, and long-form body content sits **below**
+the form:
+
+1. Standard nav, credibility strip (`seller`), breadcrumb.
+2. `.sell-landing-hero` — H1, situational intro, hero CTA → `#sell-details`.
+3. `.sell-qualification` — single short trust/qualification block framing the
+   buy zone and the timeline promise.
+4. "Send us your details" (`id="sell-details"`), lead paragraph,
+   `.sell-form-prelude`, embedded sell form (`sf-brand` left blank).
+5. `.sell-landing-body` — `<h2>` sections framing the seller's operational
+   friction, an honest comparison with alternatives, where direct purchase
+   fits, and what the page typically purchases.
+6. `.sell-landing-sold` — up to 6 real sold cards, weighted to the situation.
+   **Never fabricate.**
+7. FAQ section (4–5 page-specific Q&A on pickup logistics, timeline, condition,
+   incomplete sets, older pieces, response time) + `FAQPage` schema.
+8. `.sell-landing-cluster` — 4–6 cross-link cards.
+9. `.sell-landing-back-cta` — closing link back to `/sell/`.
+10. Newsletter embed, footer.
+11. Scripts: `shared.min.js` + `sell-form.min.js`.
+
+**Mandatory schemas on every landing page:** `BreadcrumbList` (Home → Sell Your
+Furniture → this page); `Service` (`name`, `description`, `url`, `dateModified`
+= today ISO, `provider`, `areaServed`); `FAQPage` (one `Question` per visible
+FAQ item; plain-text answers — strip HTML entities).
+
+**Cross-linking rules:**
+
+- Every landing page links back to `/sell/` (both `.sell-landing-back-cta` and
+  the breadcrumb satisfy this).
+- `/sell/` links to every landing page via three `.sell-landing-cluster`
+  sections — "Sell by brand", "Sell by piece type", "Sell by situation".
+- Brand pages cross-link to relevant piece-type pages and one or two related
+  brand pages.
+- Piece-type pages cross-link to relevant brand pages.
+- Brand pages with a guide also link to it (Natuzzi →
+  `/guides/natuzzi-sofa-review-edmonton/`).
+- Situational pages cross-link to other situational pages, relevant brand or
+  piece-type pages, and at least one relevant guide: consignment →
+  `/guides/edmonton-furniture-consignment-resale-guide/`; moving →
+  `/guides/selling-furniture-before-moving-edmonton/` and
+  `/guides/moving-edmonton-furniture-keep-sell-replace/`; designer →
+  `/guides/how-to-sell-high-end-furniture-edmonton/` and
+  `/guides/best-sofa-brands-resale-value-edmonton/`; fast →
+  `/guides/sell-couch-sectional-fast-edmonton/`; estate →
+  `/guides/selling-inherited-estate-furniture-edmonton/`; downsizing →
+  `/guides/moving-edmonton-furniture-keep-sell-replace/`.
+
+**Recently sold cards** use absolute URLs of the form
+`/images/Sold%20Inventory/[XX-NNN]/[file].jpeg` (URL-encoded space), link to
+`/sold/` (not individual items), and use `.card.sold` styling via the
+`.sell-landing-sold-grid` class.
+
+These pages are hand-maintained — they were generated once from a script that
+is no longer run. See §8.10 to edit one or add a new one.
+
+## 5.14 FAQ Single-Source
+
+Every visible FAQ block AND its matching `FAQPage` JSON-LD schema on the
+homepage, sell hub, and about page derive from a single canonical source —
+`config/faqs.js`. The two cannot drift apart because they are generated
+from the same array on every build.
+
+`config/faqs.js` exports `home`, `sell`, and `about` arrays. Each entry has:
+
+| Field | Required | Purpose |
+|---|---|---|
+| `question` | Yes | Visible question text |
+| `answer` | Yes | Visible answer text. Use Unicode characters (`—`, `'`, `"`) directly; build-time escaping handles HTML entities. Inline links use markdown `[text](url)` — rendered as `<a>` in visible markup, flattened to plain text in schema. |
+| `schemaQuestion` | No | Override for the JSON-LD `name` field. Use when the schema benefits from longer keyword-rich phrasing than the conversational visible text. |
+| `schemaAnswer` | No | Override for the JSON-LD `text` field. Defaults to the visible `answer` with markdown links flattened. |
+
+`build.js` rewrites content between marker pairs on every build:
+
+```html
+<!-- FAQ_SCHEMA_START id="home" -->
+…(rewritten by build.js — emits FAQPage JSON-LD)…
+<!-- FAQ_SCHEMA_END -->
+
+<!-- FAQ_VISIBLE_START id="home" -->
+…(rewritten by build.js — emits .faq-item markup)…
+<!-- FAQ_VISIBLE_END -->
+```
+
+Visible markup is emitted as `<div class="faq-item"><h3 class="faq-question">…</h3><p class="faq-answer">…</p></div>`. The surrounding `.faq-section` /
+`.faq-list` markup stays in the HTML source as a fixed scaffold.
+
+**Listing-page FAQs** (`item.faq` in `js/available-data.js`) follow the
+same principle — one source drives both schema and visible markup — but
+keep their own per-listing structure since each listing's FAQ is unique.
+See §5.10.
+
+**Sell-landing FAQs** on every `sell/[slug]-edmonton/` page remain hand-
+maintained as page-specific Q&A pairs (§5.13). They are not centralized
+because each page's FAQ is page-specific and updating one page does not
+imply updating others.
+
+To edit a homepage / sell hub / about FAQ: edit `config/faqs.js` and run
+`node build.js`. Never edit between FAQ markers by hand — the next build
+overwrites the edit.
+
+## 5.15 Sitemap Freshness — Content-Hash `<lastmod>`
+
+`build.js` does NOT stamp every `<lastmod>` with today's date. It compares
+each page's canonical content hash against the previous build's hash
+(stored in `.build-state.json`) and only advances `<lastmod>` when the
+content has actually changed.
+
+Canonicalization strips build-volatile fragments before hashing — asset
+version hashes, `<lastmod>` placeholders, `dateModified` values, and
+`priceValidUntil` windows — so a pure rebuild with no source changes does
+not advance any URL's lastmod. Real changes (new inventory, edited copy,
+modified schema) flip the hash and advance lastmod.
+
+**`.build-state.json`** is the committed sidecar that tracks one record
+per URL: `{ "hash": "<8 hex>", "lastmod": "<ISO date>" }`. Commit it with
+source so lastmod history persists across machines and CI runs.
+
+The sitemap URL list is data-driven:
+- Homepage, `/sold/`, `/sell/`, `/about/`, `/privacy/`, `/guides/` are
+  hardcoded core URLs.
+- Sell-landing pages come from `config/taxonomy.js` (`brands` +
+  `furnitureTypes` + `situations`).
+- Guides are discovered by listing `guides/*/index.html`.
+- Listings come from `availableItems` (skipping `comingSoon`).
+
+Adding a guide directory or a taxonomy entry automatically threads it into
+the sitemap on the next build — no manual edit required.
+
+---
+
+# 6. SEO & Discovery Systems
+
+This section preserves the *reasoning* behind the site's shape. Implementation
+rules live in §5; this explains why they exist.
+
+## 6.1 Local SEO Strategy
+
+Edmonton Refreshed competes locally. Every structural decision reinforces the
+Edmonton → Alberta → Canada signal so search engines and AI overviews never
+have to guess the locale: the `-edmonton` slug suffix (§5.1), the locale and
+geo meta tags and `en-CA` lang (§5.2), `addressCountry: "CA"` in business
+schemas, and city-anchored copy. The `citySlug` config field exists so this
+entire signal layer can be re-pointed for a future city without find/replace.
+
+## 6.2 Long-Tail Indexing & Topical Authority
+
+The sell-side landing cluster (§5.13) and the guides section exist to capture
+long-tail, commercial-intent, and informational queries that the homepage alone
+cannot. Brand pages, piece-type pages, and situational pages each match a
+distinct query shape; guides build topical authority around buying, selling,
+pricing, and brand comparison. Internal linking (§5.8) binds these into
+clusters so authority flows between related pages rather than pooling on the
+homepage.
+
+## 6.3 Sold-Stub Philosophy
+
+When a piece sells, its listing URL may already be indexed and may still draw
+brand/model search traffic. Deleting the URL discards that equity. Instead the
+page becomes a **sold stub** (§8.3): it stays indexed
+(`robots: index, follow`), keeps a coherent `Product` record, and switches
+`availability` to `SoldOut` — deliberately **not** `OutOfStock`. `SoldOut`
+signals the item will not return, which is consistent with the "One of One"
+brand positioning. The same equity-preservation logic drives the redirect-stub
+pattern for changed slugs (§8.7).
+
+## 6.4 Structured-Data Reasoning
+
+Structured data is one of the strongest discoverability levers available, so
+every page carries it (§5.4). The schema table is treated as a contract: each
+page type has a known schema set, and `dateModified` is kept genuinely current
+because search engines weight freshness and a stale timestamp actively
+misrepresents the site. `Product` schemas carry dimensions, SKU, and offer
+detail so the site is eligible for Google's product knowledge panel and
+shopping surfaces.
+
+## 6.5 AI Crawlability Philosophy
+
+The site is built to be read by AI crawlers as well as classic search bots:
+
+- **Static fallbacks.** `#available-grid` and `#sold-grid` hold pre-rendered
+  HTML so crawlers that do not execute JS still see full inventory; JavaScript
+  upgrades these to interactive carousels on load.
+- **AI/LLM entity summary.** The homepage carries a
+  `<div class="sr-only" aria-hidden="false">` block immediately below the skip
+  link — a plain-text summary of the business, brands, location, and contact,
+  visible to AI crawlers and accessibility tools but hidden visually. Update it
+  whenever the brand list or contact info changes.
+- **`llms.txt`.** A plain-text business summary at the repo root for LLM
+  crawlers; its "Rating" line is kept in sync with the review count (§8.4).
+
+## 6.6 Taxonomy & Guide Strategy
+
+`config/taxonomy.js` is both an information architecture and an SEO asset:
+adding one entry creates a nav path, a footer link, and a sitemap entry,
+strengthening internal linking automatically. The guides section is the
+topical-authority engine — see §8.13 for the article-ideation framework that
+keeps new guides search-aligned and genuinely useful.
+
+---
+
+# 7. UI & Layout Architecture
+
+This section explains *how* layout decisions are made, not merely which CSS
+classes exist.
+
+## 7.1 The `.page` Layout Primitive
+
+`[Core Invariant]` — `.page` is the page-level container. Every **direct child**
+of `.page` is automatically given
+`max-width: var(--max-width); margin-inline: auto; padding-inline: var(--page-x);`
+via the `:where(.page) > *` rule in `css/styles.css`. This is the **default
+containment system**.
+
+Sections inside `.page` do **not** redeclare `max-width`, `margin: 0 auto`, or
+`padding: 0 var(--page-x)` — they own only their internal layout (vertical
+rhythm, gap, and a narrower `max-width` when the section is a content column
+rather than a page-width block). The rule's specificity is held at `0,0,0,1`
+via `:where()` so any class on the section wins without specificity gymnastics.
+
+## 7.2 Layout Ownership Boundaries
+
+Architectural principles that follow from the primitive:
+
+- Pages own horizontal page inset; components inside a page assume they are
+  already in a padded context.
+- Sections control vertical rhythm via `padding-top`/`padding-bottom`/
+  `margin-top`/`margin-bottom`. Avoid `padding: T H B` shorthand for sections
+  inside `.page` — it overrides the default `padding-inline`.
+- Avoid nested compensation patterns (parent pads, child negates). If a section
+  needs a narrower column, override `max-width` only; the default
+  `padding-inline` still applies cleanly.
+- When adding a new section as a direct child of `.page`, do **not** add
+  `max-width`, `margin-inline`, or `padding-inline` — the primitive supplies
+  them.
+
+## 7.3 Full-Bleed & Outside-`.page` Exceptions
+
+Some sections intentionally live outside `.page` and therefore self-pad with
+their own `max-width / margin / padding`:
+
+- `.newsletter-embed` — sibling of `<main>` on sell hub, sell landing pages,
+  about, guides index, and guide articles; inside `.page` on sold, listings,
+  and homepage. Self-padded to work in either position.
+- `.sell-landing-cluster` — direct child of `<main>` on the sell hub (outside
+  `.page`), direct child of `.page` on landing pages. Self-pads.
+- `.about-related` — sibling of `.page` inside `<main>` on the about page.
+  Self-pads.
+- `.faq-section` — outside `.page` on the homepage (sibling), inside `.page` on
+  listings / landing pages. Self-pads.
+- `.service-area-note` — sibling of `.page` on the homepage. Self-pads.
+- `.footer-inner` (inside `<footer>`), `.nav-inner` (inside `<nav>`),
+  `.credibility-strip` (between `<nav>` and `<main>`) — outside `<main>`
+  entirely. Each self-pads.
+- `.reviews-inner` — direct child of `#reviews-section` (a JS mount-point
+  wrapper); the wrapper is neutralized in CSS so `.reviews-inner` is the active
+  layout box.
+- `.l-bleed` — declared opt-out class, currently **unused**; reserves a
+  documented pattern for future full-bleed surfaces inside `.page`.
+
+**Reviews mobile full-bleed exception.** `.reviews-inner` drops horizontal
+padding on mobile so `.reviews-grid` (a scroll-snap carousel) can be
+edge-to-edge; `.reviews-aggregate` and `.reviews-grid` each re-add
+`padding: 0 var(--page-x)` on mobile. This is the one intentional full-bleed
+surface on the site.
+
+## 7.4 Spacing & Rhythm Philosophy
+
+Every page-edge horizontal padding and major vertical gap reads from CSS custom
+properties on `:root` in `css/styles.css`. Never hardcode pixel values for
+these — referencing the token lets future viewport changes propagate.
+
+- **`--page-x`** — horizontal page padding. Used by the layout primitive.
+  Desktop and mobile both `24px`; only sub-360px viewports drop to `20px` to
+  preserve content width on the very narrowest devices. Modern phones
+  (375–430px) stay at the full `24px`. Never hardcode `16px` for page-edge
+  padding — see §10.3.
+- **`--section-y`** — bottom padding on major sections. `72px` desktop,
+  `80px` mobile. Mobile goes **up** because stacked content needs more rhythm
+  to feel deliberate.
+- **`--space-1` (8px) … `--space-7` (80px)** — vertical-rhythm token scale.
+  Existing sections still use raw px in many places; new code should prefer the
+  tokens. The token migration is gradual.
+
+## 7.5 Column Tokens
+
+Named content-column widths consolidate the previous sprawl of 580 / 720 / 850
+/ 1100 max-widths (see §10.2). Reference them on sections that need a narrower
+column than the page width:
+
+- `--col-narrow` (580px) — sell form, sell checklist, sell content, sell method
+  column.
+- `--col-mid` (720px) — sell landing body, sell landing back-cta.
+- `--col-prose` (850px) — guide callout, guide CTA, guide table wrap, guide
+  related, about related.
+- `--col-page` (`var(--max-width)` = 1100px) — alias for the page width; use
+  when a section explicitly wants page width without inheriting through the
+  primitive.
+
+## 7.6 Component System
+
+- **Homepage cards** show image carousel, brand, title (clickable link to the
+  listing page), spec pills, and price. Descriptions appear only on individual
+  listing pages.
+- **Stretched link** — the whole homepage card is clickable via a CSS `::after`
+  pseudo-element on `.card-title-link`. Carousel controls (arrows, dots,
+  lightbox) sit at `z-index: 2` above the link layer.
+- **Static fallback** — `#available-grid` and `#sold-grid` hold pre-rendered
+  crawler HTML; JS replaces it with the interactive carousel version on load
+  (§6.5).
+- **Listing page components** — see §5.10 (anatomy, collapsible sections, trust
+  statement, related links, sticky CTA, carousel).
+- **Retail comparison pill** — see §5.10.
+- **Nav dropdown ("Sell Your Furniture" submenu)** — the Sell item is wrapped
+  in `<li class="nav-dropdown">` containing both a clickable `<a href="/sell/">`
+  and a separate `<button class="nav-dropdown-toggle">`. Desktop: submenu opens
+  on hover or focus-within. Mobile: the toggle drives it. The submenu lists
+  "By brand", "By piece", "By situation" from `config/taxonomy.js`. Markup is
+  generated by `partials/nav.js`. The mobile drawer (`.nav-links.open`) is
+  full-opacity white with `max-height: calc(100vh - var(--nav-height))` and
+  `overflow-y: auto` so the expanded dropdown scrolls cleanly.
+- **Newsletter signup** — a Kit (ConvertKit) form (form ID `9233085`) appears
+  on the homepage (between reviews and FAQ), the sold page (between hero and
+  inventory), the about page (above footer), and individual listing pages
+  (below content, above footer). It posts to
+  `https://app.kit.com/forms/9233085/subscriptions` via AJAX in `shared.js`.
+  The heading text is exactly: *"Get first access before pieces sell. Enter
+  your email to hear about new arrivals before the public."*
+- **Homepage divider** — between hero/tagline and inventory, a decorative
+  divider reads *"One of One. Once it's Gone, it's Gone."* in serif with
+  horizontal lines on either side.
+- **Skip-to-content links** — every page's first body element is
+  `<a href="#main-content" class="skip-link">Skip to main content</a>` for
+  keyboard/screen-reader accessibility. Do not remove.
+- **Google Analytics** — GA4 tag `G-8MN82PPZRZ` is on every page except
+  `404.html`. The default sitewide pattern is deferred-until-idle injection;
+  certain low-traffic pages use the canonical static snippet instead — see §9.2.
+
+## 7.7 Footer Architecture
+
+The global footer is rendered by `partials/footer.js` from `config/taxonomy.js`:
+a centered brand statement, a three-column taxonomy (Sell by Furniture Type /
+Sell By Situation / Sell By Brand) linking to every sell-landing page, a quiet
+utility row (Recently Sold, Guides, About, Privacy Policy), copyright, and
+tagline. Styling lives under `.site-footer` / `.footer-*` in `css/styles.css` —
+editorial, muted, typography-led. Mobile collapses the three columns into a
+single stacked column with padded link blocks for thumb-friendly tap targets.
+Sold-stub listing pages also use the global footer. To add a footer column
+entry, edit `config/taxonomy.js` and rebuild.
+
+## 7.8 Responsive Philosophy
+
+Mobile is treated as a deliberate layout, not a shrink of desktop: section
+rhythm increases on mobile (§7.4), page-edge padding is held at a comfortable
+minimum (§7.4, §10.3), the nav becomes a scrollable drawer, and the reviews
+carousel intentionally goes full-bleed (§7.3). FAQ section labels are the one
+heading class kept visible on mobile (§5.6).
+
+---
+
+# 8. Operational Playbooks
+
+`[Operational]` — Mutable step-by-step workflows. These reference §5 for rules
+rather than restating them. Expect this section to evolve frequently.
+
+Across all playbooks: **Collin handles every push to GitHub** — see §8.12. Each
+workflow ends at a clean local commit with build artifacts regenerated.
+
+## 8.1 Change a Price
+
+1. Edit the `price` field on the item in `js/available-data.js` — pure
+   number, no currency symbol or formatting (e.g. `price: 7500`).
+2. Run `node build.js`.
+3. Commit (include `.build-state.json` so the lastmod history advances).
+
+The build regenerates the homepage `Product` schema, the static fallback card,
+and the individual listing page with the new price formatted through
+`formatPrice()` (e.g. `$7,500`). The schema uses the numeric value directly.
+
+## 8.2 Add New Available Inventory
+
+1. **Create the image folder** `images/XX-NNN/` — naming per §5.3 (check
+   existing folders for the next sequential number).
+2. **Name images** `brand-slug-NN.jpeg` — first image is the cover (§5.3).
+3. **Generate responsive variants** — run the command in §5.3 (Image
+   Standards). The full AVIF/WebP/JPEG set at 400w/800w/full is required.
+4. **Add the data entry** to `js/available-data.js` using the full standard
+   treatment — see §5.10 for the field-by-field standard. New listings get the
+   complete set (slug, metaTitle, metaDescription, availabilityStarts,
+   dimensions, faq), not just required fields.
+5. Run `node build.js`.
+6. Commit all new files (images, variants, data change, generated HTML).
+
+## 8.3 Move a Sold Item from Available to Sold
 
 1. **Copy the item's data block** from `js/available-data.js`.
-
-2. **Paste into `js/sold-data.js`** at the top of the array (most recent first), reformatting to the sold schema:
-   ```javascript
-   {
-     brand: "Brand Name",
-     title: "Model Name",
-     description: "Description text.",
-     images: [
-       "../images/Sold Inventory/XX-NNN/slug-01.jpeg",
-       "../images/Sold Inventory/XX-NNN/slug-02.jpeg",
-     ]
-   },
-   ```
-   Key differences from available format: no `price`, no `specs`, no `comingSoon`. Image paths use the `../images/Sold Inventory/` prefix.
-
+2. **Paste into `js/sold-data.js`** at the top of the array (most recent
+   first), reformatted to the sold shape (§5.10): `{ brand, title, description,
+   images }` only — image paths use the `../images/Sold Inventory/` prefix.
 3. **Remove the item** from `js/available-data.js`.
-
-4. **Move the image folder**:
+4. **Move the image folder:**
    ```bash
    mv "images/XX-NNN" "images/Sold Inventory/XX-NNN"
    ```
-   The 400w and 800w variants move with it — they're already referenced by the sold page build.
+   The responsive variants move with it.
+5. **Do not delete the listing directory.** Convert the listing page to a
+   **sold stub** (rationale in §6.3):
+   - Use `listings/la-z-boy-emric-right-facing-sectional/index.html` as the
+     canonical stub template.
+   - Replace the body with a sold notice including nav, credibility strip,
+     breadcrumb, a "This piece has sold" notice, links to `/` and `/sold/`, and
+     a soft sell-side prompt linking to `/sell/`.
+   - In `<head>`: keep GA4, canonical URL, and meta tags. Change the `Product`
+     schema `availability` to `https://schema.org/SoldOut` (not `OutOfStock`).
+     Drop `offers.priceValidUntil`, `offers.hasMerchantReturnPolicy`, and
+     `offers.shippingDetails`. Keep `sku`, `name`, `description`, `brand`,
+     `image`, `itemCondition`, and `offers.price` so the page stays a coherent
+     `Product` record.
+   - Keep `<meta name="robots" content="index, follow">`.
+   - Update `dateModified` on every schema that has one to today (§5.4); add
+     `dateModified` to the `Product` schema if absent.
+   - Use the **canonical static GA snippet** on the stub, not the deferred
+     pattern — see §9.2.
+6. Run `node build.js`.
+7. Commit. The sold-count tagline in `sold/index.html` ("Over NN premium
+   sofas…") is hardcoded — update it manually if desired.
+8. **Internal links** — scan guides for references to the piece; follow §8.8.
 
-5. **Do NOT delete the listing page directory.** The listing URL may still be indexed by Google. Instead, convert the listing page into a sold stub:
+## 8.4 Add a New Customer Review
 
-   - Open `listings/brand-slug/index.html`
-   - Replace the full page body with a sold notice (see `listings/la-z-boy-emric-right-facing-sectional/index.html` as the canonical template)
-   - The stub must include: nav, credibility strip, breadcrumb, "This piece has sold" notice, links to `/` (available inventory) and `/sold/`, a soft sell-side prompt linking to `/sell/`
-   - In the `<head>`: keep GA4, canonical URL, and meta tags. Change the Product schema `"availability"` value to `"https://schema.org/SoldOut"` (not OutOfStock — SoldOut signals the item will not return, consistent with the "One of One" brand positioning). Also drop `offers.priceValidUntil`, `offers.hasMerchantReturnPolicy`, and `offers.shippingDetails` from the Product schema — none of these apply once the piece is gone. Keep `sku`, `name`, `description`, `brand`, `image`, `itemCondition`, and `offers.price` so the page still presents as a coherent Product record.
-   - Keep `<meta name="robots" content="index, follow">` — the page stays indexed for brand/model search traffic.
-   - Update the page's `dateModified` (any schema that has one) to today's date in ISO format. Add `"dateModified"` to the Product schema if it isn't there already.
-   - **GA4 on sold stubs uses the canonical static snippet** — not the deferred-until-idle pattern the rest of the site uses. The deferred snippet (`requestIdleCallback`/`load`-injected `gtag.js`) leaves no `<script src="…/gtag/js?id=…">` in static HTML, so GA's Tag Coverage report flags low-traffic URLs (every sold stub) as "no tag detected" until someone visits. Use this snippet in `<head>` on every sold stub:
-     ```html
-     <!-- Google tag (gtag.js) — sold-stub uses canonical static snippet so GA Tag Coverage / validators detect the tag without depending on real pageviews -->
-     <script async src="https://www.googletagmanager.com/gtag/js?id=G-8MN82PPZRZ"></script>
-     <script>
-       window.dataLayer = window.dataLayer || [];
-       function gtag(){dataLayer.push(arguments);}
-       gtag('js', new Date());
-       gtag('config', 'G-8MN82PPZRZ');
-     </script>
-     ```
-     Active listing pages (generated by `build.js`) keep the deferred pattern — they receive real traffic, GA confirms the tag via pageviews, and LCP performance matters more on those pages.
+New reviews go at the **top** of the list (render order is data order, newest
+first).
 
-6. Run `node build.js`
+1. **Edit `js/reviews-data.js`** — insert the new review at the top of the
+   `reviews` array:
+   ```javascript
+   { name: "First Last", rating: 5, text: "Quote text." },
+   ```
+2. **Bump `reviewAggregate`** — increment `totalCount` by 1, recompute
+   `ratingValue` as (sum of ratings) / `totalCount` rounded to one decimal, and
+   update the inline math comment.
+3. **Update the `FurnitureStore` schema in `index.html`** — bump
+   `aggregateRating.reviewCount` and **prepend** the new `Review` block so
+   schema order matches visible order.
+4. **Update the `FurnitureStore` schema in `sell/index.html`** — same
+   treatment.
+5. **Update `llms.txt`** — bump the "Rating: 4.9 stars (NN ratings)" count.
+6. **Run `node build.js`** — regenerates the static fallback in `index.html`,
+   recomputes the `reviews-data.min.js` content hash, and rewrites every
+   `?v=…` reference automatically.
 
-7. Commit the changes. Collin handles pushing to GitHub. The sold count in the sold page tagline (`"Over NN premium sofas..."`) is hardcoded in `sold/index.html` — update it manually if desired.
+The credibility strip shows no review count, so no other copy changes.
 
-**Note on internal links:** If any guide articles reference this piece by name or model, update those links. If they pointed to the now-sold listing page, they can remain — the stub handles the destination gracefully. If inventory is mentioned as "currently available," update that sentence to reflect the piece has sold or remove the inventory-specific call.
+## 8.5 Add a New Guide Article
 
-### Add a new guide article
-
-1. **Create the article directory**: `guides/article-slug/` where `article-slug` is a URL-friendly version of the title (lowercase, hyphens, no stop words). Example: `guides/how-to-buy-used-sofa-edmonton/`.
-
-2. **Create `guides/article-slug/index.html`** with the full site infrastructure. The file must include, in this order inside `<head>`:
-   - `<meta charset>` and `<meta name="viewport">`
-   - `preconnect` and `dns-prefetch` for `googletagmanager.com`
-   - GA4 script block (`G-8MN82PPZRZ`)
-   - `<title>` — format: `Article Title | Edmonton Refreshed`
-   - `<link rel="icon">` pointing to `../../favicon.svg`
-   - `<link rel="canonical">` with the full `https://edmontonrefreshed.com/guides/article-slug/` URL
-   - `<meta name="description">` — concise, keyword-rich, under 160 characters
-   - `<meta name="robots" content="index, follow">`
-   - `<meta name="geo.region" content="CA-AB">` and `<meta name="geo.placename" content="Edmonton">`
-   - Open Graph tags (`og:locale`, `og:type` = `article`, `og:url`, `og:title`, `og:description`, `og:site_name`, `og:image`)
-   - Twitter card tags (`twitter:card` = `summary_large_image`, `twitter:title`, `twitter:description`, `twitter:image`)
-   - Article schema (`@type: Article`) with `headline`, `description`, `author` (Collin Bottrell), `publisher` (Edmonton Refreshed), `datePublished`, `url`
-   - BreadcrumbList schema (3 levels: Home → Guides → Article title)
-   - FAQPage schema if the article includes an FAQ section (recommended — 3–5 questions)
-   - Font preload/onload pattern with `<noscript>` fallback
-   - `<link rel="stylesheet" href="../../css/styles.min.css?v=N">` (use current cache version)
-   - `<meta name="theme-color" content="#2c2c2c">`
-
-   The `<body>` structure:
-   - Site nav with all links (Available, Sold, Sell Your Furniture, Guides, About) + phone number + mobile toggle
-   - Credibility strip (`41+ Pieces Sold | ★ 4.9 Rating | Proudly Edmonton Owned & Operated`)
-   - `<main>` → `<div class="page">` → breadcrumb nav (Home / Guides / Article short title)
-   - `<div class="guide-article">` containing:
-     - `<header class="guide-header">` with `.guide-category` (e.g., "Buyer's Guide"), `<h1>`, and `.guide-meta` (author + publication)
-     - `<article class="guide-body">` with the article content using `<h2>`, `<h3>`, `<p>`, `<ul>`/`<ol>`, and the following optional components:
-     - `.guide-callout` — highlighted aside block (left accent border). Use for key rules, important caveats, or summary points. Contains a single `<p>`.
-     - `.guide-table-wrap` wrapping a `<table class="guide-table">` — for comparison tables. The wrap provides horizontal scroll on mobile. First column renders in muted text; even rows have a subtle background. See `guides/edmonton-furniture-consignment-resale-guide/index.html` for a live example.
-   - FAQ section (if applicable) using the site's `.faq-section` / `.faq-list` / `.faq-item` pattern
-   - Guide CTA box (`.guide-cta`) linking to inventory or `/sell/` depending on the article's audience
-   - Newsletter signup form (Kit/ConvertKit, form ID `9233085`)
-   - Footer
-   - `<script src="../../js/shared.min.js"></script>`
-
-   Reference `guides/how-to-buy-used-sofa-edmonton/index.html` as the canonical example.
-
-3. **Add a card to `guides/index.html`** inside the `.guides-list` div, above the closing `</div>`:
+1. **Create the directory** `guides/article-slug/` — slug per §5.1.
+2. **Create `guides/article-slug/index.html`** following the full guide article
+   standard in §5.12 (head order, body structure, components). Reference
+   `guides/how-to-buy-used-sofa-edmonton/index.html`.
+3. **Add a card to `guides/index.html`** inside `.guides-list`, newest first:
    ```html
    <a class="guide-card" href="/guides/article-slug/">
      <p class="guide-card-category">Category Label</p>
      <p class="guide-card-title">Full Article Title</p>
-     <p class="guide-card-excerpt">One-to-two sentence excerpt describing what the reader will learn.</p>
+     <p class="guide-card-excerpt">One-to-two sentence excerpt.</p>
    </a>
    ```
-   Cards are ordered newest first.
-
-4. **Add the guide URL to `build.js`** in the sitemap generation section, alongside the existing guide URLs:
+4. **Add the guide URL to `generateSitemap()` in `build.js`**, alongside the
+   existing guide URLs:
    ```javascript
    '  <url>',
    '    <loc>https://edmontonrefreshed.com/guides/article-slug/</loc>',
@@ -347,414 +1426,305 @@ The build regenerates the homepage Product schema, the static fallback card, and
    '    <priority>0.8</priority>',
    '  </url>',
    ```
+5. Run `node build.js` (regenerates the sitemap).
+6. **Add internal links** from the guide body to relevant listing pages — see
+   §5.8.
+7. Commit all new files.
 
-5. Run `node build.js` (to regenerate sitemap)
+## 8.6 Edit CSS
 
-6. **Add internal links from guide content to relevant listing pages.** Any time a specific brand or model is mentioned by name in the article body, check whether there is a live listing page for that piece at `/listings/[slug]/`. If so, wrap the first mention with an anchor link. Keep links contextual — they should read naturally in prose, not as promotional inserts. One link per listing page per article is sufficient; don't link every mention.
+1. Edit `css/styles.css`.
+2. Run `node build.js` — minifies the source into `css/styles.min.css`,
+   recomputes its content hash, and rewrites every `?v=…` reference across
+   every HTML file (including the listing-page template).
+3. Commit (include `.build-state.json`).
 
-   Example: `The <a href="/listings/rove-concepts-milo-6-piece-modular-sectional/">Rove Concepts Milo 6-Piece Modular Sectional</a> is currently available in Edmonton.`
+## 8.7 Edit JS
 
-   If the article refers to inventory generally ("pieces like this are available now"), update the `.guide-cta` at the bottom rather than inserting mid-article links.
+1. Edit the source file (`js/shared.js`, `js/available-data.js`,
+   `js/sold-data.js`, `js/reviews-data.js`, or `js/sell-form.js`).
+2. Run `node build.js` — re-minifies the source, recomputes its content
+   hash, and rewrites every `?v=…` reference across every HTML file.
+3. Commit (include `.build-state.json`).
 
-7. Commit all new files. Collin handles pushing to GitHub.
+## 8.8 Change a Listing's URL Slug
 
-### Change a listing's URL slug
+When a listing URL must change, preserve the old URL's indexed equity with a
+redirect stub rather than deleting it (rationale in §6.3).
 
-When a listing's URL needs to change (e.g., for transactional-intent SEO improvements), preserve the old URL's indexed equity by converting it to a meta-refresh redirect rather than deleting it.
-
-1. **Update the `slug` field** in `js/available-data.js` for that item.
-
-2. **Run `node build.js`** — this creates the new listing directory at `/listings/[new-slug]/`. The old directory still exists with its previously generated page.
-
-3. **Replace the old directory's `index.html` with a redirect stub** containing:
-   - `<meta http-equiv="refresh" content="0; url=https://edmontonrefreshed.com/listings/[new-slug]/">` in `<head>`
-   - The canonical link, og:url, and twitter:url all pointing at the **new** slug (not the old one) so any crawl that hits the old URL consolidates link equity to the new page.
-   - The canonical-static GA snippet (same as sold stubs — `<script async src="https://www.googletagmanager.com/gtag/js?id=G-8MN82PPZRZ">`), not the deferred-until-idle pattern, so GA Tag Coverage detects the tag on this low-traffic URL.
-   - A `<script>window.location.replace("...")</script>` fallback as the body's only meaningful content, plus a single visible paragraph linking to the new URL for users with slow-loading meta-refresh.
-   - Keep `<meta name="robots" content="index, follow">` — the page stays indexable so Google can process the redirect signal.
-
-4. **Update every internal link** in the codebase that points to the old slug. Run:
+1. **Update the `slug`** in `js/available-data.js`.
+2. **Run `node build.js`** — creates the new directory at
+   `/listings/[new-slug]/`. The old directory still holds its old page.
+3. **Replace the old directory's `index.html` with a redirect stub:**
+   - `<meta http-equiv="refresh" content="0; url=https://edmontonrefreshed.com/listings/[new-slug]/">`
+     in `<head>`.
+   - `canonical`, `og:url`, and `twitter:url` all pointing at the **new** slug
+     so a crawl of the old URL consolidates equity to the new page.
+   - The canonical static GA snippet (not the deferred pattern — see §9.2).
+   - A `<script>window.location.replace("...")</script>` fallback as the body's
+     only meaningful content, plus one visible paragraph linking to the new URL.
+   - Keep `<meta name="robots" content="index, follow">` so Google processes
+     the redirect signal.
+4. **Update every internal link** pointing at the old slug:
    ```bash
    grep -rln "listings/[old-slug]" --include="*.html" --include="*.js" .
    ```
-   Bump `dateModified` on any guide or sell page you edit (per the **Schema & dateModified Standards** rule above).
+   Bump `dateModified` (§5.4) on any guide or sell page you edit.
+5. The sitemap regenerates automatically — `build.js` emits only the new slug.
+6. Commit.
 
-5. **Sitemap regenerates automatically** — `build.js` only emits the new slug.
+## 8.9 Update Internal Links When Inventory Changes
 
-6. Commit and let Collin push.
+When a piece sells (and its listing becomes a sold stub), scan all guide
+articles for links/sentences pointing at it:
 
-### Update internal links when inventory changes
+- Links to the now-sold listing page can stay — the stub handles the
+  destination gracefully.
+- Sentences describing the piece as "currently available" should be updated to
+  remove the availability claim or made evergreen (e.g., "pieces like this come
+  through the shop regularly").
+- If a new piece from the same brand replaces it, update the link target and
+  sentence to the new listing.
 
-When a piece sells (and its listing page is converted to a sold stub), scan all guide articles for links or sentences pointing to that listing:
+Find all guide files linking to a listing slug:
 
-- Links that pointed to the sold listing page can remain — the stub page handles the destination gracefully.
-- Sentences that describe the piece as "currently available" should be updated to remove the availability claim, or replaced with a more evergreen reference (e.g., "pieces like this come through the shop regularly").
-- If a new piece from the same brand replaces it, update the link target and sentence to reference the new listing.
-
-To find all guide files linking to a specific listing slug:
 ```bash
 grep -rl "listings/brand-slug" guides/
 ```
 
-### Add a new customer review
+## 8.10 Edit or Add a Sell-Side Landing Page
+
+The `/sell/[slug]-edmonton/` pages are hand-maintained (§5.13); the original
+generator script is no longer run.
+
+**To edit one:** open the relevant `sell/[slug]-edmonton/index.html` and edit
+directly. Leave the `<!-- NAV_START -->`, `<!-- CREDIBILITY_START variant="seller" -->`,
+and `<!-- FOOTER_START -->` marker pairs in place — content inside them is
+regenerated from `partials/` on every build; edit only content outside them.
+After any edit, refresh `dateModified` on the `Service` schema (§5.4).
+
+**To modify the form:** update `js/sell-form.js` (source), run `node build.js`
+to regenerate the minified file, and keep the form HTML identical across every
+sell page (§5.11).
+
+**To add a new landing page:**
+
+1. Add an entry to the appropriate `config/taxonomy.js` array (`brands`,
+   `furnitureTypes`, or `situations`) — this threads it into the nav dropdown
+   and footer column on the next build.
+2. Add a `<url>` entry to `generateSitemap()` in `build.js`.
+3. Create `sell/[slug]-edmonton/index.html` — easiest path is to copy an
+   existing page in the same cluster and adjust. Follow the structure, schema,
+   and cross-linking rules in §5.13.
+4. Add a cross-link card to the appropriate cluster on `sell/index.html` and on
+   related landing pages.
+5. Run `node build.js`.
+6. Commit.
+
+## 8.11 Deploy the Worker
+
+Worker changes (`worker/index.js`, `worker/wrangler.toml`) deploy independently
+of the static site (§4.8). Deploy from the `worker/` directory via
+`wrangler deploy`. Pushing to `main` does **not** redeploy the Worker —
+explicitly tell Collin when Worker code has changed so he can run the deploy.
+
+## 8.12 Deploy the Static Site
+
+**Collin handles every push to GitHub personally. Do not run `git push`.** An
+AI session's job ends at a clean commit on the local `main` branch with build
+artifacts regenerated and ready to ship. Collin reviews the commit and pushes
+when ready; GitHub Pages auto-deploys within ~60 seconds of his push.
+
+## 8.13 Generate Guide Article Ideas
+
+When asked to brainstorm article ideas for the Guides section, use this
+framework. (For the business description and brand-ordering rule, see §2.1.)
+
+**Each idea must include all six of:**
+
+1. **Title** — a full article headline, reads naturally, contains the primary
+   keyword, includes "Edmonton" where it fits.
+2. **Target keywords** — 3–5 specific search phrases mixing head terms and
+   long-tail; at least one includes "Edmonton".
+3. **Detailed structural guidance** — a 150–250 word paragraph (prose, not
+   bullets) describing exactly how to structure the article: what to open with,
+   sections to include, specific points to cover, data/examples to use, tone,
+   and how to close — detailed enough to write the article from without further
+   direction.
+4. **Word count target** — a specific range calibrated to topic depth.
+5. **Internal linking opportunities** — which existing pages to link
+   (inventory, `/sell/`, other guides).
+6. **FAQ suggestions** — 3–4 real searcher questions in natural language, for
+   `FAQPage` markup.
+
+**Content principles:**
+
+- **Objectivity over salesmanship.** Articles read as useful guides, not ads.
+  Concede where the business model is not the best fit; acknowledge competitors
+  fairly.
+- **Specificity over generality.** Use real brands, real price ranges, real
+  examples from sold/current inventory. "A Natuzzi Editions sectional that
+  retailed for $6,800 sold pre-owned for $2,799 — 59% off" beats "buy quality
+  furniture." Lead brand lists with top-tier names (§2.1); La-Z-Boy goes last.
+- **Edmonton-local angle.** Every article has at least one Edmonton-specific
+  section — local brands, market conditions, delivery realities, competitors,
+  housing stock (split-levels, basement suites, apartment elevator dimensions).
+- **Dual-audience awareness.** The business serves buyers and sellers; where
+  natural, bridge to the other side.
+- **Search-intent matching.** Each article targets one intent — informational,
+  commercial investigation, transactional, or navigational — and its structure
+  matches it.
+- **Cross-linking between articles.** Ideas form natural clusters that link to
+  each other (brand guides → pricing guide → buying guide; Marketplace articles
+  ↔ sell page).
+
+**Tone.** Write the descriptions the way the articles should read: direct,
+knowledgeable, practical. No filler, no hedging, no marketing fluff — the voice
+of someone who handles this furniture every day.
+
+---
+
+# 9. Historical Notes & Gotchas
+
+`[Historical]` — Institutional memory and known quirks. Context, not active
+architecture.
+
+## 9.1 The Text-Input Honeypot Bug
+
+The sell-form honeypot must be a **checkbox**, not a text input. A previous
+text-input honeypot was filled by browser autofill and password managers,
+which silently dropped real submissions under the silent-drop contract (§5.11).
+Checkboxes are almost never auto-ticked. Do not "simplify" the honeypot back to
+a text input.
 
-New reviews always go at the **top** of the list (first visible). Render order on the homepage is data order, so the newest review must be the first entry in the `reviews` array.
+## 9.2 GA Tag Coverage on Low-Traffic Pages
+
+The site's default GA4 pattern defers `gtag.js` injection until idle
+(`requestIdleCallback` / `load`). That deferred snippet leaves no
+`<script src="…/gtag/js?id=…">` in the static HTML, so Google's Tag Coverage
+report flags low-traffic URLs as "no tag detected" until someone actually
+visits them.
 
-1. **Edit `js/reviews-data.js`** — insert the new review at the top of the `reviews` array (above all existing entries):
-   ```javascript
-   {
-     name: "First Last",
-     rating: 5,
-     text: "Quote text."
-   },
-   ```
-2. **Bump `reviewAggregate`** — increment `totalCount` by 1 and recompute `ratingValue` as `(sum of all ratings) / totalCount`, rounded to one decimal. Update the inline math comment.
-3. **Update the FurnitureStore schema in `index.html`** — bump `aggregateRating.reviewCount` and **prepend** the new `Review` block to the top of the `review` array so the schema order matches the visible order.
-4. **Update the FurnitureStore schema in `sell/index.html`** — same treatment (`reviewCount` + prepend the new `Review` block).
-5. **Update `llms.txt`** — bump the "Rating: 4.9 stars (NN ratings)" count under Business Facts.
-6. **Run `node build.js`** — regenerates the static fallback in `index.html` from the data file.
-7. **Bump `reviews-data.min.js?v=N`** — increment the version on `index.html` (and update the "Current versions" entry below).
-8. **Re-run `node build.js`** so listing pages pick up the bumped reference.
-
-The credibility strip (`★ 4.9 Rating`) does not include a review count, so no other pages need a copy change.
-
-### Edit CSS
-
-1. Edit `css/styles.css`
-2. Regenerate minified version:
-   ```bash
-   cat css/styles.css | tr -s ' \t' ' ' | sed 's/ *{ */{/g; s/ *} */}/g; s/ *: */:/g; s/ *; */;/g; s/ *, */,/g; s/;}/}/g' | tr -d '\n' | sed 's|/\*[^*]*\*[^/]*\*/||g' > css/styles.min.css
-   ```
-3. Bump the CSS cache version parameter (`?v=N`) in all HTML files and in `build.js` (search globally for `styles.min.css?v=`). Every page references this, including the listing page template in build.js. **Current version: `v=56`.**
-4. Run `node build.js` (to regenerate listing pages with the new version, and to re-minify JS bundles)
-5. Commit the changes. Collin handles pushing to GitHub.
-
-### Edit JS
-
-1. Edit the source file (e.g., `js/shared.js`, `js/available-data.js`, `js/sold-data.js`, `js/reviews-data.js`, `js/sell-form.js`)
-2. Run `node build.js` — this re-minifies the source into the matching `*.min.js` file. There is no separate minify step.
-3. Bump the JS cache version parameter (`?v=N`) on every page that references the minified bundle. The listing page template in `build.js` references `shared.min.js?v=N` — bump that string too. **Current versions: `shared.min.js?v=31`, `available-data.min.js?v=29`, `sold-data.min.js?v=27`, `reviews-data.min.js?v=28`, `sell-form.min.js?v=3`.**
-4. Re-run `node build.js` so listing pages pick up the bumped reference.
-5. Commit the changes. Collin handles pushing to GitHub.
-
-### Edit a sell-side landing page
-
-The landing pages at `sell/[brand-or-piece]-edmonton/` are **hand-maintained**. They were generated once from a script; do not re-run that generator. To edit one:
-
-1. Open the relevant `sell/[slug]-edmonton/index.html` and make changes directly. The page already carries `<!-- NAV_START -->`, `<!-- CREDIBILITY_START variant="seller" -->`, and `<!-- FOOTER_START -->` marker pairs around content that's regenerated from `partials/` on every build — leave those markers in place and edit content outside of them.
-2. If you add a new landing page to the cluster:
-   - Add an entry to the appropriate array in `config/taxonomy.js` (`brands`, `furnitureTypes`, or `situations`). This automatically threads the page into the nav dropdown **and** the footer column on every page in the next build.
-   - Add a `<url>` entry to `generateSitemap()` in `build.js`.
-   - Create the HTML file at `sell/[slug]-edmonton/index.html`. Easiest path: copy an existing landing page in the same cluster and edit the marker-wrapped credibility variant if needed (`buyer` / `seller` / `listing`).
-   - Add a cross-link card to the appropriate cluster on `sell/index.html` and on related landing pages.
-3. If you modify the form, update **both** `js/sell-form.js` (source) and run `node build.js` to regenerate the minified file. The form HTML must remain identical across `sell/index.html` and every `sell/[slug]-edmonton/index.html` — same field IDs (`sf-brand`, `sf-age`, `sf-photos`, etc.) and same overall structure. Brand-specific pages pre-fill `sf-brand` via the `value=""` attribute on the input; piece-type pages leave it blank.
-4. After any edit, refresh `dateModified` on schemas that carry it (Service schema on these pages has a `dateModified` field).
-
-### Sell-form bot protection & worker contract
-
-The form posts to a Cloudflare Worker (`worker/index.js`, deployed at `https://edmonton-refreshed-sell.cbottrell1990.workers.dev/`), which validates and forwards the submission to `info@edmontonrefreshed.com` via Resend.
-
-**Spam defenses (silent-drop pattern — Worker returns `{ok: true}` either way so bots can't distinguish a drop from a real send):**
-
-1. **Checkbox honeypot** — every form has `<input type="checkbox" name="_honey" class="sell-form-honey" tabindex="-1" autocomplete="off" aria-hidden="true">` positioned off-screen via CSS. **Keep this as a checkbox, not a text input.** Text-input honeypots get filled by browser autofill / password managers and silently drop real submissions (this is what bit us before). Checkboxes are almost never auto-ticked.
-2. **Page-load timing** — `js/sell-form.js` captures `Date.now()` at script load and appends `_elapsed_ms` (ms since page load) to the FormData on submit. The Worker drops any submission where `_elapsed_ms < 2000` (i.e., under 2 seconds) as suspected bot.
-
-**Source-page tracking:** `js/sell-form.js` also appends `Source page` (the page's pathname + querystring) to every submission. The Worker prepends this to the email subject (`New Sell Inquiry — Brand — Name (from /sell/natuzzi-edmonton/)`) and includes it as the first line of the email body. This is how you can tell which landing page produced each lead.
-
-**If you add a new form field**, update both the HTML (every sell page) and the Worker's `REQUIRED_FIELDS` / email body builder. If you add a new honeypot or timing rule, do not change the silent-drop contract — the Worker must keep returning `{ok: true}` on suspected-bot paths so real bots can't probe for the rules.
-
-**Deploying Worker changes**: changes to `worker/index.js` or `worker/wrangler.toml` are deployed from the `worker/` directory via `wrangler deploy`. The static site (GitHub Pages) and the Worker (Cloudflare) deploy independently — pushing to `main` does not redeploy the Worker. Tell Collin when Worker code has changed so he can run the deploy.
-
-### Deploy
-
-**Collin handles pushing to GitHub personally.** Do not run `git push`. Your job ends at a clean commit on the local `main` branch with the build artifacts regenerated and ready to ship. Collin reviews the commit and pushes when ready. GitHub Pages auto-deploys from the main branch within ~60 seconds of his push.
-
-## Currency
-
-**Every price on the site is in Canadian Dollars (CAD).** This is a Canadian business serving Edmonton — there is no other currency in play. The convention applies in three places:
-
-1. **Schemas (machine-readable).** Every `Offer` block uses `"priceCurrency": "CAD"`, and every `MonetaryAmount` (shipping rate, etc.) uses `"currency": "CAD"`. Every `Offer` also carries `eligibleRegion` and `areaServed` set to `{ "@type": "Country", "name": "CA" }` so search engines never have to guess the locale. `MerchantReturnPolicy.applicableCountry` and `shippingDestination.addressCountry` are both `"CA"`.
-
-2. **Locale signals (machine-readable).** `<html lang="en-CA">` on every page (not bare `en`). `<meta property="og:locale" content="en_CA">`. `<meta name="geo.region" content="CA-AB">` and `<meta name="geo.placename" content="Edmonton">`. `Organization`/`FurnitureStore` schemas include `address.addressCountry: "CA"`.
-
-3. **Visible text (human-readable).** Every visible price renders with a trailing ` CAD` so the on-page text reinforces the schema. Google's rich-result snippets and AI overviews often read the visible text rather than the schema, and an unlabeled `$3,900` reads as USD to a non-Canadian crawler. The CAD suffix is appended at the **rendering layer**, not in the data:
-   - Homepage cards: `js/available-data.js` `renderAvailable()` and `build.js` `generateAvailableHTML()` both wrap the price as `$X,XXX <span class="card-price-currency">CAD</span>`.
-   - Listing pages: `build.js` `generateListingPage()` emits `<div class="listing-price">$X,XXX <span class="listing-price-currency">CAD</span></div>`, the value pill (`pill-retail` and `pill-now`) gets ` CAD` appended to each side, and the sticky mobile CTA reads `Text to Secure → $X,XXX CAD`.
-   - Data files (`js/available-data.js`): `price` and `retailCompare` strings are stored **without** the CAD suffix (e.g., `price: "$3,900"`, `retailCompare: "Est. Retail: $7,400+ | Buy it Today: $3,900"`). The renderer adds ` CAD`. Do not bake `CA$`, `C$`, or ` CAD` into the data — it will double-print.
-
-If a new visible price surface is added (a new card type, a new pill, a new CTA), it must follow the same pattern. If a new schema with a price/monetary field is added, it must use `CAD`. There is no scenario in which USD or any other currency appears on this site.
-
-## Schema & dateModified Standards
-
-Every page on the site carries structured data in the `<head>`. This is one of the strongest discoverability levers we have and must be kept current. The table below is the source of truth for what schemas appear on each page type.
-
-| Page | Schemas present in `<head>` |
-|---|---|
-| `index.html` (homepage) | `BreadcrumbList`, `FurnitureStore` (with `aggregateRating` + `review` array embedded), `FAQPage`, plus N `Product` schemas (one per non-coming-soon item, injected between `<!-- PRODUCT_SCHEMA_START -->` and `<!-- PRODUCT_SCHEMA_END -->`) |
-| `about/index.html` | `BreadcrumbList`, `FAQPage`, `Organization` |
-| `sold/index.html` | `BreadcrumbList` |
-| `sell/index.html` | `FurnitureStore` (with `aggregateRating`), `BreadcrumbList`, `FAQPage`, `Service` |
-| `sell/[slug]-edmonton/index.html` | `BreadcrumbList`, `Service` (with `dateModified`), `FAQPage` |
-| `privacy/index.html` | `BreadcrumbList` |
-| `listings/[slug]/index.html` (active) | `Product` (with `offers.availability = InStock`, `offers.priceValidUntil` = today + 90d, optional `offers.availabilityStarts`, `offers.hasMerchantReturnPolicy`, `offers.shippingDetails`, `sku` extracted from image folder, `dateModified`, optional `width`/`depth`/`height` `QuantitativeValue` blocks), `BreadcrumbList`, `FurnitureStore` (LocalBusiness — sitewide), `Organization` (sitewide), optional `FAQPage` (when `item.faq` is provided) |
-| `listings/[slug]/index.html` (sold stub) | `Product` (with `offers.availability = SoldOut` — **not** `OutOfStock`), `BreadcrumbList` |
-| `guides/index.html` | `BreadcrumbList`, `CollectionPage` (recommended; verify present) |
-| `guides/[slug]/index.html` | `Article` (with `datePublished` and `dateModified`), `BreadcrumbList`, optional `FAQPage` |
-
-**`dateModified` rule — mandatory**
-
-Whenever any HTML page is edited — content, copy, structural changes, schema tweaks, anything — the page's `dateModified` field must be updated to today's date in ISO format (`YYYY-MM-DD`). This applies even when the visible change is small. Search engines weight freshness, and stale `dateModified` values misrepresent the site.
-
-How this is handled per page type:
-
-1. **Auto-regenerated by `build.js` on every run.** Pages in this category: `index.html`, `sold/index.html`, every `listings/[slug]/index.html`, and `sitemap.xml`. Date handling here must live inside `build.js` itself:
-   - `sitemap.xml` — every `<lastmod>` value uses `today()`. ✓ already implemented.
-   - Listing-page `Product` schemas — `offers.priceValidUntil` is set to `today() + 90d`. ✓ already implemented. Also inject a `dateModified` field at the schema root using `today()` whenever generating the schema (Product inherits this property from `Thing`, and it gives search engines an explicit freshness timestamp).
-   - Homepage `FurnitureStore` schema and Product schemas injected between the `PRODUCT_SCHEMA_*` markers — inject `dateModified: today()` at the schema root. For the FurnitureStore schema that lives in raw HTML rather than being generated, `build.js` should regex-update its `"dateModified"` value to today's date on every build (add markers or a targeted replace).
-   - `sell/index.html` `FurnitureStore` schema — same treatment as the homepage FurnitureStore.
-
-   If `build.js` does not yet do all of the above, treat that as a maintenance gap. The first build that touches a given page must bring its `dateModified` current.
-
-2. **Manually maintained pages.** Anyone editing `about/index.html`, `sell/index.html`, `privacy/index.html`, `guides/index.html`, `guides/[slug]/index.html`, or `404.html` must update `dateModified` in every schema on that page that supports it (`Article`, `Organization`, `Service`, `CollectionPage`, `WebPage`, etc.) to today's date in ISO format. This applies even when only the body content changes — the schema must reflect the edit.
-
-   `BreadcrumbList` and `FAQPage` do not natively carry `dateModified` — leave those alone unless wrapped inside a `WebPage` that does.
-
-3. **When editing a guide article.** Update `dateModified` to today's date on every save. Update `datePublished` only if the original was wrong. Search engines read the schema, not git history — forgetting this means the page reads as stale to crawlers even when you've just edited it.
-
-4. **Verification (run after any session that touches HTML).**
-   ```bash
-   grep -rn '"dateModified"' --include="*.html" . | grep -v '"dateModified": "'"$(date +%Y-%m-%d)"'"'
-   ```
-   Any remaining lines that point to pages you edited in this session are a bug — fix them before pushing. Lines on pages you didn't touch are fine.
-
-**Schema validation**
-
-Before committing significant schema changes, validate with Google's Rich Results Test (`https://search.google.com/test/rich-results`) on at least one affected URL. Common breaking issues to watch for: missing required fields on `Product` (`name`, `image`, `offers.price`, `offers.priceCurrency`), invalid date formats, mismatched `availability` values, missing `image` URLs on Article schemas.
-
-## Sell-side landing pages
-
-A cluster of hand-maintained landing pages sits under `/sell/`, intended to support both brand-level and piece-type commercial-intent search queries. Each is its own static page; they are **not** auto-generated by `build.js`.
-
-**Brand pages (6):**
-- `/sell/natuzzi-edmonton/`
-- `/sell/rove-concepts-edmonton/`
-- `/sell/eq3-edmonton/`
-- `/sell/crate-and-barrel-edmonton/`
-- `/sell/restoration-hardware-edmonton/`
-- `/sell/west-elm-edmonton/`
-
-**Redirected brand pages (no longer active):**
-- `/sell/american-leather-edmonton/` → redirects to `/sell/` (meta refresh + canonical)
-- `/sell/bb-italia-edmonton/` → redirects to `/sell/` (meta refresh + canonical)
-
-**Piece-type pages (6):**
-- `/sell/sectional-edmonton/`
-- `/sell/leather-sectional-edmonton/`
-- `/sell/sofa-edmonton/`
-- `/sell/leather-sofa-edmonton/`
-- `/sell/couch-edmonton/`
-- `/sell/leather-couch-edmonton/`
-
-**Situational pages (6):**
-- `/sell/furniture-consignment-edmonton/`
-- `/sell/selling-furniture-before-moving-edmonton/`
-- `/sell/downsizing-furniture-edmonton/`
-- `/sell/sell-furniture-fast-edmonton/`
-- `/sell/estate-furniture-edmonton/`
-- `/sell/sell-designer-furniture-edmonton/`
-
-The situational pages target high-intent seller queries built around a circumstance (move date, downsizing, estate clear-out, designer inventory, etc.) rather than a brand or piece type. They use a different page order than the brand/piece pages: the form sits **higher** on the page (immediately below the hero and a single qualification block) because the searches that land here represent stronger immediate seller intent. Long-form explanatory body content sits **below** the form rather than above it. Tone is knowledgeable, practical, and honest about tradeoffs (consignment can outperform on the right piece; Marketplace can produce higher prices for some sellers; direct purchase prioritizes simplicity and speed over maximum value). Avoid AI filler, exaggerated luxury language, fake urgency, and "we buy everything" positioning.
-
-**Page structure (in order):**
-
-*Brand and piece-type pages:*
-1. Standard nav (with the Sell dropdown), credibility strip, breadcrumb.
-2. `.sell-landing-hero` — H1, intro paragraph, hero CTA scrolling to `#sell-details`.
-3. `.sell-landing-body` — `<h2>` sections: "What we look for", "What affects the offer" (bulleted list), and "Pieces that typically qualify" (bulleted list). Keep tone knowledgeable, practical, and selective. No generic AI filler. Brand pages reference specific models; piece-type pages reference specific configurations.
-4. `.sell-landing-sold` — grid of up to 6 sold cards using real entries from `js/sold-data.js`. **Never fabricate sold examples.** If no sold inventory exists for the page's brand/category, replace this section with a `.sell-landing-sourcing` note indicating Edmonton Refreshed is actively looking for that category.
-5. `.sell-landing-back-cta` — mid-page link back to `/sell/` for the full method/comparison content.
-6. "Send us your details" heading with `id="sell-details"` for the hero CTA anchor.
-7. `.sell-form-prelude` qualification note — **mandatory** verbatim text: _"We primarily purchase higher-quality sofas and sectionals from design-oriented and premium retailers. If you're unsure whether your piece is a fit, send photos anyway — we're happy to take a look."_
-8. Embedded sell form (same field IDs and structure as `/sell/`). Brand pages pre-fill `sf-brand` via `value="Brand Name"`; piece-type pages leave it blank.
-9. `.sell-landing-cluster` — cross-link cards to related brand and piece-type pages (5 cards is the typical count). Examples: a leather-sectional page links to Natuzzi; a sectional page links to Rove Concepts; an American Leather page links to leather-sofa.
-10. FAQ section (3–4 page-specific Q&A) with matching `FAQPage` schema in `<head>`.
-11. Standard newsletter embed, footer.
-12. Scripts: `shared.min.js` (provides nav dropdown toggle + carousel + GA4 tracking) and `sell-form.min.js` (provides form submission/photo upload).
-
-*Situational pages (form-first variant):*
-1. Standard nav (with the Sell dropdown), credibility strip, breadcrumb.
-2. `.sell-landing-hero` — H1, situationally-specific intro paragraph(s), hero CTA scrolling to `#sell-details`.
-3. `.sell-qualification` — single short trust/qualification block that frames the buy zone and reinforces the timeline promise.
-4. "Send us your details" heading with `id="sell-details"`, lead paragraph, `.sell-form-prelude`, and the embedded sell form (same field IDs as `/sell/`, `sf-brand` left blank).
-5. `.sell-landing-body` — `<h2>` sections that frame the operational friction of the seller's situation, an honest comparison with alternatives (Marketplace, consignment, donation, etc.), where direct purchase fits, and what the page typically purchases.
-6. `.sell-landing-sold` — grid of up to 6 sold cards using real entries from `js/sold-data.js`, weighted toward inventory relevant to the situation. **Never fabricate sold examples.**
-7. FAQ section (4–5 page-specific Q&A grounded in real seller concerns: pickup logistics, timeline expectations, condition, incomplete sets, older pieces, response time) with matching `FAQPage` schema in `<head>`.
-8. `.sell-landing-cluster` — 4–6 cross-link cards to the main `/sell/` page, related situational pages, related brand or piece-type pages, and relevant guides.
-9. `.sell-landing-back-cta` — closing link back to `/sell/` for the full method.
-10. Standard newsletter embed, footer.
-11. Scripts: `shared.min.js` and `sell-form.min.js`.
-
-**Schemas (mandatory on every landing page):**
-- `BreadcrumbList` — three levels: Home → Sell Your Furniture → this page.
-- `Service` — with `name`, `description`, `url`, `dateModified` (today's date in ISO format), `provider`, `areaServed`.
-- `FAQPage` — one `Question` per visible FAQ item; answer text must be plain text (strip HTML entities like `&mdash;` → `—`).
-
-**Cross-linking rules:**
-- Every landing page must link back to `/sell/` (both the mid-page `.sell-landing-back-cta` and the breadcrumb satisfy this).
-- The main `/sell/` page must link to every landing page (three `.sell-landing-cluster` sections — "Sell by brand", "Sell by piece type", and "Sell by situation" — handle this).
-- Brand pages cross-link to relevant piece-type pages and one or two related brand pages.
-- Piece-type pages cross-link to relevant brand pages.
-- Brand pages with an existing guide also link to that guide (e.g., Natuzzi page → `/guides/natuzzi-sofa-review-edmonton/`).
-- Situational pages cross-link to other situational pages, relevant brand or piece-type pages, and at least one relevant guide where one exists (consignment page → `/guides/edmonton-furniture-consignment-resale-guide/`, moving page → `/guides/selling-furniture-before-moving-edmonton/` and `/guides/moving-edmonton-furniture-keep-sell-replace/`, designer page → `/guides/how-to-sell-high-end-furniture-edmonton/` and `/guides/best-sofa-brands-resale-value-edmonton/`, fast page → `/guides/sell-couch-sectional-fast-edmonton/`, estate page → `/guides/selling-inherited-estate-furniture-edmonton/`, downsizing page → `/guides/moving-edmonton-furniture-keep-sell-replace/`).
-
-**Recently sold cards:** use absolute URLs of the form `/images/Sold%20Inventory/[XX-NNN]/[file].jpeg` (URL-encoded space). Cards link to `/sold/` (not back to individual items). Use the existing `.card.sold` styling via the `.sell-landing-sold-grid` class.
-
-**Adding a new landing page** — see the "Edit a sell-side landing page" workflow above.
-
-## Important Details
-
-- **Homepage cards** show: image carousel, brand, title (clickable link to listing page), spec pills, and price. Descriptions are only on individual listing pages.
-- **Stretched link**: The entire homepage card is clickable via a CSS `::after` pseudo-element on `.card-title-link`. Carousel controls (arrows, dots, image lightbox) have `z-index: 2` to sit above the link layer.
-- **Static fallback**: The `<div id="available-grid">` and `<div id="sold-grid">` containers hold pre-rendered HTML for crawlers. JavaScript replaces this on load with the interactive version (carousels instead of single images).
-- **Product schemas**: Injected into `index.html` `<head>` between `<!-- PRODUCT_SCHEMA_START -->` and `<!-- PRODUCT_SCHEMA_END -->` markers. One `<script type="application/ld+json">` block per non-coming-soon item.
-- **Responsive images**: Every JPEG needs 400w and 800w variants alongside the original. The `srcsetFor()` helper in build.js generates the srcset attribute. The JS render in available-data.js does not use srcset (it uses the full-size images in carousels).
-- **FAQ content**: The homepage has both a visible FAQ section and a FAQPage schema in `<head>`. If you edit one, update the other to match. The about page also has its own FAQPage schema.
-- **Sitemap**: Auto-generated by `build.js`. Includes home, sold, sell, every sell landing page, about, privacy, guides index, every individual guide URL, and every active listing URL. `lastmod` is set to today's date on every build. Never edit `sitemap.xml` manually. **Note:** individual guide URLs and sell-side landing page URLs are listed by hand in `generateSitemap()` inside `build.js` — when adding a new one, you must add its URL to that function.
-- **Nav dropdown ("Sell Your Furniture" submenu)**: The Sell Your Furniture nav item is wrapped in `<li class="nav-dropdown">` that contains both a clickable `<a href="/sell/">` (still navigates to the main sell page) and a separate `<button class="nav-dropdown-toggle">` (toggles the submenu). On desktop the submenu opens on hover or focus-within; on mobile the toggle drives it. The submenu lists "By brand", "By piece", and "By situation" sections built from `config/taxonomy.js`. Markup is generated once by `partials/nav.js` and injected at build time into every HTML page (see **Sitewide layout partials** above). The mobile drawer (`.nav-links.open`) is full-opacity white with `max-height: calc(100vh - var(--nav-height))` and `overflow-y: auto` so the expanded dropdown scrolls cleanly.
-- **Credibility strip**: rendered by `partials/credibility.js` with three variants — `buyer` (homepage/sold/about/guides/privacy), `seller` (sell hub + every sell-landing page, includes the offer-range pill), `listing` (active listings + sold stubs, delivery-oriented). Variant is selected by the `variant="..."` attribute on the page's `<!-- CREDIBILITY_START -->` marker. Copy lives in `config/site.js` — change `piecesSold` / `piecesBought` / `rating` / `offerRange` once and rebuild.
-- **Google Analytics**: GA4 tag `G-8MN82PPZRZ` is on every page except 404.html.
-- **Newsletter signup**: A Kit (ConvertKit) email form appears on the homepage (between reviews and FAQ), sold page (between hero and inventory), about page (above footer), and individual listing pages (below listing content, above footer). The form posts to `https://app.kit.com/forms/9233085/subscriptions` via AJAX (handled in shared.js). The heading text above each form reads: "Get first access before pieces sell. Enter your email to hear about new arrivals before the public."
-- **Retail comparison**: Each available item has a `retailCompare` field that renders as a two-part pill positioned between the description and the features list. The string is split at ` | ` — left side (muted grey) shows the retail figure, right side (dark background, white text) shows the asking price. **Always use the format `"Est. Retail: $X,XXX | Buy it Today: $X,XXX"`** — no other phrasing. Use `Est. Retail: $X,XXX+` when the figure is an estimate. The pill has equal top and bottom margin (`margin: 20px 0`) to give visual breathing room. If no `|` separator is present, it falls back to plain serif text.
-- **Listing page structure** (top to bottom): breadcrumb, full-width carousel + thumbnail strip, brand, title, retail value pill (no label), price, "Text to Secure" CTA, "Call" CTA, spec pills, then collapsible `<details>` sections in this order — **Description** (open by default, includes brand-guide cross-link footer where applicable), **Features**, **Condition**, **Includes** — followed by an authenticity / inspection trust statement (`.listing-trust`, sitewide), a sell-side prompt line, back link to homepage. Below the hero block: an optional **Frequently Asked Questions** section (`.listing-faq`, only when `faq` data is provided), an optional **Related Links** grid (`.listing-related`, only when real related inventory exists), then the newsletter signup, footer, and a sticky mobile CTA bar fixed at the bottom of the viewport. Listing pages do **not** carry the "Selling a piece like this?" `.guide-cta` block — sell-side intent is already covered by the in-body `.listing-sell-line` prompt directly under the trust statement, and adding another sell CTA between the FAQ and Related sections breaks the reading flow.
-- **Listing page trust statement**: every active listing carries a single-line authenticity/inspection block (`<p class="listing-trust">`) immediately after the collapsible content. The copy reads: _"All designer pieces are inspected for construction, materials, and manufacturer consistency before listing."_ Generated by `build.js` for every listing — do not duplicate it inline in data.
-- **Listing page Related Links section**: `build.js` renders `.listing-related` (heading: `"Related Links"`) only when **real related inventory** exists — defined as at least one other live piece (`availableItems` minus self + coming-soon) **or** at least one sold piece in the same brand family (e.g. `Natuzzi` matches `Natuzzi Editions`). The brand guide (`brandGuideMap`) is added as a supplemental card whenever the section is shown, but it never triggers the section on its own — the brand-guide link is already surfaced inside the Description collapsible, and a section that contains only a guide link with no actual inventory reads as empty. If neither condition is met, the section is skipped entirely. The section renders directly below the FAQ section and above the newsletter signup (no intervening CTA block).
-- **Listing page sitewide schemas**: every active listing carries `Product`, `BreadcrumbList`, `FurnitureStore` (LocalBusiness), and `Organization` schemas in `<head>`, plus optional `FAQPage` when `item.faq` is provided. The FurnitureStore and Organization schemas are constants in `build.js` (`generateListingPage`) — update them there when business info changes (phone, address, social profiles, hours). They reinforce local-Edmonton signals on every product URL crawlers hit.
-- **Sitewide heading uniformity**: every section heading on the site uses `<h2 class="section-label">…</h2>` with the same site-wide styling (small uppercase tracked type). On desktop all `.section-label` headings render visibly. On mobile most `.section-label` headings are visually hidden (the section's own spacing carries the hierarchy) — **FAQ section labels are the explicit exception** and remain visible at every breakpoint. The mobile reveal rule lives at `.faq-section .section-label, .listing-faq .section-label` inside the `@media (max-width: 768px)` block in `css/styles.css`. FAQ section headings always use the exact text `"Frequently Asked Questions"` (matches every guide article). Do not override `.section-label` per-section — uniformity matters more than visual variation.
-- **Listing page collapsible sections**: each optional content section (Description, Features, Condition, Includes) is wrapped in `<details class="listing-collapsible">` with a `<summary class="listing-meta-label">` label. Description is `open` by default; the others are collapsed on initial render. If you change this behavior, update `build.js` (`generateListingPage`) — not the HTML output.
-- **Listing page brand-guide cross-link**: `build.js` contains a `brandGuideMap` that auto-injects a "Read our full [Brand] buyer's guide for Edmonton" link inside the Description collapsible section for items from brands with a published guide. Current mapped brands: Natuzzi (and Natuzzi Editions, Natuzzi Italia), B&B Italia, Rove Concepts. When a new brand-specific guide is published, add an entry to this map in `build.js`.
-- **Listing page sticky CTA bar (mobile only)**: a fixed-position bar at the bottom of the viewport with a "Text to Secure → $price" primary action and a "Call" secondary action. Generated by `build.js` for every active listing page. Hidden on desktop via CSS.
-- **Listing page layout**: images sit full-width above the text content (stacked, not side-by-side). The carousel uses a uniform 4:3 aspect ratio on both desktop and mobile so every listing presents at the same frame size. Images use `object-fit: contain` so the entire image is always visible — odd-aspect photos (portrait, near-square) letterbox against the carousel background instead of being cropped. The 4:3 frame matches the natural aspect ratio of most listing photos, so letterboxing is the exception, not the rule.
-- **Skip-to-content links**: every page has `<a href="#main-content" class="skip-link">Skip to main content</a>` as the first body element for keyboard/screen-reader accessibility. Don't remove.
-- **AI/LLM entity summary**: the homepage includes a `<div class="sr-only" aria-hidden="false">` block immediately below the skip link containing a plain-text summary of the business, brands, location, and contact. This is visible to AI crawlers and accessibility tools but hidden visually. Update it whenever the brand list or contact info changes.
-- **Homepage divider**: Between hero/tagline and inventory, a decorative divider reads "One of One. Once it's Gone, it's Gone." in serif font with horizontal lines on either side.
-- **Guides section**: Lives at `guides/`. The landing page (`guides/index.html`) lists all articles as `.guide-card` links. Individual articles live in `guides/[slug]/index.html` and are manually created (not auto-generated by build.js). Each article page includes Article, BreadcrumbList, and optionally FAQPage schemas. Guide styles use the `.guide-*` CSS classes. The nav link "Guides" appears on all pages with `data-page="guides"` for active-state detection in shared.js.
-- **Global footer**: rendered by `partials/footer.js` from `config/taxonomy.js`. Centered brand statement, three-column taxonomy (Sell by Furniture Type / Sell By Situation / Sell By Brand) linking to every sell-landing page, quiet utility row (Recently Sold, Guides, About, Privacy Policy), copyright, and tagline. Styling lives under `.site-footer` / `.footer-*` in `css/styles.css` — editorial, muted, typography-led. To add a new sell-landing column entry: edit `config/taxonomy.js`, run `node build.js`. Mobile collapses the three columns to a single stacked column with padded link blocks for thumb-friendly tap targets. Sold-stub listing pages also use the global footer.
-- **Layout primitive & containment (`:where(.page) > *`)**: `.page` is the
-  page-level container; every direct child of `.page` is automatically
-  given `max-width: var(--max-width); margin-inline: auto; padding-inline: var(--page-x);`
-  via the `:where(.page) > *` rule in `css/styles.css`. This is the **default
-  containment system** — sections inside `.page` do not need to redeclare
-  `max-width`, `margin: 0 auto`, or `padding: 0 var(--page-x)` themselves.
-  They only own their internal layout (vertical rhythm, gap, narrower
-  max-width when the section is a content column rather than a page-width
-  block). Specificity is kept at 0,0,0,1 via `:where()` so any class on the
-  section wins without specificity gymnastics.
-
-  **Architectural principles** that follow from the primitive:
-  - Pages own horizontal page inset; components inside the page assume they
-    are already in a padded layout context.
-  - Sections control vertical rhythm via `padding-top` / `padding-bottom`
-    / `margin-top` / `margin-bottom`. Avoid `padding: T H B` shorthand for
-    sections inside `.page` — it overrides the default `padding-inline`.
-  - Avoid nested compensation patterns (parent adds horizontal padding,
-    children negate it). If a section needs a narrower column, override
-    `max-width` only; the default `padding-inline` still applies cleanly.
-  - When you add a new section as a direct child of `.page`, do NOT add
-    `max-width`, `margin-inline`, or `padding-inline` — the layout
-    primitive supplies them.
-
-  **Exceptions — sections that intentionally live outside `.page`** (and
-  therefore self-pad with their own `max-width / margin / padding`):
-  - `.newsletter-embed` — sits as a sibling of `<main>` on sell hub, sell
-    landing pages, about, guides index, and guide articles; sits inside
-    `.page` on sold, listings, and the homepage. Self-padded so it works
-    in either position.
-  - `.sell-landing-cluster` — direct child of `<main>` on sell hub
-    (outside `.page`), direct child of `.page` on landing pages. Self-pads.
-  - `.about-related` — sibling of `.page` inside `<main>` on the about
-    page. Self-pads.
-  - `.faq-section` — appears outside `.page` on the homepage (sibling of
-    `.page`) and inside `.page` on listings / landing pages. Self-pads to
-    work in either position.
-  - `.service-area-note` — sibling of `.page` on the homepage. Self-pads.
-  - `.footer-inner` (inside `<footer>`), `.nav-inner` (inside `<nav>`),
-    `.credibility-strip` (between `<nav>` and `<main>`) — outside `<main>`
-    entirely. Each self-pads.
-  - `.reviews-inner` — direct child of `#reviews-section` (a JS mount-point
-    wrapper); the wrapper is neutralized in CSS so `.reviews-inner` is
-    the active layout box.
-  - `.l-bleed` opt-out class — declared but currently unused; reserves a
-    documented pattern for future full-bleed surfaces inside `.page`.
-
-  **Reviews mobile full-bleed exception**: `.reviews-inner` drops its
-  horizontal padding on mobile so `.reviews-grid` (a scroll-snap carousel)
-  can be edge-to-edge. `.reviews-aggregate` and `.reviews-grid` each
-  re-add `padding: 0 var(--page-x)` on mobile. This is the one intentional
-  full-bleed surface on the site.
-
-- **Spacing scale (`--page-x` / `--section-y` / `--space-N`)**: every
-  page-edge horizontal padding and major vertical section gap reads from
-  CSS custom properties declared on `:root` in `css/styles.css`:
-  - `--page-x` — horizontal page padding (24px desktop / 24px mobile /
-    20px sub-360px). Used by the layout primitive above. Never hardcode
-    24px — always reference the token so future viewport changes propagate.
-  - `--section-y` — bottom padding on major sections (72px desktop / 80px
-    mobile). Mobile goes UP because stacked content needs more rhythm to
-    feel deliberate.
-  - `--space-1` (8px) through `--space-7` (80px) — vertical-rhythm token
-    scale. Existing sections still use raw px values in many places; new
-    code should prefer the tokens. Token-to-value migration is gradual.
-  Desktop defaults are `--page-x: 24px` and `--section-y: 72px`. Mobile
-  (`@media (max-width: 768px)`) keeps `--page-x: 24px` — never drop below
-  it; the prior 16px overrides read as edge-to-edge — and bumps
-  `--section-y` to `80px`. Only sub-360px viewports drop `--page-x` to
-  `20px` to preserve content width on the very narrowest devices. Modern
-  phones (375–430px) stay at the full 24px. Never hardcode `16px` for
-  page-edge padding — that bypasses the scale and reintroduces the
-  edge-to-edge cramping this system was designed to prevent.
-
-- **Column tokens (`--col-narrow` / `--col-mid` / `--col-prose` / `--col-page`)**:
-  named content-column widths consolidate the previous sprawl of 580 /
-  720 / 850 / 1100 max-widths. Reference them on sections that need a
-  narrower column than the page max-width.
-  - `--col-narrow` (580px) — sell form, sell checklist, sell content,
-    sell method column.
-  - `--col-mid` (720px) — sell landing body, sell landing back-cta.
-  - `--col-prose` (850px) — guide callout, guide CTA, guide table wrap,
-    guide related, about related.
-  - `--col-page` (`var(--max-width)` = 1100px) — alias for the page width;
-    use when a section explicitly wants to read the page width without
-    inheriting through the layout primitive.
-- **Seller-page OG/Twitter copy convention**: every page under `/sell/` (the hub plus every `/sell/[slug]-edmonton/` landing page, including the redirected `american-leather-edmonton` and `bb-italia-edmonton` stubs) leads its `meta name="description"`, `og:description`, and `twitter:description` with the phrase `Skip Marketplace.` followed by a page-specific seller-journey sentence (photos in → offer back → pickup → paid). The supporting sentence describes what the **seller** does and receives, not what the business does — "Send photos" rather than "We buy". Buyer-facing pages (homepage, sold, about, listing pages, guides) do **not** use this prefix; their OG copy stays focused on what buyers see (curated inventory, brand list, inspection). When you add a new seller-focused page, follow the pattern; when you add a new buyer-focused page, do not introduce "Skip Marketplace." in the meta copy.
-
-## Generate Article Ideas
-
-When asked to brainstorm or generate article ideas for the Guides section, follow this framework to produce ideas that are both search-discoverable and genuinely useful to readers.
-
-### What this business is
-
-Edmonton Refreshed is a curated pre-owned furniture reseller in Edmonton, AB. The owner (Collin Bottrell) buys quality pieces outright from sellers, inspects and cleans them, photographs them, prices them against market value, and resells with delivery. The key differentiator vs. Facebook Marketplace / Kijiji is curation, accountability, and convenience — on both the buy side and the sell side. Primary inventory is sofas, sectionals, and seating from recognized brands (Natuzzi, B&B Italia, Rove Concepts, La-Z-Boy, EQ3, Crate & Barrel, West Elm, etc.).
-
-### How to structure each idea
-
-Each article idea must include all of the following:
-
-1. **Title** — Written as a full article headline. Should read naturally and contain the primary keyword. Include "Edmonton" where it fits naturally.
-2. **Target keywords** — 3–5 specific search phrases the article should rank for. Mix high-volume head terms with long-tail phrases. At least one keyword should include "Edmonton" for local intent.
-3. **Detailed structural guidance** — A 150–250 word paragraph (not bullet points) describing exactly how to structure the article: what to open with, what sections to include, what specific points to cover, what data or examples to use, what tone to strike, and how to close. This paragraph should be detailed enough that someone could write the full article from it without further direction.
-4. **Word count target** — A specific range (e.g., 1,200–1,500 words) calibrated to the depth of the topic.
-5. **Internal linking opportunities** — Which existing pages on the site the article should link to (inventory, /sell/, other guides).
-6. **FAQ suggestions** — 3–4 specific FAQ questions to include at the bottom of the article, marked up with FAQPage schema. These should be real questions a searcher would ask, phrased in natural language.
-
-### Content principles
-
-- **Objectivity over salesmanship.** The articles should read as genuinely useful guides, not advertisements. Concede cases where the business's model isn't the best fit. Acknowledge competitors fairly. Readers and search engines both respond better to balanced content.
-- **Specificity over generality.** Use real brand names, real price ranges, real examples from the site's sold and current inventory. Vague advice ("buy quality furniture") is worthless. Specific advice ("a Natuzzi Editions sectional that retailed for $6,800 sold pre-owned for $2,799 — 59% off") builds credibility. When listing brands Edmonton Refreshed seeks out, lead with the top-tier names first: B&B Italia, Natuzzi, Rove Concepts, Crate & Barrel, EQ3, West Elm, American Leather. La-Z-Boy is accepted selectively and should appear at the end of any brand list, not as the primary example — it represents the lower end of what the business takes, not the core positioning.
-- **Edmonton-local angle.** Every article should have at least one section or angle specific to Edmonton — local brands, local market conditions, local delivery realities, local competitors, local housing stock (split-levels, basement suites, apartment elevator dimensions).
-- **Dual-audience awareness.** Edmonton Refreshed serves both buyers and sellers. Article ideas should consider which audience the piece targets, and where natural, include a bridge to the other side (e.g., a buyer's guide can mention that the site also buys furniture; a seller's guide can mention available inventory).
-- **Search intent matching.** Each article should target a specific search intent: informational ("how to inspect a used sofa"), commercial investigation ("Natuzzi vs EQ3"), transactional ("sell furniture Edmonton"), or navigational ("furniture consignment Edmonton"). The structure of the article should match the intent — don't write a 2,000-word essay when the searcher wants a quick comparison.
-- **Cross-linking between articles.** Article ideas should form natural clusters that link to each other. Brand guides link to the pricing guide. The pricing guide links to the buying guide. The Marketplace articles link to the sell page and vice versa. This internal linking structure strengthens the entire section.
-
-### Tone
-
-Write the article descriptions the way the articles themselves should be written: direct, knowledgeable, practical. No filler, no hedging, no marketing fluff. The voice is that of someone who handles this furniture every day and is sharing what they know.
+Because of this, **sold stubs and redirect stubs use the canonical static GA
+snippet** instead — the tag is present in static HTML and validators/Tag
+Coverage detect it without depending on real pageviews:
+
+```html
+<!-- Google tag (gtag.js) — canonical static snippet so GA Tag Coverage / validators detect the tag without depending on real pageviews -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8MN82PPZRZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8MN82PPZRZ');
+</script>
+```
+
+Active listing pages (generated by `build.js`) keep the deferred pattern — they
+receive real traffic, GA confirms the tag via pageviews, and LCP performance
+matters more there.
+
+## 9.3 The "Update Every Copy" Maintenance Pattern
+
+Before the partial-injection system (§4.5), nav, credibility, and footer markup
+were duplicated into every HTML file, so adding a sell-landing page or a footer
+link meant editing every page by hand. The partial system plus `config/` was
+introduced specifically to kill that pattern. If you ever find yourself making
+the same edit across many HTML files, that is a signal the content should move
+into a partial or config file.
+
+## 9.4 AVIF & LCP Preload Coupling
+
+LCP preload depends on the full-size AVIF variant existing on disk. A missing
+AVIF does not break the page (the browser falls through WebP → JPEG) but it
+**silently disables LCP preload**, hurting performance with no visible error.
+Always generate the complete variant set (§5.3).
+
+---
+
+# 10. Deprecated Patterns
+
+`[Deprecated]` — Obsolete approaches retained only to prevent accidental
+resurrection. **Do not use any of these for new implementation.**
+
+## 10.1 `OutOfStock` for Sold Pieces
+
+**DO NOT USE FOR NEW IMPLEMENTATION.** Sold pieces use
+`availability: SoldOut`, never `OutOfStock`. `OutOfStock` implies the item may
+return; `SoldOut` correctly signals a permanent, one-of-one sale (§6.3).
+
+## 10.2 Ad-Hoc Content-Column Max-Widths
+
+**DO NOT USE FOR NEW IMPLEMENTATION.** The site previously scattered raw
+`max-width` values (580 / 720 / 850 / 1100px) across many sections. These are
+consolidated into the named column tokens in §7.5 (`--col-narrow`,
+`--col-mid`, `--col-prose`, `--col-page`). New sections reference a token; they
+do not introduce new raw widths.
+
+## 10.3 Hardcoded `16px` Page-Edge Padding
+
+**DO NOT USE FOR NEW IMPLEMENTATION.** Earlier mobile CSS overrode page-edge
+padding to `16px`, which read as edge-to-edge cramping. Page-edge horizontal
+padding now reads exclusively from `--page-x` (§7.4), which never drops below
+`20px` (and only at sub-360px). Never hardcode `16px` — or any literal pixel
+value — for page-edge padding.
+
+## 10.4 Hand-Edited Generated Files
+
+**DO NOT USE FOR NEW IMPLEMENTATION.** Never hand-edit files generated by
+`build.js` — `index.html` / `sold/index.html` content inside marker comments,
+active listing pages, `sitemap.xml`, `js/*.min.js`, or the nav/credibility/
+footer blocks inside marker pairs. Edit the source (data files, partials,
+config, `build.js`) and rebuild. See §4.2.
+
+## 10.5 Re-Running the Sell-Landing Generator Script
+
+**DO NOT USE FOR NEW IMPLEMENTATION.** The `/sell/[slug]-edmonton/` pages were
+generated once by a script that is no longer maintained or run. They are now
+hand-maintained (§5.13, §8.10). Do not attempt to re-run or recreate that
+generator — edit the pages directly.
+
+## 10.6 Restating Canonical Rules Inline
+
+**DO NOT USE FOR NEW IMPLEMENTATION.** Earlier revisions of this document
+restated the same rules (currency, `dateModified`, image variants, GA snippet)
+in multiple places, which caused drift as copies fell out of sync. Each rule
+now has one canonical home in §5; everything else references it. When adding
+guidance, link to the canonical section instead of copying it.
+
+## 10.7 Manual `?v=N` Asset-Version Registry
+
+**DO NOT USE FOR NEW IMPLEMENTATION.** Asset versions used to be hand-bumped
+integer suffixes (`v=56`, `v=31`, etc.) tracked in a registry table in this
+file. `build.js` now derives `?v=<8-hex>` from a SHA-256 hash of the
+minified content and rewrites every reference across every HTML file
+automatically. Do not hand-edit asset query strings; do not recreate the
+registry table. See §4.6 / §5.7.
+
+## 10.8 String-Formatted Prices in Data
+
+**DO NOT USE FOR NEW IMPLEMENTATION.** Prices used to live in
+`js/available-data.js` as pre-formatted strings (`price: "$3,900"`) with a
+sibling `retailCompare: "Est. Retail: $X,XXX | Buy it Today: $X,XXX"`. The
+canonical shape is now pure numbers — `price: 3900`, optional
+`retailEstimate: 12000` — formatted at render time through `formatPrice()`.
+This eliminates regex parsing of price strings, fixes schema integrity (the
+`offers.price` field is a real number, not a parsed-back string), and keeps
+the value pill composable. See §5.10.
+
+## 10.9 Separate Visible / Schema FAQ Blocks
+
+**DO NOT USE FOR NEW IMPLEMENTATION.** The homepage, sell hub, and about
+page used to maintain their visible FAQ markup and `FAQPage` JSON-LD schema
+as two parallel hand-edited blocks, which drifted in both question text and
+answer text. Both are now generated from `config/faqs.js` between marker
+pairs on every build. Edit the data, not the markup. See §5.14.
+
+## 10.10 Build-Timestamp `<lastmod>`
+
+**DO NOT USE FOR NEW IMPLEMENTATION.** The sitemap used to stamp every
+URL's `<lastmod>` with today's date on every build, which diluted the
+freshness signal — a pure no-op build still advanced every URL. `<lastmod>`
+now reflects actual content modification, gated by a per-URL content hash
+stored in `.build-state.json`. Pure rebuilds leave every date stable. See
+§5.15.

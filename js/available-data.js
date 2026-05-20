@@ -10,6 +10,10 @@
 //  To reorder: move lines up/down — first = cover image.
 // ═══════════════════════════════════════════════════════════
 
+// Prices are stored as PURE NUMBERS (e.g. price: 7500). Visible "$X,XXX CAD"
+// formatting is generated at render time via formatPrice() — never baked into
+// the data. See CLAUDE.md §5.10 for the full listing data standard.
+
 var availableItems = [
   {
     brand: "B&B Italia",
@@ -37,8 +41,8 @@ var availableItems = [
       { question: "Can the covers be professionally cleaned or replaced?", answer: "Yes. Because the Rattier fabric covers detach from the frame, they can be sent out for professional cleaning, or replaced entirely. B&B Italia continues to produce Charles cover sets in current fabrics, which is one of the reasons well-maintained Charles sectionals stay in circulation for decades." },
       { question: "What condition is the sectional in?", answer: "Structurally excellent. The frame, cushions, and down fill are all intact. The Rattier fabric shows subtle tonal variation on the seating surface from previous spot-cleaning; the effect is minor and reads as natural textile variation at conversational distance. Covers are removable and can be professionally laundered or replaced if desired." },
     ],
-    retailCompare: "Est. Retail: $28,000 | Buy it Today: $7,500",
-    price: "$7,500",
+    retailEstimate: 28000,
+    price: 7500,
     specs: ["B&B Italia", "128¾ × 90½ × 28¾ in", "Seat Depth: 38.25 in", "Seat Height: ~15–16 in", "Good Condition"],
     images: [
       "images/BB-030/bb-italia-14.jpeg",
@@ -82,8 +86,8 @@ var availableItems = [
       { question: "Do the casters lock or roll freely?", answer: "The casters are hidden under the base and roll freely so the piece can be repositioned easily — between footrest, cocktail-table, and extra-seat use. They are not lockable, but the size and weight of the ottoman keeps it stable in place during normal use." },
       { question: "Do you deliver?", answer: "Yes. We deliver throughout Edmonton and surrounding areas, and arrange delivery across Alberta on request. Delivery is offered for an additional fee that depends on distance and access." },
     ],
-    retailCompare: "Est. Retail: $1,569 | Buy it Today: $599",
-    price: "$599",
+    retailEstimate: 1569,
+    price: 599,
     specs: ["La-Z-Boy", "35 × 35 × 18 in", "Nubuck Leather", "Hidden Casters", "Like New"],
     images: [
       "images/LB-042/la-z-boy-03.jpeg",
@@ -102,6 +106,11 @@ var availableItems = [
 function slugify(str) {
   return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 }
+
+// 7500 → "$7,500". Mirror of the Node-side helper in build.js. Trivial enough
+// that having both is simpler than wiring shared module loading.
+var _AVAILABLE_PRICE_FMT = new Intl.NumberFormat('en-CA', { maximumFractionDigits: 0 });
+function formatPrice(n) { return '$' + _AVAILABLE_PRICE_FMT.format(n); }
 
 function renderAvailable() {
   var grid = document.getElementById('available-grid');
@@ -124,7 +133,7 @@ function renderAvailable() {
 
     var priceCta = item.comingSoon
       ? '<div class="card-price card-price--muted">Listing coming soon</div>'
-      : '<div class="card-price">' + item.price + ' <span class="card-price-currency">CAD</span></div>';
+      : '<div class="card-price">' + formatPrice(item.price) + ' <span class="card-price-currency">CAD</span></div>';
 
     return '<div class="card">' +
       (item.images && item.images.length > 0

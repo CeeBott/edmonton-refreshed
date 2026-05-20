@@ -2,19 +2,28 @@
 //  BUILD SCRIPT
 //
 //  Reads JS data files and:
-//    1. Injects static fallback HTML into index.html and sold/index.html
+//    1. Minifies CSS + JS source into .min.css / .min.js bundles.
+//    2. Computes content-hash versions for every minified asset and
+//       rewrites ?v=... query strings across every HTML file so cache
+//       busting is automatic (no manual version registry).
+//    3. Injects static fallback HTML into index.html and sold/index.html
 //       so crawlers see content without JS.
-//    2. Injects static Product schema <script> blocks into index.html <head>.
-//    3. Generates individual listing pages at /listings/[slug]/index.html
+//    4. Injects static Product schema <script> blocks into index.html <head>.
+//    5. Generates individual listing pages at /listings/[slug]/index.html
 //       for each available (non-coming-soon) item.
-//    4. Rewrites sitemap.xml with lastmod dates and all page URLs.
+//    6. Generates centralized FAQ markup + JSON-LD schema from
+//       config/faqs.js into the homepage / sell hub / about page.
+//    7. Rewrites sitemap.xml. <lastmod> only advances when the rendered
+//       content actually changed, using a committed sidecar state file
+//       (.build-state.json). Pure build executions do not dilute freshness.
 //
 //  Usage:  node build.js
 //  Deps:   none (Node.js built-ins only)
 // ═══════════════════════════════════════════════════════════
 
-var fs   = require('fs');
-var path = require('path');
+var fs     = require('fs');
+var path   = require('path');
+var crypto = require('crypto');
 
 var ROOT = __dirname;
 
@@ -22,6 +31,9 @@ var ROOT = __dirname;
 var renderNav         = require('./partials/nav').renderNav;
 var renderFooter      = require('./partials/footer').renderFooter;
 var renderCredibility = require('./partials/credibility').renderCredibility;
+
+// ── FAQ source of truth (homepage / sell hub / about) ──
+var faqs = require('./config/faqs');
 
 
 // ── Utilities ────────────────────────────────────────────
@@ -38,6 +50,30 @@ function escapeHtml(str) {
     .replace(/\u201D/g, '&rdquo;')
     .replace(/\u2018/g, '&lsquo;')
     .replace(/\u2019/g, '&rsquo;');
+}
+
+// \u2500\u2500 Price formatting \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+//  Canonical data stores prices as pure numbers (e.g. 7500). All visible
+//  text and schema output derives from these helpers so the CAD invariant
+//  (\u00A75.2) lives in exactly one place. The parallel client-side helper
+//  in js/shared.js is a one-line mirror \u2014 too trivial to drift.
+
+var PRICE_FMT = new Intl.NumberFormat('en-CA', { maximumFractionDigits: 0 });
+
+function formatPrice(n) {
+  return '$' + PRICE_FMT.format(n);
+}
+
+function formatPriceCAD(n) {
+  return formatPrice(n) + ' CAD';
+}
+
+// \u2500\u2500 Content hashing \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+//  First 8 hex of SHA-256. Used for asset cache-busting and for sitemap
+//  freshness comparisons.
+
+function shortHash(content) {
+  return crypto.createHash('sha256').update(content).digest('hex').slice(0, 8);
 }
 
 function srcsetFor(imgPath, prefix) {
@@ -64,6 +100,68 @@ function slugify(str) {
 
 function today() {
   return new Date().toISOString().split('T')[0];
+}
+
+function escapeRegExp(s) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+
+// ── Asset pipeline ───────────────────────────────────────
+//  Minifies CSS + JS source and computes a short content hash for each
+//  output. The hash becomes the cache-busting "?v=" query parameter,
+//  injected into every HTML reference automatically. No manual version
+//  tracking; bumping versions is a side effect of editing source.
+
+function minifyCSS(src) {
+  return src
+    .replace(/\/\*[\s\S]*?\*\//g, '')           // strip block comments
+    .replace(/\s+/g, ' ')                       // collapse all whitespace
+    .replace(/\s*([{}:;,>+~])\s*/g, '$1')       // tighten around CSS operators
+    .replace(/;}/g, '}')                        // drop trailing semicolons
+    .trim();
+}
+
+function minifyJS(src) {
+  return src
+    .replace(/(?<![:'"\\])\/\/[^\n]*/g, '')   // strip // comments (skip URLs in strings)
+    .replace(/\/\*[\s\S]*?\*\//g, '')         // strip block comments
+    .replace(/\n\s*\n/g, '\n')                // collapse blank lines
+    .split('\n').map(function(l) { return l.trim(); }).filter(Boolean).join('\n');
+}
+
+// Build every minified bundle, write to disk, return { 'css/styles.min.css': 'a1b2c3d4', ... }.
+function buildAssets() {
+  var versions = {};
+
+  var cssSrcPath = path.join(ROOT, 'css', 'styles.css');
+  var cssMinPath = path.join(ROOT, 'css', 'styles.min.css');
+  var cssMin = minifyCSS(fs.readFileSync(cssSrcPath, 'utf8'));
+  fs.writeFileSync(cssMinPath, cssMin, 'utf8');
+  versions['css/styles.min.css'] = shortHash(cssMin);
+
+  var jsFiles = ['shared.js', 'available-data.js', 'sold-data.js', 'reviews-data.js', 'sell-form.js'];
+  jsFiles.forEach(function(file) {
+    var srcPath = path.join(ROOT, 'js', file);
+    if (!fs.existsSync(srcPath)) return;
+    var minName = file.replace('.js', '.min.js');
+    var minPath = path.join(ROOT, 'js', minName);
+    var minified = minifyJS(fs.readFileSync(srcPath, 'utf8'));
+    fs.writeFileSync(minPath, minified, 'utf8');
+    versions['js/' + minName] = shortHash(minified);
+  });
+
+  return versions;
+}
+
+// Rewrite every "<asset>?v=anything" on known assets to the current hash.
+// Idempotent — re-running with unchanged sources produces unchanged output.
+function injectAssetVersions(html, versions) {
+  Object.keys(versions).forEach(function(asset) {
+    var re = new RegExp(escapeRegExp(asset) + '\\?v=[A-Za-z0-9._-]+', 'g');
+    html = html.replace(re, asset + '?v=' + versions[asset]);
+  });
+  return html;
 }
 
 
@@ -133,7 +231,7 @@ function generateAvailableHTML(items) {
 
     var priceCta = item.comingSoon
       ? '            <div class="card-price card-price--muted">Listing coming soon</div>'
-      : '            <div class="card-price">' + escapeHtml(item.price) + ' <span class="card-price-currency">CAD</span></div>';
+      : '            <div class="card-price">' + formatPrice(item.price) + ' <span class="card-price-currency">CAD</span></div>';
 
     lines.push(
       '        <div class="card">',
@@ -175,6 +273,78 @@ function generateSoldHTML(items) {
   });
 
   return lines.join('\n') + '\n      ';
+}
+
+// ── FAQ generation (single source of truth) ──────────────
+//  Each FAQ entry in config/faqs.js produces BOTH visible markup and
+//  the JSON-LD FAQPage schema; build.js writes them between marker
+//  comments so they cannot drift. Markdown-style [text](url) inside
+//  answers becomes an <a> in visible markup and is flattened to
+//  plain text in the schema.
+
+function renderFaqVisible(items, indent) {
+  indent = indent || '          ';
+  return items.map(function(qa) {
+    var answerHtml = escapeHtml(qa.answer).replace(
+      /\[([^\]]+)\]\(([^)]+)\)/g,
+      function(_, label, href) { return '<a href="' + href + '">' + label + '</a>'; }
+    );
+    return indent + '<div class="faq-item">\n' +
+           indent + '  <h3 class="faq-question">' + escapeHtml(qa.question) + '</h3>\n' +
+           indent + '  <p class="faq-answer">' + answerHtml + '</p>\n' +
+           indent + '</div>';
+  }).join('\n');
+}
+
+function renderFaqSchema(items) {
+  var schema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: items.map(function(qa) {
+      var schemaAnswer = qa.schemaAnswer != null
+        ? qa.schemaAnswer
+        : qa.answer.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1'); // flatten markdown links
+      return {
+        '@type': 'Question',
+        name: qa.schemaQuestion || qa.question,
+        acceptedAnswer: { '@type': 'Answer', text: schemaAnswer },
+      };
+    }),
+  };
+  return JSON.stringify(schema, null, 2).replace(/\n/g, '\n  ');
+}
+
+// Replace content between FAQ markers on a single page. Quietly no-ops on
+// pages without the markers, so partial adoption is safe.
+function injectFaqs(html, id) {
+  var items = faqs[id];
+  if (!items || items.length === 0) return html;
+
+  // Visible block
+  var visibleStart = '<!-- FAQ_VISIBLE_START id="' + id + '" -->';
+  var visibleEnd   = '<!-- FAQ_VISIBLE_END -->';
+  var vs = html.indexOf(visibleStart);
+  var ve = html.indexOf(visibleEnd, vs);
+  if (vs !== -1 && ve !== -1) {
+    html = html.substring(0, vs + visibleStart.length) +
+           '\n' + renderFaqVisible(items) + '\n          ' +
+           html.substring(ve);
+  }
+
+  // Schema block
+  var schemaStart = '<!-- FAQ_SCHEMA_START id="' + id + '" -->';
+  var schemaEnd   = '<!-- FAQ_SCHEMA_END -->';
+  var ss = html.indexOf(schemaStart);
+  var se = html.indexOf(schemaEnd, ss);
+  if (ss !== -1 && se !== -1) {
+    html = html.substring(0, ss + schemaStart.length) +
+           '\n  <script type="application/ld+json">\n  ' +
+           renderFaqSchema(items) +
+           '\n  </script>\n  ' +
+           html.substring(se);
+  }
+
+  return html;
 }
 
 function generateReviewsHTML(reviews, aggregate) {
@@ -243,8 +413,7 @@ function generateProductSchemas(items) {
 
     var slug       = item.slug || slugify(item.brand + '-' + item.title);
     var listingUrl = BASE_URL + 'listings/' + slug + '/';
-    var numericPrice = item.price.replace(/[^0-9.]/g, '');
-    var imageUrl     = (item.images && item.images.length > 0)
+    var imageUrl   = (item.images && item.images.length > 0)
       ? BASE_URL + item.images[0]
       : null;
 
@@ -263,7 +432,7 @@ function generateProductSchemas(items) {
       "offers": {
         "@type": "Offer",
         "priceCurrency": "CAD",
-        "price": parseFloat(numericPrice),
+        "price": item.price,
         "priceValidUntil": priceValidUntil,
         "availability": "https://schema.org/InStock",
         "url": listingUrl,
@@ -361,13 +530,15 @@ function buildThumbnailStrip(images, alt, prefix) {
   return '<div class="listing-thumbnails">' + thumbs + overflow + '</div>';
 }
 
-function generateListingPage(item, slug, allItems, soldItems) {
+function generateListingPage(item, slug, allItems, soldItems, assetVersions) {
+  assetVersions = assetVersions || {};
+  var cssV    = assetVersions['css/styles.min.css'] || '';
+  var sharedV = assetVersions['js/shared.min.js']   || '';
   var BASE_URL       = 'https://edmontonrefreshed.com/';
   var listingUrl     = BASE_URL + 'listings/' + slug + '/';
   var validUntilDate = new Date();
   validUntilDate.setDate(validUntilDate.getDate() + 90);
   var priceValidUntil = validUntilDate.toISOString().split('T')[0];
-  var numericPrice    = item.price.replace(/[^0-9.]/g, '');
   var imageUrl        = (item.images && item.images.length > 0)
     ? BASE_URL + item.images[0]
     : BASE_URL + 'images/og-preview.png';
@@ -380,7 +551,7 @@ function generateListingPage(item, slug, allItems, soldItems) {
   var offers = {
     "@type": "Offer",
     "priceCurrency": "CAD",
-    "price": parseFloat(numericPrice),
+    "price": item.price,
     "priceValidUntil": priceValidUntil,
     "availability": "https://schema.org/InStock",
     "url": listingUrl,
@@ -588,15 +759,15 @@ function generateListingPage(item, slug, allItems, soldItems) {
     configHTML = '<details class="listing-collapsible"><summary class="listing-meta-label">Includes</summary><p class="listing-meta-text">' + escapeHtml(item.configuration) + '</p></details>';
   }
 
-  // Retail value pill — split "X | Y" into two-part badge; fall back to plain text
+  // Retail value pill — two-part badge generated from numeric retailEstimate +
+  // price. The "+" suffix is added when retailEstimateApprox is true.
   var retailHTML = '';
-  if (item.retailCompare) {
-    var pillParts = item.retailCompare.split(' | ');
-    if (pillParts.length === 2) {
-      retailHTML = '<div class="listing-value-pill"><span class="pill-retail">' + escapeHtml(pillParts[0]) + ' CAD</span><span class="pill-now">' + escapeHtml(pillParts[1]) + ' CAD</span></div>';
-    } else {
-      retailHTML = '<div class="listing-retail-compare">' + escapeHtml(item.retailCompare) + ' CAD</div>';
-    }
+  if (item.retailEstimate) {
+    var retailLabel = formatPrice(item.retailEstimate) + (item.retailEstimateApprox ? '+' : '');
+    retailHTML = '<div class="listing-value-pill">' +
+      '<span class="pill-retail">Est. Retail: ' + retailLabel + ' CAD</span>' +
+      '<span class="pill-now">Buy it Today: ' + formatPrice(item.price) + ' CAD</span>' +
+    '</div>';
   }
 
   // Strip variant spec (anything after em-dash) from title for concise SEO title
@@ -616,7 +787,7 @@ function generateListingPage(item, slug, allItems, soldItems) {
     var condSpec    = (item.specs || []).filter(function(s) { return /condition/i.test(s); })[0];
     var condition   = condSpec || ((item.specs && item.specs.length > 0) ? item.specs[item.specs.length - 1] : '');
     var firstSentence = item.description.replace(/\n/g, ' ').replace(/\s+/g, ' ').trim().split(/\.(?:\s|$)/)[0];
-    rawDesc = 'Pre-owned ' + item.brand + ' ' + cleanTitle + ' in Edmonton — ' + item.price + '. Inspected, cleaned, delivery available. ' + firstSentence + '.';
+    rawDesc = 'Pre-owned ' + item.brand + ' ' + cleanTitle + ' in Edmonton — ' + formatPrice(item.price) + '. Inspected, cleaned, delivery available. ' + firstSentence + '.';
     if (rawDesc.length > 155) {
       rawDesc = rawDesc.substring(0, 152).replace(/\s+\S*$/, '') + '…';
     }
@@ -755,7 +926,7 @@ function generateListingPage(item, slug, allItems, soldItems) {
 '  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel=\'stylesheet\'">\n' +
 '  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"></noscript>\n' +
 '  <link rel="preload" as="image" imagesrcset="' + (item.images && item.images.length > 0 ? avifSrcsetFor(item.images[0], '../../') : '') + '" imagesizes="(max-width: 768px) 100vw, 550px" fetchpriority="high" type="image/avif">\n' +
-'  <link rel="stylesheet" href="../../css/styles.min.css?v=56">\n' +
+'  <link rel="stylesheet" href="../../css/styles.min.css?v=' + cssV + '">\n' +
 '  <meta name="theme-color" content="#2c2c2c">\n' +
 '</head>\n' +
 '<body>\n' +
@@ -789,7 +960,7 @@ renderCredibility('listing') + '\n' +
 '              <h1 class="listing-title">' + escapeHtml(item.title) + '</h1>\n' +
 (retailHTML ? '              ' + retailHTML + '\n' : '') +
 '            </div>\n' +
-'            <div class="listing-price">' + escapeHtml(item.price) + ' <span class="listing-price-currency">CAD</span></div>\n' +
+'            <div class="listing-price">' + formatPrice(item.price) + ' <span class="listing-price-currency">CAD</span></div>\n' +
 '            <div class="listing-ctas">\n' +
 '              <a class="listing-cta" href="sms:7809651477">Text to Secure &rarr;</a>\n' +
 '              <a class="listing-cta listing-cta--secondary" href="tel:7809651477">Call 780-965-1477</a>\n' +
@@ -823,7 +994,7 @@ relatedHTML +
 '\n' +
 '  <!-- Sticky CTA bar (mobile only) -->\n' +
 '  <div class="listing-sticky-cta">\n' +
-'    <a href="sms:7809651477" class="sticky-cta-primary">Text to Secure &rarr; ' + escapeHtml(item.price) + ' CAD</a>\n' +
+'    <a href="sms:7809651477" class="sticky-cta-primary">Text to Secure &rarr; ' + formatPrice(item.price) + ' CAD</a>\n' +
 '    <a href="tel:7809651477" class="sticky-cta-secondary">Call</a>\n' +
 '  </div>\n' +
 '\n' +
@@ -842,7 +1013,7 @@ renderFooter() + '\n' +
 '    <div class="lightbox-counter" id="lightbox-counter"></div>\n' +
 '  </div>\n' +
 '\n' +
-'  <script src="../../js/shared.min.js?v=31"></script>\n' +
+'  <script src="../../js/shared.min.js?v=' + sharedV + '"></script>\n' +
 '  <script>\n' +
 '  (function() {\n' +
 '    var thumbs = document.querySelectorAll(".listing-thumb:not(.listing-thumb-more)");\n' +
@@ -977,303 +1148,145 @@ function walkHtml(dir, files) {
 
 
 // ── Sitemap generator ────────────────────────────────────
+//  <lastmod> only advances when the page's canonical content actually
+//  changes. We canonicalize each rendered HTML file (stripping asset
+//  version hashes, dateModified placeholders, and other build-time noise),
+//  hash it, and compare to a sidecar state file. Pure builds with no
+//  content change leave every <lastmod> stable — so freshness signals are
+//  meaningful, not just timestamps.
 
-function generateSitemap(items) {
-  var d = today();
-  var lines = [
-    '<?xml version="1.0" encoding="UTF-8"?>',
-    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>weekly</changefreq>',
-    '    <priority>1.0</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/sold/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>weekly</changefreq>',
-    '    <priority>0.8</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/sell/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.7</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/sell/natuzzi-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.7</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/sell/rove-concepts-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.7</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/sell/eq3-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.7</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/sell/crate-and-barrel-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.7</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/sell/restoration-hardware-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.7</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/sell/west-elm-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.7</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/sell/sectional-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.7</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/sell/leather-sectional-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.7</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/sell/sofa-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.7</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/sell/leather-sofa-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.7</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/sell/couch-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.7</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/sell/leather-couch-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.7</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/sell/furniture-consignment-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.7</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/sell/selling-furniture-before-moving-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.7</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/sell/downsizing-furniture-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.7</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/sell/sell-furniture-fast-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.7</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/sell/estate-furniture-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.7</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/sell/sell-designer-furniture-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.7</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/about/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.6</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/privacy/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>yearly</changefreq>',
-    '    <priority>0.3</priority>',
-    '  </url>',
-  '  <url>',
-    '    <loc>https://edmontonrefreshed.com/guides/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>weekly</changefreq>',
-    '    <priority>0.7</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/guides/how-to-tell-if-your-sofa-is-high-quality-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.8</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/guides/what-condition-means-furniture-grading-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.8</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/guides/moving-edmonton-furniture-keep-sell-replace/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.8</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/guides/best-sofa-brands-resale-value-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.8</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/guides/facebook-marketplace-sofa-vs-curated-reseller/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.8</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/guides/selling-furniture-facebook-marketplace-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.8</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/guides/how-to-buy-used-sofa-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.8</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/guides/bb-italia-sofa-review-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.8</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/guides/rove-concepts-sofa-review-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.8</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/guides/natuzzi-sofa-review-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.8</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/guides/edmonton-furniture-consignment-resale-guide/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.8</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/guides/sectional-sofa-cost-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.8</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/guides/how-to-measure-sectional-sofa-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.8</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/guides/who-buys-used-couches-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.8</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/guides/used-sofa-couch-value-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.8</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/guides/selling-sectional-sofa-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.8</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/guides/selling-furniture-before-moving-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.8</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/guides/selling-inherited-estate-furniture-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.8</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/guides/selling-loveseat-sofa-set-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.8</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/guides/selling-fabric-boucle-velvet-sofa-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.8</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://edmontonrefreshed.com/guides/selling-leather-sofa-sectional-edmonton/</loc>',
-    '    <lastmod>' + d + '</lastmod>',
-    '    <changefreq>monthly</changefreq>',
-    '    <priority>0.8</priority>',
-    '  </url>',
+var BASE_URL = 'https://edmontonrefreshed.com/';
+var STATE_PATH = path.join(ROOT, '.build-state.json');
+
+// Strip build-volatile bits so the same content hashes identically across
+// successive builds. Anything that changes purely as a result of running
+// the build (asset version hashes, today's dateModified, the 90-day
+// priceValidUntil window) is normalized away.
+function canonicalizeForHash(text) {
+  return text
+    .replace(/\?v=[A-Za-z0-9._-]+/g, '?v=')
+    .replace(/<lastmod>[^<]+<\/lastmod>/g, '<lastmod/>')
+    .replace(/"dateModified"\s*:\s*"[^"]+"/g, '"dateModified":""')
+    .replace(/"priceValidUntil"\s*:\s*"[^"]+"/g, '"priceValidUntil":""');
+}
+
+function loadState() {
+  if (!fs.existsSync(STATE_PATH)) return {};
+  try { return JSON.parse(fs.readFileSync(STATE_PATH, 'utf8')); }
+  catch (_) { return {}; }
+}
+
+function saveState(state) {
+  fs.writeFileSync(STATE_PATH, JSON.stringify(state, null, 2) + '\n', 'utf8');
+}
+
+// Resolve the file backing a given URL ("/" → index.html, "/sold/" → sold/index.html).
+function fileForUrl(loc) {
+  var rel = loc.replace(BASE_URL, '');
+  var file = rel.length === 0 ? 'index.html' : rel + 'index.html';
+  return path.join(ROOT, file);
+}
+
+// Collect every directory under guides/ that holds an index.html.
+function discoverGuides() {
+  var dir = path.join(ROOT, 'guides');
+  if (!fs.existsSync(dir)) return [];
+  return fs.readdirSync(dir, { withFileTypes: true })
+    .filter(function(e) { return e.isDirectory() && fs.existsSync(path.join(dir, e.name, 'index.html')); })
+    .map(function(e) { return BASE_URL + 'guides/' + e.name + '/'; })
+    .sort();
+}
+
+// Build the canonical URL list with metadata. Order is stable for diff readability.
+function buildUrlList(items) {
+  var urls = [
+    { loc: BASE_URL,                         changefreq: 'weekly',  priority: '1.0' },
+    { loc: BASE_URL + 'sold/',               changefreq: 'weekly',  priority: '0.8' },
+    { loc: BASE_URL + 'sell/',               changefreq: 'monthly', priority: '0.7' },
   ];
+
+  // Sell-landing cluster — driven by config/taxonomy.js.
+  var tax = require('./config/taxonomy');
+  function pushSell(slug) { urls.push({ loc: BASE_URL + 'sell/' + slug + '-edmonton/', changefreq: 'monthly', priority: '0.7' }); }
+  tax.brands.forEach(function(b) { pushSell(b.slug); });
+  tax.furnitureTypes.forEach(function(p) { pushSell(p.slug); });
+  tax.situations.forEach(function(s) { pushSell(s.slug); });
+
+  urls.push({ loc: BASE_URL + 'about/',   changefreq: 'monthly', priority: '0.6' });
+  urls.push({ loc: BASE_URL + 'privacy/', changefreq: 'yearly',  priority: '0.3' });
+  urls.push({ loc: BASE_URL + 'guides/',  changefreq: 'weekly',  priority: '0.7' });
+
+  discoverGuides().forEach(function(loc) {
+    urls.push({ loc: loc, changefreq: 'monthly', priority: '0.8' });
+  });
 
   items.forEach(function(item) {
     if (item.comingSoon) return;
     var slug = item.slug || slugify(item.brand + '-' + item.title);
-    lines.push(
-      '  <url>',
-      '    <loc>https://edmontonrefreshed.com/listings/' + slug + '/</loc>',
-      '    <lastmod>' + d + '</lastmod>',
-      '    <changefreq>weekly</changefreq>',
-      '    <priority>0.9</priority>',
-      '  </url>'
-    );
+    urls.push({ loc: BASE_URL + 'listings/' + slug + '/', changefreq: 'weekly', priority: '0.9' });
+  });
+
+  return urls;
+}
+
+var sitemapStats = { changed: 0, held: 0, added: 0 };
+
+function generateSitemap(items) {
+  var d = today();
+  var urls = buildUrlList(items);
+  var state = loadState();
+  var nextState = {};
+
+  sitemapStats = { changed: 0, held: 0, added: 0 };
+
+  var lines = [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+  ];
+
+  urls.forEach(function(u) {
+    var file = fileForUrl(u.loc);
+    var hash = null;
+    var lastmod = d;
+
+    if (fs.existsSync(file)) {
+      hash = shortHash(canonicalizeForHash(fs.readFileSync(file, 'utf8')));
+      var prev = state[u.loc];
+      if (prev && prev.hash === hash) {
+        lastmod = prev.lastmod;
+        sitemapStats.held++;
+      } else if (prev) {
+        sitemapStats.changed++;
+      } else {
+        sitemapStats.added++;
+      }
+      nextState[u.loc] = { hash: hash, lastmod: lastmod };
+    } else {
+      // File missing — emit today's date but don't track state.
+      sitemapStats.changed++;
+    }
+
+    lines.push('  <url>');
+    lines.push('    <loc>' + u.loc + '</loc>');
+    lines.push('    <lastmod>' + lastmod + '</lastmod>');
+    lines.push('    <changefreq>' + u.changefreq + '</changefreq>');
+    lines.push('    <priority>' + u.priority + '</priority>');
+    lines.push('  </url>');
   });
 
   lines.push('</urlset>');
+
+  saveState(nextState);
   return lines.join('\n') + '\n';
 }
 
 
+
 // ── Main ─────────────────────────────────────────────────
+
+// 0. Build & hash assets. The hash map is used by the listing template
+//    and again at the end to rewrite ?v= query strings on every HTML file.
+var assetVersions = buildAssets();
 
 var availableSrc  = fs.readFileSync(path.join(ROOT, 'js', 'available-data.js'), 'utf8');
 var soldSrc       = fs.readFileSync(path.join(ROOT, 'js', 'sold-data.js'),      'utf8');
@@ -1312,6 +1325,9 @@ if (firstVisible && firstVisible.images && firstVisible.images.length > 0) {
   );
 }
 
+// Centralized FAQ markup + schema for the homepage
+indexContent = injectFaqs(indexContent, 'home');
+
 fs.writeFileSync(indexPath, indexContent, 'utf8');
 
 // ── 2. Update sold/index.html ────────────────────────
@@ -1322,7 +1338,17 @@ soldContent = injectIntoContainer(soldContent, 'sold-grid', soldHTML);
 
 fs.writeFileSync(soldPath, soldContent, 'utf8');
 
-// ── 3. Generate individual listing pages ─────────────
+// ── 3. Update sell hub + about (centralized FAQ injection) ─
+['sell/index.html', 'about/index.html'].forEach(function(rel) {
+  var p = path.join(ROOT, rel);
+  if (!fs.existsSync(p)) return;
+  var id = rel === 'sell/index.html' ? 'sell' : 'about';
+  var src = fs.readFileSync(p, 'utf8');
+  var next = injectFaqs(src, id);
+  if (next !== src) fs.writeFileSync(p, next, 'utf8');
+});
+
+// ── 4. Generate individual listing pages ─────────────
 var listingsDir = path.join(ROOT, 'listings');
 if (!fs.existsSync(listingsDir)) fs.mkdirSync(listingsDir);
 
@@ -1334,59 +1360,44 @@ availableItems.forEach(function(item) {
   var itemDir    = path.join(listingsDir, slug);
   if (!fs.existsSync(itemDir)) fs.mkdirSync(itemDir);
 
-  var html = generateListingPage(item, slug, availableItems, soldItems);
+  var html = generateListingPage(item, slug, availableItems, soldItems, assetVersions);
   fs.writeFileSync(path.join(itemDir, 'index.html'), html, 'utf8');
   listingCount++;
 });
 
-// ── 4. Rewrite sitemap.xml ───────────────────────────
-var sitemapPath = path.join(ROOT, 'sitemap.xml');
-fs.writeFileSync(sitemapPath, generateSitemap(availableItems), 'utf8');
-
-// ── 5. Inject partials (nav / credibility / footer) into every HTML file
-//      that carries the marker comments. Files without markers are skipped,
-//      so 404 (no credibility) and redirect stubs (no markers at all) are
-//      handled transparently. Listings are skipped because the listing
-//      template already renders the partials inline at generate time.
+// ── 5. Inject partials + asset versions into every HTML file.
+//      Files without partial markers are left alone for those partials;
+//      every file still has its asset versions rewritten so cache-busting
+//      stays in sync.
 var partialFiles = walkHtml(ROOT);
 var partialUpdated = 0;
 for (var pi = 0; pi < partialFiles.length; pi++) {
   var pPath = partialFiles[pi];
   var pOrig = fs.readFileSync(pPath, 'utf8');
   var pNext = injectAllPartials(pOrig);
+  pNext = injectAssetVersions(pNext, assetVersions);
   if (pNext !== pOrig) {
     fs.writeFileSync(pPath, pNext, 'utf8');
     partialUpdated++;
   }
 }
 
-// ── 6. Minify JS files ──────────────────────────────
-//  Simple minification: strip comments, collapse whitespace, trim lines.
-function minifyJS(src) {
-  // Strip single-line comments but not :// inside strings (e.g. https://)
-  return src
-    .replace(/(?<![:'"\\])\/\/[^\n]*/g, '')  // strip // comments, skip ://, '//', "//", and \// (escaped slash + closing / in a regex literal)
-    .replace(/\/\*[\s\S]*?\*\//g, '')      // strip multi-line comments
-    .replace(/\n\s*\n/g, '\n')             // collapse blank lines
-    .split('\n').map(function(l) { return l.trim(); }).filter(Boolean).join('\n');
-}
-
-var jsFiles = ['shared.js', 'available-data.js', 'sold-data.js', 'reviews-data.js', 'sell-form.js'];
-var jsMinCount = 0;
-jsFiles.forEach(function(file) {
-  var srcPath = path.join(ROOT, 'js', file);
-  if (!fs.existsSync(srcPath)) return;
-  var minPath = path.join(ROOT, 'js', file.replace('.js', '.min.js'));
-  var content = fs.readFileSync(srcPath, 'utf8');
-  fs.writeFileSync(minPath, minifyJS(content), 'utf8');
-  jsMinCount++;
-});
+// ── 6. Rewrite sitemap.xml using content-hash freshness.
+//      <lastmod> only advances when the rendered content changes; sidecar
+//      state lives in .build-state.json and is committed so dates persist
+//      across machines.
+var sitemapPath = path.join(ROOT, 'sitemap.xml');
+var sitemapOut = generateSitemap(availableItems);
+fs.writeFileSync(sitemapPath, sitemapOut, 'utf8');
 
 // ── Summary ──────────────────────────────────────────
+var assetSummary = Object.keys(assetVersions)
+  .map(function(k) { return k.split('/').pop() + ' ' + assetVersions[k]; })
+  .join(', ');
 console.log('Build complete:');
+console.log('  assets          — ' + assetSummary);
 console.log('  index.html      — ' + availableItems.length + ' available items, ' + reviews.length + ' reviews, ' + availableItems.filter(function(i) { return !i.comingSoon; }).length + ' product schemas');
 console.log('  sold/index.html — ' + soldItems.length + ' sold items');
 console.log('  listings/       — ' + listingCount + ' individual listing pages generated');
-console.log('  sitemap.xml     — updated with lastmod ' + today());
-console.log('  partials        — ' + partialUpdated + ' HTML files updated via marker injection');
-console.log('  js/             — ' + jsMinCount + ' JS files minified');
+console.log('  sitemap.xml     — ' + sitemapStats.changed + ' URL(s) advanced; ' + sitemapStats.held + ' held; ' + sitemapStats.added + ' new');
+console.log('  partials        — ' + partialUpdated + ' HTML files updated');
