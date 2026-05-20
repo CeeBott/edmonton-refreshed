@@ -886,23 +886,33 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   text-align: center;
   margin: 36px 0 12px;
 }
-.sell-content .sell-list {
-  list-style: none;
-  margin-bottom: 0;
-  width: fit-content;
-  margin-left: auto;
-  margin-right: auto;
+/* "We work with" list-wrap block. Wraps the heading + list so the whole
+   block has equal vertical separation from siblings (sell-form-secondary
+   above, sell-faq below). The heading's own margin is neutralized inside
+   the wrap so the .sell-list-wrap margin is the single source of vertical
+   rhythm. Custom bullet markers (::before) sit inside each li's padding
+   so they stay within the page-edge inset rather than overflowing left. */
+.sell-list-wrap {
+  margin-top: 48px;
+  margin-bottom: 48px;
 }
-
-.sell-content .sell-list li {
+.sell-list-wrap .sell-section-heading {
+  margin-top: 0;
+}
+.sell-list {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  width: fit-content;
+}
+.sell-list li {
   position: relative;
   padding-left: 20px;
   font-size: 0.95rem;
   color: var(--color-text-secondary);
   line-height: 1.8;
 }
-
-.sell-content .sell-list li::before {
+.sell-list li::before {
   content: '\2022';
   position: absolute;
   left: 0;

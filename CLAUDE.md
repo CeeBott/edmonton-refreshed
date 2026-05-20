@@ -425,7 +425,7 @@ The credibility strip (`★ 4.9 Rating`) does not include a review count, so no 
    ```bash
    cat css/styles.css | tr -s ' \t' ' ' | sed 's/ *{ */{/g; s/ *} */}/g; s/ *: */:/g; s/ *; */;/g; s/ *, */,/g; s/;}/}/g' | tr -d '\n' | sed 's|/\*[^*]*\*[^/]*\*/||g' > css/styles.min.css
    ```
-3. Bump the CSS cache version parameter (`?v=N`) in all HTML files and in `build.js` (search globally for `styles.min.css?v=`). Every page references this, including the listing page template in build.js. **Current version: `v=55`.**
+3. Bump the CSS cache version parameter (`?v=N`) in all HTML files and in `build.js` (search globally for `styles.min.css?v=`). Every page references this, including the listing page template in build.js. **Current version: `v=56`.**
 4. Run `node build.js` (to regenerate listing pages with the new version, and to re-minify JS bundles)
 5. Commit the changes. Collin handles pushing to GitHub.
 
