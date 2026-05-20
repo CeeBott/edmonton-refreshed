@@ -2844,8 +2844,13 @@ footer a:focus-visible {
   .sell-proof { margin-top: 32px; }
 }
 
-/* Sell-page FAQ scoping — pulls in tighter than the homepage FAQ */
+/* Sell-page FAQ scoping.
+   Uses the standard .faq-section structure with the .section-label
+   heading inside, so the heading aligns left with the question text.
+   margin-top adds the vertical separation the previous external
+   .sell-section-heading h2 used to provide via its own margin. */
 .sell-faq {
+  margin-top: 32px;
   padding-bottom: 32px;
   max-width: var(--col-narrow);
 }
