@@ -35,4 +35,17 @@ module.exports = {
   rating: '4.9',
   ratingCount: 18,
   offerRange: 'Most Offers $500–$2,500',
+
+  // sameAs — canonical external profile URLs for Knowledge Graph entity
+  // consolidation. Read into every Organization / FurnitureStore schema by
+  // build.js, and referenced by hand-maintained sameAs arrays in pages that
+  // don't go through build.js (homepage FurnitureStore, about Organization,
+  // sell hub FurnitureStore, sell-landing FurnitureStore schemas). Adding a
+  // new profile (e.g. YouTube, Pinterest) — append the URL here and rebuild;
+  // the hand-maintained pages still require a one-time manual sync.
+  sameAs: [
+    'https://share.google/Vbc4WShKx0Q7NuRR9',     // Google Business Profile
+    'https://www.facebook.com/edmontonrefreshed',
+    'https://www.instagram.com/edmontonrefreshed/',
+  ],
 };

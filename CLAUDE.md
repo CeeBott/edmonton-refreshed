@@ -309,7 +309,9 @@ Running `node build.js` regenerates, in one deterministic pass:
 - `sitemap.xml` — driven by `config/taxonomy.js` (sell cluster) plus
   filesystem discovery of `guides/*/index.html` and the active listings.
   `<lastmod>` only advances when a page's canonical content actually
-  changes; pure rebuilds leave dates stable. See §5.8.
+  changes; pure rebuilds leave dates stable. Listing URLs also emit
+  `<image:image>` children for every photo in `item.images` (image
+  sitemap, declared with the `xmlns:image` namespace). See §5.8, §5.15.
 - **Partial injection** — walks every `*.html` file in the repo and rewrites
   content between `<!-- NAV_START -->`/`<!-- NAV_END -->`,
   `<!-- CREDIBILITY_START variant="..." -->`/`<!-- CREDIBILITY_END -->`, and
@@ -527,7 +529,7 @@ the source of truth for which schemas appear on each page type.
 
 | Page | Schemas present in `<head>` |
 |---|---|
-| `index.html` (homepage) | `BreadcrumbList`, `FurnitureStore` (with `aggregateRating` + embedded `review` array), `FAQPage`, plus N `Product` schemas (one per non-coming-soon item, injected between `<!-- PRODUCT_SCHEMA_START -->` and `<!-- PRODUCT_SCHEMA_END -->`) |
+| `index.html` (homepage) | `BreadcrumbList`, `WebSite` (homepage-only, site-level entity definition), `FurnitureStore` (with `aggregateRating` + embedded `review` array), `FAQPage`, plus N `Product` schemas (one per non-coming-soon item, injected between `<!-- PRODUCT_SCHEMA_START -->` and `<!-- PRODUCT_SCHEMA_END -->`) |
 | `about/index.html` | `BreadcrumbList`, `FAQPage`, `Organization` |
 | `sold/index.html` | `BreadcrumbList` |
 | `sell/index.html` | `FurnitureStore` (with `aggregateRating`), `BreadcrumbList`, `FAQPage`, `Service` |
@@ -548,6 +550,21 @@ schemas on listing pages are constants inside `build.js`
 (`generateListingPage`) — update them there when business info changes
 (phone, address, social profiles, hours); they reinforce the local-Edmonton
 signal on every product URL crawlers hit.
+
+**`sameAs` rule — mandatory on every `Organization`, `FurnitureStore`, and
+`LocalBusiness` emit.** Every such schema across the site carries a
+`sameAs` array pointing to the same canonical external profile URLs, so
+search engines can consolidate the business as a single Knowledge Graph
+entity rather than splitting trust across variant URLs. The array is
+canonically defined in `config/site.js` (`site.sameAs`). `build.js` reads
+it directly into the listing-page `FurnitureStore` and `Organization`
+schemas (`generateListingPage`); hand-maintained pages — homepage
+`FurnitureStore`, about `Organization`, sell hub `FurnitureStore`, every
+`sell/[slug]-edmonton/` `FurnitureStore` (where present) — duplicate the
+same array verbatim. Adding a new profile (e.g. YouTube, Pinterest) is a
+two-step change: append the URL to `config/site.js#sameAs`, then sync the
+hand-maintained pages (see §8.14). Never emit an `Organization` /
+`FurnitureStore` without `sameAs`.
 
 **`dateModified` rule — mandatory.** Whenever any HTML page is edited — content,
 copy, structure, schema, anything — that page's `dateModified` must be updated
@@ -1078,6 +1095,23 @@ The sitemap URL list is data-driven:
 Adding a guide directory or a taxonomy entry automatically threads it into
 the sitemap on the next build — no manual edit required.
 
+**Image sitemap children.** Listing URLs and the `/sold/` gallery URL
+carry one `<image:image><image:loc>…</image:loc></image:image>` child per
+photo, so Google Images / Lens / shopping surfaces can index every
+photo of every piece — both currently-available and previously-sold. The
+sitemap root declares the image namespace
+(`xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"`); image
+URLs are absolute (prefixed with `BASE_URL`) and URL-encoded (the literal
+space in `images/Sold Inventory/` becomes `%20`). Active-listing photos
+come from each item's `images` array in `js/available-data.js` and attach
+to that listing's URL; sold photos come from every item in
+`js/sold-data.js` and attach to `/sold/` (the gallery where they actually
+render). Sold-stub listing pages at `/listings/[slug]/` show no images
+in the body, so they don't claim any. Adding photos to either data file
+automatically threads them into the sitemap on the next build — no
+separate step. Non-inventory URLs (homepage, guides, sell-landing pages)
+do not carry image children.
+
 ---
 
 # 6. SEO & Discovery Systems
@@ -1581,6 +1615,29 @@ framework. (For the business description and brand-ordering rule, see §2.1.)
 **Tone.** Write the descriptions the way the articles should read: direct,
 knowledgeable, practical. No filler, no hedging, no marketing fluff — the voice
 of someone who handles this furniture every day.
+
+## 8.14 Add or Change a `sameAs` Profile URL
+
+`sameAs` URLs are the canonical external profiles for Knowledge Graph entity
+consolidation (§5.4 — sameAs rule). Adding a new profile (e.g. YouTube,
+Pinterest) or correcting an existing one is a two-step change:
+
+1. **Edit `config/site.js#sameAs`** — append the new URL or correct the
+   existing one. `build.js` reads this array directly into the listing-page
+   `FurnitureStore` and `Organization` schemas.
+2. **Sync hand-maintained pages.** The homepage `FurnitureStore`, about
+   `Organization`, sell hub `FurnitureStore`, and every
+   `sell/[slug]-edmonton/` `FurnitureStore` (where present) duplicate the
+   same array verbatim. Update each one by hand, or run a one-shot sync
+   script that rewrites every `"sameAs": [...]` JSON-LD array across all
+   HTML files to match `config/site.js#sameAs` (see the historical sync
+   pattern in the commit that introduced this playbook).
+3. Run `node build.js` and commit (include `.build-state.json`).
+
+Every `Organization`, `FurnitureStore`, and `LocalBusiness` schema across
+the site must end up with the identical `sameAs` array. Inconsistency
+splits entity trust across variant URLs and undermines the Knowledge
+Graph signal.
 
 ---
 

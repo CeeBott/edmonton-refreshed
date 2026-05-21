@@ -35,6 +35,9 @@ var renderCredibility = require('./partials/credibility').renderCredibility;
 // ── FAQ source of truth (homepage / sell hub / about) ──
 var faqs = require('./config/faqs');
 
+// ── Site config (sameAs URLs, business stats, etc.) ──
+var site = require('./config/site');
+
 
 // ── Utilities ────────────────────────────────────────────
 
@@ -688,10 +691,7 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions) {
         "closes": "20:00"
       }
     ],
-    "sameAs": [
-      "https://www.instagram.com/edmontonrefreshed/",
-      "https://www.facebook.com/edmontonrefreshed/"
-    ]
+    "sameAs": site.sameAs
   };
 
   var organizationSchema = {
@@ -708,10 +708,7 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions) {
       "areaServed": "CA",
       "availableLanguage": "English"
     },
-    "sameAs": [
-      "https://www.instagram.com/edmontonrefreshed/",
-      "https://www.facebook.com/edmontonrefreshed/"
-    ]
+    "sameAs": site.sameAs
   };
 
   // Image prefix: listing page is at /listings/[slug]/, images are at root /images/
@@ -1197,11 +1194,29 @@ function discoverGuides() {
     .sort();
 }
 
+// Normalize an image path from data files to an absolute, URL-encoded URL.
+// available-data.js uses root-relative paths ("images/XX-NNN/foo.jpeg");
+// sold-data.js uses "../images/Sold Inventory/..." (relative to /sold/).
+// Strip any leading ../ and / segments, URL-encode (literal spaces become %20),
+// then prefix BASE_URL.
+function imagePathToUrl(p) {
+  var rel = p.replace(/^(?:\.\.\/)+/, '').replace(/^\/+/, '');
+  return BASE_URL + encodeURI(rel);
+}
+
 // Build the canonical URL list with metadata. Order is stable for diff readability.
-function buildUrlList(items) {
+function buildUrlList(items, soldItems) {
+  // Sold-inventory images attach to the /sold/ gallery URL — that page is
+  // where these photos actually render (as cards in #sold-grid). Sold-stub
+  // listing pages show no images, so they don't claim any.
+  var soldImages = (soldItems || []).reduce(function(acc, item) {
+    (item.images || []).forEach(function(p) { acc.push(imagePathToUrl(p)); });
+    return acc;
+  }, []);
+
   var urls = [
     { loc: BASE_URL,                         changefreq: 'weekly',  priority: '1.0' },
-    { loc: BASE_URL + 'sold/',               changefreq: 'weekly',  priority: '0.8' },
+    { loc: BASE_URL + 'sold/',               changefreq: 'weekly',  priority: '0.8', images: soldImages },
     { loc: BASE_URL + 'sell/',               changefreq: 'monthly', priority: '0.7' },
   ];
 
@@ -1223,7 +1238,16 @@ function buildUrlList(items) {
   items.forEach(function(item) {
     if (item.comingSoon) return;
     var slug = item.slug || slugify(item.brand + '-' + item.title);
-    urls.push({ loc: BASE_URL + 'listings/' + slug + '/', changefreq: 'weekly', priority: '0.9' });
+    // Per-listing image array — emitted as <image:image> children in the
+    // sitemap so Google Images / Lens / shopping surfaces can index every
+    // photo of every piece. See imagePathToUrl for the path-normalization rules.
+    var images = (item.images || []).map(imagePathToUrl);
+    urls.push({
+      loc: BASE_URL + 'listings/' + slug + '/',
+      changefreq: 'weekly',
+      priority: '0.9',
+      images: images
+    });
   });
 
   return urls;
@@ -1231,9 +1255,9 @@ function buildUrlList(items) {
 
 var sitemapStats = { changed: 0, held: 0, added: 0 };
 
-function generateSitemap(items) {
+function generateSitemap(items, soldItems) {
   var d = today();
-  var urls = buildUrlList(items);
+  var urls = buildUrlList(items, soldItems);
   var state = loadState();
   var nextState = {};
 
@@ -1241,7 +1265,8 @@ function generateSitemap(items) {
 
   var lines = [
     '<?xml version="1.0" encoding="UTF-8"?>',
-    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
+    '        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">',
   ];
 
   urls.forEach(function(u) {
@@ -1271,6 +1296,13 @@ function generateSitemap(items) {
     lines.push('    <lastmod>' + lastmod + '</lastmod>');
     lines.push('    <changefreq>' + u.changefreq + '</changefreq>');
     lines.push('    <priority>' + u.priority + '</priority>');
+    if (u.images && u.images.length > 0) {
+      u.images.forEach(function(imgUrl) {
+        lines.push('    <image:image>');
+        lines.push('      <image:loc>' + imgUrl + '</image:loc>');
+        lines.push('    </image:image>');
+      });
+    }
     lines.push('  </url>');
   });
 
@@ -1387,7 +1419,7 @@ for (var pi = 0; pi < partialFiles.length; pi++) {
 //      state lives in .build-state.json and is committed so dates persist
 //      across machines.
 var sitemapPath = path.join(ROOT, 'sitemap.xml');
-var sitemapOut = generateSitemap(availableItems);
+var sitemapOut = generateSitemap(availableItems, soldItems);
 fs.writeFileSync(sitemapPath, sitemapOut, 'utf8');
 
 // ── Summary ──────────────────────────────────────────
