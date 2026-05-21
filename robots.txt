@@ -1,3 +1,31 @@
+# robots.txt — edmontonrefreshed.com
+#
+# Policy: search engines and AI search/answer engines are welcome — that is
+# how this site is discovered. Aggressive commercial scrapers and SEO-tool
+# crawlers that send no traffic back are blocked to reduce crawl noise.
+#
+# Explicitly welcome (allowed by the default rule below): Googlebot, Bingbot,
+# Applebot, DuckDuckBot, OAI-SearchBot, ChatGPT-User, PerplexityBot,
+# Perplexity-User, Claude-SearchBot, Claude-User, Google-Extended, GPTBot,
+# ClaudeBot, CCBot — i.e. every search engine and every AI search/answer bot.
+
+# --- Aggressive scrapers / SEO-tool crawlers: no discovery value, blocked ---
+User-agent: Bytespider
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+# --- Everyone else (all search engines + AI search crawlers): full access ---
 User-agent: *
 Disallow:
 
