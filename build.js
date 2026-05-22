@@ -796,6 +796,46 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions) {
   var trustStatementHTML =
     '<p class="listing-trust"><svg class="listing-trust-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2 4 5v6c0 5 3.5 9.5 8 11 4.5-1.5 8-6 8-11V5l-8-3z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><polyline points="9 12 11 14 15 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>All designer pieces are inspected for construction, materials, and manufacturer consistency before listing.</span></p>';
 
+  // Sell-line target — point the "have one like this?" prompt at the most
+  // relevant sell-landing page. Brand match wins; otherwise derive piece type
+  // (plus leather variant) from title/specs. Falls back to /sell/.
+  // Mirrors the brandGuideMap pattern above so adding a new brand sell page
+  // is a one-line change here.
+  var brandSellMap = {
+    'Natuzzi':              { href: '/sell/natuzzi-edmonton/',              anchor: 'sell your Natuzzi piece' },
+    'Natuzzi Editions':     { href: '/sell/natuzzi-edmonton/',              anchor: 'sell your Natuzzi piece' },
+    'Natuzzi Italia':       { href: '/sell/natuzzi-edmonton/',              anchor: 'sell your Natuzzi piece' },
+    'Rove Concepts':        { href: '/sell/rove-concepts-edmonton/',        anchor: 'sell your Rove Concepts piece' },
+    'EQ3':                  { href: '/sell/eq3-edmonton/',                  anchor: 'sell your EQ3 piece' },
+    'Crate & Barrel':       { href: '/sell/crate-and-barrel-edmonton/',     anchor: 'sell your Crate &amp; Barrel piece' },
+    'Restoration Hardware': { href: '/sell/restoration-hardware-edmonton/', anchor: 'sell your Restoration Hardware piece' },
+    'West Elm':             { href: '/sell/west-elm-edmonton/',             anchor: 'sell your West Elm piece' }
+  };
+  var sellLineTarget;
+  if (brandSellMap[item.brand]) {
+    sellLineTarget = brandSellMap[item.brand];
+  } else {
+    var titleText = (item.title || '') + ' ' + (item.specs || []).join(' ');
+    var t = titleText.toLowerCase();
+    var hasLeather = /leather|nubuck|aniline|top-grain|full-grain/.test(t);
+    if (/sectional/.test(t)) {
+      sellLineTarget = hasLeather
+        ? { href: '/sell/leather-sectional-edmonton/', anchor: 'sell your leather sectional' }
+        : { href: '/sell/sectional-edmonton/',         anchor: 'sell your sectional' };
+    } else if (/sofa/.test(t)) {
+      sellLineTarget = hasLeather
+        ? { href: '/sell/leather-sofa-edmonton/', anchor: 'sell your leather sofa' }
+        : { href: '/sell/sofa-edmonton/',         anchor: 'sell your sofa' };
+    } else if (/couch|loveseat/.test(t)) {
+      sellLineTarget = hasLeather
+        ? { href: '/sell/leather-couch-edmonton/', anchor: 'sell your leather couch' }
+        : { href: '/sell/couch-edmonton/',         anchor: 'sell your couch' };
+    } else {
+      sellLineTarget = { href: '/sell/', anchor: 'sell your piece' };
+    }
+  }
+  var sellLineHTML = '<p class="listing-sell-line">Have one like this? We&rsquo;d buy yours back &mdash; <a href="' + sellLineTarget.href + '">' + sellLineTarget.anchor + ' &rarr;</a></p>';
+
   // Related Pieces — only renders when real related inventory exists.
   // Real inventory = other live pieces OR sold pieces in the same brand family.
   // The brand guide is an optional supplemental card; it doesn't trigger the section on its own
@@ -968,7 +1008,7 @@ renderCredibility('listing') + '\n' +
 (conditionHTML   ? '            ' + conditionHTML   + '\n' : '') +
 (configHTML      ? '            ' + configHTML      + '\n' : '') +
 '            ' + trustStatementHTML + '\n' +
-'            <p class="listing-sell-line">Have one like this? We&rsquo;d buy yours back &mdash; <a href="/sell/">sell your sofa &rarr;</a></p>\n' +
+'            ' + sellLineHTML + '\n' +
 '            <a class="listing-back" href="/">&larr; All Available Pieces</a>\n' +
 '          </div>\n' +
 '        </div>\n' +

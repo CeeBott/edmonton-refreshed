@@ -670,11 +670,34 @@ or `grep -h '?v=' index.html`.
   read naturally in prose, never as promotional inserts. If a guide refers to
   inventory only in general terms, update the `.guide-cta` instead of inserting
   mid-article links.
+- **Guide → sell cluster.** Every guide carries **2 contextual, in-prose
+  links into the sell cluster** — one in the **first third** of the article
+  (where reader intent forms), one **deeper in the body** at a topically
+  natural sentence. These are *in addition to* any `.guide-cta` box. Target
+  pages are assigned by topic match: a Natuzzi review → `/sell/natuzzi-edmonton/`
+  + `/sell/leather-sofa-edmonton/`; a moving guide → `/sell/selling-furniture-before-moving-edmonton/`
+  + `/sell/sell-furniture-fast-edmonton/`. Vary anchor text — never use the
+  identical phrase twice across the site, and never link the same sell page
+  twice from one guide. For B&B Italia and American Leather contexts, link
+  to `/sell/` directly (their brand sell pages are redirect stubs — never
+  internally link to a redirect). **Buyer guide exception**
+  (`how-to-buy-used-sofa-edmonton`, `how-to-measure-sectional-sofa-edmonton`):
+  give them **one** soft sell link as a "have one to sell?" aside, and spend
+  the other contextual link pointing at **inventory** (homepage or a relevant
+  live listing). Two sell links in a buyer-intent article reads as spam.
 - **Listing → guide.** `build.js`'s `brandGuideMap` auto-injects a
   "Read our full [Brand] buyer's guide for Edmonton" link inside the
   Description collapsible for brands with a published guide. Currently mapped:
   Natuzzi (and Natuzzi Editions / Natuzzi Italia), B&B Italia, Rove Concepts.
   Add an entry when a new brand guide is published.
+- **Listing → sell cluster.** `build.js`'s `brandSellMap` plus piece-type
+  detection makes the `.listing-sell-line` ("Have one like this? …") target
+  the most relevant sell-landing page on every active listing. Brand match
+  wins (e.g., Rove Concepts → `/sell/rove-concepts-edmonton/`); otherwise
+  the listing's title/specs are inspected for sectional/sofa/couch + leather
+  to pick between `/sell/leather-sectional-edmonton/`, `/sell/sofa-edmonton/`,
+  etc. Falls back to `/sell/` only when nothing matches. Add a `brandSellMap`
+  entry when a new brand sell page goes live.
 - **Inventory churn.** When a piece sells, scan guides for links/sentences
   pointing to it — see §8.8.
 - **Sell-cluster cross-linking** — see §5.10.
