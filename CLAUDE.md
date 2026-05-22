@@ -1013,7 +1013,62 @@ the form:
 **Mandatory schemas on every landing page:** `BreadcrumbList` (Home → Sell Your
 Furniture → this page); `Service` (`name`, `description`, `url`, `dateModified`
 = today ISO, `provider`, `areaServed`); `FAQPage` (one `Question` per visible
-FAQ item; plain-text answers — strip HTML entities).
+FAQ item; plain-text answers — strip HTML entities); `FurnitureStore` (with the
+same `aggregateRating` block the homepage carries — keep in sync via
+`config/site.js`); `Person` (Collin Bottrell, with `jobTitle`, `knowsAbout`,
+and `worksFor` pointing at the Organization); `HowTo` (the four-step selling
+process, identical across the cluster: send photos → offer within 24h →
+schedule pickup → paid by preferred method before we leave).
+
+**Per-page AEO components — mandatory across the cluster.** These propagate
+to every new sell page:
+
+- **Author/updated byline directly under the H1.**
+  `<p class="sell-updated">Updated [Month YYYY] &middot; <a href="/about/">Hosted by Collin Bottrell</a>, Edmonton pre-owned furniture buyer.</p>`
+  sits between the H1 and the hero subhead — *not* below the hero CTA. AI
+  engines associate author/date attribution with the page topic by byline
+  proximity to the H1. Update the month-year on each meaningful edit.
+- **Visible "How selling works" section + matching `HowTo` JSON-LD.** A
+  four-step process between the hero and the existing body content. Steps
+  are constant across the cluster; the section heading wording can be
+  page-specific ("How selling your Natuzzi works", "How selling a sectional
+  works", etc.).
+- **"Send us your details" heading uses the global pattern.** The h2 above
+  the form is `class="section-label sell-send-heading"` — the sitewide
+  `.section-label` style (uppercase tracked sans-serif) plus the
+  `.sell-send-heading` modifier (centered + extra top margin). The previous
+  serif `.sell-section-heading` class is *deprecated* for this slot. See
+  §10.11.
+
+**Pricing restraint — no per-piece valuations.** Sell pages **never** publish
+per-piece resale-value tables, per-brand value multipliers, or model-specific
+dollar ranges. Two reasons: (a) the numbers cannot be verified against
+transaction data accurately enough to defend under scrutiny, and (b)
+publishing them creates a permanent negotiation floor — every seller arrives
+pre-anchored to the published figure, making it harder to acquire pieces at
+the margins the business needs. The only public valuation signal on sell
+pages is the credibility-strip range *"Most Offers $500–$2,500"* — wide
+enough not to function as a per-piece anchor. This rule applies to FAQ
+answers too: questions like *"How much is my [brand] worth?"* deflect to
+*"send photos for a specific offer"* rather than quoting numbers. See §10.12.
+
+**Marketplace comparison — honest framing.** Every sell page's "Selling on
+Marketplace vs us" comparison must follow these rules:
+
+- **Concede Marketplace can pay more** for the right piece, right seller, and
+  enough time. Pretending otherwise undermines every other claim on the page.
+- **No false-confidence claims** like "Risk: None" — the real risk is getting
+  less than Marketplace might yield, and the page is stronger for naming it.
+- **No FUD that doesn't apply.** "Chargeback risk" on a cash/e-transfer
+  transaction is an e-commerce concept; importing scary-sounding terms
+  reads as marketing copy and erodes trust.
+- **No fabricated stats.** "55–70% of asking after 2–3 price drops" reads as
+  data; it's a guess. Remove specific percentages unless they're verifiable.
+- **Frame the trade as dollars-for-friction.** Marketplace's ceiling vs.
+  certainty + logistics + paid-on-the-spot. That comparison is stronger than
+  the false-dichotomy version because credibility carries.
+
+See §10.13 for the deprecated patterns.
 
 **Cross-linking rules:**
 

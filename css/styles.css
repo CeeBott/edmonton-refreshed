@@ -1176,6 +1176,18 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   transition: color 0.2s ease;
 }
 .footer-links a:hover { color: var(--color-text); }
+/* Footer brand-column escape hatch — visually distinguishes the
+   "Other brands →" entry from the named brand list so it reads as an
+   alternative path, not another brand. Subtle: italic, lighter tone,
+   extra top spacing to detach it from the list above. */
+.footer-link-aside {
+  margin-top: 6px;
+}
+.footer-link-aside a {
+  font-style: italic;
+  color: var(--color-text-secondary);
+  opacity: 0.85;
+}
 
 /* Utility / legal row */
 .footer-bottom {
@@ -2736,6 +2748,14 @@ footer a:focus-visible {
   font-size: 0.95rem;
 }
 
+/* Send details — section heading uses the global .section-label pattern
+   (uppercase tracked sans-serif) and centers above the form to mark the
+   transition from informational content to the conversion surface. */
+.sell-send-heading {
+  text-align: center;
+  margin-top: 56px;
+}
+
 /* Send details — lead paragraph + checklist + CTA buttons */
 .sell-send-lead {
   max-width: var(--col-narrow);
@@ -3241,6 +3261,76 @@ footer a:focus-visible {
   transition: color 0.2s;
 }
 .sell-landing-body a:hover { color: var(--color-text-secondary); }
+
+/* Sell-landing AEO components — visible Updated marker, How-it-works steps,
+   and Marketplace/valuation comparison tables. The steps reuse the global
+   .sell-steps / .sell-step classes from the sell hub; the wrapper just
+   constrains them to the same .sell-landing-body column width. */
+/* Author/updated byline. Lives directly under the H1 in the hero so it
+   reads as a byline (and so AI engines associate the author/date with the
+   page topic). Tight top margin to sit close to the H1, larger bottom
+   margin to separate from the subhead. */
+.sell-updated {
+  margin: 4px auto 16px;
+  font-size: 0.82rem;
+  color: var(--color-text-secondary);
+  text-align: center;
+  letter-spacing: 0.01em;
+}
+.sell-updated a {
+  color: var(--color-text-secondary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.sell-updated a:hover { color: var(--color-text); }
+
+.sell-howto {
+  max-width: var(--col-mid);
+  margin: 28px auto 12px;
+}
+.sell-howto .sell-section-heading {
+  text-align: left;
+  margin: 0 0 12px;
+  font-size: 1.4rem;
+}
+
+.sell-compare-wrap {
+  overflow-x: auto;
+  margin: 1rem 0 1.75rem;
+  -webkit-overflow-scrolling: touch;
+}
+.sell-compare {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+.sell-compare th,
+.sell-compare td {
+  text-align: left;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--color-border);
+  vertical-align: top;
+  color: var(--color-text);
+}
+.sell-compare thead th {
+  background: var(--color-surface);
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.01em;
+}
+.sell-compare tbody tr:nth-child(even) {
+  background: var(--color-surface);
+}
+.sell-compare tbody td:first-child {
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+@media (max-width: 640px) {
+  .sell-compare th,
+  .sell-compare td { padding: 0.55rem 0.7rem; font-size: 0.9rem; }
+  .sell-howto { margin-top: 20px; }
+}
 
 /* Recently sold strip on landing pages */
 .sell-landing-sold {

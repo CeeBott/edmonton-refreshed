@@ -14,8 +14,16 @@ function renderFooter() {
   const situationLinks = tax.situations
     .map(s => `            <li><a href="${tax.sellUrl(s.slug)}">${s.name}</a></li>`)
     .join('\n');
+  // Brand column. We append an "Other brands" escape-hatch link so the list
+  // doesn't inadvertently signal that we only buy the named six — the
+  // taxonomy reflects which brands have dedicated landing pages, not the full
+  // set of brands we'll consider. Sellers whose brand isn't listed go to the
+  // main sell hub for a general inquiry.
   const brandLinks = tax.brands
     .map(b => `            <li><a href="${tax.sellUrl(b.slug)}">${b.displayName || b.name}</a></li>`)
+    .concat([
+      '            <li class="footer-link-aside"><a href="/sell/">Other brands &rarr;</a></li>',
+    ])
     .join('\n');
 
   return [
