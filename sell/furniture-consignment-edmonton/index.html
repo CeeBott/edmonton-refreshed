@@ -233,6 +233,74 @@
   }
   </script>
 
+  <!-- ItemList Schema — recently purchased pieces (entity reinforcement) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Recently Purchased Pieces in Edmonton — Direct Buyouts",
+    "description": "A selection of pre-owned sofas and sectionals purchased outright by Edmonton Refreshed across Edmonton and surrounding communities — an alternative to local consignment channels.",
+    "itemListOrder": "https://schema.org/ItemListOrderDescending",
+    "numberOfItems": 6,
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@type": "Product",
+          "name": "Natuzzi Editions Vigore Top-Grain Leather Sectional",
+          "brand": { "@type": "Brand", "name": "Natuzzi Editions" }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "item": {
+          "@type": "Product",
+          "name": "Brentwood Classics Dorado Full Aniline Capetown Antico Leather",
+          "brand": { "@type": "Brand", "name": "Brentwood Classics" }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@type": "Product",
+          "name": "American Leather Tuscany Top-Grain Blackberry Leather Sofa",
+          "brand": { "@type": "Brand", "name": "American Leather" }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "item": {
+          "@type": "Product",
+          "name": "Rove Concepts Milo Modular Sectional",
+          "brand": { "@type": "Brand", "name": "Rove Concepts" }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 5,
+        "item": {
+          "@type": "Product",
+          "name": "Crate & Barrel Rochelle Sofa & Chair Set",
+          "brand": { "@type": "Brand", "name": "Crate & Barrel" }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 6,
+        "item": {
+          "@type": "Product",
+          "name": "EQ3 Remi Top-Grain Leather Sofa",
+          "brand": { "@type": "Brand", "name": "EQ3" }
+        }
+      }
+    ]
+  }
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
@@ -330,6 +398,62 @@
         <div class="sell-qualification-inner">We've bought 41+ sofas and sectionals across Edmonton — most offers between $500 and $2,500, paid same day at pickup. If you'd rather skip a 60&ndash;90 day consignment timeline, the form below is the fastest way to get a number.</div>
       </div>
 
+      <section class="sell-seller-reasons">
+        <h2 class="sell-section-heading">Why Edmonton sellers contact us instead of consigning</h2>
+        <div class="sell-reasons-grid">
+          <div class="sell-reason">
+            <h3>The piece doesn&rsquo;t fit a shop&rsquo;s floor</h3>
+            <p>Sectionals and large sofas often exceed the display space a consignment shop can dedicate. A direct buyer doesn&rsquo;t carry that constraint.</p>
+          </div>
+          <div class="sell-reason">
+            <h3>The commission math doesn&rsquo;t work</h3>
+            <p>A 40&ndash;50% split on a marked-down final price typically nets less than sellers initially picture. A direct offer removes the effort of transport and the uncertain timeline, often for similar payout.</p>
+          </div>
+          <div class="sell-reason">
+            <h3>No appetite for the 60&ndash;90 day wait</h3>
+            <p>Some sellers want a firm number on day one rather than a maybe-payout three months out. Direct buyout closes the same week.</p>
+          </div>
+          <div class="sell-reason">
+            <h3>Already tried consignment without a sale</h3>
+            <p>When a piece has been on the floor and returned unsold &mdash; or sold for a fraction of the initial price &mdash; a buyout often makes more sense than re-listing.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="sell-howto">
+        <h2 class="sell-section-heading">How selling direct instead of consignment works</h2>
+        <div class="sell-steps">
+          <div class="sell-step">
+            <span class="sell-step-num">1</span>
+            <div>
+              <strong>Send photos and details</strong>
+              <p>Submit three to five photos plus brand, age, and condition through the form above. No drop-off, no in-person evaluation, no waiting for a shop's intake window.</p>
+            </div>
+          </div>
+          <div class="sell-step">
+            <span class="sell-step-num">2</span>
+            <div>
+              <strong>Get an offer within 24 hours</strong>
+              <p>We reply with a written offer in under 24 hours &mdash; typically within six hours on business days &mdash; based on brand, age, condition, and the current local resale market. No commission, no markdown schedule.</p>
+            </div>
+          </div>
+          <div class="sell-step">
+            <span class="sell-step-num">3</span>
+            <div>
+              <strong>Schedule pickup</strong>
+              <p>If you accept, pickup is typically scheduled within 48 hours. We come to you anywhere in Edmonton, St. Albert, Sherwood Park, Spruce Grove, Leduc, or Fort Saskatchewan &mdash; no consigning to a shop, no transporting the piece yourself.</p>
+            </div>
+          </div>
+          <div class="sell-step">
+            <span class="sell-step-num">4</span>
+            <div>
+              <strong>Paid on the spot</strong>
+              <p>We confirm condition matches the photos, pay by e-transfer or cash before we leave with the piece, and load it ourselves. The number you accept is the number you receive &mdash; no waiting 60 to 90 days for a percentage.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <h2 class="section-label sell-send-heading" id="sell-details">Send us your details</h2>
       <p class="sell-send-lead">Fill out the form below &mdash; we reply within 24 hours with an offer. The more detail you give, the faster and more accurate the offer.</p>
 
@@ -403,41 +527,18 @@
 
       <p class="sell-form-secondary">Prefer to text? <a href="sms:7809651477">780-965-1477</a></p>
 
-      <section class="sell-howto">
-        <h2 class="sell-section-heading">How selling direct instead of consignment works</h2>
-        <div class="sell-steps">
-          <div class="sell-step">
-            <span class="sell-step-num">1</span>
-            <div>
-              <strong>Send photos and details</strong>
-              <p>Submit three to five photos plus brand, age, and condition through the form above. No drop-off, no in-person evaluation, no waiting for a shop's intake window.</p>
-            </div>
-          </div>
-          <div class="sell-step">
-            <span class="sell-step-num">2</span>
-            <div>
-              <strong>Get an offer within 24 hours</strong>
-              <p>We reply with a written offer in under 24 hours &mdash; typically within six hours on business days &mdash; based on brand, age, condition, and the current local resale market. No commission, no markdown schedule.</p>
-            </div>
-          </div>
-          <div class="sell-step">
-            <span class="sell-step-num">3</span>
-            <div>
-              <strong>Schedule pickup</strong>
-              <p>If you accept, pickup is typically scheduled within 48 hours. We come to you anywhere in Edmonton, St. Albert, Sherwood Park, Spruce Grove, Leduc, or Fort Saskatchewan &mdash; no consigning to a shop, no transporting the piece yourself.</p>
-            </div>
-          </div>
-          <div class="sell-step">
-            <span class="sell-step-num">4</span>
-            <div>
-              <strong>Paid on the spot</strong>
-              <p>We confirm condition matches the photos, pay by e-transfer or cash before we leave with the piece, and load it ourselves. The number you accept is the number you receive &mdash; no waiting 60 to 90 days for a percentage.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <div class="sell-landing-body">
+        <h2>Questions to ask before signing a consignment contract</h2>
+        <p>If you're talking to a consignment shop, a few questions are worth asking up front so the math is clear before the piece leaves your home.</p>
+        <ul>
+          <li><strong>What's the commission rate, and does it apply to the original asking price or the final sale price?</strong> Most shops calculate commission against the final-sale-after-markdowns figure, which is meaningfully lower than the price on the tag at intake.</li>
+          <li><strong>What's the markdown schedule?</strong> Many shops apply automatic reductions at 30, 60, and 90 days. Knowing the schedule helps you estimate the likely payout range before signing.</li>
+          <li><strong>Are there intake, photography, or storage fees?</strong> Some shops charge a flat fee at intake regardless of whether the piece sells, and a few charge for professional photography or extended storage if the piece sits past the listing window.</li>
+          <li><strong>Who delivers the piece &mdash; and what happens if it doesn't sell?</strong> Most shops require the seller to deliver. If the piece doesn't sell within the term, you'll usually need to retrieve it (sometimes with a fee) or accept donation or disposal.</li>
+          <li><strong>What's the payout schedule after a sale?</strong> Most shops pay 30 to 60 days after a sale clears. Some hold longer.</li>
+        </ul>
+        <p>If the answers add up favourably for your piece, consignment can be a strong path. If they don't, a direct offer is one form to fill out away.</p>
+
         <h2>How furniture consignment typically works in Edmonton</h2>
         <p>The local consignment model is fairly consistent across shops. You bring (or sometimes deliver) your piece. The shop accepts or declines it based on what they think they can move. If accepted, the piece sits on their floor for a fixed window &mdash; often 60 to 90 days &mdash; and you receive a percentage of whatever it eventually sells for. Commissions usually fall between 40 and 50 percent of the final sale price.</p>
 
@@ -495,9 +596,16 @@
         <h2>What we typically purchase</h2>
         <p>We're selective. Our resale channels are built around sofas and sectionals from recognized design-oriented and premium retailers &mdash; B&amp;B Italia, Natuzzi Italia, Natuzzi Editions, Rove Concepts, Crate &amp; Barrel, EQ3, West Elm, Restoration Hardware, American Leather, Brentwood Classics, Younger Furniture, and a handful of others. La-Z-Boy is accepted selectively, typically the leather and premium upholstered lines.</p>
 
-        <p>We don't buy mass-market pieces (Ashley, IKEA, Leon's, The Brick), bonded leather, or items with significant pet or stain damage. For those categories, donation through Find Edmonton Furniture Bank, the Bissell Centre, or Habitat for Humanity ReStore is usually the better path &mdash; and produces more value to the community than forcing a sale that won't happen.</p>
-
-        <p>If you're not sure where your piece falls, send photos. We'll tell you straight, and if it's not for us we'll point you at whichever channel makes more sense.</p>
+        <h2>Pieces we don&rsquo;t typically purchase</h2>
+        <ul>
+          <li>Mass-market pieces from Ashley, IKEA, Leon's, or The Brick</li>
+          <li>Bonded leather or heavily peeling configurations</li>
+          <li>Sectionals with major frame or recliner failures</li>
+          <li>Broken mechanical pieces &mdash; hide-a-beds, power recliners with motor issues</li>
+          <li>Heavy smoke saturation or significant pet odour issues</li>
+          <li>Large visible tears, severe leather cracking, or structural instability</li>
+        </ul>
+        <p>For those categories, donation through Find Edmonton Furniture Bank, the Bissell Centre, or Habitat for Humanity ReStore is usually the better path &mdash; and produces more value to the community than forcing a sale that won't happen. If you're not sure where your piece falls, send photos. We'll tell you straight, and if it's not for us we'll point you at whichever channel makes more sense.</p>
       </div>
 
       <section class="sell-landing-sold">
