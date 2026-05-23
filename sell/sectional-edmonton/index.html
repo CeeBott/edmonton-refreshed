@@ -77,18 +77,25 @@
     "name": "Sell Your Sectional in Edmonton",
     "description": "Skip Marketplace. Send photos of your sectional — modular or L-shaped, recognized brand — offer back within 24 hours, pickup included, paid at the door.",
     "url": "https://edmontonrefreshed.com/sell/sectional-edmonton/",
-    "dateModified": "2026-05-21",
+    "dateModified": "2026-05-22",
     "provider": {
       "@type": "FurnitureStore",
+      "@id": "https://edmontonrefreshed.com/#business",
       "name": "Edmonton Refreshed Seating",
       "url": "https://edmontonrefreshed.com/",
       "telephone": "+1-780-965-1477",
       "email": "info@edmontonrefreshed.com",
+      "image": "https://edmontonrefreshed.com/images/og-preview.png",
+      "logo": "https://edmontonrefreshed.com/favicon.svg",
+      "priceRange": "$$",
+      "address": { "@type": "PostalAddress", "addressLocality": "Edmonton", "addressRegion": "AB", "addressCountry": "CA" },
+      "geo": { "@type": "GeoCoordinates", "latitude": 53.5461, "longitude": -113.4937 },
       "sameAs": [
         "https://share.google/Vbc4WShKx0Q7NuRR9",
         "https://www.facebook.com/edmontonrefreshed",
         "https://www.instagram.com/edmontonrefreshed/"
-      ]
+      ],
+      "aggregateRating": { "@type": "AggregateRating", "ratingValue": 4.9, "reviewCount": 18, "bestRating": 5, "worstRating": 1 }
     },
     "areaServed": [
       {
@@ -116,6 +123,42 @@
         "name": "Fort Saskatchewan"
       }
     ]
+  }
+  </script>
+
+  <!-- HowTo Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Sell a Sectional in Edmonton",
+    "description": "Four steps to sell your sectional in Edmonton — offer back within 24 hours, pickup included, paid before we leave.",
+    "totalTime": "P2D",
+    "step": [
+      { "@type": "HowToStep", "position": 1, "name": "Send photos and details", "text": "Submit three to five photos plus brand, approximate age, and condition through the form on this page. Include a shot of the configuration (L-shape, U-shape, modular) so we can plan pickup." },
+      { "@type": "HowToStep", "position": 2, "name": "Receive an offer within 24 hours", "text": "We reply with a written offer within 24 hours — typically within six hours on business days — based on brand, configuration, age, and condition." },
+      { "@type": "HowToStep", "position": 3, "name": "Schedule pickup", "text": "If you accept, we schedule pickup anywhere in Edmonton, St. Albert, Sherwood Park, Spruce Grove, Leduc, or Fort Saskatchewan. We handle modular disassembly and load-out." },
+      { "@type": "HowToStep", "position": 4, "name": "Paid before we leave", "text": "We confirm condition matches the photos, pay by e-transfer or cash before we leave with the piece, and load it ourselves. You don't lift a thing." }
+    ]
+  }
+  </script>
+
+  <!-- Person Schema (Collin Bottrell) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": "https://edmontonrefreshed.com/about/#collin",
+    "name": "Collin Bottrell",
+    "jobTitle": "Pre-Owned Furniture Buyer",
+    "description": "Owner of Edmonton Refreshed Seating. Personally inspects, photographs, and resells every piece. 41+ pre-owned sofa and sectional transactions across Edmonton since 2024.",
+    "url": "https://edmontonrefreshed.com/about/",
+    "image": "https://edmontonrefreshed.com/favicon.svg",
+    "telephone": "+1-780-965-1477",
+    "email": "info@edmontonrefreshed.com",
+    "knowsAbout": [ "Pre-owned sectionals", "Modular sectional logistics", "Furniture pickup", "Leather furniture valuation" ],
+    "worksFor": { "@type": "Organization", "name": "Edmonton Refreshed Seating", "url": "https://edmontonrefreshed.com/" },
+    "address": { "@type": "PostalAddress", "addressLocality": "Edmonton", "addressRegion": "AB", "addressCountry": "CA" }
   }
   </script>
 
@@ -156,6 +199,30 @@
           "@type": "Answer",
           "text": "Often yes, if the mechanisms works. We don’t buy sleeper sectionals with broken frames or torn mattress bottoms."
         }
+      },
+      {
+        "@type": "Question",
+        "name": "Where can I sell my sectional in Edmonton?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Edmonton Refreshed buys quality sectionals directly from sellers across Edmonton, St. Albert, Sherwood Park, Spruce Grove, Leduc, and Fort Saskatchewan. L-shaped, U-shaped, and modular configurations all qualify; we handle disassembly and load-out, and pay before we leave. Submit photos through the form on this page and we'll reply within 24 hours."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Who buys used sectionals in Edmonton?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Edmonton Refreshed buys sectionals from recognized brands — Natuzzi, B&B Italia, Rove Concepts, EQ3, Crate & Barrel, West Elm, American Leather, Restoration Hardware, Brentwood Classics, and similar. We're one of the few buyers in Edmonton focused specifically on sofas and sectionals, which is why our process is built around the logistics of large seating — not generic used-furniture handling."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Will I get more for my sectional on Marketplace?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sometimes — on a popular configuration in a popular fabric, with weeks of patience. The honest trade is that Marketplace's ceiling on a sectional can exceed our offer, but sectionals are one of the slowest categories to move privately because of size, configuration, and pickup logistics. Our offer trades some price for certainty, speed, and pickup handled."
+        }
       }
     ]
   }
@@ -165,7 +232,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="../../css/styles.min.css?v=73639604">
+  <link rel="stylesheet" href="../../css/styles.min.css?v=ffe9cded">
   <meta name="theme-color" content="#2c2c2c">
 </head>
 <body>
@@ -249,9 +316,44 @@
 
       <section class="sell-landing-hero">
         <h1>Sell Your Sectional in Edmonton</h1>
+        <p class="sell-updated">Updated May 2026 &middot; <a href="/about/">Hosted by Collin Bottrell</a>, Edmonton pre-owned furniture buyer.</p>
         <p class="sell-landing-hero-sub">Sectionals are our most active buying category — and one of the hardest pieces for sellers to move privately. The size, the weight, the module configurations — all of it makes a Marketplace listing more complicated than it's worth for most people.</p>
         <p class="sell-landing-hero-sub">The form below is the fastest way to find out what we'd pay for yours.</p>
         <a href="#sell-details" class="sell-hero-cta">Get an Offer</a>
+      </section>
+
+      <section class="sell-howto">
+        <h2 class="sell-section-heading">How selling your sectional works</h2>
+        <div class="sell-steps">
+          <div class="sell-step">
+            <span class="sell-step-num">1</span>
+            <div>
+              <strong>Send photos and details</strong>
+              <p>Submit three to five photos plus brand, age, and condition through the form on this page. Include a shot showing the full configuration (L, U, or modular) so we can plan pickup.</p>
+            </div>
+          </div>
+          <div class="sell-step">
+            <span class="sell-step-num">2</span>
+            <div>
+              <strong>Get an offer within 24 hours</strong>
+              <p>We reply with a written offer in under 24 hours &mdash; typically within six hours on business days &mdash; based on brand, configuration, upholstery, age, and condition.</p>
+            </div>
+          </div>
+          <div class="sell-step">
+            <span class="sell-step-num">3</span>
+            <div>
+              <strong>Schedule pickup</strong>
+              <p>If you accept, pickup is typically scheduled within 48 hours. We come to you anywhere in Edmonton, St. Albert, Sherwood Park, Spruce Grove, Leduc, or Fort Saskatchewan, and handle modular disassembly and load-out.</p>
+            </div>
+          </div>
+          <div class="sell-step">
+            <span class="sell-step-num">4</span>
+            <div>
+              <strong>Paid on the spot</strong>
+              <p>We confirm condition matches the photos, pay by e-transfer or cash before we leave, and load the piece ourselves. You don't lift a thing.</p>
+            </div>
+          </div>
+        </div>
       </section>
 
       <div class="sell-landing-body">
@@ -278,6 +380,30 @@
             <li>Leather sectionals from Natuzzi, American Leather, Crate & Barrel, Brentwood Classics</li>
             <li>Performance-fabric sectionals from EQ3, Rove Concepts, Crate & Barrel, and West Elm select models</li>
           </ul>
+
+        <h2>Selling a sectional to us vs. listing on Marketplace</h2>
+        <p>Sectionals are one of the toughest categories to move on Marketplace. The size narrows the buyer pool, the configuration (L vs U vs modular, facing direction, fixed vs separable) narrows it further, and the logistics of moving 100+ inches of furniture through a stranger's stairwell narrows it even more. Marketplace can still produce the highest ceiling on the right piece. What we offer is a different trade.</p>
+        <div class="sell-compare-wrap">
+          <table class="sell-compare">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">Facebook Marketplace</th>
+                <th scope="col">Edmonton Refreshed</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Potential price</td><td>Higher ceiling if a buyer turns up whose home and configuration match yours</td><td>Below the Marketplace ceiling. A firm number on day one.</td></tr>
+              <tr><td>Time to resolution</td><td>Often 4&ndash;8 weeks for sectionals; longer in slower seasons or for tight configurations</td><td>Offer back within 24 hours; pickup typically within a few days</td></tr>
+              <tr><td>Buyer pool</td><td>Narrows fast on configuration, footprint, and pickup logistics</td><td>One contact &mdash; you don't need to find a buyer whose home fits the piece</td></tr>
+              <tr><td>Moving the piece</td><td>You disassemble (or hope the buyer can); the buyer's truck arrives on their schedule</td><td>We bring the truck, blankets, straps, and crew. We handle disassembly and load-out.</td></tr>
+              <tr><td>If it doesn't sell</td><td>Repost, drop price, wait. The piece keeps occupying the room.</td><td>Not a scenario &mdash; the transaction closes the day of pickup</td></tr>
+              <tr><td>Payment</td><td>When the buyer arrives &mdash; if they arrive</td><td>Paid by your preferred method before we leave with the piece</td></tr>
+              <tr><td>Best fit</td><td>You have time, a neutral configuration, and patience for the process</td><td>You'd rather have it gone, on a date you set, for a fair number</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>If your sectional is a popular configuration in a popular fabric and you have weeks to spare, Marketplace is worth a shot. If the configuration is awkward or the timeline matters, that's where we fit.</p>
       </div>
 
       <section class="sell-landing-sold">
@@ -376,7 +502,7 @@
         <a href="/sell/">Open the main sell page &rarr;</a>
       </div>
 
-      <h2 class="sell-section-heading" id="sell-details">Send us your details</h2>
+      <h2 class="section-label sell-send-heading" id="sell-details">Send us your details</h2>
       <p class="sell-send-lead">Fill out the form below &mdash; we reply within 24 hours with an offer. The more detail you give, the faster and more accurate the offer.</p>
 
       <div class="sell-form-prelude">We primarily purchase higher-quality sofas and sectionals from design-oriented and premium retailers. If you&rsquo;re unsure whether your piece is a fit, send photos anyway &mdash; we&rsquo;re happy to take a look.</div>
@@ -489,6 +615,18 @@
             <div class="faq-item">
               <h3 class="faq-question">I have a sectional with a hide-a-bed mechanism &mdash; does it qualify?</h3>
               <p class="faq-answer">Often yes, if the mechanisms works. We don’t buy sleeper sectionals with broken frames or torn mattress bottoms.</p>
+            </div>
+            <div class="faq-item">
+              <h3 class="faq-question">Where can I sell my sectional in Edmonton?</h3>
+              <p class="faq-answer">Edmonton Refreshed buys quality sectionals directly from sellers across Edmonton, St. Albert, Sherwood Park, Spruce Grove, Leduc, and Fort Saskatchewan. L-shaped, U-shaped, and modular configurations all qualify; we handle disassembly and load-out, and pay before we leave. Submit photos through the form on this page and we'll reply within 24 hours.</p>
+            </div>
+            <div class="faq-item">
+              <h3 class="faq-question">Who buys used sectionals in Edmonton?</h3>
+              <p class="faq-answer">Edmonton Refreshed buys sectionals from recognized brands &mdash; Natuzzi, B&amp;B Italia, Rove Concepts, EQ3, Crate &amp; Barrel, West Elm, American Leather, Restoration Hardware, Brentwood Classics, and similar. We're one of the few buyers in Edmonton focused specifically on sofas and sectionals, which is why our process is built around the logistics of large seating &mdash; not generic used-furniture handling.</p>
+            </div>
+            <div class="faq-item">
+              <h3 class="faq-question">Will I get more for my sectional on Marketplace?</h3>
+              <p class="faq-answer">Sometimes &mdash; on a popular configuration in a popular fabric, with weeks of patience. The honest trade is that Marketplace's ceiling on a sectional can exceed our offer, but sectionals are one of the slowest categories to move privately because of size, configuration, and pickup logistics. Our offer trades some price for certainty, speed, and pickup handled.</p>
             </div>
         </div>
       </div>

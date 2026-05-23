@@ -77,18 +77,25 @@
     "name": "Sell Your Couch in Edmonton",
     "description": "Skip Marketplace. Send photos of your couch — recognized brand, good condition — offer back within 24 hours, pickup included, paid at the door.",
     "url": "https://edmontonrefreshed.com/sell/couch-edmonton/",
-    "dateModified": "2026-05-21",
+    "dateModified": "2026-05-22",
     "provider": {
       "@type": "FurnitureStore",
+      "@id": "https://edmontonrefreshed.com/#business",
       "name": "Edmonton Refreshed Seating",
       "url": "https://edmontonrefreshed.com/",
       "telephone": "+1-780-965-1477",
       "email": "info@edmontonrefreshed.com",
+      "image": "https://edmontonrefreshed.com/images/og-preview.png",
+      "logo": "https://edmontonrefreshed.com/favicon.svg",
+      "priceRange": "$$",
+      "address": { "@type": "PostalAddress", "addressLocality": "Edmonton", "addressRegion": "AB", "addressCountry": "CA" },
+      "geo": { "@type": "GeoCoordinates", "latitude": 53.5461, "longitude": -113.4937 },
       "sameAs": [
         "https://share.google/Vbc4WShKx0Q7NuRR9",
         "https://www.facebook.com/edmontonrefreshed",
         "https://www.instagram.com/edmontonrefreshed/"
-      ]
+      ],
+      "aggregateRating": { "@type": "AggregateRating", "ratingValue": 4.9, "reviewCount": 18, "bestRating": 5, "worstRating": 1 }
     },
     "areaServed": [
       {
@@ -116,6 +123,42 @@
         "name": "Fort Saskatchewan"
       }
     ]
+  }
+  </script>
+
+  <!-- HowTo Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Sell a Couch in Edmonton",
+    "description": "Four steps to sell your couch in Edmonton — offer back within 24 hours, pickup included, paid before we leave.",
+    "totalTime": "P2D",
+    "step": [
+      { "@type": "HowToStep", "position": 1, "name": "Send photos and details", "text": "Submit three to five photos plus brand, approximate age, and condition through the form on this page. Most submissions take under five minutes." },
+      { "@type": "HowToStep", "position": 2, "name": "Receive an offer within 24 hours", "text": "We reply with a written offer within 24 hours — typically within six hours on business days — based on brand, age, condition, and the current local resale market." },
+      { "@type": "HowToStep", "position": 3, "name": "Schedule pickup", "text": "If you accept, we schedule pickup anywhere in Edmonton, St. Albert, Sherwood Park, Spruce Grove, Leduc, or Fort Saskatchewan. Pickup is typically within 48 hours of acceptance." },
+      { "@type": "HowToStep", "position": 4, "name": "Paid before we leave", "text": "We confirm condition matches the photos, pay by e-transfer or cash before we leave with the piece, and load it ourselves. You don't lift a thing." }
+    ]
+  }
+  </script>
+
+  <!-- Person Schema (Collin Bottrell) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": "https://edmontonrefreshed.com/about/#collin",
+    "name": "Collin Bottrell",
+    "jobTitle": "Pre-Owned Furniture Buyer",
+    "description": "Owner of Edmonton Refreshed Seating. Personally inspects, photographs, and resells every piece. 41+ pre-owned sofa and sectional transactions across Edmonton since 2024.",
+    "url": "https://edmontonrefreshed.com/about/",
+    "image": "https://edmontonrefreshed.com/favicon.svg",
+    "telephone": "+1-780-965-1477",
+    "email": "info@edmontonrefreshed.com",
+    "knowsAbout": [ "Pre-owned couches", "Pre-owned sofas", "Quality couch valuation", "Furniture pickup logistics" ],
+    "worksFor": { "@type": "Organization", "name": "Edmonton Refreshed Seating", "url": "https://edmontonrefreshed.com/" },
+    "address": { "@type": "PostalAddress", "addressLocality": "Edmonton", "addressRegion": "AB", "addressCountry": "CA" }
   }
   </script>
 
@@ -156,6 +199,30 @@
           "@type": "Answer",
           "text": "If the piece looks like a fit we'll follow up with an offer, usually within a day. If we move forward, we arrange pickup at a time that works for you and handle everything from there."
         }
+      },
+      {
+        "@type": "Question",
+        "name": "Where can I sell my couch in Edmonton?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Edmonton Refreshed buys quality couches directly from sellers across Edmonton, St. Albert, Sherwood Park, Spruce Grove, Leduc, and Fort Saskatchewan — same criteria as a sofa, since they're the same piece. Submit photos through the form on this page and we'll reply within 24 hours. Facebook Marketplace and Kijiji are the other direct-sale channels, with the trade-off of running the listing process yourself."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Who buys used couches in Edmonton?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Edmonton Refreshed focuses specifically on sofas and sectionals from recognized brands — Natuzzi, B&B Italia, Rove Concepts, EQ3, Crate & Barrel, West Elm, American Leather, Restoration Hardware, Brentwood Classics, Pottery Barn, Urban Barn, and similar. We're one of the few buyers in Edmonton focused on the couch category specifically."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is a couch the same thing as a sofa for selling purposes?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes — same piece, same evaluation criteria, same offer process. We use the words interchangeably and accept submissions under either label. The difference is mostly regional vocabulary, not anything structural."
+        }
       }
     ]
   }
@@ -165,7 +232,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="../../css/styles.min.css?v=73639604">
+  <link rel="stylesheet" href="../../css/styles.min.css?v=ffe9cded">
   <meta name="theme-color" content="#2c2c2c">
 </head>
 <body>
@@ -249,8 +316,43 @@
 
       <section class="sell-landing-hero">
         <h1>Sell Your Couch in Edmonton</h1>
+        <p class="sell-updated">Updated May 2026 &middot; <a href="/about/">Hosted by Collin Bottrell</a>, Edmonton pre-owned furniture buyer.</p>
         <p class="sell-landing-hero-sub">Couch is the word most Edmonton sellers use; sofa is the word the retailers use. We buy both &mdash; same piece, same criteria. If you have a quality couch from a recognized brand and you’re ready to part with it, the form below is where to start.</p>
         <a href="#sell-details" class="sell-hero-cta">Get an Offer</a>
+      </section>
+
+      <section class="sell-howto">
+        <h2 class="sell-section-heading">How selling your couch works</h2>
+        <div class="sell-steps">
+          <div class="sell-step">
+            <span class="sell-step-num">1</span>
+            <div>
+              <strong>Send photos and details</strong>
+              <p>Submit three to five photos plus brand, age, and condition through the form on this page. Most submissions take under five minutes.</p>
+            </div>
+          </div>
+          <div class="sell-step">
+            <span class="sell-step-num">2</span>
+            <div>
+              <strong>Get an offer within 24 hours</strong>
+              <p>We reply with a written offer in under 24 hours &mdash; typically within six hours on business days &mdash; based on brand, age, upholstery, and condition.</p>
+            </div>
+          </div>
+          <div class="sell-step">
+            <span class="sell-step-num">3</span>
+            <div>
+              <strong>Schedule pickup</strong>
+              <p>If you accept, pickup is typically scheduled within 48 hours. We come to you anywhere in Edmonton, St. Albert, Sherwood Park, Spruce Grove, Leduc, or Fort Saskatchewan.</p>
+            </div>
+          </div>
+          <div class="sell-step">
+            <span class="sell-step-num">4</span>
+            <div>
+              <strong>Paid on the spot</strong>
+              <p>We confirm condition matches the photos, pay by e-transfer or cash before we leave, and load the piece ourselves. You don't lift a thing.</p>
+            </div>
+          </div>
+        </div>
       </section>
 
       <div class="sell-landing-body">
@@ -278,6 +380,29 @@
             <li>Loveseats and matching chairs bundled with the primary couch</li>
             <li>Couches from premium Edmonton retailers like Cottswood Interiors F2, or Signature Lane</li>
           </ul>
+
+        <h2>Selling a couch to us vs. listing on Marketplace</h2>
+        <p>Couch is the word most sellers use; sofa is the word retailers use. The trade-off is the same regardless: Marketplace can pay more for the right couch with the right photos and enough patience. What we offer is certainty, scheduled pickup, and payment before we leave. The right call depends on your piece, your time, and your timeline.</p>
+        <div class="sell-compare-wrap">
+          <table class="sell-compare">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">Facebook Marketplace</th>
+                <th scope="col">Edmonton Refreshed</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Potential price</td><td>Higher ceiling on the right couch from a recognized brand</td><td>Below the Marketplace ceiling. A firm number on day one.</td></tr>
+              <tr><td>Time to resolution</td><td>2&ndash;6 weeks typical for quality pieces; longer in slower seasons</td><td>Offer back within 24 hours; pickup typically within a few days</td></tr>
+              <tr><td>Buyer triage</td><td>You handle lowballs, no-shows, and tire-kickers yourself</td><td>One contact &mdash; the assessment is done before pickup is scheduled</td></tr>
+              <tr><td>Moving the piece</td><td>You stage and host viewings; buyer's truck arrives on their schedule</td><td>We come to your home, load it ourselves, and pay before we leave</td></tr>
+              <tr><td>Payment</td><td>When the buyer arrives &mdash; if they arrive</td><td>Paid by your preferred method before we leave with the piece</td></tr>
+              <tr><td>Best fit</td><td>You have time and energy for the process, and a recognizable brand</td><td>You'd rather have it gone, on a date you set, for a fair number</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>If your couch is from a recognized brand in good condition and you have weeks of runway, Marketplace is a real option. If you'd rather skip the process, that's what we're built for.</p>
       </div>
 
       <section class="sell-landing-sold">
@@ -376,7 +501,7 @@
         <a href="/sell/">Open the main sell page &rarr;</a>
       </div>
 
-      <h2 class="sell-section-heading" id="sell-details">Send us your details</h2>
+      <h2 class="section-label sell-send-heading" id="sell-details">Send us your details</h2>
       <p class="sell-send-lead">Fill out the form below &mdash; we reply within 24 hours with an offer. The more detail you give, the faster and more accurate the offer.</p>
 
       <div class="sell-form-prelude">We primarily purchase higher-quality sofas and sectionals from design-oriented and premium retailers. If you&rsquo;re unsure whether your piece is a fit, send photos anyway &mdash; we&rsquo;re happy to take a look.</div>
@@ -493,6 +618,18 @@
             <div class="faq-item">
               <h3 class="faq-question">What happens after I send photos?</h3>
               <p class="faq-answer">If the piece looks like a fit we'll follow up with an offer, usually within a day. If we move forward, we arrange pickup at a time that works for you and handle everything from there.</p>
+            </div>
+            <div class="faq-item">
+              <h3 class="faq-question">Where can I sell my couch in Edmonton?</h3>
+              <p class="faq-answer">Edmonton Refreshed buys quality couches directly from sellers across Edmonton, St. Albert, Sherwood Park, Spruce Grove, Leduc, and Fort Saskatchewan &mdash; same criteria as a sofa, since they're the same piece. Submit photos through the form on this page and we'll reply within 24 hours. Facebook Marketplace and Kijiji are the other direct-sale channels, with the trade-off of running the listing process yourself.</p>
+            </div>
+            <div class="faq-item">
+              <h3 class="faq-question">Who buys used couches in Edmonton?</h3>
+              <p class="faq-answer">Edmonton Refreshed focuses specifically on sofas and sectionals from recognized brands &mdash; Natuzzi, B&amp;B Italia, Rove Concepts, EQ3, Crate &amp; Barrel, West Elm, American Leather, Restoration Hardware, Brentwood Classics, Pottery Barn, Urban Barn, and similar. We're one of the few buyers in Edmonton focused on the couch category specifically.</p>
+            </div>
+            <div class="faq-item">
+              <h3 class="faq-question">Is a couch the same thing as a sofa for selling purposes?</h3>
+              <p class="faq-answer">Yes &mdash; same piece, same evaluation criteria, same offer process. We use the words interchangeably and accept submissions under either label. The difference is mostly regional vocabulary, not anything structural.</p>
             </div>
         </div>
       </div>

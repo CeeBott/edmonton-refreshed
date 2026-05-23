@@ -1411,6 +1411,15 @@ single stacked column with padded link blocks for thumb-friendly tap targets.
 Sold-stub listing pages also use the global footer. To add a footer column
 entry, edit `config/taxonomy.js` and rebuild.
 
+**"Other brands" escape hatch.** The "Sell By Brand" column lists the six
+brands with dedicated sell-landing pages, but the business buys other brands
+too (American Leather, Brentwood Classics, Urban Barn, La-Z-Boy, etc.). The
+listed six could be read by a seller as "the only brands we buy," which is
+inaccurate and costs leads. To prevent that, the brand column ends with an
+explicit `<li><a href="/sell/">Other brands &rarr;</a></li>` entry — rendered
+in `partials/footer.js` after the taxonomy-driven brand links. Any future
+authoring of the brand column should preserve that closing entry.
+
 ## 7.8 Responsive Philosophy
 
 Mobile is treated as a deliberate layout, not a shrink of desktop: section
@@ -1863,3 +1872,41 @@ freshness signal — a pure no-op build still advanced every URL. `<lastmod>`
 now reflects actual content modification, gated by a per-URL content hash
 stored in `.build-state.json`. Pure rebuilds leave every date stable. See
 §5.15.
+
+## 10.11 Serif `.sell-section-heading` on "Send us your details"
+
+**DO NOT USE FOR NEW IMPLEMENTATION.** The "Send us your details" h2 on
+every sell-landing page used to use `class="sell-section-heading"` — a
+serif-styled centered heading specific to the sell cluster. It now uses
+the global `class="section-label sell-send-heading"` pattern so the
+heading hierarchy is uniform with the rest of the site (per §5.6) and
+the form-handoff still gets the centered, top-spaced placement it needs.
+The `.sell-section-heading` class still exists in CSS for transitional
+purposes but new authoring uses the section-label pattern. See §5.13.
+
+## 10.12 Published Per-Piece Valuation Tables on Sell Pages
+
+**DO NOT USE FOR NEW IMPLEMENTATION.** Sell-landing pages briefly carried
+"What used [Brand] pieces typically sell for in Edmonton" tables, plus
+FAQ answers quoting specific dollar ranges and value multipliers
+(e.g. "Italia is roughly 1.5–2× Editions value"). Both were removed.
+The numbers couldn't be defended under scrutiny, and — more importantly
+— every published figure became the seller's expected floor in
+negotiation, making it harder to acquire pieces at the margins the
+business needs. The only public valuation signal on sell pages is the
+wide credibility-strip range *"Most Offers $500–$2,500"*. FAQ valuation
+questions deflect to *"send photos for a specific offer"*. See §5.13
+pricing restraint rule.
+
+## 10.13 Disingenuous Marketplace Comparison
+
+**DO NOT USE FOR NEW IMPLEMENTATION.** Earlier Marketplace-vs-us
+comparison tables on sell pages contained "Risk: None" rows,
+"chargeback risk" claims about Marketplace cash/e-transfer
+transactions, and fabricated percentage stats ("55–70% of asking after
+2–3 price drops"). All were removed because they read as marketing copy
+rather than honest analysis and undermined the brand's "concede where
+you're not the best fit" positioning. New comparisons follow the §5.13
+Marketplace-comparison rules: concede Marketplace can pay more, no
+false-confidence claims, no FUD, no fabricated stats, frame the trade
+as dollars-for-friction.

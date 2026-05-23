@@ -62,18 +62,40 @@
     "name": "Furniture Buyout — An Alternative to Consignment in Edmonton",
     "description": "We buy quality sofas and sectionals outright in Edmonton, paid at pickup. A faster, simpler alternative to consignment for sellers who want certainty over maximum price.",
     "url": "https://edmontonrefreshed.com/sell/furniture-consignment-edmonton/",
-    "dateModified": "2026-05-21",
+    "dateModified": "2026-05-22",
     "provider": {
       "@type": "FurnitureStore",
+      "@id": "https://edmontonrefreshed.com/#business",
       "name": "Edmonton Refreshed Seating",
       "url": "https://edmontonrefreshed.com/",
       "telephone": "+1-780-965-1477",
       "email": "info@edmontonrefreshed.com",
+      "image": "https://edmontonrefreshed.com/images/og-preview.png",
+      "logo": "https://edmontonrefreshed.com/favicon.svg",
+      "priceRange": "$$",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Edmonton",
+        "addressRegion": "AB",
+        "addressCountry": "CA"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 53.5461,
+        "longitude": -113.4937
+      },
       "sameAs": [
         "https://share.google/Vbc4WShKx0Q7NuRR9",
         "https://www.facebook.com/edmontonrefreshed",
         "https://www.instagram.com/edmontonrefreshed/"
-      ]
+      ],
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": 4.9,
+        "reviewCount": 18,
+        "bestRating": 5,
+        "worstRating": 1
+      }
     },
     "areaServed": [
       { "@type": "City", "name": "Edmonton" },
@@ -83,6 +105,57 @@
       { "@type": "City", "name": "Leduc" },
       { "@type": "City", "name": "Fort Saskatchewan" }
     ]
+  }
+  </script>
+
+  <!-- HowTo Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Sell Furniture Direct in Edmonton Instead of Consignment",
+    "description": "Four steps to sell your sofa or sectional outright in Edmonton — offer back within 24 hours, pickup included, paid before we leave.",
+    "totalTime": "P2D",
+    "step": [
+      { "@type": "HowToStep", "position": 1, "name": "Send photos and details", "text": "Submit three to five photos plus brand, approximate age, and condition through the form on this page. Most submissions take under five minutes." },
+      { "@type": "HowToStep", "position": 2, "name": "Receive an offer within 24 hours", "text": "We reply with a written offer within 24 hours — typically within six hours on business days — based on brand, age, condition, and the current local resale market." },
+      { "@type": "HowToStep", "position": 3, "name": "Schedule pickup", "text": "If you accept, we schedule pickup at your convenience anywhere in Edmonton, St. Albert, Sherwood Park, Spruce Grove, Leduc, or Fort Saskatchewan. Pickup is typically within 48 hours of acceptance." },
+      { "@type": "HowToStep", "position": 4, "name": "Paid before we leave", "text": "We confirm condition matches the photos, pay by e-transfer or cash before we leave with the piece, and load it ourselves. You don't lift a thing." }
+    ]
+  }
+  </script>
+
+  <!-- Person Schema (Collin Bottrell) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": "https://edmontonrefreshed.com/about/#collin",
+    "name": "Collin Bottrell",
+    "jobTitle": "Pre-Owned Furniture Buyer",
+    "description": "Owner of Edmonton Refreshed Seating. Personally inspects, photographs, and resells every piece. 41+ pre-owned sofa and sectional transactions across Edmonton since 2024.",
+    "url": "https://edmontonrefreshed.com/about/",
+    "image": "https://edmontonrefreshed.com/favicon.svg",
+    "telephone": "+1-780-965-1477",
+    "email": "info@edmontonrefreshed.com",
+    "knowsAbout": [
+      "Pre-owned sofas",
+      "Pre-owned sectionals",
+      "Furniture consignment alternatives",
+      "Leather furniture valuation",
+      "Furniture pickup logistics"
+    ],
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Edmonton Refreshed Seating",
+      "url": "https://edmontonrefreshed.com/"
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Edmonton",
+      "addressRegion": "AB",
+      "addressCountry": "CA"
+    }
   }
   </script>
 
@@ -131,6 +204,30 @@
           "@type": "Answer",
           "text": "Mass-market pieces (Ashley, IKEA, Leon's, The Brick), bonded or faux leather, items with significant pet damage or staining, and broken mechanical pieces (hide-a-beds, power recliners with motor issues) are difficult through both channels. Donation or removal services are usually the more honest path for those."
         }
+      },
+      {
+        "@type": "Question",
+        "name": "Where can I sell my furniture in Edmonton without using consignment?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Edmonton Refreshed buys quality sofas and sectionals directly from sellers across Edmonton, St. Albert, Sherwood Park, Spruce Grove, Leduc, and Fort Saskatchewan — no consignment timeline, no markdown schedule. Send photos through the form on this page; we reply with a firm offer within 24 hours and cover pickup at no cost. Facebook Marketplace and Kijiji are the other direct-sale channels, with the trade-off of managing the listing process yourself."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How much commission do consignment shops in Edmonton charge?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Most Edmonton consignment shops charge 40 to 50 percent of the final sale price, sometimes higher on lower-priced items. That commission comes out of whatever the piece sells for after any markdowns the shop applies during the listing window — not the original asking price. A direct buyout has no commission, and the price you accept is the price you receive."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I have to commit to anything when I send photos?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Submitting photos starts a conversation. You're not obligated to accept any offer we make, and there is no follow-up pressure if it's not the right fit. Many sellers use a direct offer as a floor reference before deciding which channel to use."
+        }
       }
     ]
   }
@@ -140,7 +237,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="../../css/styles.min.css?v=73639604">
+  <link rel="stylesheet" href="../../css/styles.min.css?v=ffe9cded">
   <meta name="theme-color" content="#2c2c2c">
 </head>
 <body>
@@ -224,6 +321,7 @@
 
       <section class="sell-landing-hero">
         <h1>Furniture Consignment in Edmonton — Or Sell Direct Today</h1>
+        <p class="sell-updated">Updated May 2026 &middot; <a href="/about/">Hosted by Collin Bottrell</a>, Edmonton pre-owned furniture buyer.</p>
         <p class="sell-landing-hero-sub">Consignment is a real option for furniture sellers in Edmonton, and on the right piece it can produce a strong final number. Other times the wait, the splits, and the uncertainty don't suit the situation. Here's how the local consignment market actually works — and where a direct buyout fits better.</p>
         <a href="#sell-details" class="sell-hero-cta">Get a Direct Offer</a>
       </section>
@@ -232,7 +330,7 @@
         <div class="sell-qualification-inner">We've bought 41+ sofas and sectionals across Edmonton — most offers between $500 and $2,500, paid same day at pickup. If you'd rather skip a 60&ndash;90 day consignment timeline, the form below is the fastest way to get a number.</div>
       </div>
 
-      <h2 class="sell-section-heading" id="sell-details">Send us your details</h2>
+      <h2 class="section-label sell-send-heading" id="sell-details">Send us your details</h2>
       <p class="sell-send-lead">Fill out the form below &mdash; we reply within 24 hours with an offer. The more detail you give, the faster and more accurate the offer.</p>
 
       <div class="sell-form-prelude">We primarily purchase higher-quality sofas and sectionals from design-oriented and premium retailers. If you&rsquo;re unsure whether your piece is a fit, send photos anyway &mdash; we&rsquo;re happy to take a look.</div>
@@ -305,6 +403,40 @@
 
       <p class="sell-form-secondary">Prefer to text? <a href="sms:7809651477">780-965-1477</a></p>
 
+      <section class="sell-howto">
+        <h2 class="sell-section-heading">How selling direct instead of consignment works</h2>
+        <div class="sell-steps">
+          <div class="sell-step">
+            <span class="sell-step-num">1</span>
+            <div>
+              <strong>Send photos and details</strong>
+              <p>Submit three to five photos plus brand, age, and condition through the form above. No drop-off, no in-person evaluation, no waiting for a shop's intake window.</p>
+            </div>
+          </div>
+          <div class="sell-step">
+            <span class="sell-step-num">2</span>
+            <div>
+              <strong>Get an offer within 24 hours</strong>
+              <p>We reply with a written offer in under 24 hours &mdash; typically within six hours on business days &mdash; based on brand, age, condition, and the current local resale market. No commission, no markdown schedule.</p>
+            </div>
+          </div>
+          <div class="sell-step">
+            <span class="sell-step-num">3</span>
+            <div>
+              <strong>Schedule pickup</strong>
+              <p>If you accept, pickup is typically scheduled within 48 hours. We come to you anywhere in Edmonton, St. Albert, Sherwood Park, Spruce Grove, Leduc, or Fort Saskatchewan &mdash; no consigning to a shop, no transporting the piece yourself.</p>
+            </div>
+          </div>
+          <div class="sell-step">
+            <span class="sell-step-num">4</span>
+            <div>
+              <strong>Paid on the spot</strong>
+              <p>We confirm condition matches the photos, pay by e-transfer or cash before we leave with the piece, and load it ourselves. The number you accept is the number you receive &mdash; no waiting 60 to 90 days for a percentage.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <div class="sell-landing-body">
         <h2>How furniture consignment typically works in Edmonton</h2>
         <p>The local consignment model is fairly consistent across shops. You bring (or sometimes deliver) your piece. The shop accepts or declines it based on what they think they can move. If accepted, the piece sits on their floor for a fixed window &mdash; often 60 to 90 days &mdash; and you receive a percentage of whatever it eventually sells for. Commissions usually fall between 40 and 50 percent of the final sale price.</p>
@@ -336,6 +468,29 @@
         </ul>
 
         <p>Our offers are often surprisingly close to what the same piece would eventually net on consignment after commissions, markdowns, and months on the floor. The difference is that we buy directly: no waiting, no uncertainty, and no risk of the piece not selling. For many sellers, that certainty is worth more than chasing the absolute highest price.</p>
+
+        <h2>Consignment vs. selling to Edmonton Refreshed</h2>
+        <p>The honest version: for the right piece with no time pressure, consignment can outperform a direct buyout. What we offer is a different trade &mdash; a firm number on day one, pickup handled, paid before we leave, and no return-of-unsold-piece logistics. For some sellers that trade isn't worth it. For others it's the entire reason to call.</p>
+        <div class="sell-compare-wrap">
+          <table class="sell-compare">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">Consignment</th>
+                <th scope="col">Edmonton Refreshed</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Potential price</td><td>Higher ceiling on the right piece, if it sells before markdowns hit</td><td>Below the consignment ceiling. A firm number on day one.</td></tr>
+              <tr><td>Time to payout</td><td>60&ndash;120 days typical, only if the piece sells</td><td>Paid by your preferred method before we leave with the piece</td></tr>
+              <tr><td>Final number certainty</td><td>Drops on a markdown schedule; uncertain at the start</td><td>The number you accept is the number you receive</td></tr>
+              <tr><td>Logistics</td><td>You deliver the piece to the shop (or pay for delivery)</td><td>We come to your home. You don't lift it.</td></tr>
+              <tr><td>If it doesn't sell</td><td>Retrieve it at the end of the term, sometimes with a fee, or accept auction/donation</td><td>Not a scenario &mdash; the transaction closes the day of pickup</td></tr>
+              <tr><td>Best fit</td><td>You have storage, time, and no fixed deadline</td><td>You'd rather have it gone, on a date you set, for a fair number</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>If you have months of runway and a piece consignment shops will be eager to display, the shop is a real option and we'll tell you so. If you'd rather skip the wait and the markdown schedule, that's what we're built for.</p>
 
         <h2>What we typically purchase</h2>
         <p>We're selective. Our resale channels are built around sofas and sectionals from recognized design-oriented and premium retailers &mdash; B&amp;B Italia, Natuzzi Italia, Natuzzi Editions, Rove Concepts, Crate &amp; Barrel, EQ3, West Elm, Restoration Hardware, American Leather, Brentwood Classics, Younger Furniture, and a handful of others. La-Z-Boy is accepted selectively, typically the leather and premium upholstered lines.</p>
@@ -457,6 +612,18 @@
           <div class="faq-item">
             <h3 class="faq-question">What kinds of pieces are not a fit for either consignment or your buyout?</h3>
             <p class="faq-answer">Mass-market pieces (Ashley, IKEA, Leon's, The Brick), bonded or faux leather, items with significant pet damage or staining, and broken mechanical pieces (hide-a-beds, power recliners with motor issues) are difficult through both channels. Donation or removal services are usually the more honest path for those.</p>
+          </div>
+          <div class="faq-item">
+            <h3 class="faq-question">Where can I sell my furniture in Edmonton without using consignment?</h3>
+            <p class="faq-answer">Edmonton Refreshed buys quality sofas and sectionals directly from sellers across Edmonton, St. Albert, Sherwood Park, Spruce Grove, Leduc, and Fort Saskatchewan &mdash; no consignment timeline, no markdown schedule. Send photos through the form on this page; we reply with a firm offer within 24 hours and cover pickup at no cost. Facebook Marketplace and Kijiji are the other direct-sale channels, with the trade-off of managing the listing process yourself.</p>
+          </div>
+          <div class="faq-item">
+            <h3 class="faq-question">How much commission do consignment shops in Edmonton charge?</h3>
+            <p class="faq-answer">Most Edmonton consignment shops charge 40 to 50 percent of the final sale price, sometimes higher on lower-priced items. That commission comes out of whatever the piece sells for after any markdowns the shop applies during the listing window &mdash; not the original asking price. A direct buyout has no commission, and the price you accept is the price you receive.</p>
+          </div>
+          <div class="faq-item">
+            <h3 class="faq-question">Do I have to commit to anything when I send photos?</h3>
+            <p class="faq-answer">No. Submitting photos starts a conversation. You're not obligated to accept any offer we make, and there is no follow-up pressure if it's not the right fit. Many sellers use a direct offer as a floor reference before deciding which channel to use.</p>
           </div>
         </div>
       </div>
