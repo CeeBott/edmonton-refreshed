@@ -233,6 +233,74 @@
   }
   </script>
 
+  <!-- ItemList Schema — recently purchased pieces (entity reinforcement) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Recently Purchased Pieces from Edmonton Sellers",
+    "description": "A selection of pre-owned sofas and sectionals recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.",
+    "itemListOrder": "https://schema.org/ItemListOrderDescending",
+    "numberOfItems": 6,
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@type": "Product",
+          "name": "La-Z-Boy Emric 2-Piece Sectional with Right-Facing Chaise",
+          "brand": { "@type": "Brand", "name": "La-Z-Boy" }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "item": {
+          "@type": "Product",
+          "name": "Natuzzi Editions Vigore Top-Grain Leather Sectional",
+          "brand": { "@type": "Brand", "name": "Natuzzi Editions" }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@type": "Product",
+          "name": "Natuzzi Editions Saggezza Top-Grain Leather Sectional",
+          "brand": { "@type": "Brand", "name": "Natuzzi Editions" }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "item": {
+          "@type": "Product",
+          "name": "Rove Concepts Milo Modular Sectional",
+          "brand": { "@type": "Brand", "name": "Rove Concepts" }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 5,
+        "item": {
+          "@type": "Product",
+          "name": "Natuzzi Editions Cesare Top-Grain Leather Sectional",
+          "brand": { "@type": "Brand", "name": "Natuzzi Editions" }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 6,
+        "item": {
+          "@type": "Product",
+          "name": "Fabbrica Charcoal Performance Fabric Sofa + Chaise",
+          "brand": { "@type": "Brand", "name": "Fabbrica" }
+        }
+      }
+    ]
+  }
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
@@ -330,6 +398,62 @@
         <div class="sell-qualification-inner">We pick up across Edmonton, St. Albert, Sherwood Park, Spruce Grove, Leduc, and Fort Saskatchewan. Most offers go out the same day photos arrive, and the piece can be gone within 72 hours &mdash; scheduled around your possession date.</div>
       </div>
 
+      <section class="sell-seller-reasons">
+        <h2 class="sell-section-heading">Why Edmonton sellers contact us before a move</h2>
+        <div class="sell-reasons-grid">
+          <div class="sell-reason">
+            <h3>Out-of-province move</h3>
+            <p>Shipping a sectional across provinces often costs more than the piece is worth on the other end. Sellers reach out when the move math doesn&rsquo;t justify taking it.</p>
+          </div>
+          <div class="sell-reason">
+            <h3>Downsizing the floor plan</h3>
+            <p>Condo, apartment, or smaller-home moves where a sectional simply won&rsquo;t fit the new layout, elevator, or stairwell.</p>
+          </div>
+          <div class="sell-reason">
+            <h3>Tight possession date</h3>
+            <p>Move day is locked in and Marketplace timelines don&rsquo;t align with the calendar. Pickup gets scheduled around the date you already committed to.</p>
+          </div>
+          <div class="sell-reason">
+            <h3>New home, different look</h3>
+            <p>The existing piece doesn&rsquo;t suit the new space&rsquo;s scale, style, or layout &mdash; even when dimensions would technically work.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="sell-howto">
+        <h2 class="sell-section-heading">How selling before your move works</h2>
+        <div class="sell-steps">
+          <div class="sell-step">
+            <span class="sell-step-num">1</span>
+            <div>
+              <strong>Send photos and details</strong>
+              <p>Submit three to five photos plus brand, age, condition, and your move date through the form above. Most submissions take under five minutes.</p>
+            </div>
+          </div>
+          <div class="sell-step">
+            <span class="sell-step-num">2</span>
+            <div>
+              <strong>Get an offer within 24 hours</strong>
+              <p>We reply with a written offer in under 24 hours &mdash; typically within six hours on business days &mdash; based on brand, age, condition, and the local resale market.</p>
+            </div>
+          </div>
+          <div class="sell-step">
+            <span class="sell-step-num">3</span>
+            <div>
+              <strong>Schedule pickup around your possession date</strong>
+              <p>If you accept, pickup is scheduled around your move date &mdash; same-day and next-day pickups are routine in the final week before possession. We cover Edmonton, St. Albert, Sherwood Park, Spruce Grove, Leduc, and Fort Saskatchewan.</p>
+            </div>
+          </div>
+          <div class="sell-step">
+            <span class="sell-step-num">4</span>
+            <div>
+              <strong>Paid on the spot</strong>
+              <p>We confirm condition matches the photos, pay by e-transfer or cash before we leave with the piece, and load it ourselves. One less item to handle on moving day.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <h2 class="section-label sell-send-heading" id="sell-details">Send us your details</h2>
       <p class="sell-send-lead">Fill out the form below &mdash; we reply within 24 hours with an offer. The more detail you give, the faster and more accurate the offer.</p>
 
@@ -403,41 +527,17 @@
 
       <p class="sell-form-secondary">Prefer to text? <a href="sms:7809651477">780-965-1477</a></p>
 
-      <section class="sell-howto">
-        <h2 class="sell-section-heading">How selling before your move works</h2>
-        <div class="sell-steps">
-          <div class="sell-step">
-            <span class="sell-step-num">1</span>
-            <div>
-              <strong>Send photos and details</strong>
-              <p>Submit three to five photos plus brand, age, condition, and your move date through the form above. Most submissions take under five minutes.</p>
-            </div>
-          </div>
-          <div class="sell-step">
-            <span class="sell-step-num">2</span>
-            <div>
-              <strong>Get an offer within 24 hours</strong>
-              <p>We reply with a written offer in under 24 hours &mdash; typically within six hours on business days &mdash; based on brand, age, condition, and the local resale market.</p>
-            </div>
-          </div>
-          <div class="sell-step">
-            <span class="sell-step-num">3</span>
-            <div>
-              <strong>Schedule pickup around your possession date</strong>
-              <p>If you accept, pickup is scheduled around your move date &mdash; same-day and next-day pickups are routine in the final week before possession. We cover Edmonton, St. Albert, Sherwood Park, Spruce Grove, Leduc, and Fort Saskatchewan.</p>
-            </div>
-          </div>
-          <div class="sell-step">
-            <span class="sell-step-num">4</span>
-            <div>
-              <strong>Paid on the spot</strong>
-              <p>We confirm condition matches the photos, pay by e-transfer or cash before we leave with the piece, and load it ourselves. One less item to handle on moving day.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <div class="sell-landing-body">
+        <h2>How to decide what to sell vs. move</h2>
+        <p>If you&rsquo;re not sure which pieces are worth taking to the new place and which to sell, a few practical filters help.</p>
+        <ul>
+          <li><strong>Move cost vs. piece value.</strong> Movers charge by weight or volume. A large sectional often runs into the hundreds of dollars to move within the city &mdash; and meaningfully more for interprovincial. If the move cost (plus the hassle of getting it down the stairs) approaches the piece&rsquo;s resale value, selling usually wins.</li>
+          <li><strong>Fit at the new place.</strong> Measure doorways, elevators, hallways, and the intended room. A sectional that won&rsquo;t fit through an apartment elevator becomes a dismantling job or a return-to-curb situation on possession day.</li>
+          <li><strong>Style and scale alignment.</strong> If a furniture refresh is already planned for the new home, moving the old piece just delays the decision and adds cost on both ends.</li>
+          <li><strong>Condition at the destination.</strong> Older pieces sometimes don&rsquo;t survive a move &mdash; frame stress, fabric snagging in transit, and warehouse storage can degrade what was a usable sofa.</li>
+        </ul>
+        <p>The general rule: when in doubt, send photos. You&rsquo;ll have a number to compare against the move quote, and there&rsquo;s no commitment in asking.</p>
+
         <h2>Why furniture gets harder to sell as the move date approaches</h2>
         <p>Selling a large piece privately works best when you have time on your side. Eight weeks out, you can post on Marketplace, field messages over a few weekends, hold a couple of showings, and reduce the price gradually if it doesn't move. None of that is true at two weeks out.</p>
 
@@ -484,7 +584,15 @@
         <h2>What we typically purchase</h2>
         <p>Sofas and sectionals from recognized design-oriented and premium brands &mdash; B&amp;B Italia, Natuzzi Italia, Natuzzi Editions, Rove Concepts, Crate &amp; Barrel, EQ3, West Elm, Restoration Hardware, American Leather, Brentwood Classics, Younger Furniture &mdash; and select catalogue retailers like Urban Barn and Pottery Barn. La-Z-Boy is accepted selectively, particularly the leather and premium upholstered lines.</p>
 
-        <p>We don't buy mass-market pieces (Ashley, IKEA, Leon's, The Brick), bonded leather, or items with significant pet or stain damage. If your piece falls outside our buy zone we'll usually point you to a more honest channel &mdash; classifieds or donation &mdash; rather than waste your time.</p>
+        <h2>Pieces we don&rsquo;t typically purchase</h2>
+          <ul>
+            <li>Mass-market pieces from Ashley, IKEA, Leon&rsquo;s, or The Brick</li>
+            <li>Bonded leather or heavily peeling configurations</li>
+            <li>Sectionals with major frame or recliner failures</li>
+            <li>Heavy smoke saturation or significant pet odour issues</li>
+            <li>Large visible tears, severe leather cracking, or structural instability</li>
+          </ul>
+          <p>If your piece falls outside our buy zone we&rsquo;ll usually point you to a more honest channel &mdash; classifieds or donation &mdash; rather than waste your time. Even if you&rsquo;re unsure whether your piece qualifies, you&rsquo;re welcome to send photos.</p>
       </div>
 
       <section class="sell-landing-sold">
