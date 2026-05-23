@@ -3294,6 +3294,43 @@ footer a:focus-visible {
   font-size: 1.4rem;
 }
 
+/* Why sellers contact us — semantic seller-situation expansion on brand pages.
+   Heading uses .sell-section-heading to match the .sell-howto neighbor visually
+   and stay visible on mobile (the .section-label pattern is sr-only on mobile). */
+.sell-seller-reasons {
+  max-width: var(--col-mid);
+  margin: 28px auto 16px;
+}
+.sell-seller-reasons .sell-section-heading {
+  text-align: left;
+  margin: 0 0 16px;
+  font-size: 1.4rem;
+}
+.sell-reasons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+.sell-reason {
+  padding: 18px 20px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+}
+.sell-reason h3 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 6px;
+  letter-spacing: -0.01em;
+}
+.sell-reason p {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  line-height: 1.55;
+  margin: 0;
+}
+
 .sell-compare-wrap {
   overflow-x: auto;
   margin: 1rem 0 1.75rem;
