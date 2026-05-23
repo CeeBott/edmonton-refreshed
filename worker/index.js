@@ -20,7 +20,12 @@ const REQUIRED_FIELDS = [
 
 const MAX_PHOTOS = 5;
 const MIN_PHOTOS = 3;
-const MAX_TOTAL_BYTES = 38 * 1024 * 1024; // Resend allows 40 MB per email; leave headroom.
+// 18 MB raw — must stay under Cloudflare Email Routing's 25 MB on-the-wire
+// limit once base64-encoded (raw × 4/3 plus headers). The client compresses
+// photos in-browser before upload, so submissions normally arrive at a few
+// MB; this cap is a backstop for tampered clients and edge cases where
+// compression failed on every file.
+const MAX_TOTAL_BYTES = 18 * 1024 * 1024;
 const MIN_FORM_FILL_MS = 2000; // Reject submissions filled in under 2 seconds — naive bots.
 
 export default {

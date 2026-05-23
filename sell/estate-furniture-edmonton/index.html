@@ -225,6 +225,74 @@
   }
   </script>
 
+  <!-- ItemList Schema — recently purchased pieces (entity reinforcement) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Recently Purchased Pieces from Edmonton Estates and Family Homes",
+    "description": "A selection of pre-owned sofas and sectionals purchased by Edmonton Refreshed from estates, family homes, and downsizing transitions across Edmonton and surrounding communities.",
+    "itemListOrder": "https://schema.org/ItemListOrderDescending",
+    "numberOfItems": 6,
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@type": "Product",
+          "name": "La-Z-Boy Violet Stationary Sofa",
+          "brand": { "@type": "Brand", "name": "La-Z-Boy" }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "item": {
+          "@type": "Product",
+          "name": "Urban Barn Preston Distressed Top-Grain Leather Sofa & Chair Set",
+          "brand": { "@type": "Brand", "name": "Urban Barn" }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@type": "Product",
+          "name": "Urban Barn Grey Tufted Fabric Sofa Wood Base",
+          "brand": { "@type": "Brand", "name": "Urban Barn" }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "item": {
+          "@type": "Product",
+          "name": "Crate & Barrel Rochelle Sofa & Chair Set",
+          "brand": { "@type": "Brand", "name": "Crate & Barrel" }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 5,
+        "item": {
+          "@type": "Product",
+          "name": "Brentwood Classics Dorado Full Aniline Capetown Antico Leather",
+          "brand": { "@type": "Brand", "name": "Brentwood Classics" }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 6,
+        "item": {
+          "@type": "Product",
+          "name": "Urban Barn Renfrew 94 inch Top-Grain Leather Sofa",
+          "brand": { "@type": "Brand", "name": "Urban Barn" }
+        }
+      }
+    ]
+  }
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
@@ -322,6 +390,62 @@
         <div class="sell-qualification-inner">We focus on sofas and sectionals from recognized brands. For a complete estate clear-out, an estate sale service or charitable removal partner usually handles everything else &mdash; we can take the seating pieces inside that broader process. Pickup is coordinated around the family's schedule, not ours.</div>
       </div>
 
+      <section class="sell-seller-reasons">
+        <h2 class="sell-section-heading">Why Edmonton sellers contact us about estate furniture</h2>
+        <div class="sell-reasons-grid">
+          <div class="sell-reason">
+            <h3>Family living out of province</h3>
+            <p>Adult children handling a parent&rsquo;s estate from outside Edmonton, needing someone local to coordinate access, pickup, and payment with the executor.</p>
+          </div>
+          <div class="sell-reason">
+            <h3>Working through a probate timeline</h3>
+            <p>Executors with a finite window between estate settlement and the home being transferred. We hold offers through the family&rsquo;s decision process.</p>
+          </div>
+          <div class="sell-reason">
+            <h3>Home is on the market</h3>
+            <p>Possession date is approaching and the seating pieces have to be gone, not pending. We schedule pickup around the closing.</p>
+          </div>
+          <div class="sell-reason">
+            <h3>Estate sale handled everything but the sofas</h3>
+            <p>Many estate sale companies pass on large modern sectionals or leave them till the end. We fit inside that process for the seating pieces.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="sell-howto">
+        <h2 class="sell-section-heading">How selling estate furniture works</h2>
+        <div class="sell-steps">
+          <div class="sell-step">
+            <span class="sell-step-num">1</span>
+            <div>
+              <strong>Send photos and details</strong>
+              <p>Submit three to five photos plus brand, age, and condition through the form above. Family members or estate executors can submit on behalf of the seller &mdash; no requirement that the homeowner be involved at this stage.</p>
+            </div>
+          </div>
+          <div class="sell-step">
+            <span class="sell-step-num">2</span>
+            <div>
+              <strong>Get an offer within 24 hours</strong>
+              <p>We reply with a written offer in under 24 hours based on brand, age, and condition. We're patient with timeline questions and probate considerations &mdash; the offer holds while the family or executor coordinates a decision.</p>
+            </div>
+          </div>
+          <div class="sell-step">
+            <span class="sell-step-num">3</span>
+            <div>
+              <strong>Schedule coordinated pickup</strong>
+              <p>If you accept, pickup is scheduled at a time that works for the estate timeline anywhere in Edmonton, St. Albert, Sherwood Park, Spruce Grove, Leduc, or Fort Saskatchewan. No requirement for family members to be at the property &mdash; we coordinate access however works.</p>
+            </div>
+          </div>
+          <div class="sell-step">
+            <span class="sell-step-num">4</span>
+            <div>
+              <strong>Paid on the spot</strong>
+              <p>We confirm condition matches the photos, pay by e-transfer or cash before we leave with the piece, and load it ourselves. Payment can go to the estate, executor, or designated family member as needed.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <h2 class="section-label sell-send-heading" id="sell-details">Send us your details</h2>
       <p class="sell-send-lead">Fill out the form below &mdash; we reply within 24 hours with an offer. If you're unsure on brand or age, send photos anyway and we'll do the research from our end.</p>
 
@@ -370,7 +494,7 @@
             <ul class="sell-photo-list" id="sf-photos-list" hidden aria-live="polite"></ul>
             <p class="sell-photo-count" id="sf-photos-count" hidden></p>
           </div>
-          <p class="sell-form-hint">Front, side, and close-ups of any wear. You can add photos one at a time or several at once. Total upload limit: 25 MB.</p>
+          <p class="sell-form-hint">Front, side, and close-ups of any wear. You can add photos one at a time or several at once. Photos are automatically optimized before sending — feel free to use full-resolution shots from your phone.</p>
           <p class="sell-form-error" id="sf-photos-error" hidden></p>
         </div>
 
@@ -395,41 +519,17 @@
 
       <p class="sell-form-secondary">Prefer to text? <a href="sms:7809651477">780-965-1477</a></p>
 
-      <section class="sell-howto">
-        <h2 class="sell-section-heading">How selling estate furniture works</h2>
-        <div class="sell-steps">
-          <div class="sell-step">
-            <span class="sell-step-num">1</span>
-            <div>
-              <strong>Send photos and details</strong>
-              <p>Submit three to five photos plus brand, age, and condition through the form above. Family members or estate executors can submit on behalf of the seller &mdash; no requirement that the homeowner be involved at this stage.</p>
-            </div>
-          </div>
-          <div class="sell-step">
-            <span class="sell-step-num">2</span>
-            <div>
-              <strong>Get an offer within 24 hours</strong>
-              <p>We reply with a written offer in under 24 hours based on brand, age, and condition. We're patient with timeline questions and probate considerations &mdash; the offer holds while the family or executor coordinates a decision.</p>
-            </div>
-          </div>
-          <div class="sell-step">
-            <span class="sell-step-num">3</span>
-            <div>
-              <strong>Schedule coordinated pickup</strong>
-              <p>If you accept, pickup is scheduled at a time that works for the estate timeline anywhere in Edmonton, St. Albert, Sherwood Park, Spruce Grove, Leduc, or Fort Saskatchewan. No requirement for family members to be at the property &mdash; we coordinate access however works.</p>
-            </div>
-          </div>
-          <div class="sell-step">
-            <span class="sell-step-num">4</span>
-            <div>
-              <strong>Paid on the spot</strong>
-              <p>We confirm condition matches the photos, pay by e-transfer or cash before we leave with the piece, and load it ourselves. Payment can go to the estate, executor, or designated family member as needed.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <div class="sell-landing-body">
+        <h2>How to triage furniture in an estate</h2>
+        <p>An estate clear-out usually involves four categories of pieces, and naming them up front helps the rest of the process move smoothly.</p>
+        <ul>
+          <li><strong>Family keepsakes.</strong> Identify which pieces siblings or family members want to keep before anything goes to a sale or donation channel. Sectionals, side tables, and accent pieces sometimes carry more sentimental weight than the obvious heirlooms.</li>
+          <li><strong>Resale-value pieces.</strong> Sofas and sectionals from recognized brands often have meaningful resale value, even years out from purchase. These are the pieces we evaluate. Designer dining sets, china cabinets, and antiques are usually best routed to an estate-sale company that specializes in those categories.</li>
+          <li><strong>Donate-able pieces.</strong> Functional furniture that isn't from a resale-friendly brand still has real value to households that need it. Find Edmonton Furniture Bank, the Bissell Centre, and Habitat for Humanity ReStore each accept different categories and can often arrange pickup for larger items.</li>
+          <li><strong>Removal or disposal.</strong> Items with significant damage, contamination, or end-of-life wear are usually handled through a junk-removal service. A good estate-sale company can fold this into their process; otherwise services like JustJunk or 1-800-GOT-JUNK come to the property.</li>
+        </ul>
+        <p>You don't need to have this sorted before sending photos. If pieces could go either way, send them anyway &mdash; a direct read on which qualify for resale often helps the rest of the triage fall into place.</p>
+
         <h2>What estate selling typically looks like</h2>
         <p>The estates we work with vary widely. Sometimes it's a single sectional from a parent's downsized condo. Sometimes it's a full living room and family room set from a longtime family home. Sometimes it's coordinated through an executor working with several siblings, none of whom live in Edmonton. The common thread is that the seating pieces are part of a larger picture &mdash; the house is being sold, the contents are being sorted, and decisions are being made on a different cadence than a typical sale.</p>
 
@@ -478,7 +578,16 @@
 
         <p>Estate pieces from older, well-regarded Canadian and American makers are often interesting to us even when they aren't on a current retailer list &mdash; furniture from previous decades was frequently built better than today's equivalent. Solid hardwood frames, real top-grain leather, hand-tied springs. If you're unsure, send photos with whatever brand information is available (often a tag under a cushion or stamped inside a frame).</p>
 
-        <p>We don't buy mass-market pieces (Ashley, IKEA, Leon's, The Brick), bonded leather, or items with significant wear. For those, the donation and removal channels above are the more honest path.</p>
+        <h2>Pieces we don&rsquo;t typically purchase</h2>
+        <ul>
+          <li>Mass-market pieces from Ashley, IKEA, Leon's, or The Brick</li>
+          <li>Bonded leather or heavily peeling configurations</li>
+          <li>Highly traditional, ornate, or niche styles outside our resale focus</li>
+          <li>Sectionals with major frame or recliner failures</li>
+          <li>Heavy smoke saturation or significant pet odour issues</li>
+          <li>Large visible tears, severe leather cracking, or structural instability</li>
+        </ul>
+        <p>For those, the donation and removal channels above are the more honest path. If you're unsure where your piece falls, send photos. We'll tell you straight, and if it's not for us we'll point you at whichever channel makes more sense.</p>
       </div>
 
       <section class="sell-landing-sold">
@@ -706,7 +815,7 @@
   <!-- FOOTER_END -->
 
   <script src="../../js/shared.min.js?v=0b7831bd"></script>
-  <script src="../../js/sell-form.min.js?v=4406f0a2"></script>
+  <script src="../../js/sell-form.min.js?v=0c1ba575"></script>
 
 </body>
 </html>

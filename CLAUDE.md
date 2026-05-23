@@ -891,9 +891,38 @@ querystring) to every submission. The Worker prepends it to the email subject
 (`New Sell Inquiry — Brand — Name (from /sell/natuzzi-edmonton/)`) and as the
 first line of the body — this is how each lead is attributed to a landing page.
 
+**Email-size constraint & in-browser compression.** The delivery path is
+Worker → Resend → `info@edmontonrefreshed.com` → **Cloudflare Email
+Routing** → Collin's actual inbox. Cloudflare Email Routing forwards messages
+**up to 25 MB on-the-wire**. Because attachments are base64-encoded (raw size
+× 4/3), raw attachments must stay under ~18 MB or Cloudflare bounces the
+forward — and the user sees a success message anyway because Resend
+already accepted the message. To eliminate that false-success path:
+
+1. `js/sell-form.js` compresses every photo in the browser before upload —
+   canvas downscale to 1600px on the long edge, JPEG quality 0.82
+   (`COMPRESS_MAX_DIM` / `COMPRESS_QUALITY`). A 4 MB phone photo
+   typically lands at 250–400 KB; five-photo submissions arrive at well
+   under 2 MB.
+2. If `compressImage` can't decode a specific file (e.g., HEIC on a
+   non-Safari browser without OS codec support), it returns the original
+   unchanged — so a single un-decodable file never aborts the whole
+   submission.
+3. After compression, both client and Worker enforce a hard 18 MB raw cap
+   (`MAX_TOTAL_BYTES`). Anything over that is **blocked with a visible
+   error** ("Photos still total X MB after optimization…"); the form does
+   **not** submit, the user does **not** see success. The client cap and
+   Worker cap are intentionally identical so a tampered client can't
+   bypass it.
+
+There is no path in the system that produces a success message without
+Resend accepting a message Cloudflare can also forward.
+
 **Adding a form field** — update the HTML on every sell page *and* the Worker's
 `REQUIRED_FIELDS` / email-body builder. Adding a honeypot or timing rule must
-not change the silent-drop contract.
+not change the silent-drop contract. Changing the compression targets or
+the raw-byte cap requires keeping client `MAX_TOTAL_BYTES` and Worker
+`MAX_TOTAL_BYTES` in lock-step.
 
 ## 5.12 Guide Article Standard
 

@@ -14,7 +14,17 @@
   var SELL_FORM_ENDPOINT = 'https://edmonton-refreshed-sell.cbottrell1990.workers.dev/';
   var MIN_PHOTOS = 3;
   var MAX_PHOTOS = 5;
-  var MAX_TOTAL_BYTES = 25 * 1024 * 1024;
+  // 18 MB raw — Cloudflare Email Routing forwards messages up to 25 MB
+  // on-the-wire, and base64-encoded attachments expand by 4/3. Anything
+  // under 18 MB raw stays comfortably below the 25 MB email ceiling.
+  // Photos are compressed in-browser before this check runs (see
+  // compressImage), so the cap should essentially never fire in practice;
+  // it exists to catch the rare case where compression fails on every file.
+  var MAX_TOTAL_BYTES = 18 * 1024 * 1024;
+  // Compression targets — 1600px on the long edge, JPEG quality 0.82.
+  // A typical 4 MB phone photo lands around 250–400 KB at these settings.
+  var COMPRESS_MAX_DIM = 1600;
+  var COMPRESS_QUALITY = 0.82;
 
   // Captured at script load so the worker can reject submissions that arrive
   // implausibly fast (naive bots that POST in well under a second).
@@ -64,6 +74,79 @@
   function revokeUrls() {
     for (var i = 0; i < objectUrls.length; i++) URL.revokeObjectURL(objectUrls[i]);
     objectUrls = [];
+  }
+
+  // Decode a File to an ImageBitmap (modern browsers, broadest codec support)
+  // or fall back to HTMLImageElement (older browsers / edge cases). Returns
+  // a Promise that rejects if neither path can decode the file (e.g., HEIC
+  // on a browser without OS codec support).
+  function decodeImage(file) {
+    if (typeof createImageBitmap === 'function') {
+      return createImageBitmap(file).catch(function () {
+        return decodeViaImageElement(file);
+      });
+    }
+    return decodeViaImageElement(file);
+  }
+
+  function decodeViaImageElement(file) {
+    return new Promise(function (resolve, reject) {
+      var url = URL.createObjectURL(file);
+      var img = new Image();
+      img.onload = function () { URL.revokeObjectURL(url); resolve(img); };
+      img.onerror = function (err) { URL.revokeObjectURL(url); reject(err); };
+      img.src = url;
+    });
+  }
+
+  // Compress a File to a smaller JPEG via canvas. Resolves with a new File on
+  // success, or with the original file unchanged on any failure. Caller does
+  // not need to try/catch — failure modes are absorbed here so a single
+  // un-decodable file never aborts the whole submission.
+  async function compressImage(file) {
+    if (!file || !/^image\//i.test(file.type || '')) return file;
+
+    var bitmap;
+    try {
+      bitmap = await decodeImage(file);
+    } catch (_) {
+      return file;
+    }
+
+    var srcW = bitmap.width || bitmap.naturalWidth || 0;
+    var srcH = bitmap.height || bitmap.naturalHeight || 0;
+    if (!srcW || !srcH) {
+      if (bitmap.close) bitmap.close();
+      return file;
+    }
+
+    var scale = Math.min(1, COMPRESS_MAX_DIM / Math.max(srcW, srcH));
+    var dstW = Math.max(1, Math.round(srcW * scale));
+    var dstH = Math.max(1, Math.round(srcH * scale));
+
+    var canvas = document.createElement('canvas');
+    canvas.width = dstW;
+    canvas.height = dstH;
+    var ctx = canvas.getContext('2d');
+    if (!ctx) {
+      if (bitmap.close) bitmap.close();
+      return file;
+    }
+    try {
+      ctx.drawImage(bitmap, 0, 0, dstW, dstH);
+    } catch (_) {
+      if (bitmap.close) bitmap.close();
+      return file;
+    }
+    if (bitmap.close) bitmap.close();
+
+    var blob = await new Promise(function (resolve) {
+      canvas.toBlob(resolve, 'image/jpeg', COMPRESS_QUALITY);
+    });
+    if (!blob || blob.size >= file.size) return file;
+
+    var base = (file.name || 'photo').replace(/\.[^.]+$/, '');
+    return new File([blob], base + '.jpg', { type: 'image/jpeg', lastModified: Date.now() });
   }
 
   function renderPhotos() {
@@ -173,23 +256,47 @@
       return;
     }
 
-    var total = totalBytes();
-    if (total > MAX_TOTAL_BYTES) {
-      showPhotosError('Photos total ' + (total / 1024 / 1024).toFixed(1) + ' MB. Please keep the total under 25 MB — try lower-resolution photos from your phone.');
-      photosAdd.focus();
-      return;
-    }
-
+    var originalSubmitText = submit ? submit.textContent : 'Send';
     if (submit) {
       submit.disabled = true;
       submit.textContent = 'Sending…';
     }
 
+    // In-browser image compression. Cloudflare Email Routing rejects emails
+    // larger than 25 MB on-the-wire, and base64-encoded attachments expand
+    // by 4/3 — so raw attachments must stay under ~18 MB. compressImage
+    // downscales each photo to JPEG (1600px / q0.82), bringing typical
+    // 5-photo submissions well under 2 MB. If a specific file can't be
+    // decoded (e.g., HEIC on a non-Safari browser without OS codec
+    // support), compressImage returns the original; the size gate below
+    // hard-blocks the submission if the post-compression total still
+    // exceeds the cap. There is no path that submits silently-too-large.
+    var processedPhotos = [];
+    for (var p = 0; p < selectedPhotos.length; p++) {
+      processedPhotos.push(await compressImage(selectedPhotos[p]));
+    }
+
+    var totalCompressed = 0;
+    for (var q = 0; q < processedPhotos.length; q++) totalCompressed += processedPhotos[q].size;
+    if (totalCompressed > MAX_TOTAL_BYTES) {
+      showPhotosError(
+        'Photos still total ' + (totalCompressed / 1024 / 1024).toFixed(1) + ' MB ' +
+        'after optimization. Please send fewer photos or lower-resolution shots ' +
+        'from your phone — or text them to 780-965-1477.'
+      );
+      photosAdd.focus();
+      if (submit) {
+        submit.disabled = false;
+        submit.textContent = originalSubmitText;
+      }
+      return;
+    }
+
     try {
       var fd = new FormData(form);
       fd.delete('photos');
-      for (var i = 0; i < selectedPhotos.length; i++) {
-        fd.append('photos', selectedPhotos[i], selectedPhotos[i].name || ('photo-' + (i + 1) + '.jpg'));
+      for (var i = 0; i < processedPhotos.length; i++) {
+        fd.append('photos', processedPhotos[i], processedPhotos[i].name || ('photo-' + (i + 1) + '.jpg'));
       }
       fd.set('Source page', window.location.pathname + window.location.search);
       fd.set('_elapsed_ms', String(Date.now() - pageLoadedAt));
@@ -215,7 +322,7 @@
       showFormError(err && err.message ? err.message : 'Could not send. Please text us at 780-965-1477.');
       if (submit) {
         submit.disabled = false;
-        submit.textContent = 'Get an Offer';
+        submit.textContent = originalSubmitText;
       }
     }
   });
