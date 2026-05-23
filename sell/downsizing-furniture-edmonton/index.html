@@ -233,6 +233,74 @@
   }
   </script>
 
+  <!-- ItemList Schema — recently purchased pieces (entity reinforcement) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Recently Purchased Pieces from Edmonton Households",
+    "description": "A selection of pre-owned sofas and sectionals recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.",
+    "itemListOrder": "https://schema.org/ItemListOrderDescending",
+    "numberOfItems": 6,
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@type": "Product",
+          "name": "Natuzzi Editions Cesare Top-Grain Leather Sectional",
+          "brand": { "@type": "Brand", "name": "Natuzzi Editions" }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "item": {
+          "@type": "Product",
+          "name": "Crate & Barrel Gather 99 inch Deep Sofa",
+          "brand": { "@type": "Brand", "name": "Crate & Barrel" }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@type": "Product",
+          "name": "Urban Barn Renfrew 94 inch Top-Grain Leather Sofa",
+          "brand": { "@type": "Brand", "name": "Urban Barn" }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "item": {
+          "@type": "Product",
+          "name": "EQ3 Replay 99 inch Sofa",
+          "brand": { "@type": "Brand", "name": "EQ3" }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 5,
+        "item": {
+          "@type": "Product",
+          "name": "La-Z-Boy Emric 2-Piece Sectional with Right-Facing Chaise",
+          "brand": { "@type": "Brand", "name": "La-Z-Boy" }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 6,
+        "item": {
+          "@type": "Product",
+          "name": "Crate & Barrel Rochelle Sofa & Chair Set",
+          "brand": { "@type": "Brand", "name": "Crate & Barrel" }
+        }
+      }
+    ]
+  }
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
@@ -330,6 +398,62 @@
         <div class="sell-qualification-inner">We focus on sofas and sectionals from recognized brands &mdash; one piece or several from the same home. Pickup is handled fully on our end. If you have multiple seating pieces, photos of each plus a quick note in the form is the easiest start.</div>
       </div>
 
+      <section class="sell-howto">
+        <h2 class="sell-section-heading">How selling while downsizing works</h2>
+        <div class="sell-steps">
+          <div class="sell-step">
+            <span class="sell-step-num">1</span>
+            <div>
+              <strong>Send photos and details</strong>
+              <p>Submit three to five photos for each piece you're considering, plus brand, age, and condition. One submission for the whole household &mdash; one sofa or several.</p>
+            </div>
+          </div>
+          <div class="sell-step">
+            <span class="sell-step-num">2</span>
+            <div>
+              <strong>Get an offer within 24 hours</strong>
+              <p>We reply with an offer in under 24 hours &mdash; typically within six hours on business days &mdash; with each piece priced individually and bundled into a single number for the visit.</p>
+            </div>
+          </div>
+          <div class="sell-step">
+            <span class="sell-step-num">3</span>
+            <div>
+              <strong>Coordinated pickup</strong>
+              <p>If you accept, one scheduled pickup handles every qualifying piece in the house. We come to you anywhere in Edmonton, St. Albert, Sherwood Park, Spruce Grove, Leduc, or Fort Saskatchewan, and handle disassembly and load-out.</p>
+            </div>
+          </div>
+          <div class="sell-step">
+            <span class="sell-step-num">4</span>
+            <div>
+              <strong>Paid on the spot</strong>
+              <p>We confirm condition matches the photos, pay by e-transfer or cash before we leave with the pieces, and load them ourselves. One conversation, one pickup, one payment &mdash; no juggling separate Marketplace buyers.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="sell-seller-reasons">
+        <h2 class="sell-section-heading">Why Edmonton sellers contact us when downsizing</h2>
+        <div class="sell-reasons-grid">
+          <div class="sell-reason">
+            <h3>House-to-condo transition</h3>
+            <p>New place has less square footage and different proportions. A 9-foot sectional that anchored the family room often doesn&rsquo;t fit the new wall length or layout.</p>
+          </div>
+          <div class="sell-reason">
+            <h3>Retirement and simplification</h3>
+            <p>Finished basements, formal living rooms, and second sitting areas that don&rsquo;t get used anymore. The pieces are usually in good shape &mdash; they just no longer have a job.</p>
+          </div>
+          <div class="sell-reason">
+            <h3>Coordinating a parent&rsquo;s move</h3>
+            <p>Adult children often submit photos and schedule pickup on behalf of a parent transitioning to a smaller home, assisted living, or with family.</p>
+          </div>
+          <div class="sell-reason">
+            <h3>Empty-nest refresh</h3>
+            <p>Family room sectional and matching chair set that served while the kids were home, ready to be replaced with something smaller and more current.</p>
+          </div>
+        </div>
+      </section>
+
       <h2 class="section-label sell-send-heading" id="sell-details">Send us your details</h2>
       <p class="sell-send-lead">Fill out the form below &mdash; we reply within 24 hours with an offer. The more detail you give, the faster and more accurate the offer.</p>
 
@@ -403,41 +527,17 @@
 
       <p class="sell-form-secondary">Prefer to text? <a href="sms:7809651477">780-965-1477</a></p>
 
-      <section class="sell-howto">
-        <h2 class="sell-section-heading">How selling while downsizing works</h2>
-        <div class="sell-steps">
-          <div class="sell-step">
-            <span class="sell-step-num">1</span>
-            <div>
-              <strong>Send photos and details</strong>
-              <p>Submit three to five photos for each piece you're considering, plus brand, age, and condition. One submission for the whole household &mdash; one sofa or several.</p>
-            </div>
-          </div>
-          <div class="sell-step">
-            <span class="sell-step-num">2</span>
-            <div>
-              <strong>Get an offer within 24 hours</strong>
-              <p>We reply with a written offer in under 24 hours &mdash; typically within six hours on business days &mdash; with each piece priced individually and bundled into a single number for the visit.</p>
-            </div>
-          </div>
-          <div class="sell-step">
-            <span class="sell-step-num">3</span>
-            <div>
-              <strong>Coordinated pickup</strong>
-              <p>If you accept, one scheduled pickup handles every qualifying piece in the house. We come to you anywhere in Edmonton, St. Albert, Sherwood Park, Spruce Grove, Leduc, or Fort Saskatchewan, and handle disassembly and load-out.</p>
-            </div>
-          </div>
-          <div class="sell-step">
-            <span class="sell-step-num">4</span>
-            <div>
-              <strong>Paid on the spot</strong>
-              <p>We confirm condition matches the photos, pay by e-transfer or cash before we leave with the pieces, and load them ourselves. One conversation, one pickup, one payment &mdash; no juggling separate Marketplace buyers.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <div class="sell-landing-body">
+        <h2>How to decide which pieces are worth selling</h2>
+        <p>Downsizing usually means looking at more than one piece and figuring out which ones are likely to yield a real offer versus which are better suited to donation or removal. A few filters help.</p>
+        <ul>
+          <li><strong>Brand and original retail.</strong> Pieces that started life at a recognized brand (Natuzzi, EQ3, Crate &amp; Barrel, Urban Barn, and up) typically hold enough resale value to be worth submitting. Items that originally came from Ashley, IKEA, Leon's, or The Brick rarely clear our threshold.</li>
+          <li><strong>Condition over age.</strong> A well-maintained 10-year-old leather sofa from a recognized brand usually outranks a 3-year-old mass-market sectional. Send photos either way &mdash; age alone isn't a disqualifier.</li>
+          <li><strong>Sets and matching pieces.</strong> A sofa-plus-chair set or a complete living-room group from one household is often more valuable as a coordinated lot than the same pieces sold separately on Marketplace.</li>
+          <li><strong>Pieces that won't fit the new place.</strong> Even if a piece is great, if it physically won't fit through the new doorway or down to the new family room, the answer to "should I sell it" is usually yes &mdash; moving cost plus storage rarely beats resale value.</li>
+        </ul>
+        <p>When in doubt, photograph it. We give you a straight read within 24 hours &mdash; qualify or not &mdash; and there's no commitment in asking.</p>
+
         <h2>Why downsizing furniture is a different problem</h2>
         <p>The pieces we see from downsizing households tend to be in better shape than average. They've often lived in formal living rooms, second sitting areas, or finished basements that didn't see daily use. The leather is supple, the cushions hold shape, and there's nothing structurally wrong with them. They just don't fit the next chapter.</p>
 
@@ -463,7 +563,7 @@
         <p>This isn't the right path if your only goal is to extract the absolute maximum number from each piece. It's the right path if you'd rather move on to the rest of the project &mdash; the new place, the family, the transition itself &mdash; and not spend weekends on furniture logistics.</p>
 
         <h2>Selling to us vs. listing on Marketplace while downsizing</h2>
-        <p>The honest version: piece by piece, Marketplace can pay more for the right item with the right buyer and enough time. What we offer is a different trade &mdash; one conversation across multiple pieces, scheduled pickup, paid before we leave, and weekends back. For some sellers chasing the top of the market is worth the friction; for others the friction is the cost.</p>
+        <p>The honest version: piece by piece, Marketplace can pay more for the right item with the right buyer and enough time. What we offer is a different trade &mdash; one conversation potentially across multiple pieces, scheduled pickup, paid before we leave, and weekends back. For some sellers chasing the top of the market is worth the friction; for others the friction is the cost.</p>
         <div class="sell-compare-wrap">
           <table class="sell-compare">
             <thead>
@@ -475,7 +575,6 @@
             </thead>
             <tbody>
               <tr><td>Potential price per piece</td><td>Higher ceiling on individual pieces, if buyers show up</td><td>Below the per-piece ceiling. Firm number on each piece.</td></tr>
-              <tr><td>Coordinating multiple pieces</td><td>Separate listings, separate buyers, separate pickup times</td><td>One conversation, one pickup, one payment for the whole lot</td></tr>
               <tr><td>Your time</td><td>Photos, listings, messages, viewings &mdash; for each item</td><td>Send a few photos. That's it.</td></tr>
               <tr><td>Time to resolution</td><td>Days to weeks per piece; downsizing windows can stretch for months</td><td>Offer back within 24 hours; coordinated pickup typically within a few days</td></tr>
               <tr><td>Strangers in the home</td><td>Multiple buyers walking through the place you're trying to clear</td><td>One pickup visit, scheduled at your convenience</td></tr>
@@ -489,7 +588,16 @@
         <h2>What we typically purchase</h2>
         <p>Sofas and sectionals from recognized design-oriented and premium retailers: B&amp;B Italia, Natuzzi Italia, Natuzzi Editions, Rove Concepts, Crate &amp; Barrel, EQ3, West Elm, Restoration Hardware, American Leather, Brentwood Classics, Younger Furniture, VanGogh, Urban Barn, Pottery Barn, select La-Z-Boy pieces and a handful of others.</p>
 
-        <p>Mass-market pieces (Ashley, IKEA, Leon's, The Brick), bonded leather, dining sets, bedroom furniture, and standalone accent chairs are outside our category. For those, we're happy to advise on alternate channels, be it classifieds, donation, or something else.</p>
+        <h2>Pieces we don&rsquo;t typically purchase</h2>
+        <ul>
+          <li>Mass-market pieces from Ashley, IKEA, Leon's, or The Brick</li>
+          <li>Bonded leather or heavily peeling configurations</li>
+          <li>Dining sets, bedroom furniture, and standalone accent chairs</li>
+          <li>Sectionals with major frame or recliner failures</li>
+          <li>Heavy smoke saturation or significant pet odour issues</li>
+          <li>Large visible tears, severe leather cracking, or structural instability</li>
+        </ul>
+        <p>For pieces outside our buy zone, we'll often suggest a more honest path &mdash; Marketplace, donation through Find Edmonton Furniture Bank or the Bissell Centre, or a removal service for items at end of life. Even if you're unsure whether your piece qualifies, you're welcome to send photos.</p>
       </div>
 
       <section class="sell-landing-sold">
