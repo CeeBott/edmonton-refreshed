@@ -1244,6 +1244,73 @@ function imagePathToUrl(p) {
   return BASE_URL + encodeURI(rel);
 }
 
+// Build the /sold/ gallery ItemList JSON-LD — one ImageObject per sold photo
+// across every entry in sold-data.js. Each ImageObject carries authorship
+// (creator/copyrightHolder = Edmonton Refreshed), licence pointers so the
+// photo is eligible for Google Images' Licensable badge, and a brand entity
+// link via about. The image sitemap covers discovery; this layer covers
+// attribution.
+function generateSoldGallerySchema(soldItems) {
+  var ORG = { '@type': 'Organization', name: 'Edmonton Refreshed' };
+  var elements = [];
+  var position = 0;
+  soldItems.forEach(function(item) {
+    var photos = item.images || [];
+    photos.forEach(function(rel, idx) {
+      position++;
+      var contentUrl   = imagePathToUrl(rel);
+      var thumbnailUrl = contentUrl.replace(/\.jpeg$/i, '-400w.jpeg');
+      var label = photos.length > 1
+        ? item.brand + ' ' + item.title + ' — photo ' + (idx + 1) + ' of ' + photos.length
+        : item.brand + ' ' + item.title;
+      elements.push({
+        '@type': 'ListItem',
+        position: position,
+        item: {
+          '@type': 'ImageObject',
+          name: label,
+          description: 'Pre-owned ' + item.brand + ' ' + item.title + ', purchased and resold by Edmonton Refreshed.',
+          contentUrl: contentUrl,
+          thumbnailUrl: thumbnailUrl,
+          about: { '@type': 'Brand', name: item.brand },
+          creator: ORG,
+          copyrightHolder: ORG,
+          creditText: 'Photo by Edmonton Refreshed',
+          license: BASE_URL,
+          acquireLicensePage: BASE_URL,
+        },
+      });
+    });
+  });
+  var schema = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Previously Sold Pieces in Edmonton',
+    description: 'Photos of pre-owned sofas and sectionals previously purchased and resold by Edmonton Refreshed in Edmonton, AB.',
+    url: BASE_URL + 'sold/',
+    numberOfItems: position,
+    itemListOrder: 'https://schema.org/ItemListOrderDescending',
+    itemListElement: elements,
+  };
+  return JSON.stringify(schema, null, 2).replace(/\n/g, '\n  ');
+}
+
+// Inject the gallery schema between SOLD_GALLERY_SCHEMA_START / _END markers.
+// No-op when the markers are absent so partial adoption stays safe.
+function injectSoldGallerySchema(html, soldItems) {
+  var startMarker = '<!-- SOLD_GALLERY_SCHEMA_START -->';
+  var endMarker   = '<!-- SOLD_GALLERY_SCHEMA_END -->';
+  var ss = html.indexOf(startMarker);
+  if (ss === -1) return html;
+  var se = html.indexOf(endMarker, ss);
+  if (se === -1) return html;
+  return html.substring(0, ss + startMarker.length) +
+         '\n  <script type="application/ld+json">\n  ' +
+         generateSoldGallerySchema(soldItems) +
+         '\n  </script>\n  ' +
+         html.substring(se);
+}
+
 // Build the canonical URL list with metadata. Order is stable for diff readability.
 function buildUrlList(items, soldItems) {
   // Sold-inventory images attach to the /sold/ gallery URL — that page is
@@ -1407,6 +1474,7 @@ var soldPath    = path.join(ROOT, 'sold', 'index.html');
 var soldContent = fs.readFileSync(soldPath, 'utf8');
 
 soldContent = injectIntoContainer(soldContent, 'sold-grid', soldHTML);
+soldContent = injectSoldGallerySchema(soldContent, soldItems);
 
 fs.writeFileSync(soldPath, soldContent, 'utf8');
 
