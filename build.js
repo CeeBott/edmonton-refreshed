@@ -1355,6 +1355,10 @@ var LANDING_SOLD_SCHEMA_META = {
     name: 'Recently Purchased Pieces in Edmonton — Fast Buyouts',
     description: 'Photos of pre-owned sofas and sectionals recently purchased on tight timelines by Edmonton Refreshed across Edmonton and surrounding communities.',
   },
+  'sell/sell-designer-furniture-edmonton/index.html': {
+    name: 'Recently Purchased Designer Pieces in Edmonton',
+    description: 'Photos of pre-owned designer and premium sofas and sectionals recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.',
+  },
 };
 
 // Decode the small set of HTML entities that appear in card-brand / card-title
