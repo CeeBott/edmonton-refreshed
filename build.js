@@ -1351,6 +1351,10 @@ var LANDING_SOLD_SCHEMA_META = {
     name: 'Recently Purchased Sectionals in Edmonton',
     description: 'Photos of pre-owned sectionals recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.',
   },
+  'sell/sell-furniture-fast-edmonton/index.html': {
+    name: 'Recently Purchased Pieces in Edmonton — Fast Buyouts',
+    description: 'Photos of pre-owned sofas and sectionals recently purchased on tight timelines by Edmonton Refreshed across Edmonton and surrounding communities.',
+  },
 };
 
 // Decode the small set of HTML entities that appear in card-brand / card-title
