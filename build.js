@@ -1311,6 +1311,164 @@ function injectSoldGallerySchema(html, soldItems) {
          html.substring(se);
 }
 
+// ── Sell-landing ItemList schemas ────────────────────────
+// Same shape as the /sold/ gallery (§5.16): ItemList of ImageObject items
+// with the full attribution stack so each photo is eligible for Google
+// Images' Licensable badge. Each sell-landing page hand-picks a subset of
+// sold cards in its .sell-landing-sold-grid; this generator derives the
+// schema from that visible grid so the schema and the cards can never drift
+// out of sync. Pages without an entry in LANDING_SOLD_SCHEMA_META — or
+// without the marker pair — are left untouched.
+
+// Per-page metadata for the landing-sold schema. Keyed by repo-relative path
+// to keep the inject site free of long description strings.
+var LANDING_SOLD_SCHEMA_META = {
+  'sell/natuzzi-edmonton/index.html': {
+    name: 'Recently Purchased Natuzzi Pieces in Edmonton',
+    description: 'Photos of pre-owned Natuzzi Italia and Natuzzi Editions sofas and sectionals purchased and resold by Edmonton Refreshed.',
+  },
+  'sell/selling-furniture-before-moving-edmonton/index.html': {
+    name: 'Recently Purchased Pieces from Edmonton Sellers',
+    description: 'Photos of pre-owned sofas and sectionals recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.',
+  },
+  'sell/downsizing-furniture-edmonton/index.html': {
+    name: 'Recently Purchased Pieces from Edmonton Households',
+    description: 'Photos of pre-owned sofas and sectionals recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.',
+  },
+  'sell/furniture-consignment-edmonton/index.html': {
+    name: 'Recently Purchased Pieces in Edmonton — Direct Buyouts',
+    description: 'Photos of pre-owned sofas and sectionals purchased outright in Edmonton — an alternative to local consignment channels.',
+  },
+  'sell/estate-furniture-edmonton/index.html': {
+    name: 'Recently Purchased Pieces from Edmonton Estates and Family Homes',
+    description: 'Photos of pre-owned sofas and sectionals purchased from estates and family homes across Edmonton and surrounding communities.',
+  },
+  'sell/couch-edmonton/index.html': {
+    name: 'Recently Purchased Couches in Edmonton',
+    description: 'Photos of pre-owned couches and sofas recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.',
+  },
+  'sell/sectional-edmonton/index.html': {
+    name: 'Recently Purchased Sectionals in Edmonton',
+    description: 'Photos of pre-owned sectionals recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.',
+  },
+};
+
+// Decode the small set of HTML entities that appear in card-brand / card-title
+// div text. Card image src attributes are already URL-encoded and don't need
+// decoding — the resulting URL is fed straight into the schema.
+function decodeHtmlEntities(s) {
+  return s
+    .replace(/&amp;/g,  '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g,  "'")
+    .replace(/&apos;/g, "'")
+    .replace(/&mdash;/g, '—')
+    .replace(/&ndash;/g, '–');
+}
+
+// Parse the .sell-landing-sold section on a sell-landing page. Each
+// <a class="card sold"> inside the section contributes one card; we pull
+// brand (.card-brand), title (.card-title), and the full-size image src
+// from the <img> tag. Returns null if the page has no sold grid (not a
+// sell-landing page or just no sold cards yet).
+function parseSellLandingSoldCards(html) {
+  var sectionMatch = html.match(/<section class="sell-landing-sold">[\s\S]*?<\/section>/);
+  if (!sectionMatch) return null;
+  var sectionHtml = sectionMatch[0];
+  var cardRe = /<a class="card sold"[\s\S]*?<\/a>/g;
+  var cards = [];
+  var m;
+  while ((m = cardRe.exec(sectionHtml)) !== null) {
+    var cardHtml = m[0];
+    var bm = cardHtml.match(/<div class="card-brand">([^<]+)<\/div>/);
+    var tm = cardHtml.match(/<div class="card-title">([^<]+)<\/div>/);
+    var im = cardHtml.match(/<img\s+src="([^"]+)"/);
+    if (bm && tm && im) {
+      cards.push({
+        brand: decodeHtmlEntities(bm[1].trim()),
+        title: decodeHtmlEntities(tm[1].trim()),
+        src:   im[1].trim(),
+      });
+    }
+  }
+  return cards.length > 0 ? cards : null;
+}
+
+// Build description prose for a single ImageObject. Matches the editorial
+// style established by hand on the sell-landing pages: lowercase descriptor
+// words in the title (keeping the leading word — typically a proper-noun
+// model name — capitalized), and normalize standalone & and + to "and".
+function describeLandingCard(card) {
+  var parts = card.title.split(/\s+/).filter(Boolean);
+  var leading = parts[0] || '';
+  var rest = parts.slice(1).map(function(w) {
+    if (w === '&' || w === '+') return 'and';
+    return w.toLowerCase();
+  }).join(' ');
+  var descriptor = rest ? leading + ' ' + rest : leading;
+  return 'Pre-owned ' + card.brand + ' ' + descriptor + ', purchased and resold by Edmonton Refreshed.';
+}
+
+// Build the ItemList JSON-LD for a sell-landing page from its parsed cards.
+// Attribution stack matches §5.16 (creator/copyrightHolder/creditText/license/
+// acquireLicensePage) for Licensable-badge eligibility in Google Images.
+function generateLandingSoldSchema(meta, cards) {
+  var ORG = { '@type': 'Organization', name: 'Edmonton Refreshed' };
+  var elements = cards.map(function(card, idx) {
+    var contentUrl = BASE_URL + card.src.replace(/^\/+/, '');
+    var thumbnailUrl = contentUrl.replace(/\.jpeg$/i, '-400w.jpeg');
+    return {
+      '@type': 'ListItem',
+      position: idx + 1,
+      item: {
+        '@type': 'ImageObject',
+        name: card.brand + ' ' + card.title,
+        description: describeLandingCard(card),
+        contentUrl: contentUrl,
+        thumbnailUrl: thumbnailUrl,
+        about: { '@type': 'Brand', name: card.brand },
+        creator: ORG,
+        copyrightHolder: ORG,
+        creditText: 'Photo by Edmonton Refreshed',
+        license: BASE_URL,
+        acquireLicensePage: BASE_URL,
+      },
+    };
+  });
+  var schema = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: meta.name,
+    description: meta.description,
+    numberOfItems: cards.length,
+    itemListOrder: 'https://schema.org/ItemListOrderDescending',
+    itemListElement: elements,
+  };
+  return JSON.stringify(schema, null, 2).replace(/\n/g, '\n  ');
+}
+
+// Inject the landing-sold schema between LANDING_SOLD_SCHEMA_START / _END
+// markers. No-op when markers are absent, when the page has no metadata
+// entry, or when the page has no sold-card grid — partial adoption is safe.
+function injectLandingSoldSchema(html, filepath) {
+  var startMarker = '<!-- LANDING_SOLD_SCHEMA_START -->';
+  var endMarker   = '<!-- LANDING_SOLD_SCHEMA_END -->';
+  var ss = html.indexOf(startMarker);
+  if (ss === -1) return html;
+  var se = html.indexOf(endMarker, ss);
+  if (se === -1) return html;
+  var rel = path.relative(ROOT, filepath).split(path.sep).join('/');
+  var meta = LANDING_SOLD_SCHEMA_META[rel];
+  if (!meta) return html;
+  var cards = parseSellLandingSoldCards(html);
+  if (!cards) return html;
+  return html.substring(0, ss + startMarker.length) +
+         '\n  <script type="application/ld+json">\n  ' +
+         generateLandingSoldSchema(meta, cards) +
+         '\n  </script>\n  ' +
+         html.substring(se);
+}
+
 // Build the canonical URL list with metadata. Order is stable for diff readability.
 function buildUrlList(items, soldItems) {
   // Sold-inventory images attach to the /sold/ gallery URL — that page is
@@ -1515,6 +1673,7 @@ for (var pi = 0; pi < partialFiles.length; pi++) {
   var pPath = partialFiles[pi];
   var pOrig = fs.readFileSync(pPath, 'utf8');
   var pNext = injectAllPartials(pOrig);
+  pNext = injectLandingSoldSchema(pNext, pPath);
   pNext = injectAssetVersions(pNext, assetVersions);
   if (pNext !== pOrig) {
     fs.writeFileSync(pPath, pNext, 'utf8');
