@@ -1323,6 +1323,10 @@ function injectSoldGallerySchema(html, soldItems) {
 // Per-page metadata for the landing-sold schema. Keyed by repo-relative path
 // to keep the inject site free of long description strings.
 var LANDING_SOLD_SCHEMA_META = {
+  'sell/index.html': {
+    name: 'Recently Purchased Pieces in Edmonton',
+    description: 'Photos of pre-owned sofas and sectionals recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.',
+  },
   'sell/natuzzi-edmonton/index.html': {
     name: 'Recently Purchased Natuzzi Pieces in Edmonton',
     description: 'Photos of pre-owned Natuzzi Italia and Natuzzi Editions sofas and sectionals purchased and resold by Edmonton Refreshed.',
@@ -1358,6 +1362,30 @@ var LANDING_SOLD_SCHEMA_META = {
   'sell/sell-designer-furniture-edmonton/index.html': {
     name: 'Recently Purchased Designer Pieces in Edmonton',
     description: 'Photos of pre-owned designer and premium sofas and sectionals recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.',
+  },
+  'sell/leather-sofa-edmonton/index.html': {
+    name: 'Recently Purchased Leather Sofas in Edmonton',
+    description: 'Photos of pre-owned leather sofas recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.',
+  },
+  'sell/leather-sectional-edmonton/index.html': {
+    name: 'Recently Purchased Leather Sectionals in Edmonton',
+    description: 'Photos of pre-owned leather sectionals recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.',
+  },
+  'sell/leather-couch-edmonton/index.html': {
+    name: 'Recently Purchased Leather Couches in Edmonton',
+    description: 'Photos of pre-owned leather couches recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.',
+  },
+  'sell/crate-and-barrel-edmonton/index.html': {
+    name: 'Recently Purchased Crate & Barrel Pieces in Edmonton',
+    description: 'Photos of pre-owned Crate & Barrel sofas and sectionals — Lounge, Axis, Gather, Rochelle and others — purchased and resold by Edmonton Refreshed.',
+  },
+  'sell/rove-concepts-edmonton/index.html': {
+    name: 'Recently Purchased Rove Concepts Pieces in Edmonton',
+    description: 'Photos of pre-owned Rove Concepts sofas and sectionals — Milo, Porter, Kaye, Luca, and others — purchased and resold by Edmonton Refreshed.',
+  },
+  'sell/eq3-edmonton/index.html': {
+    name: 'Recently Purchased EQ3 Pieces in Edmonton',
+    description: 'Photos of pre-owned EQ3 sofas and sectionals — Replay, Remi, Salema, Cello, and others — purchased and resold by Edmonton Refreshed.',
   },
 };
 

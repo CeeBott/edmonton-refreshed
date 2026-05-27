@@ -77,7 +77,8 @@
       "Bash(node update-nav.js)",
       "Bash(node bump-dates.js)",
       "Bash(grep -n \"Current version: \\\\`v=43\\\\`\" CLAUDE.md)",
-      "Bash(node /tmp/validate-jsonld-all.js)"
+      "Bash(node /tmp/validate-jsonld-all.js)",
+      "Bash(awk 'NR>=860 && NR<=880' sell/index.html)"
     ]
   }
 }
