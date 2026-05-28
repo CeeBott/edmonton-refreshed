@@ -325,20 +325,20 @@
         <h2 class="sell-section-heading">Why Edmonton sellers contact us about a West Elm piece</h2>
         <div class="sell-reasons-grid">
           <div class="sell-reason">
-            <h3>The quality range confuses Marketplace buyers</h3>
-            <p>Some West Elm lines hold up well; others wear faster. Marketplace buyers ask hard questions about West Elm frame and cushion quality specifically. Sellers come to us when they want a buyer who knows which lines have held up.</p>
+            <h3>Upgrading to a new West Elm model or moving on from the brand</h3>
+            <p>Many sellers cycle through West Elm across life stages — starter apartment to first home to family room. The original piece is in good shape; the next space just calls for something different.</p>
           </div>
           <div class="sell-reason">
-            <h3>Cushion sag or fabric pilling concerns</h3>
-            <p>West Elm cushion shape varies across lines and ages. Sellers worry sag or pilling disqualifies the piece. We assess case-by-case rather than rejecting outright.</p>
+            <h3>New furniture is arriving and the current piece needs to go</h3>
+            <p>Replacement is ordered and the delivery date is set. We coordinate pickup around the new arrival so both pieces aren&rsquo;t competing for the same space.</p>
           </div>
           <div class="sell-reason">
-            <h3>Replacing one West Elm with another</h3>
-            <p>Many sellers cycle through West Elm across life stages &mdash; starter apartment to first home to family room. The original piece is fine; the next room calls for something different.</p>
+            <h3>The room is being renovated or redesigned</h3>
+            <p>A new aesthetic direction, flooring change, or full room refresh. West Elm&rsquo;s design-forward lines work well in the right context — when that context changes, the piece often moves with it.</p>
           </div>
           <div class="sell-reason">
-            <h3>Bought during a sale, ready to move on</h3>
-            <p>West Elm runs aggressive promotional pricing; many sellers paid well below retail. We offer based on the current resale market, not the original receipt.</p>
+            <h3>Not worth the time to list and manage a Marketplace sale</h3>
+            <p>West Elm has a wide quality range across lines, and Marketplace buyers ask detailed questions about frame and cushion construction. Sellers with good pieces often decide a single conversation is worth more than fielding that back-and-forth.</p>
           </div>
         </div>
       </section>
@@ -376,6 +376,79 @@
           </div>
         </div>
       </section>
+
+      <h2 class="section-label sell-send-heading" id="sell-details">Send us your details</h2>
+      <p class="sell-send-lead">Fill out the form below &mdash; we reply within 24 hours with an offer. The more detail you give, the faster and more accurate the offer.</p>
+
+      <div class="sell-form-prelude">We primarily purchase higher-quality sofas and sectionals from design-oriented and premium retailers. If you&rsquo;re unsure whether your piece is a fit, send photos anyway &mdash; we&rsquo;re happy to take a look.</div>
+
+      <div id="sell-form-success" class="sell-form-success" hidden>
+        <p><strong>Thanks &mdash; your details are in.</strong></p>
+        <p>We'll review your photos and reply within 24 hours with an offer. If you don't see anything by tomorrow, check your spam folder or text us at <a href="sms:7809651477">780-965-1477</a>.</p>
+      </div>
+
+      <form class="sell-form" id="sell-form" method="POST" enctype="multipart/form-data" novalidate>
+        <input type="checkbox" name="_honey" class="sell-form-honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+        <div class="sell-form-row">
+          <label for="sf-brand">Brand</label>
+          <input type="text" id="sf-brand" name="Brand" placeholder="e.g. Natuzzi, EQ3, Rove Concepts (or &lsquo;unsure&rsquo;)" autocomplete="off" value="West Elm" required>
+        </div>
+
+        <div class="sell-form-row">
+          <label for="sf-age">Approximate age</label>
+          <select id="sf-age" name="Approximate age" required>
+            <option value="">Select age range</option>
+            <option>0&ndash;3 years</option>
+            <option>4&ndash;7 years</option>
+            <option>8&ndash;10 years</option>
+            <option>11&ndash;15 years</option>
+            <option>15+ years</option>
+          </select>
+        </div>
+
+        <div class="sell-form-row">
+          <fieldset class="sell-form-radio">
+            <legend>Condition</legend>
+            <label><input type="radio" name="Condition" value="Excellent" required> <span><strong>Excellent</strong> &mdash; like new, no visible wear</span></label>
+            <label><input type="radio" name="Condition" value="Good"> <span><strong>Good</strong> &mdash; minor wear consistent with light, careful use</span></label>
+            <label><input type="radio" name="Condition" value="Fair"> <span><strong>Fair</strong> &mdash; noticeable wear or one to two visible flaws</span></label>
+            <label><input type="radio" name="Condition" value="Poor"> <span><strong>Poor</strong> &mdash; significant damage, staining, or structural issues</span></label>
+          </fieldset>
+        </div>
+
+        <div class="sell-form-row">
+          <label id="sf-photos-label">Photos <span class="sell-form-req-note">(3 to 5 required)</span></label>
+          <div class="sell-photo-picker">
+            <input type="file" id="sf-photos" name="photos" accept="image/*" multiple class="sell-photo-input" aria-labelledby="sf-photos-label">
+            <button type="button" class="sell-photo-add" id="sf-photos-add" aria-describedby="sf-photos-label">+ Add photos</button>
+            <ul class="sell-photo-list" id="sf-photos-list" hidden aria-live="polite"></ul>
+            <p class="sell-photo-count" id="sf-photos-count" hidden></p>
+          </div>
+          <p class="sell-form-hint">Front, side, and close-ups of any wear. You can add photos one at a time or several at once. Photos are automatically optimized before sending — feel free to use full-resolution shots from your phone.</p>
+          <p class="sell-form-error" id="sf-photos-error" hidden></p>
+        </div>
+
+        <div class="sell-form-row">
+          <label for="sf-name">Your name</label>
+          <input type="text" id="sf-name" name="Name" autocomplete="name" required>
+        </div>
+
+        <div class="sell-form-row">
+          <label for="sf-contact">Best contact (phone or email)</label>
+          <input type="text" id="sf-contact" name="Best contact" placeholder="Phone number or email" required>
+        </div>
+
+        <div class="sell-form-row">
+          <label for="sf-notes">Anything we should know?</label>
+          <textarea id="sf-notes" name="Notes" rows="4" placeholder="Anything we should know?"></textarea>
+        </div>
+
+        <button type="submit" class="sell-form-submit">Get My Offer</button>
+        <p class="sell-form-disclaimer">We reply within 24 hours. Your details are only used to evaluate your piece &mdash; never shared.</p>
+      </form>
+
+      <p class="sell-form-secondary">Prefer to text? <a href="sms:7809651477">780-965-1477</a></p>
 
       <div class="sell-landing-body">
         <h2>What makes a West Elm sofa or sectional worth buying</h2>
@@ -458,79 +531,6 @@
         <p>Want the full method &mdash; how offers are calculated, the comparison with Marketplace, and the rest of what we buy? Visit the main sell page.</p>
         <a href="/sell/">Open the main sell page &rarr;</a>
       </div>
-
-      <h2 class="section-label sell-send-heading" id="sell-details">Send us your details</h2>
-      <p class="sell-send-lead">Fill out the form below &mdash; we reply within 24 hours with an offer. The more detail you give, the faster and more accurate the offer.</p>
-
-      <div class="sell-form-prelude">We primarily purchase higher-quality sofas and sectionals from design-oriented and premium retailers. If you&rsquo;re unsure whether your piece is a fit, send photos anyway &mdash; we&rsquo;re happy to take a look.</div>
-
-      <div id="sell-form-success" class="sell-form-success" hidden>
-        <p><strong>Thanks &mdash; your details are in.</strong></p>
-        <p>We'll review your photos and reply within 24 hours with an offer. If you don't see anything by tomorrow, check your spam folder or text us at <a href="sms:7809651477">780-965-1477</a>.</p>
-      </div>
-
-      <form class="sell-form" id="sell-form" method="POST" enctype="multipart/form-data" novalidate>
-        <input type="checkbox" name="_honey" class="sell-form-honey" tabindex="-1" autocomplete="off" aria-hidden="true">
-
-        <div class="sell-form-row">
-          <label for="sf-brand">Brand</label>
-          <input type="text" id="sf-brand" name="Brand" placeholder="e.g. Natuzzi, EQ3, Rove Concepts (or &lsquo;unsure&rsquo;)" autocomplete="off" value="West Elm" required>
-        </div>
-
-        <div class="sell-form-row">
-          <label for="sf-age">Approximate age</label>
-          <select id="sf-age" name="Approximate age" required>
-            <option value="">Select age range</option>
-            <option>0&ndash;3 years</option>
-            <option>4&ndash;7 years</option>
-            <option>8&ndash;10 years</option>
-            <option>11&ndash;15 years</option>
-            <option>15+ years</option>
-          </select>
-        </div>
-
-        <div class="sell-form-row">
-          <fieldset class="sell-form-radio">
-            <legend>Condition</legend>
-            <label><input type="radio" name="Condition" value="Excellent" required> <span><strong>Excellent</strong> &mdash; like new, no visible wear</span></label>
-            <label><input type="radio" name="Condition" value="Good"> <span><strong>Good</strong> &mdash; minor wear consistent with light, careful use</span></label>
-            <label><input type="radio" name="Condition" value="Fair"> <span><strong>Fair</strong> &mdash; noticeable wear or one to two visible flaws</span></label>
-            <label><input type="radio" name="Condition" value="Poor"> <span><strong>Poor</strong> &mdash; significant damage, staining, or structural issues</span></label>
-          </fieldset>
-        </div>
-
-        <div class="sell-form-row">
-          <label id="sf-photos-label">Photos <span class="sell-form-req-note">(3 to 5 required)</span></label>
-          <div class="sell-photo-picker">
-            <input type="file" id="sf-photos" name="photos" accept="image/*" multiple class="sell-photo-input" aria-labelledby="sf-photos-label">
-            <button type="button" class="sell-photo-add" id="sf-photos-add" aria-describedby="sf-photos-label">+ Add photos</button>
-            <ul class="sell-photo-list" id="sf-photos-list" hidden aria-live="polite"></ul>
-            <p class="sell-photo-count" id="sf-photos-count" hidden></p>
-          </div>
-          <p class="sell-form-hint">Front, side, and close-ups of any wear. You can add photos one at a time or several at once. Photos are automatically optimized before sending — feel free to use full-resolution shots from your phone.</p>
-          <p class="sell-form-error" id="sf-photos-error" hidden></p>
-        </div>
-
-        <div class="sell-form-row">
-          <label for="sf-name">Your name</label>
-          <input type="text" id="sf-name" name="Name" autocomplete="name" required>
-        </div>
-
-        <div class="sell-form-row">
-          <label for="sf-contact">Best contact (phone or email)</label>
-          <input type="text" id="sf-contact" name="Best contact" placeholder="Phone number or email" required>
-        </div>
-
-        <div class="sell-form-row">
-          <label for="sf-notes">Anything we should know?</label>
-          <textarea id="sf-notes" name="Notes" rows="4" placeholder="Anything we should know?"></textarea>
-        </div>
-
-        <button type="submit" class="sell-form-submit">Get My Offer</button>
-        <p class="sell-form-disclaimer">We reply within 24 hours. Your details are only used to evaluate your piece &mdash; never shared.</p>
-      </form>
-
-      <p class="sell-form-secondary">Prefer to text? <a href="sms:7809651477">780-965-1477</a></p>
 
       <section class="sell-landing-cluster">
         <h2 class="sell-landing-cluster-heading">Also explore</h2>
