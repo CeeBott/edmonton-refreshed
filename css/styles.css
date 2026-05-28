@@ -3284,6 +3284,28 @@ footer a:focus-visible {
 }
 .sell-updated a:hover { color: var(--color-text); }
 
+/* Quotable answer block — a direct, declarative answer to the page's implicit
+   question, sitting between the byline and the hero subhead. Written so AI
+   answer engines (ChatGPT, Perplexity, Claude) can lift it verbatim and so a
+   human gets the bottom line immediately. Left accent border + left-aligned
+   text break the centered hero rhythm so it reads as "the answer." */
+.sell-answer {
+  max-width: 620px;
+  margin: 0 auto 22px;
+  padding: 16px 20px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-accent);
+  border-radius: 2px;
+  text-align: left;
+}
+.sell-answer p {
+  margin: 0;
+  font-size: 1.02rem;
+  line-height: 1.6;
+  color: var(--color-text);
+}
+
 .sell-howto {
   max-width: var(--col-mid);
   margin: 28px auto 12px;
