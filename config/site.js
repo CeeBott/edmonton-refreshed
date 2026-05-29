@@ -30,7 +30,7 @@ module.exports = {
   email: 'info@edmontonrefreshed.com',
 
   // Business stats — update sitewide by editing here
-  piecesSold: '41+',
+  piecesSold: '40+',
   piecesBought: '41+',
   rating: '4.9',
   ratingCount: 18,
@@ -46,6 +46,5 @@ module.exports = {
   sameAs: [
     'https://share.google/Vbc4WShKx0Q7NuRR9',     // Google Business Profile
     'https://www.facebook.com/edmontonrefreshed',
-    'https://www.instagram.com/edmontonrefreshed/',
   ],
 };

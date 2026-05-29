@@ -101,8 +101,25 @@ function slugify(str) {
   return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 }
 
+// Business timezone. Freshness dates (dateModified, sitemap <lastmod>,
+// priceValidUntil) are stamped in Edmonton local time, NOT UTC: between
+// ~18:00 and midnight MDT (UTC-6) the UTC ISO date is already tomorrow, which
+// would mis-stamp every date a day ahead of the business's actual day.
+var BUSINESS_TZ = 'America/Edmonton';
+
+// en-CA locale formats a Date as zero-padded YYYY-MM-DD.
+function isoDate(date) {
+  return date.toLocaleDateString('en-CA', { timeZone: BUSINESS_TZ });
+}
+
 function today() {
-  return new Date().toISOString().split('T')[0];
+  return isoDate(new Date());
+}
+
+function todayPlusDays(n) {
+  var d = new Date();
+  d.setDate(d.getDate() + n);
+  return isoDate(d);
 }
 
 function escapeRegExp(s) {
@@ -405,9 +422,7 @@ function generateReviewsHTML(reviews, aggregate) {
 
 function generateProductSchemas(items) {
   var BASE_URL       = 'https://edmontonrefreshed.com/';
-  var validUntilDate = new Date();
-  validUntilDate.setDate(validUntilDate.getDate() + 90);
-  var priceValidUntil = validUntilDate.toISOString().split('T')[0];
+  var priceValidUntil = todayPlusDays(90);
 
   var blocks = [];
 
@@ -539,9 +554,7 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions) {
   var sharedV = assetVersions['js/shared.min.js']   || '';
   var BASE_URL       = 'https://edmontonrefreshed.com/';
   var listingUrl     = BASE_URL + 'listings/' + slug + '/';
-  var validUntilDate = new Date();
-  validUntilDate.setDate(validUntilDate.getDate() + 90);
-  var priceValidUntil = validUntilDate.toISOString().split('T')[0];
+  var priceValidUntil = todayPlusDays(90);
   var imageUrl        = (item.images && item.images.length > 0)
     ? BASE_URL + item.images[0]
     : BASE_URL + 'images/og-preview.png';
@@ -1725,6 +1738,106 @@ var sitemapPath = path.join(ROOT, 'sitemap.xml');
 var sitemapOut = generateSitemap(availableItems, soldItems);
 fs.writeFileSync(sitemapPath, sitemapOut, 'utf8');
 
+// ── 7. Entity-integrity guardrail.
+//      The site's authority rests on a single canonical owner entity
+//      (Person @id /about/#collin) referenced from every sell page and guide
+//      author, plus one consistent sameAs set defined in config/site.js. That
+//      wiring is easy to break silently: the About page can lose the Person
+//      node while pages keep citing it (the references then resolve to
+//      nothing), a hand-edited sameAs can drift from config, or a guide can
+//      ship without an Article schema or author. We re-read the final on-disk
+//      HTML and audit. A dangling owner @id is a HARD failure (exit 1) because
+//      it makes every sell-page/guide author citation inert; sameAs drift and
+//      guide gaps are warnings. See CLAUDE.md §5.17 and §4.3.
+var COLLIN_ID = 'https://edmontonrefreshed.com/about/#collin';
+
+function extractJsonLd(html) {
+  var out = [];
+  var re = /<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g;
+  var m;
+  while ((m = re.exec(html))) {
+    var raw = m[1].trim();
+    if (!raw) continue;
+    try { out.push(JSON.parse(raw)); } catch (e) { /* unparseable / templated — skip */ }
+  }
+  return out;
+}
+
+function walkNodes(node, cb) {
+  if (Array.isArray(node)) {
+    for (var i = 0; i < node.length; i++) walkNodes(node[i], cb);
+  } else if (node && typeof node === 'object') {
+    cb(node);
+    for (var k in node) {
+      if (Object.prototype.hasOwnProperty.call(node, k)) walkNodes(node[k], cb);
+    }
+  }
+}
+
+function typeIncludes(node, t) {
+  var ty = node['@type'];
+  return ty === t || (Array.isArray(ty) && ty.indexOf(t) !== -1);
+}
+
+// Re-read final on-disk content for every walked HTML file (post-injection).
+var auditFiles = partialFiles.map(function(p) {
+  return { rel: path.relative(ROOT, p).split(path.sep).join('/'), html: fs.readFileSync(p, 'utf8') };
+});
+
+// (a) Owner @id integrity — HARD FAIL if referenced but undefined on About.
+var ownerDefined = false;
+auditFiles.forEach(function(f) {
+  if (f.rel !== 'about/index.html') return;
+  extractJsonLd(f.html).forEach(function(doc) {
+    walkNodes(doc, function(n) {
+      if (typeIncludes(n, 'Person') && n['@id'] === COLLIN_ID) ownerDefined = true;
+    });
+  });
+});
+var ownerRefs = auditFiles.filter(function(f) {
+  return f.rel !== 'about/index.html' && f.html.indexOf(COLLIN_ID) !== -1;
+}).map(function(f) { return f.rel; });
+var ownerDangling = ownerRefs.length > 0 && !ownerDefined;
+
+// (b) sameAs drift — WARN if any schema's sameAs differs from config.sameAs.
+var canonSameAs = (site.sameAs || []).slice().sort();
+function arraysEqual(a, b) {
+  if (a.length !== b.length) return false;
+  for (var i = 0; i < a.length; i++) { if (a[i] !== b[i]) return false; }
+  return true;
+}
+var sameAsDrift = [];
+auditFiles.forEach(function(f) {
+  extractJsonLd(f.html).forEach(function(doc) {
+    walkNodes(doc, function(n) {
+      if (!n.sameAs) return;
+      var arr = (Array.isArray(n.sameAs) ? n.sameAs.slice() : [n.sameAs]).sort();
+      if (!arraysEqual(arr, canonSameAs) && sameAsDrift.indexOf(f.rel) === -1) {
+        sameAsDrift.push(f.rel);
+      }
+    });
+  });
+});
+
+// (c) Guide Article/author coverage — WARN on any guide article missing either.
+var guideGaps = [];
+auditFiles.forEach(function(f) {
+  if (f.rel.indexOf('guides/') !== 0 || f.rel.slice(-11) !== '/index.html') return;
+  if (f.rel === 'guides/index.html') return; // landing page is a CollectionPage, not an Article
+  var hasArticle = false, hasAuthor = false;
+  extractJsonLd(f.html).forEach(function(doc) {
+    walkNodes(doc, function(n) {
+      if (typeIncludes(n, 'Article') || typeIncludes(n, 'BlogPosting') || typeIncludes(n, 'NewsArticle')) {
+        hasArticle = true;
+        if (n.author) hasAuthor = true;
+      }
+    });
+  });
+  if (!hasArticle || !hasAuthor) {
+    guideGaps.push(f.rel + (!hasArticle ? ' [no Article]' : '') + (hasArticle && !hasAuthor ? ' [no author]' : ''));
+  }
+});
+
 // ── Summary ──────────────────────────────────────────
 var assetSummary = Object.keys(assetVersions)
   .map(function(k) { return k.split('/').pop() + ' ' + assetVersions[k]; })
@@ -1736,3 +1849,28 @@ console.log('  sold/index.html — ' + soldItems.length + ' sold items');
 console.log('  listings/       — ' + listingCount + ' individual listing pages generated');
 console.log('  sitemap.xml     — ' + sitemapStats.changed + ' URL(s) advanced; ' + sitemapStats.held + ' held; ' + sitemapStats.added + ' new');
 console.log('  partials        — ' + partialUpdated + ' HTML files updated');
+
+// Entity-integrity report.
+if (ownerDangling) {
+  console.log('  entity          — FAIL: ' + ownerRefs.length + ' page(s) reference owner @id ' + COLLIN_ID + ' but about/index.html does not define it');
+  ownerRefs.forEach(function(r) { console.log('                    · ' + r); });
+} else {
+  console.log('  entity          — owner @id ' + (ownerDefined ? 'defined on /about/' : 'not referenced') + '; ' + ownerRefs.length + ' referencing page(s) resolve OK');
+}
+if (sameAsDrift.length) {
+  console.log('  sameAs WARN     — ' + sameAsDrift.length + ' file(s) differ from config.sameAs [' + canonSameAs.join(', ') + ']:');
+  sameAsDrift.forEach(function(r) { console.log('                    · ' + r); });
+} else {
+  console.log('  sameAs          — all schemas match config.sameAs');
+}
+if (guideGaps.length) {
+  console.log('  guides WARN     — ' + guideGaps.length + ' article(s) missing Article schema or author:');
+  guideGaps.forEach(function(g) { console.log('                    · ' + g); });
+} else {
+  console.log('  guides          — all articles carry Article schema + author');
+}
+
+if (ownerDangling) {
+  console.error('\nBuild FAILED entity-integrity check (dangling owner @id). See above.');
+  process.exitCode = 1;
+}
