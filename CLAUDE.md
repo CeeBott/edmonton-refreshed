@@ -340,7 +340,7 @@ Running `node build.js` regenerates, in one deterministic pass:
   §5.17). (b) **`sameAs` drift (warn):** any `Organization` / `FurnitureStore`
   / `LocalBusiness` whose `sameAs` array differs from `config/site.js#sameAs`
   is reported. (c) **Guide `Article` gaps (warn):** any `guides/*/index.html`
-  (except the `CollectionPage` index) missing an `Article` schema or its
+  (except the `CollectionPage` index and redirect stubs) missing an `Article` schema or its
   `author` is listed. The audit is read-only — it never rewrites files;
   warnings are advisory and only the dangling-owner case fails the build.
 

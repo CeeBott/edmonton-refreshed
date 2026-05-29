@@ -2244,6 +2244,12 @@ h3.faq-question,
   font-size: 0.85rem;
   color: var(--color-text-secondary);
 }
+.guide-meta a {
+  color: var(--color-text-secondary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.guide-meta a:hover { color: var(--color-text); }
 .guide-hero-image {
   margin: 0 auto 40px;
   max-width: 800px;

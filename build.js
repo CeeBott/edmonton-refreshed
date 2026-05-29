@@ -1824,6 +1824,9 @@ var guideGaps = [];
 auditFiles.forEach(function(f) {
   if (f.rel.indexOf('guides/') !== 0 || f.rel.slice(-11) !== '/index.html') return;
   if (f.rel === 'guides/index.html') return; // landing page is a CollectionPage, not an Article
+  // Redirect stubs (meta-refresh to another guide) carry no Article by design —
+  // skip them so the gap check only flags real articles that are missing one.
+  if (/<meta[^>]+http-equiv=["']?refresh/i.test(f.html)) return;
   var hasArticle = false, hasAuthor = false;
   extractJsonLd(f.html).forEach(function(doc) {
     walkNodes(doc, function(n) {
