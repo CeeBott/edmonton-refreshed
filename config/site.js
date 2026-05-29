@@ -44,7 +44,7 @@ module.exports = {
   // new profile (e.g. YouTube, Pinterest) — append the URL here and rebuild;
   // the hand-maintained pages still require a one-time manual sync.
   sameAs: [
-    'https://share.google/Vbc4WShKx0Q7NuRR9',     // Google Business Profile
+    'https://maps.app.goo.gl/Nipdt38odihmKEfG7',     // Google Business Profile
     'https://www.facebook.com/edmontonrefreshed',
   ],
 };
