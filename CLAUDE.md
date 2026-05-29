@@ -270,6 +270,9 @@ partials/credibility.js renderCredibility(variant) — buyer / seller / listing
 worker/index.js         Cloudflare Worker — sell-form handler
 worker/wrangler.toml    Worker deploy config
 llms.txt                Plain-text business summary for LLM crawlers
+robots.txt              Crawler policy — search/answer bots allowed, AI
+                          training crawlers blocked (also enforced at the
+                          Cloudflare edge). See §6.5.
 ```
 
 ## 4.2 Generated vs Authored Files
@@ -1027,6 +1030,17 @@ brand-, piece-type-, and situation-level commercial-intent queries. They are
   `/sell/selling-furniture-before-moving-edmonton/`,
   `/sell/downsizing-furniture-edmonton/`, `/sell/sell-furniture-fast-edmonton/`,
   `/sell/estate-furniture-edmonton/`, `/sell/sell-designer-furniture-edmonton/`.
+- *Eligibility page (1):* `/sell/what-we-buy-edmonton/` — a pre-qualification
+  page listing what we buy and what we don't (reusing the hub's `.sell-fit-grid`
+  buy/skip layout), with a "what affects the offer" section and an honest
+  "pieces we've passed on — and why" section. Its purpose is to reduce
+  unqualified leads by letting sellers self-select before the form. **Not
+  taxonomy-driven** — it is not a brand, piece type, or situation, so it does
+  *not* auto-thread into the nav dropdown or footer columns; it is hand-added to
+  the sitemap via the core-URL list in `build.js` `generateSitemap()` (see
+  §5.15) and linked from the sell hub's buy/skip grid via a `.sell-fit-note`
+  link. Carries the full mandatory schema + AEO stack like every other landing
+  page. Per the pricing-restraint rule it publishes no per-piece numbers.
 
 **Tone.** Knowledgeable, practical, honest about tradeoffs (consignment can
 outperform on the right piece; Marketplace can produce higher prices for some
@@ -1157,9 +1171,9 @@ See §10.13 for the deprecated patterns.
   `/guides/edmonton-furniture-consignment-resale-guide/`; moving →
   `/guides/selling-furniture-before-moving-edmonton/` and
   `/guides/moving-edmonton-furniture-keep-sell-replace/`; designer →
-  `/guides/how-to-sell-high-end-furniture-edmonton/` and
+  `/guides/who-buys-used-couches-edmonton/` and
   `/guides/best-sofa-brands-resale-value-edmonton/`; fast →
-  `/guides/sell-couch-sectional-fast-edmonton/`; estate →
+  `/guides/who-buys-used-couches-edmonton/`; estate →
   `/guides/selling-inherited-estate-furniture-edmonton/`; downsizing →
   `/guides/moving-edmonton-furniture-keep-sell-replace/`.
 
@@ -1234,8 +1248,8 @@ per URL: `{ "hash": "<8 hex>", "lastmod": "<ISO date>" }`. Commit it with
 source so lastmod history persists across machines and CI runs.
 
 The sitemap URL list is data-driven:
-- Homepage, `/sold/`, `/sell/`, `/about/`, `/privacy/`, `/guides/` are
-  hardcoded core URLs.
+- Homepage, `/sold/`, `/sell/`, `/sell/what-we-buy-edmonton/`, `/about/`,
+  `/privacy/`, `/guides/` are hardcoded core URLs.
 - Sell-landing pages come from `config/taxonomy.js` (`brands` +
   `furnitureTypes` + `situations`).
 - Guides are discovered by listing `guides/*/index.html`.
@@ -1433,7 +1447,8 @@ shopping surfaces.
 
 ## 6.5 AI Crawlability Philosophy
 
-The site is built to be read by AI crawlers as well as classic search bots:
+The site is built to be read by AI *search/answer* crawlers as well as classic
+search bots:
 
 - **Static fallbacks.** `#available-grid` and `#sold-grid` hold pre-rendered
   HTML so crawlers that do not execute JS still see full inventory; JavaScript
@@ -1445,6 +1460,21 @@ The site is built to be read by AI crawlers as well as classic search bots:
   whenever the brand list or contact info changes.
 - **`llms.txt`.** A plain-text business summary at the repo root for LLM
   crawlers; its "Rating" line is kept in sync with the review count (§8.4).
+- **Crawler policy (`robots.txt`).** Search and AI *search/answer* crawlers are
+  welcomed (they drive citations and referral traffic); AI *training* crawlers
+  (GPTBot, Google-Extended, CCBot, ClaudeBot, Applebot-Extended, Amazonbot,
+  meta-externalagent, anthropic-ai) are blocked, because they send no traffic
+  back and presence in a training corpus has no measurable value for a
+  single-city business. Blocking them does **not** affect AI-answer visibility —
+  that runs through separate search/answer user agents (OAI-SearchBot,
+  PerplexityBot, Claude-SearchBot, ChatGPT-User, Perplexity-User, Claude-User),
+  which stay fully allowed. **The policy lives in two places that must agree:**
+  the repo `robots.txt` (origin) and Cloudflare's managed AI-bot rule at the
+  edge (`Content-Signal: search=yes, ai-train=no`). Cloudflare prepends its
+  block to the served file regardless of the origin, so if you ever want to
+  reverse the training-crawler stance you must flip *both* the Cloudflare
+  dashboard setting and the origin file — editing `robots.txt` alone will not
+  change what crawlers actually receive.
 
 ## 6.6 Taxonomy & Guide Strategy
 

@@ -1242,7 +1242,17 @@ function discoverGuides() {
   var dir = path.join(ROOT, 'guides');
   if (!fs.existsSync(dir)) return [];
   return fs.readdirSync(dir, { withFileTypes: true })
-    .filter(function(e) { return e.isDirectory() && fs.existsSync(path.join(dir, e.name, 'index.html')); })
+    .filter(function(e) {
+      if (!e.isDirectory()) return false;
+      var file = path.join(dir, e.name, 'index.html');
+      if (!fs.existsSync(file)) return false;
+      // Skip redirect stubs (meta-refresh to a consolidated guide): they are
+      // noindex, so advertising them in the sitemap sends a mixed signal —
+      // crawl this, then don't index it. Same detection the entity-integrity
+      // audit uses below.
+      if (/<meta[^>]+http-equiv=["']?refresh/i.test(fs.readFileSync(file, 'utf8'))) return false;
+      return true;
+    })
     .map(function(e) { return BASE_URL + 'guides/' + e.name + '/'; })
     .sort();
 }
@@ -1532,6 +1542,7 @@ function buildUrlList(items, soldItems) {
     { loc: BASE_URL,                         changefreq: 'weekly',  priority: '1.0' },
     { loc: BASE_URL + 'sold/',               changefreq: 'weekly',  priority: '0.8', images: soldImages },
     { loc: BASE_URL + 'sell/',               changefreq: 'monthly', priority: '0.7' },
+    { loc: BASE_URL + 'sell/what-we-buy-edmonton/', changefreq: 'monthly', priority: '0.7' },
   ];
 
   // Sell-landing cluster — driven by config/taxonomy.js.

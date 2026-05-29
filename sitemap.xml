@@ -630,7 +630,13 @@
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/sell/</loc>
-    <lastmod>2026-05-28</lastmod>
+    <lastmod>2026-05-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://edmontonrefreshed.com/sell/what-we-buy-edmonton/</loc>
+    <lastmod>2026-05-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -732,13 +738,13 @@
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/sell/sell-furniture-fast-edmonton/</loc>
-    <lastmod>2026-05-28</lastmod>
+    <lastmod>2026-05-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/sell/sell-designer-furniture-edmonton/</loc>
-    <lastmod>2026-05-28</lastmod>
+    <lastmod>2026-05-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -797,12 +803,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://edmontonrefreshed.com/guides/how-to-sell-high-end-furniture-edmonton/</loc>
-    <lastmod>2026-05-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://edmontonrefreshed.com/guides/how-to-tell-if-your-sofa-is-high-quality-edmonton/</loc>
     <lastmod>2026-05-28</lastmod>
     <changefreq>monthly</changefreq>
@@ -810,7 +810,7 @@
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/guides/moving-edmonton-furniture-keep-sell-replace/</loc>
-    <lastmod>2026-05-28</lastmod>
+    <lastmod>2026-05-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -829,12 +829,6 @@
   <url>
     <loc>https://edmontonrefreshed.com/guides/sectional-sofa-cost-edmonton/</loc>
     <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://edmontonrefreshed.com/guides/sell-couch-sectional-fast-edmonton/</loc>
-    <lastmod>2026-05-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -863,12 +857,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://edmontonrefreshed.com/guides/selling-l-shaped-sectional-edmonton/</loc>
-    <lastmod>2026-05-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://edmontonrefreshed.com/guides/selling-leather-sofa-sectional-edmonton/</loc>
     <lastmod>2026-05-28</lastmod>
     <changefreq>monthly</changefreq>
@@ -881,20 +869,8 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://edmontonrefreshed.com/guides/selling-modular-sectional-edmonton/</loc>
-    <lastmod>2026-05-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://edmontonrefreshed.com/guides/selling-sectional-sofa-edmonton/</loc>
     <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://edmontonrefreshed.com/guides/selling-u-shaped-sectional-edmonton/</loc>
-    <lastmod>2026-05-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

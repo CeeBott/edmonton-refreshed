@@ -1,13 +1,48 @@
 # robots.txt — edmontonrefreshed.com
 #
-# Policy: search engines and AI search/answer engines are welcome — that is
-# how this site is discovered. Aggressive commercial scrapers and SEO-tool
-# crawlers that send no traffic back are blocked to reduce crawl noise.
+# Policy: search engines and AI *search/answer* engines are welcome — that is
+# how this site is discovered, and those crawlers send citations and referral
+# traffic back. AI *training* crawlers are blocked: they send no traffic back,
+# and presence in a model's training corpus has no measurable value for a
+# single-city furniture business. Blocking them does NOT reduce AI-answer
+# visibility — that runs through the separate search/answer user agents, which
+# stay fully allowed.
 #
-# Explicitly welcome (allowed by the default rule below): Googlebot, Bingbot,
+# Welcome (allowed by the default rule at the bottom): Googlebot, Bingbot,
 # Applebot, DuckDuckBot, OAI-SearchBot, ChatGPT-User, PerplexityBot,
-# Perplexity-User, Claude-SearchBot, Claude-User, Google-Extended, GPTBot,
-# ClaudeBot, CCBot — i.e. every search engine and every AI search/answer bot.
+# Perplexity-User, Claude-SearchBot, Claude-User — every search engine and
+# every AI search/answer bot.
+#
+# This same policy is enforced at the edge by Cloudflare's managed AI-bot rule
+# (Content-Signal: search=yes, ai-train=no). The rules below keep the origin
+# self-documenting and enforced even if the edge is bypassed. If you change the
+# policy in one place, change it in the other — see CLAUDE.md §6.5.
+
+# --- AI training crawlers: no referral value, blocked. (Search/answer bots are
+#     unaffected — they use separate user agents and fall under the * rule.) ---
+User-agent: GPTBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
+
+User-agent: Amazonbot
+Disallow: /
+
+User-agent: meta-externalagent
+Disallow: /
 
 # --- Aggressive scrapers / SEO-tool crawlers: no discovery value, blocked ---
 User-agent: Bytespider
@@ -25,7 +60,7 @@ Disallow: /
 User-agent: SemrushBot
 Disallow: /
 
-# --- Everyone else (all search engines + AI search crawlers): full access ---
+# --- Everyone else (all search engines + AI search/answer crawlers): full access ---
 User-agent: *
 Disallow:
 
