@@ -280,13 +280,16 @@ function generateSoldHTML(items) {
     var descLine = item.description
       ? '\n            <div class="card-description">' + escapeHtml(item.description) + '</div>'
       : '';
+    var titleLine = item.href
+      ? '            <div class="card-title"><a class="card-title-link" href="' + item.href + '">' + escapeHtml(item.title) + '</a></div>'
+      : '            <div class="card-title">' + escapeHtml(item.title) + '</div>';
 
     lines.push(
       '        <div class="card sold">',
       '          <div class="card-image-placeholder"><picture><source type="image/avif" srcset="' + avifSrcsetFor(imgSrc) + '" sizes="(max-width: 768px) 100vw, 530px"><source type="image/webp" srcset="' + webpSrcsetFor(imgSrc) + '" sizes="(max-width: 768px) 100vw, 530px"><img src="' + imgSrc + '" srcset="' + srcsetFor(imgSrc) + '" sizes="(max-width: 768px) 100vw, 530px" alt="' + alt + '" loading="lazy"></picture></div>',
       '          <div class="card-body">',
       '            <div class="card-meta"><div class="card-brand">' + escapeHtml(item.brand) + '</div><span class="sold-badge">Sold</span></div>',
-      '            <div class="card-title">' + escapeHtml(item.title) + '</div>' + descLine,
+      titleLine + descLine,
       '          </div>',
       '        </div>'
     );

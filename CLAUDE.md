@@ -856,12 +856,23 @@ Field rules:
   Shows a badge, hides the price, and skips listing-page generation.
 
 **Sold data shape** (`js/sold-data.js`) — `{ brand, title, description, images }`
-only. No `price`, no `specs`, no `comingSoon`. Image paths use the
-`../images/XX-NNN/` prefix — the same folder the photos were in while
+plus an optional `href`. No `price`, no `specs`, no `comingSoon`. Image paths use
+the `../images/XX-NNN/` prefix — the same folder the photos were in while
 active, just with a parent-relative `../` since `sold/index.html` is one
 level deep (§5.3 stable-URL convention). Legacy entries from before that
 convention still reference `../images/Sold Inventory/XX-NNN/`; leave those
 paths alone — they match the indexed URLs.
+
+- **`href`** (optional) — a root-relative URL (e.g.
+  `"/listings/la-z-boy-emric-right-facing-sectional/"`) to the piece's
+  surviving sold-stub listing page. When present, the sold card's title is
+  wrapped in `<a class="card-title-link">`, which inherits the sitewide
+  stretched-link behaviour (§7.6) so the whole card is clickable while the
+  carousel controls stay live. Both render paths honour it identically —
+  `buildSoldCard()` in `js/sold-data.js` (client) and `generateSoldHTML()` in
+  `build.js` (static crawler fallback). Omit it for sold pieces that never had
+  a dedicated listing page (most legacy entries), and the card renders as plain
+  unlinked text exactly as before.
 
 ### Listing page anatomy
 

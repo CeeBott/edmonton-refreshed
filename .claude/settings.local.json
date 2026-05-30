@@ -81,7 +81,9 @@
       "Bash(awk 'NR>=860 && NR<=880' sell/index.html)",
       "Bash(python3 -)",
       "WebFetch(domain:share.google)",
-      "Bash(echo \"---EXIT: $?---\")"
+      "Bash(echo \"---EXIT: $?---\")",
+      "Bash(git diff *)",
+      "Bash(rm -f .git/index.lock && git add .build-state.json guides/used-sofa-couch-value-edmonton/index.html index.html listings/b-b-italia-charles-sectional-edmonton/index.html listings/la-z-boy-roundabout-ottoman-edmonton/index.html sitemap.xml && git status --short)"
     ]
   }
 }
