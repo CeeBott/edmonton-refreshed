@@ -711,21 +711,40 @@ or `grep -h '?v=' index.html`.
   read naturally in prose, never as promotional inserts. If a guide refers to
   inventory only in general terms, update the `.guide-cta` instead of inserting
   mid-article links.
-- **Guide → sell cluster.** Every guide carries **2 contextual, in-prose
-  links into the sell cluster** — one in the **first third** of the article
-  (where reader intent forms), one **deeper in the body** at a topically
-  natural sentence. These are *in addition to* any `.guide-cta` box. Target
-  pages are assigned by topic match: a Natuzzi review → `/sell/natuzzi-edmonton/`
-  + `/sell/leather-sofa-edmonton/`; a moving guide → `/sell/selling-furniture-before-moving-edmonton/`
-  + `/sell/sell-furniture-fast-edmonton/`. Vary anchor text — never use the
-  identical phrase twice across the site, and never link the same sell page
-  twice from one guide. For B&B Italia and American Leather contexts, link
-  to `/sell/` directly (their brand sell pages are redirect stubs — never
-  internally link to a redirect). **Buyer guide exception**
+- **Guide → sell cluster.** Every **seller-intent guide** carries **4–5+
+  unique, contextual, in-prose links into the sell cluster** (more where they
+  read naturally) — at least one in the **first third** of the article (where
+  reader intent forms), the rest spread through the body at topically natural
+  sentences. These are *in addition to* any `.guide-cta` box and the sitewide
+  nav/footer (which already link the whole cluster on every page). Links live
+  inside `<article class="guide-body">` prose — **never inside JSON-LD schema**
+  (a duplicated FAQ answer often appears both visibly and in `FAQPage` JSON-LD;
+  link only the visible copy, keep schema text plain). Assign each link by the
+  word it sits on:
+  - **Brand name** (Natuzzi, Rove Concepts, EQ3, Crate & Barrel, Restoration
+    Hardware, West Elm) → that brand's `/sell/[brand]-edmonton/` page.
+    Exact-match brand-name anchors are the intended pattern and *may* repeat
+    across guides (this overrides the older "never reuse a phrase sitewide"
+    rule for brand anchors).
+  - **Configuration word** (sofa, couch, sectional, and their leather variants)
+    → the matching piece-type page (`/sell/sofa-edmonton/`,
+    `/sell/leather-sectional-edmonton/`, etc.). Match leather context to the
+    leather pages; keep fabric pieces on the non-leather pages.
+  - **Situational phrase** (downsizing, moving, estate, consignment,
+    fast/deadline, designer/name-brand/quality) → the matching situational page
+    (`/sell/downsizing-furniture-edmonton/`, `/sell/estate-furniture-edmonton/`,
+    `/sell/sell-designer-furniture-edmonton/`, etc.).
+  Aim for a mix across all three types. **Never link the same sell page twice
+  in-prose** (the `.listing-cta` "Get an Offer" buttons pointing at the page's
+  primary target are exempt — they're conversion CTAs, not contextual links),
+  and vary non-brand anchor text within a guide. For B&B Italia and American
+  Leather contexts, link to `/sell/` or a relevant piece-type page directly —
+  their brand sell pages are redirect stubs; never internally link to a
+  redirect. **Buyer guide exception**
   (`how-to-buy-used-sofa-edmonton`, `how-to-measure-sectional-sofa-edmonton`):
   give them **one** soft sell link as a "have one to sell?" aside, and spend
   the other contextual link pointing at **inventory** (homepage or a relevant
-  live listing). Two sell links in a buyer-intent article reads as spam.
+  live listing). Several sell links in a buyer-intent article reads as spam.
 - **Listing → guide.** `build.js`'s `brandGuideMap` auto-injects a
   "Read our full [Brand] buyer's guide for Edmonton" link inside the
   Description collapsible for brands with a published guide. Currently mapped:
