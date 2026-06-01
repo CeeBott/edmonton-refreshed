@@ -1821,7 +1821,7 @@ and the individual listing page with the new price formatted through
      {brand-or-config} directly — no listing, no waiting]. Our team handles the
      full, specialized in-home removal and transport."* Putting the sell link
      here (seller-intent context) instead of the intro avoids pulling buyers off
-     the page. (Edge case: when a brand name already contains the configuration word — e.g. *American Leather* — set `configuration` without the redundant word, like `'sofa'`, so the line doesn't read "American Leather leather sofa.") Do **not** restate that closing line inside `introHTML`.
+     the page. (Edge cases: when a brand name already contains the configuration word — e.g. *American Leather* — set `configuration` without the redundant word, like `'sofa'`, so the line doesn't read "American Leather leather sofa"; and for a piece with no distinct model name — e.g. an unbranded-model Fabbrica sectional — leave `model` empty (`''`) and the line drops the "{model} or" clause: "If you have a similar Fabbrica sectional…".) Do **not** restate that closing line inside `introHTML`.
    - Run `node scripts/gen-sold-stub.js <slug>`. It reads the piece's photos
      from the `sold-data.js` entry (so the `href` from step 2 must be in place
      first) and emits `listings/<slug>/index.html` byte-faithful to the

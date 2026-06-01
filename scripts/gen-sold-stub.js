@@ -267,6 +267,60 @@ var MANIFEST = {
     introHTML: 'The Natuzzi Editions Indimenticabile &mdash; Italian for &ldquo;unforgettable&rdquo; &mdash; is an elegantly tapered sofa, and this was the charcoal-grey version, with a subtle blue tint to its top-grain leather. A clean three-seater with softly flared track arms and tapered wood legs, about 78 inches wide. We picked it up in the Griesbach area of north Edmonton, and it sold as a set alongside its <a href="/listings/natuzzi-editions-indimenticabile-light-grey-leather-sofa/" style="color:#2c2c2c; text-decoration:underline; text-underline-offset:2px;">light-grey twin</a> &mdash; the two delivered together to a beautiful new duplex in Graydon Hills, south Edmonton. At around $5,800 CAD new, it came to us in good condition, with only slight scratch marks.',
     newsletterHeading: 'Looking for a leather sofa like the Natuzzi Editions Indimenticabile? Enter your email and we&rsquo;ll let you know when similar pieces come in.',
   },
+
+  'natuzzi-editions-indimenticabile-light-grey-leather-sofa': {
+    sku: 'NE-025',
+    price: '1325',
+    availability: 'SoldOut',
+    brand: 'Natuzzi Editions',
+    brandShort: 'Natuzzi',
+    h1: 'Indimenticabile Light Grey Top-Grain Leather Sofa',
+    model: 'Indimenticabile',
+    configuration: 'leather sofa',
+    sellHref: '/sell/natuzzi/',
+    altBase: 'Natuzzi Editions Indimenticabile Light Grey Top-Grain Leather Sofa',
+    metaDescription: 'This Natuzzi Editions Indimenticabile top-grain leather sofa in light grey has sold. Browse current available inventory at Edmonton Refreshed — curated pre-owned sofas and sectionals in Edmonton.',
+    twitterDescription: 'This Natuzzi Editions Indimenticabile light grey leather sofa has sold. Browse current available inventory at Edmonton Refreshed.',
+    productDescription: 'Natuzzi Editions Indimenticabile sofa in a light grey-bone top-grain leather, acquired in the Terra Losa neighbourhood of west Edmonton — a three-seater with softly flared track arms and tapered wood legs, about 78 inches wide, 38 deep, and 34 tall. Just two years old and in excellent, like-new condition; it sold as a set with its charcoal twin to a new duplex in Graydon Hills. This piece has sold; browse current available inventory at Edmonton Refreshed.',
+    introHTML: 'The Natuzzi Editions Indimenticabile &mdash; Italian for &ldquo;unforgettable&rdquo; &mdash; here in its lighter colourway: a soft grey-bone top-grain leather over the same elegantly tapered three-seat frame, with softly flared track arms and tapered wood legs, about 78 inches wide. We acquired it in the Terra Losa neighbourhood of west Edmonton, and at just two years old it was in excellent, like-new condition. It sold as a set alongside its <a href="/listings/natuzzi-editions-indimenticabile-charcoal-leather-sofa/" style="color:#2c2c2c; text-decoration:underline; text-underline-offset:2px;">charcoal twin</a>, the pair delivered together to a beautiful new duplex in Graydon Hills, south Edmonton.',
+    newsletterHeading: 'Looking for a leather sofa like the Natuzzi Editions Indimenticabile? Enter your email and we&rsquo;ll let you know when similar pieces come in.',
+  },
+
+  'natuzzi-editions-sollievo-leather-sofa': {
+    sku: 'NE-026',
+    price: '1150',
+    availability: 'SoldOut',
+    brand: 'Natuzzi Editions',
+    brandShort: 'Natuzzi',
+    h1: 'Sollievo Top-Grain Leather Sofa',
+    model: 'Sollievo',
+    configuration: 'leather sofa',
+    sellHref: '/sell/natuzzi/',
+    altBase: 'Natuzzi Editions Sollievo Top-Grain Leather Sofa',
+    metaDescription: 'This Natuzzi Editions Sollievo top-grain leather sofa in ivory has sold. Browse current available inventory at Edmonton Refreshed — curated pre-owned sofas and sectionals in Edmonton.',
+    twitterDescription: 'This Natuzzi Editions Sollievo ivory leather sofa has sold. Browse current available inventory at Edmonton Refreshed.',
+    productDescription: 'Natuzzi Editions Sollievo sofa in ivory/bone top-grain leather — the brand\'s comfort-forward model, with a relaxed plush profile, wide track arms, and splayed polished-chrome legs. A three-seater, 82 inches long and 36 deep, acquired from a large, beautiful home in the Granville neighbourhood of west Edmonton (one of several quality pieces we took from there). About eight years old yet in excellent, like-new condition with next to no cushion compression (original MSRP around $2,400 CAD). This piece has sold; browse current available inventory at Edmonton Refreshed.',
+    introHTML: 'The Natuzzi Editions Sollievo &mdash; Italian for &ldquo;relief&rdquo; &mdash; is the brand&rsquo;s comfort-forward sofa, with a softer, more relaxed seat than its tailored models. This one wore an ivory/bone top-grain leather over wide track arms and splayed polished-chrome legs, a three-seater measuring 82 inches long and 36 deep. We acquired it from a large, beautiful home in the Granville neighbourhood of west Edmonton &mdash; one of several quality pieces from that house &mdash; and at around eight years old its cushions had next to no compression, leaving it in excellent, like-new condition (it retailed new for roughly $2,400 CAD).',
+    newsletterHeading: 'Looking for a leather sofa like the Natuzzi Editions Sollievo? Enter your email and we&rsquo;ll let you know when similar pieces come in.',
+  },
+
+  'fabbrica-charcoal-fabric-sectional': {
+    sku: 'FS-022',
+    price: '1099',
+    availability: 'SoldOut',
+    brand: 'Fabbrica',
+    brandShort: 'Fabbrica',
+    h1: 'Charcoal Performance Fabric Sectional',
+    model: '',
+    configuration: 'sectional',
+    sellHref: '/sell/sectional/',
+    altBase: 'Fabbrica Charcoal Performance Fabric Sectional',
+    metaDescription: 'This Fabbrica charcoal performance-fabric sectional has sold. Browse current available inventory at Edmonton Refreshed — curated pre-owned sofas and sectionals in Edmonton.',
+    twitterDescription: 'This Fabbrica charcoal performance-fabric sectional has sold. Browse current available inventory at Edmonton Refreshed.',
+    productDescription: 'Fabbrica sectional in charcoal performance fabric — a sofa with a right-facing chaise, wide track arms, deep down-filled cushions, and block wood feet, picked up in the Magrath Heights neighbourhood of Edmonton. Fabbrica is a high-end European upholstery brand (this unit retailed new around $8,000 CAD); at roughly eight years old the down cushions fluffed back up like new and the performance fabric was in great shape. Measures 118 inches along the sofa with a 78-inch chaise, 38 inches deep and 29 tall, seating three to four. Sold in good condition. This piece has sold; browse current available inventory at Edmonton Refreshed.',
+    introHTML: 'This Fabbrica sectional pairs a sofa with a right-facing chaise in a charcoal performance fabric &mdash; wide track arms, deep down-filled cushions, and a low, modern stance on block wood feet. Fabbrica is a high-end European upholstery brand, niche in Edmonton but genuinely luxurious; this unit retailed new for around $8,000 CAD. We picked it up in the Magrath Heights neighbourhood of Edmonton, and at roughly eight years old the down cushions had fluffed right back up like new, with the performance fabric in great shape. It measures 118 inches along the sofa with a 78-inch chaise, 38 inches deep and 29 tall, seating three to four.',
+    newsletterHeading: 'Looking for a sectional like this Fabbrica? Enter your email and we&rsquo;ll let you know when similar pieces come in.',
+  },
 };
 
 // ── Helpers ──────────────────────────────────────────────────
@@ -524,7 +578,6 @@ function buildBody(m, bases, chrome) {
 
   // Fixed closing sell line (constant structure across the cluster; only
   // Model / Brand / Configuration vary). Always the final body paragraph.
-  var article = /^[aeiou]/i.test(m.model) ? 'an' : 'a';
   // The sell CTA lives ONLY here, in seller-intent context. It is deliberately
   // NOT in the intro: most visitors to a sold page are buyers, and a "/sell/"
   // link on a descriptive phrase ("leather sofa") reads as a buyer catalogue
@@ -539,8 +592,14 @@ function buildBody(m, bases, chrome) {
   var pitch = m.sellHref
     ? '<a href="' + m.sellHref + '" style="color:#2c2c2c; text-decoration:underline; text-underline-offset:2px;">' + buyPhrase + '</a>'
     : buyPhrase;
-  var endingLine = 'If you have ' + article + ' ' + esc(m.model) + ' or a similar ' + esc(m.brandShort || m.brand) +
-    ' ' + esc(m.configuration) + ' you&rsquo;re thinking about selling, ' + pitch +
+  // Lead with the model when there is one ("If you have a Vigore or a similar
+  // Natuzzi leather sectional…"); model-less pieces drop that clause
+  // ("If you have a similar Fabbrica sectional…").
+  var brandOrShort = esc(m.brandShort || m.brand);
+  var leadIn = m.model
+    ? 'If you have ' + (/^[aeiou]/i.test(m.model) ? 'an' : 'a') + ' ' + esc(m.model) + ' or a similar ' + brandOrShort + ' ' + esc(m.configuration)
+    : 'If you have a similar ' + brandOrShort + ' ' + esc(m.configuration);
+  var endingLine = leadIn + ' you&rsquo;re thinking about selling, ' + pitch +
     '. Our team handles the full, specialized in-home removal and transport.';
 
   var bodyInner = '' +

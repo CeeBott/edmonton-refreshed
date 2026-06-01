@@ -210,7 +210,8 @@ var soldItems = [
   {
     brand: "Natuzzi Editions",
     title: "Sollievo Top-Grain Leather Sofa",
-    description: "Sollievo means 'relief' in Italian — and this Natuzzi Editions sofa earns it. Designed with comfort as the priority, the Sollievo has a softer, more relaxed seat profile compared to Natuzzi's tailored models, while still maintaining the top-grain leather upholstery and Italian construction the brand is known for.",
+    href: "/listings/natuzzi-editions-sollievo-leather-sofa/",
+    description: "Sollievo means 'relief' in Italian — and this Natuzzi Editions sofa earns it. Designed with comfort as the priority, the Sollievo has a softer, more relaxed seat profile compared to Natuzzi's tailored models, while still maintaining the ivory/bone top-grain leather upholstery and Italian construction the brand is known for. Acquired from a large home in the Granville neighbourhood of west Edmonton.",
     images: [
       "../images/Sold Inventory/NE-026/natuzzi-editions-01.jpeg",
       "../images/Sold Inventory/NE-026/natuzzi-editions-03.jpeg",
@@ -222,7 +223,8 @@ var soldItems = [
   {
     brand: "Natuzzi Editions",
     title: "Indimenticabile Top-Grain Leather Sofa",
-    description: "A second Indimenticabile through our doors — further proof of the model's timeless appeal. This Natuzzi Editions sofa pairs refined Italian design with top-grain leather upholstery and an understated profile that complements rather than overpowers a room. Clean, elegant, and built to last.",
+    href: "/listings/natuzzi-editions-indimenticabile-light-grey-leather-sofa/",
+    description: "A second Indimenticabile through our doors — further proof of the model's timeless appeal. This Natuzzi Editions sofa pairs refined Italian design with a light grey-bone top-grain leather upholstery and an understated profile that complements rather than overpowers a room. Acquired in Terra Losa and sold as a set with its charcoal twin to a Graydon Hills duplex. Clean, elegant, and built to last.",
     images: [
       "../images/Sold Inventory/NE-025/natuzzi-editions-02.jpeg",
       "../images/Sold Inventory/NE-025/natuzzi-editions-01.jpeg",
@@ -234,7 +236,8 @@ var soldItems = [
   {
     brand: "Fabbrica",
     title: "Charcoal Performance Fabric Sofa + Chaise",
-    description: "A practical and good-looking sofa and chaise combination from Fabbrica, upholstered in a durable charcoal performance fabric. Performance fabric is engineered to resist stains, pilling, and wear — ideal for households with kids or pets. Fabbrica is a respected Canadian upholstery manufacturer known for customizable, contract-grade builds.",
+    href: "/listings/fabbrica-charcoal-fabric-sectional/",
+    description: "A practical and good-looking sofa and chaise combination from Fabbrica, upholstered in a durable charcoal performance fabric with down-filled cushions. Performance fabric is engineered to resist stains, pilling, and wear — ideal for households with kids or pets. Fabbrica is a high-end European upholstery brand — niche in Edmonton, but built to a luxury standard. Picked up in Magrath Heights.",
     images: [
       "../images/Sold Inventory/FS-022/fabbrica-08.jpeg",
       "../images/Sold Inventory/FS-022/fabbrica-01.jpeg",
@@ -260,14 +263,17 @@ var soldItems = [
     ]
   },
   {
-    brand: "Flexsteel",
-    title: "Power Headrest & Rocker Recliner",
-    description: "A premium power recliner from Flexsteel, featuring both a motorized headrest and full rocking mechanism — rare features in the same chair. Flexsteel is an American manufacturer with over 130 years of history, renowned for their patented Blue Steel Spring foundation. This recliner is engineered for daily use and long-term comfort.",
+    brand: "Natuzzi Italia",
+    title: "Full-Grain Aniline Leather Loveseat Set",
+    description: "A rare find — a loveseat set from Natuzzi Italia, the premium parent brand above Natuzzi Editions, upholstered in full-grain aniline leather. This is the pinnacle of leather quality: undyed hides selected for their natural beauty, with zero surface coating. The result is a supple, breathing leather that develops a rich patina over decades. Italian luxury at its finest.",
     images: [
-      "../images/Sold Inventory/FR-023/flexsteel-01.jpeg",
-      "../images/Sold Inventory/FR-023/flexsteel-02.jpeg",
-      "../images/Sold Inventory/FR-023/flexsteel-03.jpeg",
-      "../images/Sold Inventory/FR-023/flexsteel-04.jpeg",
+      "../images/Sold Inventory/NI-006/natuzzi-italia-01.jpeg",
+      "../images/Sold Inventory/NI-006/natuzzi-italia-02.jpeg",
+      "../images/Sold Inventory/NI-006/natuzzi-italia-03.jpeg",
+      "../images/Sold Inventory/NI-006/natuzzi-italia-04.jpeg",
+      "../images/Sold Inventory/NI-006/natuzzi-italia-05.jpeg",
+      "../images/Sold Inventory/NI-006/natuzzi-italia-06.jpeg",
+      "../images/Sold Inventory/NI-006/natuzzi-italia-07.jpeg",
     ]
   },
   {
@@ -360,17 +366,14 @@ var soldItems = [
     ]
   },
   {
-    brand: "Natuzzi Italia",
-    title: "Full-Grain Aniline Leather Loveseat Set",
-    description: "A rare find — a loveseat set from Natuzzi Italia, the premium parent brand above Natuzzi Editions, upholstered in full-grain aniline leather. This is the pinnacle of leather quality: undyed hides selected for their natural beauty, with zero surface coating. The result is a supple, breathing leather that develops a rich patina over decades. Italian luxury at its finest.",
+    brand: "Flexsteel",
+    title: "Power Headrest & Rocker Recliner",
+    description: "A premium power recliner from Flexsteel, featuring both a motorized headrest and full rocking mechanism — rare features in the same chair. Flexsteel is an American manufacturer with over 130 years of history, renowned for their patented Blue Steel Spring foundation. This recliner is engineered for daily use and long-term comfort.",
     images: [
-      "../images/Sold Inventory/NI-006/natuzzi-italia-01.jpeg",
-      "../images/Sold Inventory/NI-006/natuzzi-italia-02.jpeg",
-      "../images/Sold Inventory/NI-006/natuzzi-italia-03.jpeg",
-      "../images/Sold Inventory/NI-006/natuzzi-italia-04.jpeg",
-      "../images/Sold Inventory/NI-006/natuzzi-italia-05.jpeg",
-      "../images/Sold Inventory/NI-006/natuzzi-italia-06.jpeg",
-      "../images/Sold Inventory/NI-006/natuzzi-italia-07.jpeg",
+      "../images/Sold Inventory/FR-023/flexsteel-01.jpeg",
+      "../images/Sold Inventory/FR-023/flexsteel-02.jpeg",
+      "../images/Sold Inventory/FR-023/flexsteel-03.jpeg",
+      "../images/Sold Inventory/FR-023/flexsteel-04.jpeg",
     ]
   },
   {
