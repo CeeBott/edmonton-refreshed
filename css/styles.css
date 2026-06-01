@@ -2327,6 +2327,13 @@ h3.faq-question,
   margin-top: 8px;
   line-height: 1.5;
 }
+.guide-hero-image figcaption a {
+  color: var(--color-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s;
+}
+.guide-hero-image figcaption a:hover { color: var(--color-text-secondary); }
 .guide-body p {
   font-size: 1.0625rem;
   line-height: 1.75;
