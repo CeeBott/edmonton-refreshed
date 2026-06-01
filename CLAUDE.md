@@ -1506,7 +1506,21 @@ page becomes a **sold stub** (§8.3): it stays indexed
 `availability` to `SoldOut` — deliberately **not** `OutOfStock`. `SoldOut`
 signals the item will not return, which is consistent with the "One of One"
 brand positioning (and matches the visible "This piece has sold." overlay, so
-there is no schema/page mismatch for Google to flag). A stub is not just kept
+there is no schema/page mismatch for Google to flag).
+
+**No price in the sold-stub `Offer`.** The `Offer` carries `availability:
+SoldOut` but **no `price` / `priceCurrency`**. Three reasons: (a) the page
+displays no price, so emitting one violates Google's "markup must reflect
+visible content" guideline; (b) a `SoldOut` item is ineligible for
+price-bearing product rich results regardless, so the figure does zero
+discovery work — `brand`, `image` + the `ImageObject` layer (§5.16), and
+`availability` carry all the real signal; and (c) a machine-readable price
+that isn't on the page still leaks to AI/answer crawlers and scrapers,
+handing sellers a public negotiation anchor against the acquisition margins
+the business depends on (the same reason sell pages publish no per-piece
+figures — §5.13, §10.12). `availability: SoldOut` alone conveys the state.
+
+A stub is not just kept
 alive but actively surfaced: any sold piece carrying an `href` is emitted in
 `sitemap.xml` (priority `0.5`, with its photos as image children) and listed in
 `llms.txt`, so search and AI crawlers discover it directly rather than only via
@@ -1826,8 +1840,10 @@ and the individual listing page with the new price formatted through
      from the `sold-data.js` entry (so the `href` from step 2 must be in place
      first) and emits `listings/<slug>/index.html` byte-faithful to the
      reference stubs: `SoldOut` `Product` schema (keeps `sku`, `name`,
-     `description`, `brand`, `image`, `itemCondition`, `offers.price`; no
-     `priceValidUntil` / return / shipping), `BreadcrumbList`, per-photo
+     `description`, `brand`, `image`, `itemCondition`, and an `offers` block
+     carrying `availability: SoldOut` but **no `price` / `priceCurrency`** —
+     see §6.3 for why; no `priceValidUntil` / return / shipping),
+     `BreadcrumbList`, per-photo
      `ImageObject` gallery, carousel + thumbnails, `robots: index, follow`, the
      canonical static GA snippet (§9.2), and a `dateModified` of today.
    - **Verify the copy against the photos** — legacy `sold-data.js` descriptions

@@ -92,7 +92,8 @@
       "Bash(grep -o 'margin-top:18px[^>]*>[^<]*<a href=\"/sell/' listings/__TRACKED_VAR__/index.html)",
       "Bash(git remote *)",
       "Bash(echo \"\\(no token embedded → $\\(git remote get-url origin)",
-      "Bash([ -d \"listings/$slug\" ])"
+      "Bash([ -d \"listings/$slug\" ])",
+      "Bash(grep -n 'offers.price; no priceValidUntil\\\\|keeps `sku`' CLAUDE.md)"
     ]
   }
 }

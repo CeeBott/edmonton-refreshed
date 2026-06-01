@@ -658,8 +658,11 @@ function buildHead(m, bases, pageUrl) {
     '    "itemCondition": "https://schema.org/UsedCondition",\n' +
     '    "offers": {\n' +
     '      "@type": "Offer",\n' +
-    '      "priceCurrency": "CAD",\n' +
-    '      "price": "' + m.price + '",\n' +
+    // No price/priceCurrency: a sold piece displays no price, and emitting a
+    // machine-readable figure that isn't on the page both violates Google's
+    // "markup reflects visible content" rule and leaks a seller-side
+    // negotiation anchor to AI/answer crawlers. availability:SoldOut carries
+    // the state; price is inert on a SoldOut item (no rich-result eligibility).
     '      "availability": "https://schema.org/' + m.availability + '",\n' +
     '      "url": "' + pageUrl + '",\n' +
     '      "eligibleRegion": { "@type": "Country", "name": "CA" },\n' +
