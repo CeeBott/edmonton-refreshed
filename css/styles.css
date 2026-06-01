@@ -971,6 +971,31 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   margin-top: 28px;
 }
 
+.sell-area-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 48px;
+  row-gap: 8px;
+  max-width: var(--col-narrow);
+  margin: 20px auto 0;
+  padding: 0;
+}
+
+.sell-area-list li {
+  position: relative;
+  padding-left: 18px;
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+}
+
+.sell-area-list li::before {
+  content: "\2022";
+  position: absolute;
+  left: 0;
+  color: var(--color-text-secondary);
+}
+
 /* ── Reviews ──
    .reviews-inner lives inside #reviews-section (a transparent JS mount
    wrapper, neutralized in the layout primitive above), so it owns its
