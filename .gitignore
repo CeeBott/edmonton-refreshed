@@ -1,3 +1,8 @@
 .DS_Store
 Thumbs.db
 .claude/worktrees/
+
+# Local-only: Cloudflare 301 redirect map for the sell-URL migration (§10.15).
+# Upload to Cloudflare Bulk Redirects, then it can be deleted — must NOT ship
+# with the site (.nojekyll means root files are served raw).
+cloudflare-301-redirects.csv

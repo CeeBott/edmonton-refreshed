@@ -83,7 +83,13 @@
       "WebFetch(domain:share.google)",
       "Bash(echo \"---EXIT: $?---\")",
       "Bash(git diff *)",
-      "Bash(rm -f .git/index.lock && git add .build-state.json guides/used-sofa-couch-value-edmonton/index.html index.html listings/b-b-italia-charles-sectional-edmonton/index.html listings/la-z-boy-roundabout-ottoman-edmonton/index.html sitemap.xml && git status --short)"
+      "Bash(rm -f .git/index.lock && git add .build-state.json guides/used-sofa-couch-value-edmonton/index.html index.html listings/b-b-italia-charles-sectional-edmonton/index.html listings/la-z-boy-roundabout-ottoman-edmonton/index.html sitemap.xml && git status --short)",
+      "Bash(node scripts/gen-sold-stub.js natuzzi-editions-vigore-leather-sectional)",
+      "Bash(grep -n '^## 5.15\\\\|^## 5.16\\\\|^## 6.3\\\\|^## 6.5\\\\|^## 8.3\\\\|^## 8.4\\\\|the active listings\\\\.$\\\\|never had$\\\\|brand positioning\\\\.' CLAUDE.md)",
+      "Bash(echo \"EXIT: $?\")",
+      "Bash(python3 -m http.server 4321 --bind 127.0.0.1)",
+      "Bash(node scripts/gen-sold-stub.js)",
+      "Bash(grep -o 'margin-top:18px[^>]*>[^<]*<a href=\"/sell/' listings/__TRACKED_VAR__/index.html)"
     ]
   }
 }

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Permanent redirect to https://edmontonrefreshed.com/sell/what-we-buy/. Page retained so the old indexed URL
+       consolidates its equity to the destination via rel=canonical. A true HTTP
+       301 is enforced at the Cloudflare edge; this meta-refresh + canonical is
+       the in-repo fallback (GitHub Pages can't emit a 301 from a static file). -->
+  <meta http-equiv="refresh" content="0; url=https://edmontonrefreshed.com/sell/what-we-buy/">
+  <link rel="canonical" href="https://edmontonrefreshed.com/sell/what-we-buy/">
+
+  <!-- Google tag (gtag.js) — canonical static snippet so GA Tag Coverage /
+       validators detect the tag without depending on real pageviews. -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8MN82PPZRZ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-8MN82PPZRZ');
+  </script>
+
+  <title>This page has moved | Edmonton Refreshed</title>
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <meta name="description" content="This page has moved to https://edmontonrefreshed.com/sell/what-we-buy/.">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:locale" content="en_CA">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://edmontonrefreshed.com/sell/what-we-buy/">
+  <meta property="og:title" content="This page has moved | Edmonton Refreshed">
+  <meta property="og:site_name" content="Edmonton Refreshed">
+
+  <script>window.location.replace("https://edmontonrefreshed.com/sell/what-we-buy/");</script>
+</head>
+<body>
+  <main>
+    <p>This page has moved to <a href="https://edmontonrefreshed.com/sell/what-we-buy/">https://edmontonrefreshed.com/sell/what-we-buy/</a>.</p>
+  </main>
+</body>
+</html>

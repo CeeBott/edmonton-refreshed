@@ -2,9 +2,10 @@
  * Site config — city-specific values.
  *
  * To spin up a new city deployment (e.g., Calgary), fork the repo and edit
- * this file. URLs in config/taxonomy.js are templated against `citySlug`, so
- * a single rename here propagates through the nav, footer, and sell-landing
- * URL generation in build.js.
+ * this file. Sell-landing URLs are city-agnostic paths (`/sell/<slug>/`) served
+ * from a per-city domain, so they no longer carry a city slug; the local signal
+ * lives in copy, schema, and the domain. `citySlug` is retained for city
+ * identity but no longer drives sell-landing URL generation.
  */
 module.exports = {
   // City

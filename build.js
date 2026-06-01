@@ -818,14 +818,14 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions) {
   // Mirrors the brandGuideMap pattern above so adding a new brand sell page
   // is a one-line change here.
   var brandSellMap = {
-    'Natuzzi':              { href: '/sell/natuzzi-edmonton/',              anchor: 'sell your Natuzzi piece' },
-    'Natuzzi Editions':     { href: '/sell/natuzzi-edmonton/',              anchor: 'sell your Natuzzi piece' },
-    'Natuzzi Italia':       { href: '/sell/natuzzi-edmonton/',              anchor: 'sell your Natuzzi piece' },
-    'Rove Concepts':        { href: '/sell/rove-concepts-edmonton/',        anchor: 'sell your Rove Concepts piece' },
-    'EQ3':                  { href: '/sell/eq3-edmonton/',                  anchor: 'sell your EQ3 piece' },
-    'Crate & Barrel':       { href: '/sell/crate-and-barrel-edmonton/',     anchor: 'sell your Crate &amp; Barrel piece' },
-    'Restoration Hardware': { href: '/sell/restoration-hardware-edmonton/', anchor: 'sell your Restoration Hardware piece' },
-    'West Elm':             { href: '/sell/west-elm-edmonton/',             anchor: 'sell your West Elm piece' }
+    'Natuzzi':              { href: '/sell/natuzzi/',              anchor: 'sell your Natuzzi piece' },
+    'Natuzzi Editions':     { href: '/sell/natuzzi/',              anchor: 'sell your Natuzzi piece' },
+    'Natuzzi Italia':       { href: '/sell/natuzzi/',              anchor: 'sell your Natuzzi piece' },
+    'Rove Concepts':        { href: '/sell/rove-concepts/',        anchor: 'sell your Rove Concepts piece' },
+    'EQ3':                  { href: '/sell/eq3/',                  anchor: 'sell your EQ3 piece' },
+    'Crate & Barrel':       { href: '/sell/crate-and-barrel/',     anchor: 'sell your Crate &amp; Barrel piece' },
+    'Restoration Hardware': { href: '/sell/restoration-hardware/', anchor: 'sell your Restoration Hardware piece' },
+    'West Elm':             { href: '/sell/west-elm/',             anchor: 'sell your West Elm piece' }
   };
   var sellLineTarget;
   if (brandSellMap[item.brand]) {
@@ -836,16 +836,16 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions) {
     var hasLeather = /leather|nubuck|aniline|top-grain|full-grain/.test(t);
     if (/sectional/.test(t)) {
       sellLineTarget = hasLeather
-        ? { href: '/sell/leather-sectional-edmonton/', anchor: 'sell your leather sectional' }
-        : { href: '/sell/sectional-edmonton/',         anchor: 'sell your sectional' };
+        ? { href: '/sell/leather-sectional/', anchor: 'sell your leather sectional' }
+        : { href: '/sell/sectional/',         anchor: 'sell your sectional' };
     } else if (/sofa/.test(t)) {
       sellLineTarget = hasLeather
-        ? { href: '/sell/leather-sofa-edmonton/', anchor: 'sell your leather sofa' }
-        : { href: '/sell/sofa-edmonton/',         anchor: 'sell your sofa' };
+        ? { href: '/sell/leather-sofa/', anchor: 'sell your leather sofa' }
+        : { href: '/sell/sofa/',         anchor: 'sell your sofa' };
     } else if (/couch|loveseat/.test(t)) {
       sellLineTarget = hasLeather
-        ? { href: '/sell/leather-couch-edmonton/', anchor: 'sell your leather couch' }
-        : { href: '/sell/couch-edmonton/',         anchor: 'sell your couch' };
+        ? { href: '/sell/leather-couch/', anchor: 'sell your leather couch' }
+        : { href: '/sell/couch/',         anchor: 'sell your couch' };
     } else {
       sellLineTarget = { href: '/sell/', anchor: 'sell your piece' };
     }
@@ -887,7 +887,7 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions) {
       });
       soldSameBrand.forEach(function(s) {
         relatedCards.push(
-          '<a class="listing-related-card" href="/sold/">' +
+          '<a class="listing-related-card" href="' + (s.href || '/sold/') + '">' +
             '<p class="listing-related-eyebrow">Recently Sold</p>' +
             '<p class="listing-related-title">' + escapeHtml(s.brand + ' ' + s.title) + '</p>' +
           '</a>'
@@ -1353,63 +1353,63 @@ var LANDING_SOLD_SCHEMA_META = {
     name: 'Recently Purchased Pieces in Edmonton',
     description: 'Photos of pre-owned sofas and sectionals recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.',
   },
-  'sell/natuzzi-edmonton/index.html': {
+  'sell/natuzzi/index.html': {
     name: 'Recently Purchased Natuzzi Pieces in Edmonton',
     description: 'Photos of pre-owned Natuzzi Italia and Natuzzi Editions sofas and sectionals purchased and resold by Edmonton Refreshed.',
   },
-  'sell/selling-furniture-before-moving-edmonton/index.html': {
+  'sell/selling-furniture-before-moving/index.html': {
     name: 'Recently Purchased Pieces from Edmonton Sellers',
     description: 'Photos of pre-owned sofas and sectionals recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.',
   },
-  'sell/downsizing-furniture-edmonton/index.html': {
+  'sell/downsizing-furniture/index.html': {
     name: 'Recently Purchased Pieces from Edmonton Households',
     description: 'Photos of pre-owned sofas and sectionals recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.',
   },
-  'sell/furniture-consignment-edmonton/index.html': {
+  'sell/furniture-consignment/index.html': {
     name: 'Recently Purchased Pieces in Edmonton — Direct Buyouts',
     description: 'Photos of pre-owned sofas and sectionals purchased outright in Edmonton — an alternative to local consignment channels.',
   },
-  'sell/estate-furniture-edmonton/index.html': {
+  'sell/estate-furniture/index.html': {
     name: 'Recently Purchased Pieces from Edmonton Estates and Family Homes',
     description: 'Photos of pre-owned sofas and sectionals purchased from estates and family homes across Edmonton and surrounding communities.',
   },
-  'sell/couch-edmonton/index.html': {
+  'sell/couch/index.html': {
     name: 'Recently Purchased Couches in Edmonton',
     description: 'Photos of pre-owned couches and sofas recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.',
   },
-  'sell/sectional-edmonton/index.html': {
+  'sell/sectional/index.html': {
     name: 'Recently Purchased Sectionals in Edmonton',
     description: 'Photos of pre-owned sectionals recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.',
   },
-  'sell/sell-furniture-fast-edmonton/index.html': {
+  'sell/sell-furniture-fast/index.html': {
     name: 'Recently Purchased Pieces in Edmonton — Fast Buyouts',
     description: 'Photos of pre-owned sofas and sectionals recently purchased on tight timelines by Edmonton Refreshed across Edmonton and surrounding communities.',
   },
-  'sell/sell-designer-furniture-edmonton/index.html': {
+  'sell/sell-designer-furniture/index.html': {
     name: 'Recently Purchased Designer Pieces in Edmonton',
     description: 'Photos of pre-owned designer and premium sofas and sectionals recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.',
   },
-  'sell/leather-sofa-edmonton/index.html': {
+  'sell/leather-sofa/index.html': {
     name: 'Recently Purchased Leather Sofas in Edmonton',
     description: 'Photos of pre-owned leather sofas recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.',
   },
-  'sell/leather-sectional-edmonton/index.html': {
+  'sell/leather-sectional/index.html': {
     name: 'Recently Purchased Leather Sectionals in Edmonton',
     description: 'Photos of pre-owned leather sectionals recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.',
   },
-  'sell/leather-couch-edmonton/index.html': {
+  'sell/leather-couch/index.html': {
     name: 'Recently Purchased Leather Couches in Edmonton',
     description: 'Photos of pre-owned leather couches recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.',
   },
-  'sell/crate-and-barrel-edmonton/index.html': {
+  'sell/crate-and-barrel/index.html': {
     name: 'Recently Purchased Crate & Barrel Pieces in Edmonton',
     description: 'Photos of pre-owned Crate & Barrel sofas and sectionals — Lounge, Axis, Gather, Rochelle and others — purchased and resold by Edmonton Refreshed.',
   },
-  'sell/rove-concepts-edmonton/index.html': {
+  'sell/rove-concepts/index.html': {
     name: 'Recently Purchased Rove Concepts Pieces in Edmonton',
     description: 'Photos of pre-owned Rove Concepts sofas and sectionals — Milo, Porter, Kaye, Luca, and others — purchased and resold by Edmonton Refreshed.',
   },
-  'sell/eq3-edmonton/index.html': {
+  'sell/eq3/index.html': {
     name: 'Recently Purchased EQ3 Pieces in Edmonton',
     description: 'Photos of pre-owned EQ3 sofas and sectionals — Replay, Remi, Salema, Cello, and others — purchased and resold by Edmonton Refreshed.',
   },
@@ -1533,10 +1533,13 @@ function injectLandingSoldSchema(html, filepath) {
 
 // Build the canonical URL list with metadata. Order is stable for diff readability.
 function buildUrlList(items, soldItems) {
-  // Sold-inventory images attach to the /sold/ gallery URL — that page is
-  // where these photos actually render (as cards in #sold-grid). Sold-stub
-  // listing pages show no images, so they don't claim any.
+  // Sold-inventory images attach to the /sold/ gallery URL — that page is where
+  // these photos render (as cards in #sold-grid). Pieces that now have their own
+  // sold-stub listing page (item.href) claim their photos on that dedicated page
+  // instead (see the sold-stub loop below), so they're excluded here to keep one
+  // canonical page per image.
   var soldImages = (soldItems || []).reduce(function(acc, item) {
+    if (item.href) return acc;
     (item.images || []).forEach(function(p) { acc.push(imagePathToUrl(p)); });
     return acc;
   }, []);
@@ -1545,12 +1548,12 @@ function buildUrlList(items, soldItems) {
     { loc: BASE_URL,                         changefreq: 'weekly',  priority: '1.0' },
     { loc: BASE_URL + 'sold/',               changefreq: 'weekly',  priority: '0.8', images: soldImages },
     { loc: BASE_URL + 'sell/',               changefreq: 'monthly', priority: '0.7' },
-    { loc: BASE_URL + 'sell/what-we-buy-edmonton/', changefreq: 'monthly', priority: '0.7' },
+    { loc: BASE_URL + 'sell/what-we-buy/', changefreq: 'monthly', priority: '0.7' },
   ];
 
   // Sell-landing cluster — driven by config/taxonomy.js.
   var tax = require('./config/taxonomy');
-  function pushSell(slug) { urls.push({ loc: BASE_URL + 'sell/' + slug + '-edmonton/', changefreq: 'monthly', priority: '0.7' }); }
+  function pushSell(slug) { urls.push({ loc: BASE_URL + 'sell/' + slug + '/', changefreq: 'monthly', priority: '0.7' }); }
   tax.brands.forEach(function(b) { pushSell(b.slug); });
   tax.furnitureTypes.forEach(function(p) { pushSell(p.slug); });
   tax.situations.forEach(function(s) { pushSell(s.slug); });
@@ -1575,6 +1578,20 @@ function buildUrlList(items, soldItems) {
       changefreq: 'weekly',
       priority: '0.9',
       images: images
+    });
+  });
+
+  // Sold-stub listing pages — any sold piece with an href has a surviving,
+  // indexable /listings/<slug>/ page (see CLAUDE.md §8.3, §6.3). It carries the
+  // piece's photos, so it earns its own sitemap entry with <image:image>
+  // children. Lower priority than live inventory; the page rarely changes.
+  (soldItems || []).forEach(function(item) {
+    if (!item.href) return;
+    urls.push({
+      loc: BASE_URL + item.href.replace(/^\//, ''),
+      changefreq: 'monthly',
+      priority: '0.5',
+      images: (item.images || []).map(imagePathToUrl)
     });
   });
 
@@ -1730,6 +1747,40 @@ availableItems.forEach(function(item) {
 //      Files without partial markers are left alone for those partials;
 //      every file still has its asset versions rewritten so cache-busting
 //      stays in sync.
+// Sold-card deep-linking: any .sell-landing-sold-grid card whose photo belongs
+// to a piece that now has a sold-stub listing page (sold-data.js href) links
+// straight to that stub in a new tab, instead of the broad /sold/ gallery — so
+// the visitor isn't pulled off the sell page. Driven entirely by sold-data.js
+// hrefs (single source of truth): add a stub and every matching card across the
+// sell cluster relinks on the next build; remove one and the cards revert to
+// /sold/. Keyed by the image folder (e.g. "NE-040"), the stable per-piece id.
+var soldStubByFolder = {};
+soldItems.forEach(function(item) {
+  if (!item.href || !item.images || !item.images.length) return;
+  var seg = item.images[0].split('/');
+  soldStubByFolder[seg[seg.length - 2]] = item.href;
+});
+
+var soldCardRelinks = 0;
+function relinkSoldCards(html) {
+  if (html.indexOf('sell-landing-sold-grid') === -1) return html;
+  return html.replace(/<a class="card sold"[\s\S]*?<\/a>/g, function(card) {
+    var im = card.match(/\/images\/[^"'\s]+\.(?:jpe?g|avif|webp)/i);
+    if (!im) return card;
+    var seg = im[0].split('/');
+    var href = soldStubByFolder[seg[seg.length - 2]];
+    var open = card.match(/^<a\b[^>]*>/)[0];
+    var rest = card.slice(open.length);
+    var cleaned = open
+      .replace(/\s+href="[^"]*"/, '')
+      .replace(/\s+target="[^"]*"/, '')
+      .replace(/\s+rel="[^"]*"/, '')
+      .replace(/(<a class="card sold")/, '$1 href="' + (href || '/sold/') + '"' + (href ? ' target="_blank" rel="noopener"' : ''));
+    if (href) soldCardRelinks++;
+    return cleaned + rest;
+  });
+}
+
 var partialFiles = walkHtml(ROOT);
 var partialUpdated = 0;
 for (var pi = 0; pi < partialFiles.length; pi++) {
@@ -1737,6 +1788,7 @@ for (var pi = 0; pi < partialFiles.length; pi++) {
   var pOrig = fs.readFileSync(pPath, 'utf8');
   var pNext = injectAllPartials(pOrig);
   pNext = injectLandingSoldSchema(pNext, pPath);
+  pNext = relinkSoldCards(pNext);
   pNext = injectAssetVersions(pNext, assetVersions);
   if (pNext !== pOrig) {
     fs.writeFileSync(pPath, pNext, 'utf8');
@@ -1866,6 +1918,7 @@ console.log('  sold/index.html — ' + soldItems.length + ' sold items');
 console.log('  listings/       — ' + listingCount + ' individual listing pages generated');
 console.log('  sitemap.xml     — ' + sitemapStats.changed + ' URL(s) advanced; ' + sitemapStats.held + ' held; ' + sitemapStats.added + ' new');
 console.log('  partials        — ' + partialUpdated + ' HTML files updated');
+console.log('  sold cards      — ' + soldCardRelinks + ' card link(s) point to sold stubs');
 
 // Entity-integrity report.
 if (ownerDangling) {

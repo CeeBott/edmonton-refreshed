@@ -7,9 +7,10 @@
  * the matching URL, then run `node build.js`. The nav and footer will pick up
  * the new link automatically on the next build — no per-page edits required.
  */
-const site = require('./site');
-
-const sellUrl = (slug) => `/sell/${slug}-${site.citySlug}/`;
+// Sell-landing page paths are city-agnostic (no -edmonton suffix). The local
+// signal comes from the domain, page copy, and schema — not the slug. A
+// multi-city fork lives on its own domain, so `/sell/<slug>/` never collides.
+const sellUrl = (slug) => `/sell/${slug}/`;
 
 // Furniture types — the "Sell by Furniture Type" footer column.
 // `name` = footer label, `nav` = short label used in the nav dropdown.
