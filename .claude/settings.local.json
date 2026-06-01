@@ -89,7 +89,9 @@
       "Bash(echo \"EXIT: $?\")",
       "Bash(python3 -m http.server 4321 --bind 127.0.0.1)",
       "Bash(node scripts/gen-sold-stub.js)",
-      "Bash(grep -o 'margin-top:18px[^>]*>[^<]*<a href=\"/sell/' listings/__TRACKED_VAR__/index.html)"
+      "Bash(grep -o 'margin-top:18px[^>]*>[^<]*<a href=\"/sell/' listings/__TRACKED_VAR__/index.html)",
+      "Bash(git remote *)",
+      "Bash(echo \"\\(no token embedded → $\\(git remote get-url origin)"
     ]
   }
 }
