@@ -1,6 +1,9 @@
 .DS_Store
 Thumbs.db
 .claude/worktrees/
+# Machine-specific Claude Code permissions — the harness rewrites this on every
+# session, so it should not be tracked (kept local per the .local convention).
+.claude/settings.local.json
 
 # Local-only: Cloudflare 301 redirect map for the sell-URL migration (§10.15).
 # Upload to Cloudflare Bulk Redirects, then it can be deleted — must NOT ship
