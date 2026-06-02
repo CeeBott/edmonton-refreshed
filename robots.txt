@@ -60,8 +60,22 @@ Disallow: /
 User-agent: SemrushBot
 Disallow: /
 
-# --- Everyone else (all search engines + AI search/answer crawlers): full access ---
+# --- Everyone else (all search engines + AI search/answer crawlers): full access
+#     to the public site, EXCEPT internal source/docs. The static host (GitHub
+#     Pages, .nojekyll) serves the repo root raw, so committed engineering files
+#     (the operating manual, build script, worker source, config) are reachable
+#     by URL. These Disallow rules stop compliant crawlers from INDEXING them;
+#     they do NOT block direct access — true access blocking is enforced by a
+#     Cloudflare edge rule that 403/404s the same paths (see CLAUDE.md §6.5). ---
 User-agent: *
-Disallow:
+Disallow: /CLAUDE.md
+Disallow: /AGENTS.md
+Disallow: /build.js
+Disallow: /worker/
+Disallow: /config/
+Disallow: /partials/
+Disallow: /scripts/
+Disallow: /.claude/
+Allow: /
 
 Sitemap: https://edmontonrefreshed.com/sitemap.xml
