@@ -615,7 +615,6 @@ function buildHead(m, bases, pageUrl) {
   var fullNameHtml = esc(fullName);   // HTML contexts; JSON-LD below keeps raw fullName
   var altHtml = esc(m.altBase);
   var coverAbs = absUrl(bases[0], '.jpeg');
-  var imageList = bases.map(function(b) { return '      "' + absUrl(b, '.jpeg') + '"'; }).join(',\n');
 
   var meta = '' +
     '  <title>' + fullNameHtml + ' &mdash; Sold | Edmonton Refreshed</title>\n' +
@@ -642,33 +641,17 @@ function buildHead(m, bases, pageUrl) {
     '  <meta name="twitter:image" content="' + coverAbs + '">\n' +
     '  <meta name="twitter:image:alt" content="' + altHtml + ' — pre-owned furniture in Edmonton">';
 
-  var productSchema = '' +
-    '  <!-- Product Schema (' + m.availability + ' — piece has sold) -->\n' +
-    '  <script type="application/ld+json">\n' +
-    '  {\n' +
-    '    "@context": "https://schema.org",\n' +
-    '    "@type": "Product",\n' +
-    '    "name": "' + fullName + '",\n' +
-    '    "description": "' + m.productDescription + '",\n' +
-    '    "brand": {\n' +
-    '      "@type": "Brand",\n' +
-    '      "name": "' + m.brand + '"\n' +
-    '    },\n' +
-    '    "image": [\n' + imageList + '\n    ],\n' +
-    '    "itemCondition": "https://schema.org/UsedCondition",\n' +
-    // No "offers" block at all. A sold piece displays no price, and Google
-    // treats "price" as REQUIRED inside any Offer — so an Offer without a
-    // price is a critical validation error, while an Offer *with* a price both
-    // violates the "markup reflects visible content" rule and leaks a
-    // seller-side negotiation anchor to AI/answer crawlers. A sold item is
-    // ineligible for product rich results regardless, so the Offer carries no
-    // discovery value; the "This piece has sold" copy conveys the state, and
-    // brand/image/itemCondition carry the real signal. Omitting offers yields
-    // only a harmless non-critical "missing offers" note. See §6.3.
-    '    "sku": "' + m.sku + '",\n' +
-    '    "dateModified": "' + isoDate() + '"\n' +
-    '  }\n' +
-    '  </script>';
+  // No Product schema. A sold one-of-one piece displays no price, and a
+  // `Product` is *invalid* (critical error) unless it carries one of
+  // `offers` / `review` / `aggregateRating` — none of which we can supply
+  // honestly: `offers` forces a price back onto the page (Google requires it,
+  // re-leaking a seller-side negotiation anchor); business-level
+  // `aggregateRating` on a product is a manual-action risk; per-piece
+  // `review` would be fabricated. Since a sold item is ineligible for product
+  // rich results anyway, the Product carried no discovery value. The page's
+  // real signal lives in the per-photo `ImageObject` gallery (carries the
+  // brand via `about`) for Google Images, the `BreadcrumbList`, and the
+  // visible copy. See §6.3.
 
   var breadcrumb = '' +
     '  <!-- BreadcrumbList Schema -->\n' +
@@ -693,7 +676,7 @@ function buildHead(m, bases, pageUrl) {
     '  }\n' +
     '  </script>';
 
-  return meta + '\n\n' + productSchema + '\n\n' + breadcrumb + '\n\n' +
+  return meta + '\n\n' + breadcrumb + '\n\n' +
     buildImageObjectSchema(bases, m.altBase, pageUrl, m.brand);
 }
 
