@@ -6,3 +6,16 @@ Thumbs.db
 # Upload to Cloudflare Bulk Redirects, then it can be deleted — must NOT ship
 # with the site (.nojekyll means root files are served raw).
 cloudflare-301-redirects.csv
+
+# Raw camera imports — never commit originals. Process them into
+# images/XX-NNN/ with the full responsive variant set (CLAUDE.md §5.3) and
+# commit only those. This guards against re-adding multi-MB originals (e.g. a
+# root-level "BS-044/" of IMG_*.jpeg) that bloat the repo and git history.
+# The leading slash anchors to the repo root, so processed images/XX-NNN/
+# folders are unaffected.
+/[A-Z][A-Z]-[0-9][0-9][0-9]/
+IMG_*.jpeg
+IMG_*.JPEG
+IMG_*.png
+IMG_*.HEIC
+IMG_*.heic
