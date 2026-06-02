@@ -656,18 +656,15 @@ function buildHead(m, bases, pageUrl) {
     '    },\n' +
     '    "image": [\n' + imageList + '\n    ],\n' +
     '    "itemCondition": "https://schema.org/UsedCondition",\n' +
-    '    "offers": {\n' +
-    '      "@type": "Offer",\n' +
-    // No price/priceCurrency: a sold piece displays no price, and emitting a
-    // machine-readable figure that isn't on the page both violates Google's
-    // "markup reflects visible content" rule and leaks a seller-side
-    // negotiation anchor to AI/answer crawlers. availability:SoldOut carries
-    // the state; price is inert on a SoldOut item (no rich-result eligibility).
-    '      "availability": "https://schema.org/' + m.availability + '",\n' +
-    '      "url": "' + pageUrl + '",\n' +
-    '      "eligibleRegion": { "@type": "Country", "name": "CA" },\n' +
-    '      "areaServed": { "@type": "Country", "name": "CA" }\n' +
-    '    },\n' +
+    // No "offers" block at all. A sold piece displays no price, and Google
+    // treats "price" as REQUIRED inside any Offer — so an Offer without a
+    // price is a critical validation error, while an Offer *with* a price both
+    // violates the "markup reflects visible content" rule and leaks a
+    // seller-side negotiation anchor to AI/answer crawlers. A sold item is
+    // ineligible for product rich results regardless, so the Offer carries no
+    // discovery value; the "This piece has sold" copy conveys the state, and
+    // brand/image/itemCondition carry the real signal. Omitting offers yields
+    // only a harmless non-critical "missing offers" note. See §6.3.
     '    "sku": "' + m.sku + '",\n' +
     '    "dateModified": "' + isoDate() + '"\n' +
     '  }\n' +
