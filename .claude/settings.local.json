@@ -114,7 +114,8 @@
       "Bash(sips -g all /Users/collinbottrell/Downloads/IMG_7639.png)",
       "Bash(brew install *)",
       "Bash(grep -iE \"bracci|index.html$|listings/bracci\")",
-      "Bash(sips -s format jpeg -Z 700 \"/Users/collinbottrell/Downloads/IMG_7641.png\" --out \"/tmp/bs044-prev/7641.jpg\")"
+      "Bash(sips -s format jpeg -Z 700 \"/Users/collinbottrell/Downloads/IMG_7641.png\" --out \"/tmp/bs044-prev/7641.jpg\")",
+      "WebFetch(domain:edmontonrefreshed.com)"
     ]
   }
 }
