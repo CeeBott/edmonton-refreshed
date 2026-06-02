@@ -93,7 +93,28 @@
       "Bash(git remote *)",
       "Bash(echo \"\\(no token embedded → $\\(git remote get-url origin)",
       "Bash([ -d \"listings/$slug\" ])",
-      "Bash(grep -n 'offers.price; no priceValidUntil\\\\|keeps `sku`' CLAUDE.md)"
+      "Bash(grep -n 'offers.price; no priceValidUntil\\\\|keeps `sku`' CLAUDE.md)",
+      "Bash(find /var/folders /tmp /private/tmp -type f \\\\\\( -iname \"*.jpeg\" -o -iname \"*.jpg\" -o -iname \"*.png\" -o -iname \"*.heic\" \\\\\\) -newermt \"2026-06-01 18:00:00\" 2>/dev/null | head -40)",
+      "Bash(ls -lt ~/Downloads ~/Desktop 2>/dev/null | head -40)",
+      "Bash(ls -lt ~/Downloads | grep -iE \"IMG_76\\(3[5-9]|4[0-5]\\)\" ; echo \"---- broad search today ----\"; find ~/Downloads ~/Pictures ~/Library/Caches -type f \\\\\\( -iname \"*.heic\" -o -iname \"*.jpeg\" -o -iname \"*.jpg\" -o -iname \"*.png\" \\\\\\) -newermt \"2026-06-01 16:00:00\" 2>/dev/null | grep -iE \"764[0-3]|763[5-9]\" | sort)",
+      "Bash(sips --help)",
+      "Bash(ffmpeg -hide_banner -encoders)",
+      "Bash(ffmpeg -hide_banner -muxers)",
+      "Bash(cwebp -version)",
+      "Bash(ffmpeg -y -hide_banner -loglevel error -i /tmp/bs044-prev/7639.jpg -c:v libaom-av1 -crf 30 -b:v 0 -still-picture 1 /tmp/bs044-prev/test.avif)",
+      "Bash(sips -g pixelWidth -g pixelHeight /tmp/bs044-prev/test.avif)",
+      "Bash(awk '/pixel/{print $1,$2}')",
+      "Bash(sips --formats)",
+      "Bash(sips -s format avif -Z 800 -s formatOptions 55 /tmp/bs044-prev/7639.jpg --out /tmp/bs044-prev/test-sips.avif)",
+      "Bash(sips -g pixelWidth -g pixelHeight -g format /tmp/bs044-prev/test-sips.avif)",
+      "Bash(awk '/pixel|format/{print}')",
+      "Bash(exiftool -ver)",
+      "Bash(sed 's#.*/##')",
+      "Bash(brew list *)",
+      "Bash(sips -g all /Users/collinbottrell/Downloads/IMG_7639.png)",
+      "Bash(brew install *)",
+      "Bash(grep -iE \"bracci|index.html$|listings/bracci\")",
+      "Bash(sips -s format jpeg -Z 700 \"/Users/collinbottrell/Downloads/IMG_7641.png\" --out \"/tmp/bs044-prev/7641.jpg\")"
     ]
   }
 }
