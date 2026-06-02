@@ -2,12 +2,12 @@
 Thumbs.db
 .claude/worktrees/
 
-# Internal operating docs — kept LOCAL-ONLY (this repo is public). They stay on
-# disk so Claude Code still auto-loads CLAUDE.md as project context, but they
-# are not committed here and not served by GitHub Pages. Mirror them to a
-# private repo so they remain versioned/backed up off this public repo.
+# Operating manual — kept LOCAL-ONLY (this repo is public). CLAUDE.md is a
+# symlink into the private docs repo so Claude Code auto-loads it as project
+# context, but it is never committed here or served by GitHub Pages. See
+# CLAUDE.md §1.5. (AGENTS.md is intentionally tracked — a sanitized, public
+# engineering-orientation file with no business strategy.)
 /CLAUDE.md
-/AGENTS.md
 # Machine-specific Claude Code permissions — the harness rewrites this on every
 # session, so it should not be tracked (kept local per the .local convention).
 .claude/settings.local.json
