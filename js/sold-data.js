@@ -67,7 +67,32 @@ var soldItems = [
       "../images/Sold Inventory/LB-041/la-z-boy-12.jpeg",
       "../images/Sold Inventory/LB-041/la-z-boy-13.jpeg",
       "../images/Sold Inventory/LB-041/la-z-boy-14.jpeg",
-    ]
+    ],
+    retained: {
+      metaTitle: "La-Z-Boy Emric Right-Facing Sectional — Edmonton",
+      metaDescription: "Pre-owned La-Z-Boy Emric 2-piece sectional with right-facing chaise in performance fabric — Edmonton. Like-new condition. Delivery available.",
+      retailEstimate: 5598,
+      specs: [
+        "La-Z-Boy",
+        "107.5 × 88.5 × 35.5 in",
+        "Right-Facing Chaise",
+        "Performance Fabric",
+        "Like New",
+        "Discontinued Frame"
+      ],
+      description: "The Emric is one of the more design-forward pieces La-Z-Boy has produced — and at this point, a discontinued one. It's a newer contemporary frame that features slim shelter-style track arms, a low back, and clean lines for a spacious appearance. It doesn't read like a typical La-Z-Boy. The silhouette is low-profile, the arms are lean, and the single continuous bench seat keeps the face of the piece uninterrupted — no cushion breaks, no visual clutter.\n\nThe left-facing chaise extends the seating surface into full lounge territory without adding bulk. This is a functional two-piece that works as a sectional or can be separated depending on the room.\n\nThe single bench seat cushion allows for a cleaner look than traditional sectionals, and because there's no separation between cushions, more than three people can comfortably sit across the sofa. The king lumbar pillow spans the full back width — it's designed to support more than one person at a time, which is a thoughtful detail most buyers won't notice until they're actually sitting in it.\n\nThe performance fabric is worth noting specifically. It offers superior stain and fade resistance with innovative technology that surrounds each fiber to repel spills before they turn into stains — a meaningful spec if you have kids, pets, or just prefer not to live carefully around your furniture.\n\nWhy discontinued matters: La-Z-Boy no longer produces the Emric.",
+      features: [
+        "High-grade foam seat cushions built to maintain comfort and appearance over time",
+        "Double-picked blown fiber fill for improved cushion loft and shape retention",
+        "Plush loose blown-fiber knife-edge back cushions and elongated lumbar pillows for on-trend style and support",
+        "Premium-grade performance fabric tested to resist wear and fading",
+        "Shelter-style track arms that wrap continuously around to the back — no exposed frame breaks",
+        "Decorative wood legs with clean topstitching detail",
+        "Covered by La-Z-Boy's Limited Lifetime Warranty on the frame and spring systems"
+      ],
+      condition: "Like new. No visible wear to fabric, cushions, or legs. Structurally sound throughout.",
+      configuration: "Sofa body with left-facing arm, right-facing chaise module, all back cushions and lumbar pillow.\n\nDelivery available for an additional fee."
+    },
   },
   {
     brand: "Natuzzi Editions",

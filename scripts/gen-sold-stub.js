@@ -620,15 +620,19 @@ function buildHead(m, bases, pageUrl) {
   // sold-stub standard, §6.3/§8.3) keep the original active title + description
   // but neutralized of availability signals — no "for Sale", no advertised
   // asking price, and never "Sold" — so the page stays click-worthy without
-  // advertising a sold piece as purchasable. Legacy stubs keep "— Sold".
+  // advertising a sold piece as purchasable. Legacy stubs (no snapshot) also
+  // stay availability-neutral: the title drops the "— Sold" suffix and the
+  // MANIFEST "This … has sold." meta is reframed to "Pre-owned …" (§6.3).
   var r = m.retained || null;
   var titleContent = (r && r.metaTitle)
     ? escapeHtml(neutralizeMeta(r.metaTitle))
-    : fullNameHtml + ' &mdash; Sold | Edmonton Refreshed';
+    : fullNameHtml + ' | Edmonton Refreshed';
   var descContent = (r && r.metaDescription)
     ? escapeHtml(neutralizeMeta(r.metaDescription))
-    : m.metaDescription;
-  var twDescContent = (r && r.metaDescription) ? descContent : m.twitterDescription;
+    : neutralizeMeta(neutralizeLegacyDesc(m.metaDescription));
+  var twDescContent = (r && r.metaDescription)
+    ? descContent
+    : neutralizeMeta(neutralizeLegacyDesc(m.twitterDescription));
 
   var meta = '' +
     '  <title>' + titleContent + '</title>\n' +
@@ -752,6 +756,16 @@ function neutralizeMeta(s) {
     .trim();
 }
 
+// Reframe a legacy stub's MANIFEST meta/twitter description away from the
+// "This … has sold." announcement. Legacy stubs never had an active listing,
+// so there is no original metadata to preserve — we just drop the sold framing
+// and keep the descriptive remainder: "This {X} has sold. Browse current
+// available inventory…" → "Pre-owned {X}. Browse current available inventory…".
+// A non-matching string is returned unchanged.
+function neutralizeLegacyDesc(s) {
+  return String(s).replace(/^This\s+(.+?)\s+has sold\.\s*/i, 'Pre-owned $1. ');
+}
+
 // Brand → buyer's-guide cross-link (mirror of build.js brandGuideMap), shown
 // in the retained Description collapsible.
 var BRAND_GUIDE_MAP = {
@@ -786,8 +800,8 @@ function buildFaqVisible(faq) {
     '          </section>';
 }
 
-// The retained active-listing content block, inserted between the neighbourhood
-// summary and the closing CTAs. Returns '' for legacy stubs (no snapshot).
+// The retained active-listing content block, rendered after the closing CTAs
+// and sell-line paragraph (current standard). Returns '' for legacy stubs.
 // Order mirrors the active listing: Est. Retail (asking price withheld) →
 // specs → Description → Features → Condition → Includes → trust → FAQ.
 function buildRetained(m) {
@@ -858,17 +872,21 @@ function buildBody(m, bases, chrome) {
   var endingLine = leadIn + ' you&rsquo;re thinking about selling, ' + pitch +
     '. Our team handles the full, specialized in-home removal and transport.';
 
+  // Retained block renders AFTER the CTAs + closing sell line (current standard,
+  // §6.3/§8.3). Captured once and gated so legacy stubs (empty block) stay
+  // byte-identical to the pre-retention layout.
+  var retainedBlock = buildRetained(m);
   var bodyInner = '' +
     '          <div class="listing-body">\n' +
     '          <div class="listing-brand">' + esc(m.brand) + '</div>\n' +
     '          <h1 class="listing-title">' + esc(m.h1) + '</h1>\n\n' +
     '          <p style="margin-top:18px; color:#6b6b6b; font-size:0.95rem; line-height:1.7;">' + m.introHTML + '</p>\n\n' +
-    buildRetained(m) +
     '          <div style="margin:28px 0; display:flex; flex-wrap:wrap; gap:12px;">\n' +
     '            <a href="/" class="listing-cta" style="flex:1; min-width:200px; text-align:center;">Browse Available Inventory &rarr;</a>\n' +
     '            <a href="/sold/" class="listing-cta" style="flex:1; min-width:200px; text-align:center; background:#fff; color:#2c2c2c; border:1px solid #2c2c2c;">View Sold Pieces</a>\n' +
     '          </div>\n\n' +
     '          <p style="margin-top:24px; color:#6b6b6b; font-size:0.95rem; line-height:1.7;">' + endingLine + '</p>\n' +
+    (retainedBlock ? '\n' + retainedBlock : '') +
     '        </div>';
 
   var newsletter = '' +
@@ -934,7 +952,12 @@ function generate(slug, m, soldItems, template, chrome) {
     chrome.credibility + '\n\n' +
     buildBody(m, bases, chrome) + '\n\n' +
     chrome.footer + '\n\n' +
-    tail + '\n' +
+    // `tail` is sliced up to (not including) </body>, so it already carries the
+    // template's trailing whitespace. Do NOT append another newline — the Emric
+    // page is itself the template, so an extra '\n' here accumulates a blank
+    // line into every stub on each regeneration. Keeping the slice verbatim
+    // makes regeneration idempotent.
+    tail +
     '</body>\n' +
     '</html>\n';
 
