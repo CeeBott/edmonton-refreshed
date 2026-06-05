@@ -22,7 +22,31 @@ var soldItems = [
       "../images/Sold Inventory/RC-043/rove-concepts-10.jpeg",
       "../images/Sold Inventory/RC-043/rove-concepts-11.jpeg",
       "../images/Sold Inventory/RC-043/rove-concepts-12.jpeg",
-    ]
+    ],
+    retained: {
+      metaTitle: "Rove Concepts Milo 6-Piece Modular Sectional — Edmonton",
+      metaDescription: "Pre-owned Rove Concepts Milo 6-Module Sectional in Pearl Chatou Bouclé — Edmonton. Excellent condition. Delivery available.",
+      retailEstimate: 7400,
+      retailEstimateApprox: true,
+      specs: [
+        "Rove Concepts",
+        "Sectional: 126.5 × 126.5 × 31.5 in",
+        "Extra Module: 39 × 39.5 × 31.5 in",
+        "Seat Depth: 25.2 in",
+        "Pearl Chatou Bouclé",
+        "Excellent Condition"
+      ],
+      description: "The Milo is Rove Concepts’ flagship sectional — and this is the full expression of it. Six modules, Pearl Chatou Bouclé, excellent condition.\n\nThis is a room-defining piece. The Milo is deliberately scaled wider than standard sectional proportions — each module runs broader than typical, which gives the assembled configuration a presence that photographs don’t fully communicate. At six modules, it’s built for large living spaces and it earns that footprint.\n\nThe profile is low and flat at 31.5” tall, with subtle curves at the armrests keeping it from reading as rigid. Seat height sits at 17.7” with a 25.2” seat depth — lounge-forward without being so deep it becomes difficult to sit upright. The geometry works for both active use and full recline.\n\nChatou Bouclé is a wool-blend textile with tightly looped fibers — the construction method that gives bouclé its characteristic texture and durability. Pearl is a warm, versatile off-white that works across contemporary, transitional, and Japandi-influenced interiors without anchoring the room to a specific aesthetic. It’s softer in person than it photographs.\n\nThe cushion stack is the detail most buyers miss: three layers of high-density foam provide structural support and shape retention, topped with a 100% goose feather finish layer. That combination — firm base, soft landing — is a more expensive construction than most sectionals at this price point and reads immediately when you sit down.\n\nThe standard Milo Corner Sectional is a 5-piece. This configuration includes a sixth armless module — approximately 39” of additional seating that meaningfully expands layout options and total seat count. It’s the difference between a large sectional and a proper gathering piece.",
+      features: [
+        "Kiln-dried hardwood frame with doweled joints and reinforced corner blocks",
+        "Soft-padded frame wrapped in polyurethane foam and polyester fiber",
+        "8-gauge sinuous spring construction throughout",
+        "3-layer high-density foam cushioning topped with 100% goose feather finish",
+        "Round, low-profile solid stainless steel legs"
+      ],
+      condition: "Excellent. Fabric, cushions, and legs all present as virtually new with no visible wear.",
+      configuration: "1 corner piece, 2 armless middle pieces, 1 ottoman, 1 arm piece, 1 additional armless sofa module, and 2 throw cushions.\n\nDelivery available for an additional fee."
+    },
   },
   {
     brand: "La-Z-Boy",
