@@ -40,9 +40,9 @@ const home = [
     question: 'How do I sell my sofa or sectional?',
     schemaQuestion: 'How do I sell my sofa or sectional to Edmonton Refreshed?',
     answer:
-      'Head to the [Sell Your Furniture](/sell/) page. Send photos, the brand, and approximate age — we come back with an offer within 24 hours and handle all pickup. No listings, no back-and-forth.',
+      'Head to the [Sell Your Furniture](/sell/) page. Send photos, the brand, and approximate age — we come back with an offer today and handle all pickup. No listings, no back-and-forth.',
     schemaAnswer:
-      'Head to the Sell Your Furniture page. Send photos, the brand, age, and your asking price — we respond within 24 hours with a fair offer and handle all pickup.',
+      'Head to the Sell Your Furniture page. Send photos, the brand, age, and your asking price — we get you a fair offer today and handle all pickup.',
   },
 ];
 
@@ -55,7 +55,7 @@ const sell = [
   {
     question: 'What happens if my piece isn’t a fit?',
     answer:
-      'We’ll tell you straight, usually within 24 hours. No runaround. If we can’t buy it, we’ll sometimes point you toward a channel that makes more sense — consignment, marketplace, or donation.',
+      'We’ll tell you straight, usually the same day. No runaround. If we can’t buy it, we’ll sometimes point you toward a channel that makes more sense — consignment, marketplace, or donation.',
   },
   {
     question: 'How fast can you pick up?',
@@ -106,9 +106,9 @@ const about = [
     question: 'How do I sell my sofa or sectional?',
     schemaQuestion: 'How do I sell my sofa or sectional to Edmonton Refreshed?',
     answer:
-      'Text or email photos along with the brand, approximate age, and any condition notes. We respond within 24 hours. If we proceed, we handle pickup at your convenience and pay cash or e-transfer on the spot. See the [Sell Your Furniture](/sell/) page for details.',
+      'Text or email photos along with the brand, approximate age, and any condition notes. We get you an offer today. If we proceed, we handle pickup at your convenience and pay cash or e-transfer on the spot. See the [Sell Your Furniture](/sell/) page for details.',
     schemaAnswer:
-      'Text or email clear photos along with the brand, approximate age, and any condition notes. We respond within 24 hours with a fair offer. If we proceed, we handle all pickup at your convenience and pay cash or e-transfer on the spot.',
+      'Text or email clear photos along with the brand, approximate age, and any condition notes. We get you a fair offer today. If we proceed, we handle all pickup at your convenience and pay cash or e-transfer on the spot.',
   },
   {
     question: 'What condition does a piece need to be in?',

@@ -1353,6 +1353,10 @@ var LANDING_SOLD_SCHEMA_META = {
     name: 'Recently Purchased Pieces in Edmonton',
     description: 'Photos of pre-owned sofas and sectionals recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.',
   },
+  'partners/index.html': {
+    name: 'Pieces Recently Bought Through Edmonton Refreshed',
+    description: 'Photos of pre-owned premium sofas and sectionals purchased directly from Edmonton homes and resold by Edmonton Refreshed.',
+  },
   'sell/natuzzi/index.html': {
     name: 'Recently Purchased Natuzzi Pieces in Edmonton',
     description: 'Photos of pre-owned Natuzzi Italia and Natuzzi Editions sofas and sectionals purchased and resold by Edmonton Refreshed.',
@@ -1558,8 +1562,9 @@ function buildUrlList(items, soldItems) {
   tax.furnitureTypes.forEach(function(p) { pushSell(p.slug); });
   tax.situations.forEach(function(s) { pushSell(s.slug); });
 
-  urls.push({ loc: BASE_URL + 'about/',   changefreq: 'monthly', priority: '0.6' });
-  urls.push({ loc: BASE_URL + 'privacy/', changefreq: 'yearly',  priority: '0.3' });
+  urls.push({ loc: BASE_URL + 'about/',    changefreq: 'monthly', priority: '0.6' });
+  urls.push({ loc: BASE_URL + 'partners/', changefreq: 'monthly', priority: '0.6' });
+  urls.push({ loc: BASE_URL + 'privacy/',  changefreq: 'yearly',  priority: '0.3' });
   urls.push({ loc: BASE_URL + 'guides/',  changefreq: 'weekly',  priority: '0.7' });
 
   discoverGuides().forEach(function(loc) {
