@@ -616,12 +616,26 @@ function buildHead(m, bases, pageUrl) {
   var altHtml = esc(m.altBase);
   var coverAbs = absUrl(bases[0], '.jpeg');
 
+  // Title / description. With a retained active-listing snapshot (current
+  // sold-stub standard, §6.3/§8.3) keep the original active title + description
+  // but neutralized of availability signals — no "for Sale", no advertised
+  // asking price, and never "Sold" — so the page stays click-worthy without
+  // advertising a sold piece as purchasable. Legacy stubs keep "— Sold".
+  var r = m.retained || null;
+  var titleContent = (r && r.metaTitle)
+    ? escapeHtml(neutralizeMeta(r.metaTitle))
+    : fullNameHtml + ' &mdash; Sold | Edmonton Refreshed';
+  var descContent = (r && r.metaDescription)
+    ? escapeHtml(neutralizeMeta(r.metaDescription))
+    : m.metaDescription;
+  var twDescContent = (r && r.metaDescription) ? descContent : m.twitterDescription;
+
   var meta = '' +
-    '  <title>' + fullNameHtml + ' &mdash; Sold | Edmonton Refreshed</title>\n' +
+    '  <title>' + titleContent + '</title>\n' +
     '  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">\n' +
     '  <link rel="apple-touch-icon" href="../../apple-touch-icon.png">\n' +
     '  <link rel="canonical" href="' + pageUrl + '">\n' +
-    '  <meta name="description" content="' + m.metaDescription + '">\n' +
+    '  <meta name="description" content="' + descContent + '">\n' +
     '  <meta name="robots" content="index, follow">\n' +
     '  <meta name="geo.region" content="CA-AB">\n' +
     '  <meta name="geo.placename" content="Edmonton">\n\n' +
@@ -629,15 +643,15 @@ function buildHead(m, bases, pageUrl) {
     '  <meta property="og:locale" content="en_CA">\n' +
     '  <meta property="og:type" content="product">\n' +
     '  <meta property="og:url" content="' + pageUrl + '">\n' +
-    '  <meta property="og:title" content="' + fullNameHtml + ' &mdash; Sold | Edmonton Refreshed">\n' +
-    '  <meta property="og:description" content="' + m.metaDescription + '">\n' +
+    '  <meta property="og:title" content="' + titleContent + '">\n' +
+    '  <meta property="og:description" content="' + descContent + '">\n' +
     '  <meta property="og:site_name" content="Edmonton Refreshed Seating">\n' +
     '  <meta property="og:image" content="' + coverAbs + '">\n' +
     '  <meta property="og:image:alt" content="' + altHtml + ' — pre-owned furniture in Edmonton">\n\n' +
     '  <!-- Twitter / X -->\n' +
     '  <meta name="twitter:card" content="summary_large_image">\n' +
-    '  <meta name="twitter:title" content="' + fullNameHtml + ' &mdash; Sold | Edmonton Refreshed">\n' +
-    '  <meta name="twitter:description" content="' + m.twitterDescription + '">\n' +
+    '  <meta name="twitter:title" content="' + titleContent + '">\n' +
+    '  <meta name="twitter:description" content="' + twDescContent + '">\n' +
     '  <meta name="twitter:image" content="' + coverAbs + '">\n' +
     '  <meta name="twitter:image:alt" content="' + altHtml + ' — pre-owned furniture in Edmonton">';
 
@@ -676,8 +690,141 @@ function buildHead(m, bases, pageUrl) {
     '  }\n' +
     '  </script>';
 
+  // FAQPage schema — only when the piece carries retained FAQ (reflects the
+  // now-visible FAQ section). Sold stubs still carry NO Product schema (§6.3).
+  var faqBlock = '';
+  if (r && r.faq && r.faq.length) {
+    var faqSchema = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": r.faq.map(function(qa) {
+        return { "@type": "Question", "name": qa.question, "acceptedAnswer": { "@type": "Answer", "text": qa.answer } };
+      })
+    };
+    faqBlock = '\n\n  <!-- FAQPage Schema -->\n' +
+      '  <script type="application/ld+json">\n' +
+      '  ' + JSON.stringify(faqSchema, null, 2).replace(/\n/g, '\n  ') + '\n' +
+      '  </script>';
+  }
+
   return meta + '\n\n' + breadcrumb + '\n\n' +
-    buildImageObjectSchema(bases, m.altBase, pageUrl, m.brand);
+    buildImageObjectSchema(bases, m.altBase, pageUrl, m.brand) + faqBlock;
+}
+
+// ── Active-listing retention (current sold-stub standard) ────
+// Under the current standard (CLAUDE.md §6.3/§8.3) a piece's sold-data.js entry
+// carries a `retained` snapshot of its active-listing content. The stub
+// reproduces that content below the neighbourhood summary — byte-faithful to
+// what build.js generateListingPage rendered — minus the transactional CTAs
+// and the asking price. Legacy stubs (no snapshot) render as before.
+
+// Faithful copy of build.js escapeHtml so retained text matches the active
+// listing exactly (em/en dashes and smart quotes → entities).
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/—/g, '&mdash;')
+    .replace(/–/g, '&ndash;')
+    .replace(/“/g, '&ldquo;')
+    .replace(/”/g, '&rdquo;')
+    .replace(/‘/g, '&lsquo;')
+    .replace(/’/g, '&rsquo;');
+}
+
+// 7500 → "$7,500" (mirror of build.js / available-data.js).
+var PRICE_FMT = new Intl.NumberFormat('en-CA', { maximumFractionDigits: 0 });
+function formatPrice(n) { return '$' + PRICE_FMT.format(n); }
+
+// Strip availability signals from active metadata so a sold page's title and
+// description stay neutral — no "for Sale", no advertised asking price, and
+// never "Sold". A sold page must not advertise a price it can't honour
+// (§6.3) nor promise a piece it can't deliver. Operates on raw text; the
+// caller applies escapeHtml.
+function neutralizeMeta(s) {
+  return String(s)
+    .replace(/\s*\bfor sale\b/gi, '')
+    .replace(/\s*\$[\d,]+(?:\.\d+)?\s*CAD\b\.?/gi, '')
+    .replace(/\s{2,}/g, ' ')
+    .replace(/\s+([.,;:])/g, '$1')
+    .trim();
+}
+
+// Brand → buyer's-guide cross-link (mirror of build.js brandGuideMap), shown
+// in the retained Description collapsible.
+var BRAND_GUIDE_MAP = {
+  'Natuzzi':          { slug: 'natuzzi-sofa-review-edmonton',       label: 'Read our full Natuzzi buyer&rsquo;s guide for Edmonton' },
+  'Natuzzi Editions': { slug: 'natuzzi-sofa-review-edmonton',       label: 'Read our full Natuzzi buyer&rsquo;s guide for Edmonton' },
+  'Natuzzi Italia':   { slug: 'natuzzi-sofa-review-edmonton',       label: 'Read our full Natuzzi buyer&rsquo;s guide for Edmonton' },
+  'B&B Italia':       { slug: 'bb-italia-sofa-review-edmonton',     label: 'Read our full B&amp;B Italia buyer&rsquo;s guide for Edmonton' },
+  'Rove Concepts':    { slug: 'rove-concepts-sofa-review-edmonton', label: 'Read our full Rove Concepts buyer&rsquo;s guide for Edmonton' }
+};
+function brandGuideHTML(brand) {
+  var bg = BRAND_GUIDE_MAP[brand];
+  return bg ? '<p class="listing-brand-guide-link"><a href="/guides/' + bg.slug + '/">' + bg.label + ' &rarr;</a></p>' : '';
+}
+
+// Sitewide listing trust statement (verbatim from build.js generateListingPage).
+var TRUST_HTML = '<p class="listing-trust"><svg class="listing-trust-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2 4 5v6c0 5 3.5 9.5 8 11 4.5-1.5 8-6 8-11V5l-8-3z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><polyline points="9 12 11 14 15 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>All designer pieces are inspected for construction, materials, and manufacturer consistency before listing.</span></p>';
+
+// Visible FAQ section (mirror of build.js faqVisibleBlock), 10-space indented
+// to sit inside the stub's .listing-body.
+function buildFaqVisible(faq) {
+  return '' +
+    '          <section class="faq-section listing-faq" aria-labelledby="listing-faq-heading">\n' +
+    '            <h2 class="section-label" id="listing-faq-heading">Frequently Asked Questions</h2>\n' +
+    '            <div class="faq-list">\n' +
+    faq.map(function(qa) {
+      return '              <div class="faq-item">\n' +
+             '                <h3 class="faq-question">' + escapeHtml(qa.question) + '</h3>\n' +
+             '                <p class="faq-answer">' + escapeHtml(qa.answer) + '</p>\n' +
+             '              </div>';
+    }).join('\n') + '\n' +
+    '            </div>\n' +
+    '          </section>';
+}
+
+// The retained active-listing content block, inserted between the neighbourhood
+// summary and the closing CTAs. Returns '' for legacy stubs (no snapshot).
+// Order mirrors the active listing: Est. Retail (asking price withheld) →
+// specs → Description → Features → Condition → Includes → trust → FAQ.
+function buildRetained(m) {
+  var r = m.retained;
+  if (!r) return '';
+  var parts = [];
+  if (r.retailEstimate) {
+    var retailLabel = formatPrice(r.retailEstimate) + (r.retailEstimateApprox ? '+' : '');
+    parts.push('          <div class="listing-value-pill"><span class="pill-retail">Est. Retail: ' + retailLabel + ' CAD</span></div>');
+  }
+  if (r.specs && r.specs.length) {
+    parts.push('          <div class="listing-specs">' +
+      r.specs.map(function(s) { return '<span class="spec-tag">' + escapeHtml(s) + '</span>'; }).join('') +
+      '</div>');
+  }
+  if (r.description) {
+    parts.push('          <details class="listing-collapsible" open><summary class="listing-meta-label">Description</summary><p class="listing-description">' +
+      escapeHtml(r.description) + '</p>' + brandGuideHTML(m.brand) + '</details>');
+  }
+  if (r.features && r.features.length) {
+    parts.push('          <details class="listing-collapsible"><summary class="listing-meta-label">Features</summary><ul class="listing-features">' +
+      r.features.map(function(f) { return '<li>' + escapeHtml(f) + '</li>'; }).join('') +
+      '</ul></details>');
+  }
+  if (r.condition) {
+    parts.push('          <details class="listing-collapsible"><summary class="listing-meta-label">Condition</summary><p class="listing-meta-text">' +
+      escapeHtml(r.condition) + '</p></details>');
+  }
+  if (r.configuration) {
+    parts.push('          <details class="listing-collapsible"><summary class="listing-meta-label">Includes</summary><p class="listing-meta-text">' +
+      escapeHtml(r.configuration) + '</p></details>');
+  }
+  parts.push('          ' + TRUST_HTML);
+  if (r.faq && r.faq.length) {
+    parts.push(buildFaqVisible(r.faq));
+  }
+  return parts.join('\n') + '\n\n';
 }
 
 function buildBody(m, bases, chrome) {
@@ -716,6 +863,7 @@ function buildBody(m, bases, chrome) {
     '          <div class="listing-brand">' + esc(m.brand) + '</div>\n' +
     '          <h1 class="listing-title">' + esc(m.h1) + '</h1>\n\n' +
     '          <p style="margin-top:18px; color:#6b6b6b; font-size:0.95rem; line-height:1.7;">' + m.introHTML + '</p>\n\n' +
+    buildRetained(m) +
     '          <div style="margin:28px 0; display:flex; flex-wrap:wrap; gap:12px;">\n' +
     '            <a href="/" class="listing-cta" style="flex:1; min-width:200px; text-align:center;">Browse Available Inventory &rarr;</a>\n' +
     '            <a href="/sold/" class="listing-cta" style="flex:1; min-width:200px; text-align:center; background:#fff; color:#2c2c2c; border:1px solid #2c2c2c;">View Sold Pieces</a>\n' +
@@ -761,6 +909,11 @@ function generate(slug, m, soldItems, template, chrome) {
   if (!entry) throw new Error('No sold-data.js entry with href "/listings/' + slug + '/" — add it first.');
   var bases = (entry.images || []).map(imageBase);
   if (!bases.length) throw new Error('Sold entry for ' + slug + ' has no images.');
+
+  // Attach the retained active-listing snapshot (if any) so the stub can
+  // reproduce the piece's specs / description / features / condition /
+  // includes / FAQ below the neighbourhood summary (current standard, §6.3/§8.3).
+  m = Object.assign({}, m, { retained: entry.retained || null });
 
   // Lightbox/scripts tail: reuse verbatim, just repoint the lightbox alt text.
   var tail = chrome.tail.replace(/alt="[^"]*photo"/, 'alt="' + esc(m.altBase) + ' photo"');
