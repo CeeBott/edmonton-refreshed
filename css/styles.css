@@ -3196,6 +3196,46 @@ footer a:focus-visible {
   border-color: var(--color-accent);
   background: #ffffff;
 }
+.sell-form-ack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.sell-form-ack-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: var(--color-text);
+  transition: border-color 150ms ease, background 150ms ease;
+}
+.sell-form-ack-label:hover {
+  border-color: var(--color-accent);
+}
+.sell-form-ack-label input[type="checkbox"] {
+  margin-top: 2px;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-accent);
+}
+.sell-form-ack-label:has(input[type="checkbox"]:checked) {
+  border-color: var(--color-accent);
+  background: #ffffff;
+}
+.sell-form-ack-note {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+  padding: 0 2px;
+  line-height: 1.45;
+}
 .sell-form-hint {
   font-size: 0.8rem;
   color: var(--color-text-secondary);
