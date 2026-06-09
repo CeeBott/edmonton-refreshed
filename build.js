@@ -1565,6 +1565,7 @@ function buildUrlList(items, soldItems) {
   urls.push({ loc: BASE_URL + 'about/',    changefreq: 'monthly', priority: '0.6' });
   urls.push({ loc: BASE_URL + 'partners/', changefreq: 'monthly', priority: '0.6' });
   urls.push({ loc: BASE_URL + 'privacy/',  changefreq: 'yearly',  priority: '0.3' });
+  urls.push({ loc: BASE_URL + 'returns/',  changefreq: 'yearly',  priority: '0.3' });
   urls.push({ loc: BASE_URL + 'guides/',  changefreq: 'weekly',  priority: '0.7' });
 
   discoverGuides().forEach(function(loc) {
