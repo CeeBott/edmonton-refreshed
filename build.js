@@ -1688,7 +1688,7 @@ function generateSitemap(items, soldItems) {
 
 var MF = site.merchantFeed || {};
 var MF_CURRENCY     = MF.currency || 'CAD';
-var MF_SHIP_RATE    = (MF.shippingRate != null ? MF.shippingRate : 200);
+var MF_SHIP_RATE    = (MF.shippingRate != null ? MF.shippingRate : null);  // null → omit <g:shipping>, defer to account-level
 var MF_SHIP_COUNTRY = MF.shippingCountry || 'CA';
 var MF_SHIP_REGION  = (MF.shippingRegion != null ? MF.shippingRegion : 'AB');
 var MF_GCAT_DEFAULT = MF.googleProductCategory || 'Home & Garden > Furniture > Sofas';
@@ -1808,18 +1808,24 @@ function generateMerchantFeed(items) {
       });
     }
 
-    // Local flat-rate shipping, scoped to one region so Google does NOT require
-    // national shipping rates. Region '' (config) widens it to country-wide.
-    L.push('      <g:shipping>');
-    L.push('        <g:country>' + escapeXml(MF_SHIP_COUNTRY) + '</g:country>');
-    if (MF_SHIP_REGION) L.push('        <g:region>' + escapeXml(MF_SHIP_REGION) + '</g:region>');
-    L.push('        <g:price>' + mfPrice(MF_SHIP_RATE) + '</g:price>');
-    L.push('      </g:shipping>');
-    // Handling/transit mirror the on-page Offer shippingDetails (0–3 / 1–7 days).
-    L.push('      <g:min_handling_time>0</g:min_handling_time>');
-    L.push('      <g:max_handling_time>3</g:max_handling_time>');
-    L.push('      <g:min_transit_time>1</g:min_transit_time>');
-    L.push('      <g:max_transit_time>7</g:max_transit_time>');
+    // Per-item shipping. When a flat rate is configured, emit <g:shipping> with
+    // country + price only — NO <g:region>: Google rejected province-level
+    // region values (bare 'AB' and ISO 'CA-AB' alike), and the account is
+    // scoped to Canada, so a per-item region is unnecessary. Set shippingRate
+    // to null in config to omit the block entirely and defer to account-level
+    // shipping. shippingRegion is honoured only if explicitly set (off by default).
+    if (MF_SHIP_RATE != null) {
+      L.push('      <g:shipping>');
+      L.push('        <g:country>' + escapeXml(MF_SHIP_COUNTRY) + '</g:country>');
+      if (MF_SHIP_REGION) L.push('        <g:region>' + escapeXml(MF_SHIP_REGION) + '</g:region>');
+      L.push('        <g:price>' + mfPrice(MF_SHIP_RATE) + '</g:price>');
+      L.push('      </g:shipping>');
+      // Handling/transit mirror the on-page Offer shippingDetails (0–3 / 1–7 days).
+      L.push('      <g:min_handling_time>0</g:min_handling_time>');
+      L.push('      <g:max_handling_time>3</g:max_handling_time>');
+      L.push('      <g:min_transit_time>1</g:min_transit_time>');
+      L.push('      <g:max_transit_time>7</g:max_transit_time>');
+    }
     L.push('    </item>');
 
     lines.push(L.join('\n'));

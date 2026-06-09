@@ -39,7 +39,6 @@
       </g:product_detail>
       <g:shipping>
         <g:country>CA</g:country>
-        <g:region>CA-AB</g:region>
         <g:price>200.00 CAD</g:price>
       </g:shipping>
       <g:min_handling_time>0</g:min_handling_time>
@@ -82,7 +81,6 @@
       </g:product_detail>
       <g:shipping>
         <g:country>CA</g:country>
-        <g:region>CA-AB</g:region>
         <g:price>200.00 CAD</g:price>
       </g:shipping>
       <g:min_handling_time>0</g:min_handling_time>
@@ -130,7 +128,6 @@
       </g:product_detail>
       <g:shipping>
         <g:country>CA</g:country>
-        <g:region>CA-AB</g:region>
         <g:price>200.00 CAD</g:price>
       </g:shipping>
       <g:min_handling_time>0</g:min_handling_time>
@@ -172,7 +169,6 @@
       </g:product_detail>
       <g:shipping>
         <g:country>CA</g:country>
-        <g:region>CA-AB</g:region>
         <g:price>200.00 CAD</g:price>
       </g:shipping>
       <g:min_handling_time>0</g:min_handling_time>

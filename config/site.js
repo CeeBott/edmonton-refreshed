@@ -59,9 +59,16 @@ module.exports = {
     // as locally available WITHOUT requiring national shipping rates. Mirrors
     // the $200 local-delivery rate used in the on-page Offer schema. Set to 0
     // to advertise free local delivery / pickup.
+    //   · shippingRate: a number (e.g. 200) → emit <g:shipping> with country +
+    //     price. 0 → free. null → omit <g:shipping> entirely and defer to the
+    //     account-level shipping settings (the Merchant Center account targets
+    //     Canada).
+    //   · shippingRegion: '' → no <g:region> (recommended — Google rejected
+    //     province-level region values, even ISO 3166-2 'CA-AB'). A value would
+    //     re-add the sub-attribute that triggered the "invalid region" error.
     shippingRate: 200,
     shippingCountry: 'CA',
-    shippingRegion: 'CA-AB',       // Alberta in ISO 3166-2 (country-prefixed) — Google rejects bare 'AB'. '' widens to country-wide.
+    shippingRegion: '',
     // Default Google product category — VERIFIED against Google's official
     // Product Taxonomy. Note: "Furniture" is a TOP-LEVEL category, NOT nested
     // under "Home & Garden" (that path is invalid). Sofas (id 460) covers
