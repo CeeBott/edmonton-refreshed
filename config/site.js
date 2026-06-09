@@ -61,9 +61,12 @@ module.exports = {
     // to advertise free local delivery / pickup.
     shippingRate: 200,
     shippingCountry: 'CA',
-    shippingRegion: 'AB',          // Alberta only — the local-availability signal. '' widens to country-wide.
-    // Default Google product category (text path). Covers sofas, sectionals,
-    // couches, and loveseats; build.js overrides per-piece for chairs/ottomans.
-    googleProductCategory: 'Home & Garden > Furniture > Sofas',
+    shippingRegion: 'CA-AB',       // Alberta in ISO 3166-2 (country-prefixed) — Google rejects bare 'AB'. '' widens to country-wide.
+    // Default Google product category — VERIFIED against Google's official
+    // Product Taxonomy. Note: "Furniture" is a TOP-LEVEL category, NOT nested
+    // under "Home & Garden" (that path is invalid). Sofas (id 460) covers
+    // sofas, sectionals, and couches; build.js overrides per-piece for
+    // chairs/ottomans. There is no standalone "Sectionals" node.
+    googleProductCategory: 'Furniture > Sofas',
   },
 };

@@ -1738,11 +1738,15 @@ function mfPieceType(item) {
   return 'Seating';
 }
 
-// Google product taxonomy (text path). Sofas covers sofas/sectionals/couches.
+// Google product taxonomy — VERIFIED exact paths from Google's official feed
+// taxonomy. "Furniture" is a TOP-LEVEL category (NOT under "Home & Garden"):
+//   Furniture > Sofas (460) · Furniture > Ottomans (458) · Furniture > Chairs (443).
+// Sofas (460) is the closest valid node for sofas, sectionals, and couches —
+// Google has no standalone "Sectionals" category.
 function mfGoogleCategory(item) {
   var t = ((item.title || '') + ' ' + (item.specs || []).join(' ')).toLowerCase();
-  if (/ottoman|footstool|pouf/.test(t)) return 'Home & Garden > Furniture > Ottomans';
-  if (/recliner|armchair|accent chair|lounge chair|\bchair\b/.test(t)) return 'Home & Garden > Furniture > Chairs';
+  if (/ottoman|footstool|pouf/.test(t)) return 'Furniture > Ottomans';
+  if (/recliner|armchair|accent chair|lounge chair|\bchair\b/.test(t)) return 'Furniture > Chairs';
   return MF_GCAT_DEFAULT;
 }
 

@@ -18,7 +18,7 @@
       <g:price>3200.00 CAD</g:price>
       <g:condition>used</g:condition>
       <g:brand>Pottery Barn</g:brand>
-      <g:google_product_category>Home &amp; Garden &gt; Furniture &gt; Sofas</g:google_product_category>
+      <g:google_product_category>Furniture &gt; Sofas</g:google_product_category>
       <g:product_type>Pre-Owned Furniture &gt; Leather Sofas</g:product_type>
       <g:identifier_exists>no</g:identifier_exists>
       <g:material>Leather</g:material>
@@ -39,7 +39,7 @@
       </g:product_detail>
       <g:shipping>
         <g:country>CA</g:country>
-        <g:region>AB</g:region>
+        <g:region>CA-AB</g:region>
         <g:price>200.00 CAD</g:price>
       </g:shipping>
       <g:min_handling_time>0</g:min_handling_time>
@@ -61,7 +61,7 @@
       <g:price>2600.00 CAD</g:price>
       <g:condition>used</g:condition>
       <g:brand>Bracci</g:brand>
-      <g:google_product_category>Home &amp; Garden &gt; Furniture &gt; Sofas</g:google_product_category>
+      <g:google_product_category>Furniture &gt; Sofas</g:google_product_category>
       <g:product_type>Pre-Owned Furniture &gt; Leather Sofas</g:product_type>
       <g:identifier_exists>no</g:identifier_exists>
       <g:material>Leather</g:material>
@@ -82,7 +82,7 @@
       </g:product_detail>
       <g:shipping>
         <g:country>CA</g:country>
-        <g:region>AB</g:region>
+        <g:region>CA-AB</g:region>
         <g:price>200.00 CAD</g:price>
       </g:shipping>
       <g:min_handling_time>0</g:min_handling_time>
@@ -110,7 +110,7 @@
       <g:price>7500.00 CAD</g:price>
       <g:condition>used</g:condition>
       <g:brand>B&amp;B Italia</g:brand>
-      <g:google_product_category>Home &amp; Garden &gt; Furniture &gt; Sofas</g:google_product_category>
+      <g:google_product_category>Furniture &gt; Sofas</g:google_product_category>
       <g:product_type>Pre-Owned Furniture &gt; Sectionals</g:product_type>
       <g:identifier_exists>no</g:identifier_exists>
       <g:product_detail>
@@ -130,7 +130,7 @@
       </g:product_detail>
       <g:shipping>
         <g:country>CA</g:country>
-        <g:region>AB</g:region>
+        <g:region>CA-AB</g:region>
         <g:price>200.00 CAD</g:price>
       </g:shipping>
       <g:min_handling_time>0</g:min_handling_time>
@@ -151,7 +151,7 @@
       <g:price>450.00 CAD</g:price>
       <g:condition>used</g:condition>
       <g:brand>La-Z-Boy</g:brand>
-      <g:google_product_category>Home &amp; Garden &gt; Furniture &gt; Ottomans</g:google_product_category>
+      <g:google_product_category>Furniture &gt; Ottomans</g:google_product_category>
       <g:product_type>Pre-Owned Furniture &gt; Ottomans</g:product_type>
       <g:identifier_exists>no</g:identifier_exists>
       <g:material>Leather</g:material>
@@ -172,7 +172,7 @@
       </g:product_detail>
       <g:shipping>
         <g:country>CA</g:country>
-        <g:region>AB</g:region>
+        <g:region>CA-AB</g:region>
         <g:price>200.00 CAD</g:price>
       </g:shipping>
       <g:min_handling_time>0</g:min_handling_time>
