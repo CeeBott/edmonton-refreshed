@@ -16,6 +16,9 @@
 //    7. Rewrites sitemap.xml. <lastmod> only advances when the rendered
 //       content actually changed, using a committed sidecar state file
 //       (.build-state.json). Pure build executions do not dilute freshness.
+//    8. Writes merchant-feed.xml — a Google Merchant Center RSS 2.0 product
+//       feed listing every active (non-coming-soon) piece. Static file served
+//       at /merchant-feed.xml; Google fetches it on a daily schedule.
 //
 //  Usage:  node build.js
 //  Deps:   none (Node.js built-ins only)
@@ -1664,6 +1667,167 @@ function generateSitemap(items, soldItems) {
 }
 
 
+// ── Google Merchant Center product feed ──────────────────
+//  Emits /merchant-feed.xml — an RSS 2.0 feed in Google's `g:` namespace, one
+//  <item> per ACTIVE piece in available-data.js. Coming-soon pieces are skipped
+//  (same gate as the on-page Product schema) and sold pieces aren't in
+//  availableItems at all, so the feed can only ever contain live, for-sale
+//  inventory. The file is static — served by GitHub Pages at
+//  https://edmontonrefreshed.com/merchant-feed.xml — and Merchant Center is
+//  pointed at that URL with a daily scheduled fetch, so there's no server or
+//  cron: it regenerates on every `node build.js`, exactly like sitemap.xml.
+//  See CLAUDE.md §5.18.
+//
+//  Pre-owned furniture specifics:
+//    · condition          = used
+//    · availability       = in_stock (feed only ever holds live stock)
+//    · identifier_exists  = no  (one-of-one pieces carry no GTIN/MPN)
+//    · shipping           = a flat local rate scoped to one region (config), so
+//                           Google treats items as locally available without
+//                           national shipping rates.
+
+var MF = site.merchantFeed || {};
+var MF_CURRENCY     = MF.currency || 'CAD';
+var MF_SHIP_RATE    = (MF.shippingRate != null ? MF.shippingRate : 200);
+var MF_SHIP_COUNTRY = MF.shippingCountry || 'CA';
+var MF_SHIP_REGION  = (MF.shippingRegion != null ? MF.shippingRegion : 'AB');
+var MF_GCAT_DEFAULT = MF.googleProductCategory || 'Home & Garden > Furniture > Sofas';
+
+// XML text escaping — ONLY the five predefined XML entities. (escapeHtml emits
+// named HTML entities like &mdash; which are UNDEFINED in plain XML and would
+// break the feed; Unicode chars stay literal under the UTF-8 declaration.)
+function escapeXml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
+// Google price format: "NUMBER CURRENCY", e.g. "3200.00 CAD".
+function mfPrice(n) {
+  return Number(n).toFixed(2) + ' ' + MF_CURRENCY;
+}
+
+// Stable, unique merchant id — the image-folder SKU (e.g. "BB-030"), identical
+// to the on-page Product `sku` so Google can match feed ↔ structured data.
+// Falls back to the slug if a piece somehow has no images.
+function mfId(item, slug) {
+  if (item.images && item.images.length > 0) {
+    var seg = item.images[0].split('/');
+    if (seg.length > 1 && seg[1]) return seg[1];
+  }
+  return slug;
+}
+
+var MF_LEATHER_RE = /leather|nubuck|aniline|top-grain|full-grain/;
+function mfIsLeather(item) {
+  return MF_LEATHER_RE.test(((item.title || '') + ' ' + (item.specs || []).join(' ')).toLowerCase());
+}
+
+// Merchant product_type (the seller's own taxonomy) derived from title + specs.
+function mfPieceType(item) {
+  var t = ((item.title || '') + ' ' + (item.specs || []).join(' ')).toLowerCase();
+  var leather = mfIsLeather(item);
+  if (/sectional/.test(t))      return leather ? 'Leather Sectionals' : 'Sectionals';
+  if (/sofa/.test(t))           return leather ? 'Leather Sofas'      : 'Sofas';
+  if (/couch|loveseat/.test(t)) return leather ? 'Leather Couches'    : 'Couches';
+  if (/ottoman|footstool|pouf/.test(t)) return 'Ottomans';
+  if (/recliner|armchair|accent chair|lounge chair|\bchair\b/.test(t)) return 'Chairs';
+  return 'Seating';
+}
+
+// Google product taxonomy (text path). Sofas covers sofas/sectionals/couches.
+function mfGoogleCategory(item) {
+  var t = ((item.title || '') + ' ' + (item.specs || []).join(' ')).toLowerCase();
+  if (/ottoman|footstool|pouf/.test(t)) return 'Home & Garden > Furniture > Ottomans';
+  if (/recliner|armchair|accent chair|lounge chair|\bchair\b/.test(t)) return 'Home & Garden > Furniture > Chairs';
+  return MF_GCAT_DEFAULT;
+}
+
+var merchantFeedStats = { items: 0 };
+
+function generateMerchantFeed(items) {
+  merchantFeedStats = { items: 0 };
+
+  var lines = [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">',
+    '  <channel>',
+    '    <title>' + escapeXml(site.brandFullName + ' — Available Inventory') + '</title>',
+    '    <link>' + BASE_URL + '</link>',
+    '    <description>' + escapeXml('Pre-owned premium sofas and sectionals available now in ' + site.cityName + ', ' + site.provinceCode + '. Professionally inspected, cleaned, and delivered locally.') + '</description>',
+  ];
+
+  items.forEach(function(item) {
+    if (item.comingSoon) return;   // not yet for sale
+    if (!item.price) return;       // defensive — no price, can't list
+
+    var slug       = item.slug || slugify(item.brand + '-' + item.title);
+    var listingUrl = BASE_URL + 'listings/' + slug + '/';
+    var images     = item.images || [];
+
+    var desc = (item.description || '').replace(/\s*\n+\s*/g, ' ').trim();
+    if (desc.length > 5000) desc = desc.substring(0, 4999).replace(/\s+\S*$/, '') + '…';
+
+    var title = item.brand + ' ' + item.title;
+    if (title.length > 150) title = title.substring(0, 149).replace(/\s+\S*$/, '') + '…';
+
+    var L = ['    <item>'];
+    L.push('      <g:id>' + escapeXml(mfId(item, slug)) + '</g:id>');
+    L.push('      <g:title>' + escapeXml(title) + '</g:title>');
+    L.push('      <g:description>' + escapeXml(desc) + '</g:description>');
+    L.push('      <g:link>' + listingUrl + '</g:link>');
+    if (images.length > 0) L.push('      <g:image_link>' + imagePathToUrl(images[0]) + '</g:image_link>');
+    images.slice(1, 11).forEach(function(p) {   // Google allows up to 10 additional images
+      L.push('      <g:additional_image_link>' + imagePathToUrl(p) + '</g:additional_image_link>');
+    });
+    L.push('      <g:availability>in_stock</g:availability>');
+    L.push('      <g:price>' + mfPrice(item.price) + '</g:price>');
+    L.push('      <g:condition>used</g:condition>');
+    L.push('      <g:brand>' + escapeXml(item.brand) + '</g:brand>');
+    L.push('      <g:google_product_category>' + escapeXml(mfGoogleCategory(item)) + '</g:google_product_category>');
+    L.push('      <g:product_type>' + escapeXml('Pre-Owned Furniture > ' + mfPieceType(item)) + '</g:product_type>');
+    L.push('      <g:identifier_exists>no</g:identifier_exists>');  // one-of-one used pieces: no GTIN/MPN
+    if (mfIsLeather(item)) L.push('      <g:material>Leather</g:material>');
+
+    // Dimensions → product_detail (inches), when known.
+    if (item.dimensions) {
+      ['width', 'depth', 'height'].forEach(function(d) {
+        if (!item.dimensions[d]) return;
+        L.push('      <g:product_detail>');
+        L.push('        <g:section_name>Dimensions</g:section_name>');
+        L.push('        <g:attribute_name>' + (d.charAt(0).toUpperCase() + d.slice(1)) + '</g:attribute_name>');
+        L.push('        <g:attribute_value>' + escapeXml(item.dimensions[d] + ' in') + '</g:attribute_value>');
+        L.push('      </g:product_detail>');
+      });
+    }
+
+    // Local flat-rate shipping, scoped to one region so Google does NOT require
+    // national shipping rates. Region '' (config) widens it to country-wide.
+    L.push('      <g:shipping>');
+    L.push('        <g:country>' + escapeXml(MF_SHIP_COUNTRY) + '</g:country>');
+    if (MF_SHIP_REGION) L.push('        <g:region>' + escapeXml(MF_SHIP_REGION) + '</g:region>');
+    L.push('        <g:price>' + mfPrice(MF_SHIP_RATE) + '</g:price>');
+    L.push('      </g:shipping>');
+    // Handling/transit mirror the on-page Offer shippingDetails (0–3 / 1–7 days).
+    L.push('      <g:min_handling_time>0</g:min_handling_time>');
+    L.push('      <g:max_handling_time>3</g:max_handling_time>');
+    L.push('      <g:min_transit_time>1</g:min_transit_time>');
+    L.push('      <g:max_transit_time>7</g:max_transit_time>');
+    L.push('    </item>');
+
+    lines.push(L.join('\n'));
+    merchantFeedStats.items++;
+  });
+
+  lines.push('  </channel>');
+  lines.push('</rss>');
+  return lines.join('\n') + '\n';
+}
+
+
 
 // ── Main ─────────────────────────────────────────────────
 
@@ -1810,6 +1974,11 @@ var sitemapPath = path.join(ROOT, 'sitemap.xml');
 var sitemapOut = generateSitemap(availableItems, soldItems);
 fs.writeFileSync(sitemapPath, sitemapOut, 'utf8');
 
+// ── 6b. Write the Google Merchant Center product feed.
+//      Static file at /merchant-feed.xml; Merchant Center fetches it daily.
+var merchantFeedPath = path.join(ROOT, 'merchant-feed.xml');
+fs.writeFileSync(merchantFeedPath, generateMerchantFeed(availableItems), 'utf8');
+
 // ── 7. Entity-integrity guardrail.
 //      The site's authority rests on a single canonical owner entity
 //      (Person @id /about/#collin) referenced from every sell page and guide
@@ -1923,6 +2092,7 @@ console.log('  index.html      — ' + availableItems.length + ' available items
 console.log('  sold/index.html — ' + soldItems.length + ' sold items');
 console.log('  listings/       — ' + listingCount + ' individual listing pages generated');
 console.log('  sitemap.xml     — ' + sitemapStats.changed + ' URL(s) advanced; ' + sitemapStats.held + ' held; ' + sitemapStats.added + ' new');
+console.log('  merchant-feed   — ' + merchantFeedStats.items + ' product(s) in /merchant-feed.xml');
 console.log('  partials        — ' + partialUpdated + ' HTML files updated');
 console.log('  sold cards      — ' + soldCardRelinks + ' card link(s) point to sold stubs');
 
