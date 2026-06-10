@@ -21,6 +21,8 @@ Edmonton Refreshed is a curated pre-owned furniture dealer based in Edmonton, Al
 - Sold Inventory Archive: https://edmontonrefreshed.com/sold/
 - About: https://edmontonrefreshed.com/about/
 - Buyer & Seller Guides: https://edmontonrefreshed.com/guides/
+- Partner Hand-Offs (designers, retailers, realtors): https://edmontonrefreshed.com/partners/
+- What We Buy (and What We Don't): https://edmontonrefreshed.com/sell/what-we-buy/
 
 ## Sell-Side Landing Pages
 
@@ -89,23 +91,23 @@ Permanent, indexable archive pages for notable pieces bought and resold by Edmon
 - Natuzzi Editions Saggezza Semi-Aniline Leather Loveseat (sold): https://edmontonrefreshed.com/listings/natuzzi-editions-saggezza-leather-loveseat/
 - Natuzzi Editions Saggezza Semi-Aniline Leather Sofa (sold): https://edmontonrefreshed.com/listings/natuzzi-editions-saggezza-leather-sofa/
 - Crate & Barrel Rochelle Sofa & Chair Set (sold): https://edmontonrefreshed.com/listings/crate-and-barrel-rochelle-sofa-chair-set/
-- Brentwood Classics Dorado Full-Aniline Capetown Antico Leather Sofa (sold): https://edmontonrefreshed.com/listings/brentwood-classics-dorado-leather-sofa/
+- Brentwood Classics Dorado Full Aniline Capetown Antico Leather (sold): https://edmontonrefreshed.com/listings/brentwood-classics-dorado-leather-sofa/
 - Natuzzi Editions Saggezza Grey Top-Grain Leather Sectional (sold): https://edmontonrefreshed.com/listings/natuzzi-editions-saggezza-grey-leather-sectional/
-- Rove Concepts Milo 4-Piece Modular Sectional, Grey Performance Fabric (sold): https://edmontonrefreshed.com/listings/rove-concepts-milo-4-piece-modular-sectional/
-- American Leather Tuscany Blackberry Top-Grain Leather Sofa (sold): https://edmontonrefreshed.com/listings/american-leather-tuscany-leather-sofa/
+- Rove Concepts Milo Modular Sectional (sold): https://edmontonrefreshed.com/listings/rove-concepts-milo-4-piece-modular-sectional/
+- American Leather Tuscany Top-Grain Blackberry Leather Sofa (sold): https://edmontonrefreshed.com/listings/american-leather-tuscany-leather-sofa/
 - Natuzzi Editions Cesare Top-Grain Leather Sectional (sold): https://edmontonrefreshed.com/listings/natuzzi-editions-cesare-leather-sectional/
 - Natuzzi Editions Saggezza Brown Top-Grain Leather Sectional (sold): https://edmontonrefreshed.com/listings/natuzzi-editions-saggezza-brown-leather-sectional/
 - Natuzzi Editions Indimenticabile Charcoal Top-Grain Leather Sofa (sold): https://edmontonrefreshed.com/listings/natuzzi-editions-indimenticabile-charcoal-leather-sofa/
-- Natuzzi Editions Indimenticabile Light Grey Top-Grain Leather Sofa (sold): https://edmontonrefreshed.com/listings/natuzzi-editions-indimenticabile-light-grey-leather-sofa/
 - Natuzzi Editions Sollievo Top-Grain Leather Sofa (sold): https://edmontonrefreshed.com/listings/natuzzi-editions-sollievo-leather-sofa/
-- Fabbrica Charcoal Performance Fabric Sectional (sold): https://edmontonrefreshed.com/listings/fabbrica-charcoal-fabric-sectional/
-- Crate & Barrel Gather 99-Inch Deep Sofa, Tribute Quartz Fabric (sold): https://edmontonrefreshed.com/listings/crate-and-barrel-gather-sofa/
+- Natuzzi Editions Indimenticabile Light Grey Top-Grain Leather Sofa (sold): https://edmontonrefreshed.com/listings/natuzzi-editions-indimenticabile-light-grey-leather-sofa/
+- Fabbrica Charcoal Performance Fabric Sofa + Chaise (sold): https://edmontonrefreshed.com/listings/fabbrica-charcoal-fabric-sectional/
+- Crate & Barrel Gather 99 inch Deep Sofa Tribute, Quartz Fabric (sold): https://edmontonrefreshed.com/listings/crate-and-barrel-gather-sofa/
 - Natuzzi Italia Full-Grain Aniline Leather Loveseat Set (sold): https://edmontonrefreshed.com/listings/natuzzi-italia-aniline-leather-loveseat-set/
-- Urban Barn Preston Distressed Leather Sofa & Two Chairs (sold): https://edmontonrefreshed.com/listings/urban-barn-preston-leather-sofa-set/
+- Urban Barn Preston Distressed Top-Grain Leather Sofa & 2 Chairs (sold): https://edmontonrefreshed.com/listings/urban-barn-preston-leather-sofa-set/
 - EQ3 Remi Top-Grain Leather Sofa (sold): https://edmontonrefreshed.com/listings/eq3-remi-leather-sofa/
-- Urban Barn Karis Fabric Sofa, Maia Oat (sold): https://edmontonrefreshed.com/listings/urban-barn-karis-fabric-sofa/
-- Urban Barn Renfrew 94-Inch Top-Grain Leather Sofa, Caramel (sold): https://edmontonrefreshed.com/listings/urban-barn-renfrew-leather-sofa/
-- EQ3 Replay 99-Inch Sofa, Stone-Grey Performance Fabric (sold): https://edmontonrefreshed.com/listings/eq3-replay-sofa/
+- Urban Barn Karis Fabric Sofa (sold): https://edmontonrefreshed.com/listings/urban-barn-karis-fabric-sofa/
+- Urban Barn Renfrew 94 inch Top-Grain Leather Sofa (sold): https://edmontonrefreshed.com/listings/urban-barn-renfrew-leather-sofa/
+- EQ3 Replay 99 inch Sofa (sold): https://edmontonrefreshed.com/listings/eq3-replay-sofa/
 
 ## Business Facts
 

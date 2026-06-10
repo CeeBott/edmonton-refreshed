@@ -742,15 +742,7 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions) {
 
   // Description collapsible section (open by default)
   var brandGuideHTML = '';
-  var brandGuideMap = {
-    'Natuzzi': { slug: 'natuzzi-sofa-review-edmonton', label: 'Read our full Natuzzi buyer&rsquo;s guide for Edmonton' },
-    'Natuzzi Editions': { slug: 'natuzzi-sofa-review-edmonton', label: 'Read our full Natuzzi buyer&rsquo;s guide for Edmonton' },
-    'Natuzzi Italia': { slug: 'natuzzi-sofa-review-edmonton', label: 'Read our full Natuzzi buyer&rsquo;s guide for Edmonton' },
-    'B&B Italia': { slug: 'bb-italia-sofa-review-edmonton', label: 'Read our full B&amp;B Italia buyer&rsquo;s guide for Edmonton' },
-    'Rove Concepts': { slug: 'rove-concepts-sofa-review-edmonton', label: 'Read our full Rove Concepts buyer&rsquo;s guide for Edmonton' },
-    'Pottery Barn': { slug: 'pottery-barn-sofa-review-edmonton', label: 'Read our full Pottery Barn buyer&rsquo;s guide for Edmonton' },
-    'Crate & Barrel': { slug: 'crate-and-barrel-sofa-review-edmonton', label: 'Read our full Crate &amp; Barrel buyer&rsquo;s guide for Edmonton' }
-  };
+  var brandGuideMap = getBrandGuideMap();
   if (brandGuideMap[item.brand]) {
     var bg = brandGuideMap[item.brand];
     brandGuideHTML = '<p class="listing-brand-guide-link"><a href="/guides/' + bg.slug + '/">' + bg.label + ' &rarr;</a></p>';
@@ -836,19 +828,17 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions) {
   if (brandSellMap[item.brand]) {
     sellLineTarget = brandSellMap[item.brand];
   } else {
-    var titleText = (item.title || '') + ' ' + (item.specs || []).join(' ');
-    var t = titleText.toLowerCase();
-    var hasLeather = /leather|nubuck|aniline|top-grain|full-grain/.test(t);
-    if (/sectional/.test(t)) {
-      sellLineTarget = hasLeather
+    var pc = classifyPiece(item);
+    if (pc.type === 'sectional') {
+      sellLineTarget = pc.leather
         ? { href: '/sell/leather-sectional/', anchor: 'sell your leather sectional' }
         : { href: '/sell/sectional/',         anchor: 'sell your sectional' };
-    } else if (/sofa/.test(t)) {
-      sellLineTarget = hasLeather
+    } else if (pc.type === 'sofa') {
+      sellLineTarget = pc.leather
         ? { href: '/sell/leather-sofa/', anchor: 'sell your leather sofa' }
         : { href: '/sell/sofa/',         anchor: 'sell your sofa' };
-    } else if (/couch|loveseat/.test(t)) {
-      sellLineTarget = hasLeather
+    } else if (pc.type === 'couch') {
+      sellLineTarget = pc.leather
         ? { href: '/sell/leather-couch/', anchor: 'sell your leather couch' }
         : { href: '/sell/couch/',         anchor: 'sell your couch' };
     } else {
@@ -1182,10 +1172,44 @@ function injectPartial(html, name, render) {
   });
 }
 
+// Inline variant of injectPartial — same marker grammar, but emits the
+// replacement on the same line with no added whitespace. Used for config-
+// driven text fragments inside authored sentences, where injectPartial's
+// newline wrapping would add visible whitespace before punctuation.
+function injectInline(html, name, render) {
+  var re = new RegExp(
+    '(<!--\\s*' + name + '_START(?:\\s+([^>-]*?))?\\s*-->)[\\s\\S]*?(<!--\\s*' + name + '_END\\s*-->)',
+    'g'
+  );
+  return html.replace(re, function (_match, openTag, attrs, closeTag) {
+    var attrMap = {};
+    if (attrs) {
+      var attrRe = /(\w+)\s*=\s*"([^"]*)"/g;
+      var m;
+      while ((m = attrRe.exec(attrs)) !== null) attrMap[m[1]] = m[2];
+    }
+    return openTag + render(attrMap) + closeTag;
+  });
+}
+
 function injectAllPartials(html) {
   html = injectPartial(html, 'NAV',         function ()      { return renderNav(); });
   html = injectPartial(html, 'CREDIBILITY', function (attrs) { return renderCredibility(attrs.variant || 'buyer'); });
   html = injectPartial(html, 'FOOTER',      function ()      { return renderFooter(); });
+  // Config-driven inline fragments (homepage sr-only entity block, sold-page
+  // tagline): the canonical §2.1-ordered brand list and the sold count render
+  // from config/site.js so the pages can never drift from it.
+  html = injectInline(html, 'BRAND_LIST', function (attrs) {
+    var list = (site.brandList || []).map(escapeHtml);
+    if (!list.length) return '';
+    return attrs.and === 'true' && list.length > 1
+      ? list.slice(0, -1).join(', ') + ', and ' + list[list.length - 1]
+      : list.join(', ');
+  });
+  html = injectInline(html, 'SOLD_COUNT', function () {
+    var n = parseInt(site.piecesSold, 10);
+    return isNaN(n) ? escapeHtml(String(site.piecesSold)) : String(n);
+  });
   return html;
 }
 
@@ -1723,20 +1747,34 @@ function mfId(item, slug) {
   return slug;
 }
 
-var MF_LEATHER_RE = /leather|nubuck|aniline|top-grain|full-grain/;
-function mfIsLeather(item) {
-  return MF_LEATHER_RE.test(((item.title || '') + ' ' + (item.specs || []).join(' ')).toLowerCase());
+// ── Piece classification — the SINGLE source for piece type + leather ───
+// Consumed by the listing sell-line and both merchant-feed category mappers
+// so the three can never drift (CLAUDE.md §5.8 / §5.18). Precedence:
+// sectional > sofa > couch/loveseat > ottoman > chair > other.
+var LEATHER_RE = /leather|nubuck|aniline|top-grain|full-grain/;
+function classifyPiece(item) {
+  var t = ((item.title || '') + ' ' + (item.specs || []).join(' ')).toLowerCase();
+  var type = 'other';
+  if (/sectional/.test(t)) type = 'sectional';
+  else if (/sofa/.test(t)) type = 'sofa';
+  else if (/couch|loveseat/.test(t)) type = 'couch';
+  else if (/ottoman|footstool|pouf/.test(t)) type = 'ottoman';
+  else if (/recliner|armchair|accent chair|lounge chair|\bchair\b/.test(t)) type = 'chair';
+  return { type: type, leather: LEATHER_RE.test(t) };
 }
 
-// Merchant product_type (the seller's own taxonomy) derived from title + specs.
+function mfIsLeather(item) {
+  return classifyPiece(item).leather;
+}
+
+// Merchant product_type (the seller's own taxonomy).
 function mfPieceType(item) {
-  var t = ((item.title || '') + ' ' + (item.specs || []).join(' ')).toLowerCase();
-  var leather = mfIsLeather(item);
-  if (/sectional/.test(t))      return leather ? 'Leather Sectionals' : 'Sectionals';
-  if (/sofa/.test(t))           return leather ? 'Leather Sofas'      : 'Sofas';
-  if (/couch|loveseat/.test(t)) return leather ? 'Leather Couches'    : 'Couches';
-  if (/ottoman|footstool|pouf/.test(t)) return 'Ottomans';
-  if (/recliner|armchair|accent chair|lounge chair|\bchair\b/.test(t)) return 'Chairs';
+  var pc = classifyPiece(item);
+  if (pc.type === 'sectional') return pc.leather ? 'Leather Sectionals' : 'Sectionals';
+  if (pc.type === 'sofa')      return pc.leather ? 'Leather Sofas'      : 'Sofas';
+  if (pc.type === 'couch')     return pc.leather ? 'Leather Couches'    : 'Couches';
+  if (pc.type === 'ottoman')   return 'Ottomans';
+  if (pc.type === 'chair')     return 'Chairs';
   return 'Seating';
 }
 
@@ -1746,9 +1784,9 @@ function mfPieceType(item) {
 // Sofas (460) is the closest valid node for sofas, sectionals, and couches —
 // Google has no standalone "Sectionals" category.
 function mfGoogleCategory(item) {
-  var t = ((item.title || '') + ' ' + (item.specs || []).join(' ')).toLowerCase();
-  if (/ottoman|footstool|pouf/.test(t)) return 'Furniture > Ottomans';
-  if (/recliner|armchair|accent chair|lounge chair|\bchair\b/.test(t)) return 'Furniture > Chairs';
+  var pc = classifyPiece(item);
+  if (pc.type === 'ottoman') return 'Furniture > Ottomans';
+  if (pc.type === 'chair')   return 'Furniture > Chairs';
   return MF_GCAT_DEFAULT;
 }
 
@@ -2002,6 +2040,50 @@ fs.writeFileSync(merchantFeedPath, generateMerchantFeed(availableItems), 'utf8')
 //      HTML and audit. A dangling owner @id is a HARD failure (exit 1) because
 //      it makes every sell-page/guide author citation inert; sameAs drift and
 //      guide gaps are warnings. See CLAUDE.md §5.17 and §4.3.
+// ── Brand-guide cross-link map — module-scoped so the audit can lint it ──
+// One entry per brand with a published buyer's guide; renders the listing
+// Description cross-link (§5.8). The audit warns when a published brand-
+// review guide has no entry here.
+function getBrandGuideMap() {
+  return {
+    'Natuzzi': { slug: 'natuzzi-sofa-review-edmonton', label: 'Read our full Natuzzi buyer&rsquo;s guide for Edmonton' },
+    'Natuzzi Editions': { slug: 'natuzzi-sofa-review-edmonton', label: 'Read our full Natuzzi buyer&rsquo;s guide for Edmonton' },
+    'Natuzzi Italia': { slug: 'natuzzi-sofa-review-edmonton', label: 'Read our full Natuzzi buyer&rsquo;s guide for Edmonton' },
+    'B&B Italia': { slug: 'bb-italia-sofa-review-edmonton', label: 'Read our full B&amp;B Italia buyer&rsquo;s guide for Edmonton' },
+    'Rove Concepts': { slug: 'rove-concepts-sofa-review-edmonton', label: 'Read our full Rove Concepts buyer&rsquo;s guide for Edmonton' },
+    'Pottery Barn': { slug: 'pottery-barn-sofa-review-edmonton', label: 'Read our full Pottery Barn buyer&rsquo;s guide for Edmonton' },
+    'Crate & Barrel': { slug: 'crate-and-barrel-sofa-review-edmonton', label: 'Read our full Crate &amp; Barrel buyer&rsquo;s guide for Edmonton' }
+  };
+}
+
+// ── llms.txt: regenerate the sold-archive list ───────────────────────────
+// The bullet list under "## Sold Inventory (Individual Archive Pages)"
+// mirrors every soldItems entry carrying an href (§5.10), newest first —
+// generated here so §8.3 has no manual llms.txt step to forget. The intro
+// prose under the header and every other llms.txt section stay hand-authored.
+function rebuildLlmsSoldSection() {
+  var llmsPath = path.join(ROOT, 'llms.txt');
+  if (!fs.existsSync(llmsPath)) return 0;
+  var txt = fs.readFileSync(llmsPath, 'utf8');
+  var header = '## Sold Inventory (Individual Archive Pages)';
+  var start = txt.indexOf(header);
+  if (start === -1) return 0;
+  var next = txt.indexOf('\n## ', start + header.length);
+  var end = next === -1 ? txt.length : next + 1;
+  var section = txt.slice(start, end);
+  var firstBullet = section.indexOf('\n- ');
+  var intro = firstBullet === -1 ? section.replace(/\s+$/, '') + '\n\n' : section.slice(0, firstBullet + 1);
+  var stubs = soldItems.filter(function (s) { return s.href; });
+  var bullets = stubs.map(function (s) {
+    var label = (s.brand + ' ' + s.title).replace(/\s+—\s+/g, ', ');
+    return '- ' + label + ' (sold): ' + BASE_URL.replace(/\/$/, '') + s.href;
+  }).join('\n');
+  var out = txt.slice(0, start) + intro + bullets + '\n\n' + txt.slice(end);
+  if (out !== txt) fs.writeFileSync(llmsPath, out, 'utf8');
+  return stubs.length;
+}
+var llmsSoldCount = rebuildLlmsSoldSection();
+
 var COLLIN_ID = 'https://edmontonrefreshed.com/about/#collin';
 
 function extractJsonLd(html) {
@@ -2094,6 +2176,39 @@ auditFiles.forEach(function(f) {
   }
 });
 
+// (d) brandGuideMap coverage — WARN when a published brand-review guide has
+//     no map entry (the listing→guide cross-link would silently never render). §5.8.
+var mappedGuideSlugs = (function () {
+  var map = getBrandGuideMap(), out = [];
+  for (var k in map) { if (out.indexOf(map[k].slug) === -1) out.push(map[k].slug); }
+  return out;
+})();
+var unmappedReviewGuides = fs.readdirSync(path.join(ROOT, 'guides'), { withFileTypes: true })
+  .filter(function (e) { return e.isDirectory() && /-sofa-review-edmonton$/.test(e.name); })
+  .map(function (e) { return e.name; })
+  .filter(function (slug) { return mappedGuideSlugs.indexOf(slug) === -1; });
+
+// (e) §5.5 metaTitle formula — WARN when an active listing's metaTitle drops
+//     the transactional "for Sale in Edmonton" phrase.
+var metaTitleGaps = availableItems.filter(function (i) {
+  return !i.comingSoon && !/for Sale in Edmonton/.test(i.metaTitle || '');
+}).map(function (i) { return i.slug || slugify(i.brand + '-' + i.title); });
+
+// (f) llms.txt coverage — WARN when a hand-added core page or a live guide is
+//     missing from llms.txt (the class of gap that left /partners/ unlisted).
+var llmsAuditText = fs.existsSync(path.join(ROOT, 'llms.txt'))
+  ? fs.readFileSync(path.join(ROOT, 'llms.txt'), 'utf8') : '';
+var llmsGaps = [];
+['partners/', 'sell/what-we-buy/'].forEach(function (p) {
+  if (llmsAuditText.indexOf(BASE_URL + p) === -1) llmsGaps.push('/' + p);
+});
+auditFiles.forEach(function (f) {
+  if (f.rel.indexOf('guides/') !== 0 || f.rel === 'guides/index.html' || f.rel.slice(-11) !== '/index.html') return;
+  if (/<meta[^>]+http-equiv=["']?refresh/i.test(f.html)) return;
+  var rel = f.rel.slice(0, -'index.html'.length);
+  if (llmsAuditText.indexOf(BASE_URL + rel) === -1) llmsGaps.push('/' + rel);
+});
+
 // ── Summary ──────────────────────────────────────────
 var assetSummary = Object.keys(assetVersions)
   .map(function(k) { return k.split('/').pop() + ' ' + assetVersions[k]; })
@@ -2126,6 +2241,21 @@ if (guideGaps.length) {
   guideGaps.forEach(function(g) { console.log('                    · ' + g); });
 } else {
   console.log('  guides          — all articles carry Article schema + author');
+}
+if (unmappedReviewGuides.length) {
+  console.log('  guide-map WARN  — review guide(s) missing from brandGuideMap: ' + unmappedReviewGuides.join(', '));
+} else {
+  console.log('  guide-map       — every brand-review guide has a listing cross-link entry');
+}
+if (metaTitleGaps.length) {
+  console.log('  metaTitle WARN  — active listing(s) missing "for Sale in Edmonton": ' + metaTitleGaps.join(', '));
+} else {
+  console.log('  metaTitle       — all active listings follow the §5.5 title formula');
+}
+if (llmsGaps.length) {
+  console.log('  llms WARN       — missing from llms.txt: ' + llmsGaps.join(', '));
+} else {
+  console.log('  llms.txt        — sold list regenerated (' + llmsSoldCount + ' stubs); core pages + guides all listed');
 }
 
 if (ownerDangling) {

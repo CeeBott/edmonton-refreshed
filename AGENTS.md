@@ -13,8 +13,9 @@ assuming.
 `build.js` regenerates these — edit the SOURCE and rerun the build, never the output:
 - `index.html` / `sold/index.html` content inside `<!-- ..._START/_END -->` markers
 - everything under `listings/*/index.html` (active listings)
-- `sitemap.xml`, `.build-state.json`, `css/*.min.css`, `js/*.min.js`
+- `sitemap.xml`, `merchant-feed.xml`, `.build-state.json`, `css/*.min.css`, `js/*.min.js`
 - nav / credibility / footer blocks inside marker pairs on every page
+- `BRAND_LIST` / `SOLD_COUNT` marker content and the sold-inventory list in `llms.txt`
 
 Edit instead: `js/*.js` (non-min), `css/styles.css`, `config/*.js`,
 `partials/*.js`, `build.js`, and hand-authored pages. Run `node build.js` after

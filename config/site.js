@@ -37,6 +37,24 @@ module.exports = {
   ratingCount: 18,
   offerRange: 'Most Offers $500–$2,500',
 
+  // brandList — canonical ordered brand list for entity/AI surfaces (§2.1:
+  // top-tier names lead; La-Z-Boy near the end, never first). Rendered between
+  // BRAND_LIST_START/_END markers (homepage sr-only block, sold-page intro)
+  // by build.js — edit here once, never per page.
+  brandList: [
+    'B&B Italia',
+    'Natuzzi',
+    'Rove Concepts',
+    'Crate & Barrel',
+    'EQ3',
+    'West Elm',
+    'American Leather',
+    'Restoration Hardware',
+    'La-Z-Boy',
+    'Urban Barn',
+    'Brentwood Classics',
+  ],
+
   // sameAs — canonical external profile URLs for Knowledge Graph entity
   // consolidation. Read into every Organization / FurnitureStore schema by
   // build.js, and referenced by hand-maintained sameAs arrays in pages that
