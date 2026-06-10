@@ -1010,7 +1010,7 @@ renderCredibility('listing') + '\n' +
 '            </div>\n' +
 '            <div class="listing-price">' + formatPrice(item.price) + ' <span class="listing-price-currency">CAD</span></div>\n' +
 '            <div class="listing-ctas">\n' +
-'              <a class="listing-cta" href="sms:7809651477">Text 780-965-1477 to Secure &rarr;</a>\n' +
+'              <a class="listing-cta" href="sms:7809651477">Text to Book a Viewing &rarr;</a>\n' +
 '              <a class="listing-cta listing-cta--secondary" href="tel:7809651477">Call 780-965-1477</a>\n' +
 '            </div>\n' +
 '            <div class="listing-specs">' + specsHTML + '</div>\n' +
@@ -1042,7 +1042,7 @@ relatedHTML +
 '\n' +
 '  <!-- Sticky CTA bar (mobile only) -->\n' +
 '  <div class="listing-sticky-cta">\n' +
-'    <a href="sms:7809651477" class="sticky-cta-primary">Text to Secure &rarr; ' + formatPrice(item.price) + ' CAD</a>\n' +
+'    <a href="sms:7809651477" class="sticky-cta-primary">Book a Viewing &rarr; ' + formatPrice(item.price) + ' CAD</a>\n' +
 '    <a href="tel:7809651477" class="sticky-cta-secondary">Call</a>\n' +
 '  </div>\n' +
 '\n' +

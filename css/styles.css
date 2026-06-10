@@ -1609,6 +1609,7 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   .reviews-aggregate { margin-bottom: 32px; padding: 0 var(--page-x); }
   .about-section { margin-bottom: 48px; }
   .about-section p { margin-bottom: 14px; }
+  .about-portrait { float: none; width: min(280px, 70%); margin: 4px auto 24px; }
   .sell-hero p { font-size: 0.95rem; }
   .sell-checklist { padding: 22px 22px; }
   .sell-form { gap: 22px; }
@@ -2279,6 +2280,23 @@ h3.faq-question,
   color: var(--color-text-secondary);
   line-height: 1.8;
   margin-bottom: 12px;
+}
+/* Founder portrait — floats beside the Meet Collin story on desktop */
+.about-portrait {
+  float: right;
+  width: min(300px, 40%);
+  margin: 6px 0 20px 28px;
+}
+.about-portrait img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+}
+.about-section::after {
+  content: '';
+  display: block;
+  clear: both;
 }
 .about-brands {
   display: flex;
