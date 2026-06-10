@@ -747,7 +747,9 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions) {
     'Natuzzi Editions': { slug: 'natuzzi-sofa-review-edmonton', label: 'Read our full Natuzzi buyer&rsquo;s guide for Edmonton' },
     'Natuzzi Italia': { slug: 'natuzzi-sofa-review-edmonton', label: 'Read our full Natuzzi buyer&rsquo;s guide for Edmonton' },
     'B&B Italia': { slug: 'bb-italia-sofa-review-edmonton', label: 'Read our full B&amp;B Italia buyer&rsquo;s guide for Edmonton' },
-    'Rove Concepts': { slug: 'rove-concepts-sofa-review-edmonton', label: 'Read our full Rove Concepts buyer&rsquo;s guide for Edmonton' }
+    'Rove Concepts': { slug: 'rove-concepts-sofa-review-edmonton', label: 'Read our full Rove Concepts buyer&rsquo;s guide for Edmonton' },
+    'Pottery Barn': { slug: 'pottery-barn-sofa-review-edmonton', label: 'Read our full Pottery Barn buyer&rsquo;s guide for Edmonton' },
+    'Crate & Barrel': { slug: 'crate-and-barrel-sofa-review-edmonton', label: 'Read our full Crate &amp; Barrel buyer&rsquo;s guide for Edmonton' }
   };
   if (brandGuideMap[item.brand]) {
     var bg = brandGuideMap[item.brand];
