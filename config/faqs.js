@@ -28,13 +28,13 @@ const home = [
     question: 'What brands do you carry?',
     schemaQuestion: 'What brands of used furniture does Edmonton Refreshed carry?',
     answer:
-      'We work with well-built pieces from recognized makers: Natuzzi, B&B Italia, La-Z-Boy, Rove Concepts, Brentwood Classics, Crate & Barrel, Urban Barn, EQ3, American Leather, and similar. If it’s a recognized brand in good condition, we’re interested.',
+      'We work with well-built pieces from recognized makers: B&B Italia, Natuzzi, Rove Concepts, Crate & Barrel, EQ3, American Leather, Urban Barn, Brentwood Classics, and La-Z-Boy. If it’s a recognized brand in good condition, we’re interested.',
   },
   {
     question: 'Do you deliver?',
     schemaQuestion: 'Do you deliver furniture in Edmonton?',
     answer:
-      'Delivery is available at an additional fee determined by distance to your home from our location, and complexity of delivery - are you in an apartment? Or is your desired room located anywhere other than the main floor of your home? This is the main factor determining complexity, but not the only one.',
+      'Yes — delivery is available across Edmonton and the surrounding area for an additional fee. The cost depends on distance and on access at your end — stairs, elevators, and tight corners all add time. Tell us where the piece is headed and we’ll confirm the delivery cost up front.',
   },
   {
     question: 'How do I sell my sofa or sectional?',
@@ -92,15 +92,15 @@ const about = [
     question: 'What brands do you carry?',
     schemaQuestion: 'What brands of used furniture does Edmonton Refreshed carry?',
     answer:
-      'We focus on well-built pieces from recognized makers: Natuzzi, B&B Italia, La-Z-Boy, Rove Concepts, Brentwood Classics, Crate & Barrel, Urban Barn, EQ3, American Leather, and similar. If it’s a well-built piece from a known manufacturer, we’re likely interested.',
+      'We focus on well-built pieces from recognized makers: B&B Italia, Natuzzi, Rove Concepts, Crate & Barrel, EQ3, American Leather, Urban Barn, Brentwood Classics, and La-Z-Boy. If it’s a well-built piece from a known manufacturer, we’re likely interested.',
     schemaAnswer:
-      'Edmonton Refreshed works with well-built pieces from recognized makers including Natuzzi, B&B Italia, La-Z-Boy, Rove Concepts, Brentwood Classics, Crate & Barrel, Urban Barn, EQ3, American Leather, and others. The focus is on furniture that holds its quality and value.',
+      'Edmonton Refreshed works with well-built pieces from recognized makers including B&B Italia, Natuzzi, Rove Concepts, Crate & Barrel, EQ3, American Leather, Urban Barn, Brentwood Classics, and La-Z-Boy. The focus is on furniture that holds its quality and value.',
   },
   {
     question: 'Do you deliver?',
     schemaQuestion: 'Do you deliver furniture in Edmonton?',
     answer:
-      'Delivery is available at an additional fee determined by distance to your home from our location, and complexity of delivery - are you in an apartment? Or is your desired room located anywhere other than the main floor of your home? This is the main factor determining complexity, but not the only one.',
+      'Yes — delivery is available across Edmonton and the surrounding area for an additional fee. The cost depends on distance and on access at your end — stairs, elevators, and tight corners all add time. Tell us where the piece is headed and we’ll confirm the delivery cost up front.',
   },
   {
     question: 'How do I sell my sofa or sectional?',

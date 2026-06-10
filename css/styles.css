@@ -399,6 +399,19 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   line-height: 1.7;
 }
 
+/* Quiet buyer path under the tagline — the seller CTA below keeps the visual weight */
+.hero-browse {
+  margin: 20px auto 0;
+  font-size: 0.9rem;
+}
+.hero-browse a {
+  color: var(--color-text);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: var(--color-text-secondary);
+}
+.hero-browse a:hover { text-decoration-color: var(--color-text); }
+
 /* ── Hero Sell CTA ── */
 .hero-sell-cta {
   text-align: center;
@@ -1673,6 +1686,11 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   aspect-ratio: 4/3;
   background: #f0f0f0;
 }
+/* Desktop: cap the stage height so title, price, and CTA surface near the fold.
+   Photos letterbox against the stage background (object-fit: contain below). */
+@media (min-width: 769px) {
+  .listing-carousel .carousel { aspect-ratio: auto; height: min(62vh, 560px); }
+}
 /* Show full image inside the uniform listing frame — never crop */
 .listing-carousel .carousel-track img { object-fit: contain; }
 /* Always show arrows on listing page carousels */
@@ -1890,6 +1908,13 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
 .listing-collapsible .listing-features,
 .listing-collapsible .listing-meta-text {
   margin-bottom: 12px;
+}
+/* Keep long-form listing text at a readable measure; boxes stay full width */
+.listing-description,
+.listing-meta-text,
+.listing-features li,
+.listing-faq .faq-answer {
+  max-width: 72ch;
 }
 .listing-meta-label {
   display: block;

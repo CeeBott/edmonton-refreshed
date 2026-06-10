@@ -1010,7 +1010,7 @@ renderCredibility('listing') + '\n' +
 '            </div>\n' +
 '            <div class="listing-price">' + formatPrice(item.price) + ' <span class="listing-price-currency">CAD</span></div>\n' +
 '            <div class="listing-ctas">\n' +
-'              <a class="listing-cta" href="sms:7809651477">Text to Secure &rarr;</a>\n' +
+'              <a class="listing-cta" href="sms:7809651477">Text 780-965-1477 to Secure &rarr;</a>\n' +
 '              <a class="listing-cta listing-cta--secondary" href="tel:7809651477">Call 780-965-1477</a>\n' +
 '            </div>\n' +
 '            <div class="listing-specs">' + specsHTML + '</div>\n' +

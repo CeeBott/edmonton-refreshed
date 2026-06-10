@@ -12,6 +12,13 @@ Thumbs.db
 # session, so it should not be tracked (kept local per the .local convention).
 .claude/settings.local.json
 
+# Internal docs & audits — LOCAL-ONLY (this repo is public and GitHub Pages
+# serves anything committed). Design-audit reports + screenshots live in
+# docs/design-audit/; the audit skill in .claude/skills/ is backed up in the
+# private docs repo (CLAUDE.md §1.5, §8.15).
+/docs/
+.claude/skills/
+
 # Local-only: Cloudflare 301 redirect map for the sell-URL migration (§10.15).
 # Upload to Cloudflare Bulk Redirects, then it can be deleted — must NOT ship
 # with the site (.nojekyll means root files are served raw).
