@@ -166,6 +166,8 @@ var availableItems = [
     price: 450,
     specs: ["La-Z-Boy", "35 × 35 × 18 in", "Nubuck Leather", "Hidden Casters", "Like New"],
     images: [
+      "images/LB-042/la-z-boy-05.jpeg",
+      "images/LB-042/la-z-boy-06.jpeg",
       "images/LB-042/la-z-boy-03.jpeg",
       "images/LB-042/la-z-boy-02.jpeg",
       "images/LB-042/la-z-boy-01.jpeg",

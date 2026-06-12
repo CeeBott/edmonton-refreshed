@@ -2718,6 +2718,15 @@ footer a:focus-visible {
   text-align: center;
   margin: 28px 0;
 }
+/* The mid-page CTA can sit inside .sell-landing-body, whose `a` rule
+   (dark text + underline) would otherwise override the filled-button
+   styling and leave dark text on the dark button. Restore the standard
+   sitewide button look in that context. */
+.sell-landing-body .sell-hero-cta,
+.sell-landing-body .sell-hero-cta:hover {
+  color: var(--color-bg);
+  text-decoration: none;
+}
 
 /* Fit Grid — What we buy / Not a fit */
 .sell-fit-grid {
