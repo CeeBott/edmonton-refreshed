@@ -291,7 +291,7 @@
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/guides/</loc>
-    <lastmod>2026-06-10</lastmod>
+    <lastmod>2026-06-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -316,6 +316,12 @@
   <url>
     <loc>https://edmontonrefreshed.com/guides/edmonton-furniture-consignment-resale-guide/</loc>
     <lastmod>2026-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://edmontonrefreshed.com/guides/eq3-sofa-review-edmonton/</loc>
+    <lastmod>2026-06-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
