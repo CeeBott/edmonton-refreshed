@@ -26,7 +26,7 @@ const home = [
   },
   {
     question: 'What brands do you carry?',
-    schemaQuestion: 'What brands of used furniture does Edmonton Refreshed carry?',
+    schemaQuestion: 'What premium furniture brands does Edmonton Refreshed carry?',
     answer:
       'We work with well-built pieces from recognized makers: B&B Italia, Natuzzi, Rove Concepts, Crate & Barrel, EQ3, American Leather, Urban Barn, Brentwood Classics, and La-Z-Boy. If it’s a recognized brand in good condition, we’re interested.',
   },
@@ -90,7 +90,7 @@ const about = [
   },
   {
     question: 'What brands do you carry?',
-    schemaQuestion: 'What brands of used furniture does Edmonton Refreshed carry?',
+    schemaQuestion: 'What premium furniture brands does Edmonton Refreshed carry?',
     answer:
       'We focus on well-built pieces from recognized makers: B&B Italia, Natuzzi, Rove Concepts, Crate & Barrel, EQ3, American Leather, Urban Barn, Brentwood Classics, and La-Z-Boy. If it’s a well-built piece from a known manufacturer, we’re likely interested.',
     schemaAnswer:

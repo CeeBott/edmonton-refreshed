@@ -49,11 +49,11 @@ function renderCredibility(variant) {
   // buyer (default)
   return [
     '  <div class="credibility-strip">',
-    `    <span>${site.piecesSold} Pieces Sold</span>`,
+    '    <span>Designer Brands</span>',
     '    <span class="credibility-sep">|</span>',
     `    <span>&#9733; ${site.rating} Rating</span>`,
     '    <span class="credibility-sep">|</span>',
-    `    <span>Proudly ${site.cityName} Owned &amp; Operated</span>`,
+    `    <span>${site.cityName} Owned &amp; Operated</span>`,
     '  </div>',
   ].join('\n');
 }

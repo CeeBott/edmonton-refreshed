@@ -500,6 +500,8 @@ function generateProductSchemas(items) {
 
     if (sku) schema["sku"] = sku;
     if (imageUrl) schema["image"] = imageUrl;
+    var material = materialFor(item);
+    if (material) schema["material"] = material;
 
     blocks.push(
       '  <script type="application/ld+json">\n' +
@@ -635,6 +637,9 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions) {
   }
 
   if (listingSku) productSchema["sku"] = listingSku;
+
+  var listingMaterial = materialFor(item);
+  if (listingMaterial) productSchema["material"] = listingMaterial;
 
   var breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -1765,6 +1770,21 @@ function classifyPiece(item) {
 
 function mfIsLeather(item) {
   return classifyPiece(item).leather;
+}
+
+// On-page Product schema material — a premium/quality signal and a valid
+// Schema.org Product field. Prefer the authored material spec verbatim (e.g.
+// "Top-Grain Aniline Leather"); else fall back to a plain "Leather" for leather
+// pieces with no explicit material spec; else omit. Never guesses a material
+// that isn't already in the piece's own data.
+var MATERIAL_RE = /top-grain|full-grain|semi-aniline|aniline|nubuck|suede|leather|bouclé|boucle|velvet|chenille|linen|performance fabric|fabric|microfib/i;
+function materialFor(item) {
+  if (Array.isArray(item.specs)) {
+    for (var i = 0; i < item.specs.length; i++) {
+      if (MATERIAL_RE.test(item.specs[i])) return item.specs[i];
+    }
+  }
+  return mfIsLeather(item) ? 'Leather' : null;
 }
 
 // Merchant product_type (the seller's own taxonomy).
