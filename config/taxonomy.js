@@ -29,7 +29,7 @@ const situations = [
   { name: 'Selling Before Moving',   nav: 'Before a move', slug: 'selling-furniture-before-moving' },
   { name: 'Downsizing Furniture',    nav: 'Downsizing',    slug: 'downsizing-furniture' },
   { name: 'Estate Furniture',        nav: 'Estate',        slug: 'estate-furniture' },
-  { name: 'Sell Furniture Fast',     nav: 'Sell fast',     slug: 'sell-furniture-fast' },
+  { name: 'Sell Premium Furniture Fast', nav: 'Sell fast', slug: 'sell-furniture-fast' },
   { name: 'Sell Designer Furniture', nav: 'Designer',      slug: 'sell-designer-furniture' },
 ];
 

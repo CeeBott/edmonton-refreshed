@@ -8,7 +8,13 @@ const site = require('../config/site');
 const tax = require('../config/taxonomy');
 
 function renderFooter() {
+  // The couch / leather-couch landing pages still exist (and stay in the nav
+  // dropdown and sitemap for the "couch" search term), but they're omitted from
+  // the footer: a couch and a sofa are the same piece, so the sofa entries
+  // already cover the column and listing both just reads as redundant clutter.
+  const FOOTER_PIECE_EXCLUDE = new Set(['couch', 'leather-couch']);
   const pieceLinks = tax.furnitureTypes
+    .filter(p => !FOOTER_PIECE_EXCLUDE.has(p.slug))
     .map(p => `            <li><a href="${tax.sellUrl(p.slug)}">${p.name}</a></li>`)
     .join('\n');
   const situationLinks = tax.situations
@@ -35,7 +41,7 @@ function renderFooter() {
     '      </div>',
     '      <nav class="footer-taxonomy" aria-label="Footer navigation">',
     '        <div class="footer-col">',
-    '          <h2 class="footer-heading">Sell by Furniture Type</h2>',
+    '          <h2 class="footer-heading">Sell Your Furniture</h2>',
     '          <ul class="footer-links">',
     pieceLinks,
     '          </ul>',
