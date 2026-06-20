@@ -19,7 +19,7 @@ const REQUIRED_FIELDS = [
 ];
 
 const MAX_PHOTOS = 5;
-const MIN_PHOTOS = 3;
+const MIN_PHOTOS = 1;
 // 18 MB raw — must stay under Cloudflare Email Routing's 25 MB on-the-wire
 // limit once base64-encoded (raw × 4/3 plus headers). The client compresses
 // photos in-browser before upload, so submissions normally arrive at a few
@@ -73,7 +73,7 @@ export default {
 
     const photos = formData.getAll('photos').filter((p) => p instanceof File && p.size > 0);
     if (photos.length < MIN_PHOTOS) {
-      return json({ error: `Please attach at least ${MIN_PHOTOS} photos.` }, 400, cors);
+      return json({ error: `Please attach at least ${MIN_PHOTOS} photo${MIN_PHOTOS === 1 ? '' : 's'}.` }, 400, cors);
     }
     if (photos.length > MAX_PHOTOS) {
       return json({ error: `Please attach no more than ${MAX_PHOTOS} photos.` }, 400, cors);

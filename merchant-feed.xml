@@ -114,17 +114,17 @@
       <g:product_detail>
         <g:section_name>Dimensions</g:section_name>
         <g:attribute_name>Width</g:attribute_name>
-        <g:attribute_value>128.75 in</g:attribute_value>
+        <g:attribute_value>129 in</g:attribute_value>
       </g:product_detail>
       <g:product_detail>
         <g:section_name>Dimensions</g:section_name>
         <g:attribute_name>Depth</g:attribute_name>
-        <g:attribute_value>90.5 in</g:attribute_value>
+        <g:attribute_value>91 in</g:attribute_value>
       </g:product_detail>
       <g:product_detail>
         <g:section_name>Dimensions</g:section_name>
         <g:attribute_name>Height</g:attribute_name>
-        <g:attribute_value>28.75 in</g:attribute_value>
+        <g:attribute_value>29 in</g:attribute_value>
       </g:product_detail>
       <g:shipping>
         <g:country>CA</g:country>

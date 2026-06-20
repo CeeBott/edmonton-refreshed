@@ -3,7 +3,7 @@
 //
 //  Used on /sell/ and every /sell/[slug]-edmonton/ landing page.
 //  Posts a multipart form (Brand, Age, Condition, Name, Contact,
-//  Notes, 3–5 photos) to the Cloudflare Worker endpoint.
+//  Notes, 1–5 photos) to the Cloudflare Worker endpoint.
 //
 //  The form's "Brand" field can be pre-filled by setting its
 //  value in HTML — that's how the brand-specific landing pages
@@ -12,7 +12,7 @@
 
 (function () {
   var SELL_FORM_ENDPOINT = 'https://edmonton-refreshed-sell.cbottrell1990.workers.dev/';
-  var MIN_PHOTOS = 3;
+  var MIN_PHOTOS = 1;
   var MAX_PHOTOS = 5;
   // 18 MB raw — Cloudflare Email Routing forwards messages up to 25 MB
   // on-the-wire, and base64-encoded attachments expand by 4/3. Anything
@@ -246,7 +246,7 @@
     }
 
     if (selectedPhotos.length < MIN_PHOTOS) {
-      showPhotosError('Please attach at least ' + MIN_PHOTOS + ' photos.');
+      showPhotosError('Please attach at least ' + MIN_PHOTOS + ' photo' + (MIN_PHOTOS === 1 ? '' : 's') + '.');
       photosAdd.focus();
       return;
     }
