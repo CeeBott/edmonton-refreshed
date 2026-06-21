@@ -174,6 +174,15 @@ function buildAssets() {
     versions['js/' + minName] = shortHash(minified);
   });
 
+  // Root favicon assets are static (not minified), but still get a content-hash
+  // ?v= so a rebranded icon busts browser caches — favicons are cached by URL
+  // very aggressively. Content-hash, consistent with §5.7 (no manual ?v=N
+  // registry, §10.7). injectFaviconVersions adds/refreshes the query on refs.
+  ['favicon.svg', 'apple-touch-icon.png'].forEach(function(f) {
+    var p = path.join(ROOT, f);
+    if (fs.existsSync(p)) versions[f] = shortHash(fs.readFileSync(p));
+  });
+
   return versions;
 }
 
@@ -183,6 +192,19 @@ function injectAssetVersions(html, versions) {
   Object.keys(versions).forEach(function(asset) {
     var re = new RegExp(escapeRegExp(asset) + '\\?v=[A-Za-z0-9._-]+', 'g');
     html = html.replace(re, asset + '?v=' + versions[asset]);
+  });
+  return html;
+}
+
+// favicon.svg / apple-touch-icon.png sit at site root, referenced with varying
+// relative prefixes and historically no ?v=. Add or refresh a content-hash
+// query on each <link href="…"> so a rebranded icon busts caches. Anchored on
+// href="…" so it never touches schema "logo"/"image" URLs (which stay clean).
+function injectFaviconVersions(html, versions) {
+  ['favicon.svg', 'apple-touch-icon.png'].forEach(function(asset) {
+    if (!versions[asset]) return;
+    var re = new RegExp('(href=")([^"]*' + escapeRegExp(asset) + ')(\\?v=[A-Za-z0-9._-]+)?(")', 'g');
+    html = html.replace(re, '$1$2?v=' + versions[asset] + '$4');
   });
   return html;
 }
@@ -1252,6 +1274,11 @@ var STATE_PATH = path.join(ROOT, '.build-state.json');
 function canonicalizeForHash(text) {
   return text
     .replace(/\?v=[A-Za-z0-9._-]+/g, '?v=')
+    // Favicon refs carry a content-hash ?v= in the HTML to bust browser caches
+    // (injectFaviconVersions), but a rebranded icon is sitewide chrome, not a
+    // per-page content change — normalize the query away so it never bumps
+    // <lastmod> (avoids the spurious sitewide freshness signal, §5.15/§10.10).
+    .replace(/(favicon\.svg|apple-touch-icon\.png)\?v=/g, '$1')
     .replace(/<lastmod>[^<]+<\/lastmod>/g, '<lastmod/>')
     .replace(/"dateModified"\s*:\s*"[^"]+"/g, '"dateModified":""')
     .replace(/"priceValidUntil"\s*:\s*"[^"]+"/g, '"priceValidUntil":""');
@@ -2030,6 +2057,7 @@ for (var pi = 0; pi < partialFiles.length; pi++) {
   pNext = injectLandingSoldSchema(pNext, pPath);
   pNext = relinkSoldCards(pNext);
   pNext = injectAssetVersions(pNext, assetVersions);
+  pNext = injectFaviconVersions(pNext, assetVersions);
   if (pNext !== pOrig) {
     fs.writeFileSync(pPath, pNext, 'utf8');
     partialUpdated++;
