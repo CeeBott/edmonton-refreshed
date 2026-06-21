@@ -1173,6 +1173,15 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   margin: 0 auto 56px;
   text-align: center;
 }
+.footer-logo {
+  display: inline-flex;
+  margin-bottom: 22px;
+}
+.footer-logo img {
+  height: 46px;
+  width: auto;
+  display: block;
+}
 .footer-lead {
   margin: 0;
   font-family: var(--font-serif);

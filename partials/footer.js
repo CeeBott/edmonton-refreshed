@@ -36,6 +36,7 @@ function renderFooter() {
     '  <footer class="site-footer">',
     '    <div class="footer-inner">',
     '      <div class="footer-statement">',
+    `        <a href="/" class="footer-logo"><img src="/brand/er-logo-horizontal-light.png" alt="${site.brandName}" width="900" height="240"></a>`,
     `        <p class="footer-lead">${site.brandStatement}</p>`,
     `        <p class="footer-sub">${site.brandSubstatement}</p>`,
     '      </div>',
