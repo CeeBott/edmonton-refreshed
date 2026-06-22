@@ -334,7 +334,7 @@ var soldItems = [
         "Made in USA"
       ],
       condition: "Excellent. Manufactured May 2024 and sold barely a year later in June 2025, with no visible wear to the fabric or cushions and the frame structurally sound throughout.",
-      configuration: "Single 99-inch sofa with three seat cushions, three back cushions, and two matching throw pillows.\n\nDelivery available for an additional fee."
+      configuration: "Single 99-inch sofa with three seat cushions, three back cushions, and two matching throw pillows."
     },
   },
   {
@@ -356,7 +356,7 @@ var soldItems = [
     brand: "Urban Barn",
     title: "Preston Distressed Top-Grain Leather Sofa & 2 Chairs",
     href: "/listings/urban-barn-preston-leather-sofa-set/",
-    description: "Urban Barn's Preston collection in distressed top-grain leather — a character-rich, lived-in aesthetic with real substance underneath. The distressing is intentional and beautiful, giving each piece a unique finish that only improves with age. Sold as a matching set — a sofa with two accent chairs — acquired in Riverbend and brought back to life with a full cleaning and conditioning.",
+    description: "Urban Barn's Preston collection in distressed top-grain leather — a character-rich, lived-in aesthetic with real substance underneath. The distressing is intentional and beautiful, giving each piece a unique finish that only improves with age. Sold as a matching set — a sofa with two matching armchairs — acquired in Riverbend and brought back to life with a full cleaning and conditioning.",
     images: [
       "../images/Sold Inventory/UB-019/urban-barn-01.jpeg",
       "../images/Sold Inventory/UB-019/urban-barn-02.jpeg",
@@ -369,19 +369,66 @@ var soldItems = [
       "../images/Sold Inventory/UB-019/urban-barn-09.jpeg",
       "../images/Sold Inventory/UB-019/urban-barn-10.jpeg",
       "../images/Sold Inventory/UB-019/urban-barn-11.jpeg",
-    ]
+    ],
+    retained: {
+      metaTitle: "Urban Barn Preston Distressed Leather Sofa & Two Chairs — Edmonton",
+      metaDescription: "Pre-owned Urban Barn Preston distressed top-grain leather sofa and two armchairs — Edmonton. Good condition. Delivery available.",
+      retailEstimate: 5497,
+      retailEstimateApprox: true,
+      specs: [
+        "Urban Barn",
+        "Sofa + 2 Armchairs",
+        "Distressed Top-Grain Leather",
+        "Sofa: 85 × 41 × 33 in",
+        "Chairs: 31 × 41 × 33 in",
+        "Good Condition"
+      ],
+      description: "The Preston is Urban Barn's distressed-leather frame, and this was the full set — a three-seat sofa with two matching armchairs, all in a rich dark brown top-grain leather. Distressed leather like this is meant to look lived-in from the start, and as a set it makes for a complete, coordinated living-room setup.\n\nThe sofa carries three loose seat cushions beneath three loose back cushions; each armchair has one of each. The sofa measures 85 inches wide, with each chair at 31 inches — all 41 inches deep and 33 inches tall, on slim track arms and tapered wood legs.\n\nThe cushions are built for comfort that lasts. The seats are high-density foam topped with down, and the backs are down-stuffed — soft, sink-in seating you fluff back into shape rather than replace. It's a more expensive cushion build than foam alone, and it shows in how the set sits.\n\nThe leather wears its character openly — a genuine distressed top-grain hide with a beautiful, developed patina. Underneath, each piece is built on a kiln-dried hardwood frame to keep it square and solid.",
+      features: [
+        "Kiln-dried hardwood frames",
+        "Distressed top-grain leather",
+        "High-density foam seat cushions topped with down",
+        "Down-stuffed back cushions",
+        "Slim track arms and tapered wood legs"
+      ],
+      condition: "Good condition. The leather has developed a beautiful patina, with wear consistent with age.",
+      configuration: "Three-seat sofa plus two matching armchairs. Sofa: three loose seat cushions and three loose back cushions. Each chair: one loose seat cushion and one loose back cushion."
+    },
   },
   {
     brand: "EQ3",
     title: "Remi Top-Grain Leather Sofa",
     href: "/listings/eq3-remi-leather-sofa/",
-    description: "EQ3's Remi sofa is a clean, Scandinavian-influenced design with light grey top-grain leather upholstery and thin splayed chrome legs. EQ3 is a Canadian brand that emphasises thoughtful design at an accessible price point — and the Remi embodies that well. Low arms, an airy base, and quality stitching give it a premium look that punches above its original retail price. Picked up in Chapelle, south Edmonton.",
+    description: "EQ3's Remi sofa is a clean, Scandinavian-influenced design with upgraded Evoque Stone top-grain leather upholstery and thin splayed stainless steel legs. EQ3 is a Canadian brand that emphasises thoughtful design at an accessible price point — and the Remi embodies that well. Low arms, an airy base, and quality stitching give it a premium look that punches above its original retail price. Picked up in Chapelle, south Edmonton.",
     images: [
       "../images/Sold Inventory/EQ-017/eq3-05.jpeg",
       "../images/Sold Inventory/EQ-017/eq3-01.jpeg",
       "../images/Sold Inventory/EQ-017/eq3-02.jpeg",
       "../images/Sold Inventory/EQ-017/eq3-04.jpeg",
-    ]
+    ],
+    retained: {
+      metaTitle: "EQ3 Remi Top-Grain Leather Sofa — Edmonton",
+      metaDescription: "Pre-owned EQ3 Remi top-grain leather sofa in Evoque Stone — Edmonton. Good condition. Delivery available.",
+      retailEstimate: 4499,
+      specs: [
+        "EQ3",
+        "87 × 38 × 31 in",
+        "Evoque Stone Top-Grain Leather",
+        "Good Condition",
+        "Bench-Made in Canada",
+        "Seats 3"
+      ],
+      description: "The Remi is a clean, Scandinavian-influenced design — EQ3 at its most understated — and this one wore an upgraded Evoque Stone top-grain leather, a soft light grey. It's a three-seater with low track arms and a single bench-style seat that keeps the front of the sofa uninterrupted.\n\nThe seat is a single fixed bench cushion beneath two fixed, tufted back cushions — the tufting giving an otherwise minimal sofa a tailored detail. It seats three adults and measures 87 inches long, 38 deep, and 31 tall.\n\nThe leather is the upgrade worth noting. Evoque Stone is an upgraded top-grain hide with a soft hand and an even, light-grey tone that suits a wide range of rooms. Top-grain leather wears well, softening and developing a little character over years of use.\n\nUnderneath, the Remi is bench-made in Canada on a kiln-dried hardwood frame, raised on thin, splayed stainless steel legs. Bench-made construction and a kiln-dried frame are what keep a leather sofa sitting and looking square over the long term.",
+      features: [
+        "Kiln-dried hardwood frame",
+        "Bench-made in Canada",
+        "Upgraded Evoque Stone top-grain leather",
+        "Single fixed bench seat with two fixed, tufted back cushions",
+        "Thin splayed stainless steel legs"
+      ],
+      condition: "Good condition. Around eight years old at the time of sale.",
+      configuration: "Single three-seat sofa with a fixed bench seat and two fixed, tufted back cushions."
+    },
   },
   {
     brand: "Urban Barn",
@@ -408,20 +455,66 @@ var soldItems = [
       "../images/Sold Inventory/UB-014/urban-barn-03.jpeg",
       "../images/Sold Inventory/UB-014/urban-barn-04.jpeg",
       "../images/Sold Inventory/UB-014/urban-barn-05.jpeg",
-    ]
+    ],
+    retained: {
+      metaTitle: "Urban Barn Renfrew 94-Inch Top-Grain Leather Sofa — Edmonton",
+      metaDescription: "Pre-owned Urban Barn Renfrew 94-inch top-grain leather sofa in caramel — Edmonton. Excellent condition. Delivery available.",
+      retailEstimate: 3999,
+      specs: [
+        "Urban Barn",
+        "94 × 37 × 28 in",
+        "Caramel Top-Grain Leather",
+        "Excellent Condition",
+        "Kiln-Dried Hardwood Frame",
+        "Seats 3–4"
+      ],
+      description: "The Renfrew is one of Urban Barn's best-loved leather frames, and this was the long 94-inch version in a warm tan-caramel top-grain leather. It's a clean, low sofa with low track arms — a simple, modern silhouette that lets the leather do the talking.\n\nTwo loose seat cushions sit below two fixed back cushions, giving it a tailored, uncluttered face. At 94 inches wide it seats three to four, and it measures 94 inches wide, 37 deep, and 28 tall.\n\nThe draw here is the leather. Top-grain hide in a rich tan-caramel develops character and warmth as it ages, and at this size the colour reads as substantial without overwhelming a room.\n\nThe frame is kiln-dried hardwood, built to stay square and rattle-free, and the sofa stands on thin black metal legs that keep its low, modern stance feeling light.",
+      features: [
+        "Kiln-dried hardwood frame",
+        "Top-grain tan-caramel leather",
+        "Two loose seat cushions and two fixed back cushions",
+        "Low track arms",
+        "Thin black metal legs"
+      ],
+      condition: "Excellent condition. Around three years old at the time of sale, with no wear of note.",
+      configuration: "Single 94-inch sofa with two loose seat cushions and two fixed back cushions."
+    },
   },
   {
     brand: "EQ3",
     title: "Replay 99 inch Sofa",
     href: "/listings/eq3-replay-sofa/",
-    description: "EQ3's Replay sofa at a full 99 inches — one of their larger frames and a great choice for anyone who needs serious seating capacity without sacrificing design. The Replay features a stone-grey, wool-like performance fabric, scatter back pillows, thin black metal legs, and EQ3's signature clean-line aesthetic. Picked up in Brander Gardens, southwest Edmonton.",
+    description: "EQ3's Replay sofa at a full 99 inches — one of their larger frames and a great choice for anyone who needs serious seating capacity without sacrificing design. The Replay features a soft, stone-grey fabric, plush back cushions, tall solid black ash wood legs, and EQ3's signature clean-line aesthetic. Picked up in Brander Gardens, southwest Edmonton.",
     images: [
       "../images/Sold Inventory/EQ-013/eq3-01.jpeg",
       "../images/Sold Inventory/EQ-013/eq3-02.jpeg",
       "../images/Sold Inventory/EQ-013/eq3-03.jpeg",
       "../images/Sold Inventory/EQ-013/eq3-04.jpeg",
       "../images/Sold Inventory/EQ-013/eq3-05.jpeg",
-    ]
+    ],
+    retained: {
+      metaTitle: "EQ3 Replay 99-Inch Sofa — Edmonton",
+      metaDescription: "Pre-owned EQ3 Replay 99-inch sofa in stone-grey fabric — Edmonton. Good condition. Delivery available.",
+      retailEstimate: 3449,
+      specs: [
+        "EQ3",
+        "99 × 35 × 28 in",
+        "Stone-Grey Fabric",
+        "Good Condition",
+        "Bench-Made in Canada",
+        "Feather-Topped Seat Cushions"
+      ],
+      description: "The Replay is one of EQ3's larger sofa frames, and this was the full 99-inch version in a soft, stone-grey fabric. It's a clean, low-profile three-seater with the relaxed, understated proportions the Canadian brand is known for.\n\nThree seat cushions span the bench beneath four back cushions — two large and two throw pillows. At 99 inches wide it seats three to four, and it measures 99 inches wide, 35 deep, and 28 tall.\n\nThe comfort comes from the cushion fill. The seat cushions are high-density foam topped with feather, and the back cushions are a feather-and-fibre blend — soft to sink into but quick to loft back into shape. It's the kind of cushioning that reads as more expensive than a foam-only sofa the moment you sit down.\n\nUnderneath, the Replay is bench-made in Canada on a kiln-dried hardwood frame, raised on tall, solid black ash wood legs. Bench-made construction and a kiln-dried frame are what keep a sofa this size square and rattle-free over years of use.",
+      features: [
+        "Kiln-dried hardwood frame",
+        "Bench-made in Canada",
+        "Feather-topped high-density foam seat cushions",
+        "Feather-and-fibre blend back cushions",
+        "Tall solid black ash wood legs"
+      ],
+      condition: "Good condition. Wear consistent with normal use.",
+      configuration: "Single 99-inch three-seat sofa with three seat cushions, two large back cushions, and two throw pillows."
+    },
   },
   {
     brand: "Urban Barn",
