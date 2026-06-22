@@ -302,7 +302,7 @@ var soldItems = [
     brand: "Crate & Barrel",
     title: "Gather 99 inch Deep Sofa Tribute, Quartz Fabric",
     href: "/listings/crate-and-barrel-gather-sofa/",
-    description: "Crate & Barrel's Gather sofa in the deep 99-inch configuration — one of their most beloved models for its extra depth and sink-in comfort. Upholstered in Tribute performance fabric in Quartz, a warm, textured off-white, this sofa is built for long evenings at home. At 99 inches, it seats three to four. Picked up nearly new (14 months old) from a home in Ambleside.",
+    description: "Crate & Barrel's Gather sofa in the deep 99-inch configuration — one of their most popular models for its extra depth and sink-in comfort. Upholstered in Tribute performance fabric in Quartz, a warm, textured off-white, this sofa is built for long evenings at home. At 99 inches, it seats three to four. Picked up barely a year old from a home in Ambleside.",
     images: [
       "../images/Sold Inventory/CB-021/crate-and-barrel-02.jpeg",
       "../images/Sold Inventory/CB-021/crate-and-barrel-01.jpeg",
@@ -310,7 +310,32 @@ var soldItems = [
       "../images/Sold Inventory/CB-021/crate-and-barrel-04.jpeg",
       "../images/Sold Inventory/CB-021/crate-and-barrel-05.jpeg",
       "../images/Sold Inventory/CB-021/crate-and-barrel-06.jpeg",
-    ]
+    ],
+    retained: {
+      metaTitle: "Crate & Barrel Gather 99-Inch Deep Sofa — Edmonton",
+      metaDescription: "Pre-owned Crate & Barrel Gather 99-inch deep sofa in Tribute performance fabric, Quartz — Edmonton. Excellent condition. Delivery available.",
+      retailEstimate: 5649,
+      specs: [
+        "Crate & Barrel",
+        "99 × 38 × 26 in",
+        "Seats 3–4",
+        "Tribute Performance Fabric — Quartz",
+        "Excellent Condition",
+        "Made in USA"
+      ],
+      description: "The Gather is one of Crate & Barrel's most popular sofas, built around a single idea: deep, sink-in comfort. This was the 99-inch version in Tribute performance fabric, colour Quartz — a warm, textured off-white, and a premium fabric upgrade.\n\nAt 99 inches wide with a low, relaxed profile, it seats three to four. Three deep seat cushions and three plush back cushions span the full length, with two matching throw pillows included. Overall it measures 99 inches wide, 38 deep, and 26 tall.\n\nThe comfort is in the cushion construction. The seat cushions are an innerspring core wrapped in polyfoam, with fiber encased in ticking — a build that holds its shape and resists the flattening foam-only cushions develop over time. The back cushions are full-blown fiber encased in ticking, soft and easy to loft back up. Underneath, sinuous wire spring suspension keeps the seat supportive and eliminates sagging.\n\nThe frame is FSC®-certified engineered hardwood from responsibly managed forests, kiln-dried to resist warping, finished with top-stitch detailing. The Gather is manufactured in the USA.",
+      features: [
+        "FSC®-certified engineered hardwood frame from responsibly managed forests",
+        "Kiln-dried wood to prevent warping",
+        "Seat cushions: innerspring core wrapped in polyfoam with fiber encased in ticking for comfort and durability",
+        "Plush back cushions of full-blown fiber encased in ticking",
+        "Sinuous wire spring suspension — durable and resists sagging",
+        "Top-stitch detailing",
+        "Made in USA"
+      ],
+      condition: "Excellent. Manufactured May 2024 and sold barely a year later in June 2025, with no visible wear to the fabric or cushions and the frame structurally sound throughout.",
+      configuration: "Single 99-inch sofa with three seat cushions, three back cushions, and two matching throw pillows.\n\nDelivery available for an additional fee."
+    },
   },
   {
     brand: "Natuzzi Italia",

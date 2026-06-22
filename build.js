@@ -82,6 +82,33 @@ function shortHash(content) {
   return crypto.createHash('sha256').update(content).digest('hex').slice(0, 8);
 }
 
+// Minimal image-dimension reader (PNG IHDR + JPEG SOF markers) so OG/Twitter
+// tags can declare accurate og:image:width/height/type without an image
+// library. Returns {} when the file is missing or an unhandled format.
+function imageSize(absPath) {
+  if (!absPath || !fs.existsSync(absPath)) return {};
+  var b = fs.readFileSync(absPath);
+  if (b.length >= 24 && b.toString('hex', 0, 8) === '89504e470d0a1a0a') {
+    return { w: b.readUInt32BE(16), h: b.readUInt32BE(20), type: 'image/png' };
+  }
+  if (b.length >= 4 && b[0] === 0xFF && b[1] === 0xD8) {
+    var i = 2;
+    while (i < b.length - 8) {
+      if (b[i] !== 0xFF) { i++; continue; }
+      var m = b[i + 1];
+      if ((m >= 0xC0 && m <= 0xC3) || (m >= 0xC5 && m <= 0xC7) ||
+          (m >= 0xC9 && m <= 0xCB) || (m >= 0xCD && m <= 0xCF)) {
+        return { h: b.readUInt16BE(i + 5), w: b.readUInt16BE(i + 7), type: 'image/jpeg' };
+      }
+      i += 2 + b.readUInt16BE(i + 2);
+    }
+  }
+  var ext = path.extname(absPath).toLowerCase();
+  if (ext === '.webp') return { type: 'image/webp' };
+  if (ext === '.svg')  return { type: 'image/svg+xml' };
+  return {};
+}
+
 function srcsetFor(imgPath, prefix) {
   prefix = prefix || '';
   var base = imgPath.replace(/\.jpeg$/, '');
@@ -207,6 +234,16 @@ function injectFaviconVersions(html, versions) {
     html = html.replace(re, '$1$2?v=' + versions[asset] + '$4');
   });
   return html;
+}
+
+// Ensure every page links the web manifest (Android "add to home screen" / PWA
+// identity + a structured app name/icons for search & AI). Inserted once after
+// the apple-touch-icon link; idempotent. Bare redirect stubs (no apple-touch
+// link) are left untouched.
+function injectManifestLink(html) {
+  if (/rel="manifest"/.test(html)) return html;
+  return html.replace(/^([ \t]*)(<link rel="apple-touch-icon"[^>]*>)/m,
+    '$1$2\n$1<link rel="manifest" href="/site.webmanifest">');
 }
 
 
@@ -588,6 +625,9 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions) {
   var imageUrl        = (item.images && item.images.length > 0)
     ? BASE_URL + item.images[0]
     : BASE_URL + 'images/og-preview.png';
+  var ogDims          = (item.images && item.images.length > 0)
+    ? imageSize(path.join(ROOT, item.images[0]))
+    : { w: 1200, h: 630, type: 'image/png' };
 
   // Extract SKU from image folder name (e.g., "images/BB-030/..." → "BB-030")
   var listingSku = (item.images && item.images.length > 0)
@@ -716,8 +756,8 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions) {
     "name": "Edmonton Refreshed Seating",
     "url": BASE_URL,
     "telephone": "+1-780-965-1477",
-    "image": BASE_URL + "favicon.svg",
-    "logo": BASE_URL + "favicon.svg",
+    "image": BASE_URL + "images/og-preview.png",
+    "logo": site.logo,
     "priceRange": "$$-$$$",
     "address": {
       "@type": "PostalAddress",
@@ -746,7 +786,7 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions) {
     "@id": BASE_URL + "#organization",
     "name": "Edmonton Refreshed Seating",
     "url": BASE_URL,
-    "logo": BASE_URL + "favicon.svg",
+    "logo": site.logo,
     "contactPoint": {
       "@type": "ContactPoint",
       "telephone": "+1-780-965-1477",
@@ -967,6 +1007,9 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions) {
 '  <meta property="og:description" content="' + metaDesc + '">\n' +
 '  <meta property="og:site_name" content="Edmonton Refreshed Seating">\n' +
 '  <meta property="og:image" content="' + ogImageUrl + '">\n' +
+(ogDims.w ? '  <meta property="og:image:width" content="' + ogDims.w + '">\n' : '') +
+(ogDims.h ? '  <meta property="og:image:height" content="' + ogDims.h + '">\n' : '') +
+'  <meta property="og:image:type" content="' + (ogDims.type || 'image/jpeg') + '">\n' +
 '  <meta property="og:image:alt" content="' + escapeHtml(item.brand + ' ' + item.title) + ' — pre-owned furniture in Edmonton">\n' +
 '\n' +
 '  <!-- Twitter / X -->\n' +
@@ -2058,6 +2101,7 @@ for (var pi = 0; pi < partialFiles.length; pi++) {
   pNext = relinkSoldCards(pNext);
   pNext = injectAssetVersions(pNext, assetVersions);
   pNext = injectFaviconVersions(pNext, assetVersions);
+  pNext = injectManifestLink(pNext);
   if (pNext !== pOrig) {
     fs.writeFileSync(pPath, pNext, 'utf8');
     partialUpdated++;
@@ -2203,6 +2247,24 @@ auditFiles.forEach(function(f) {
   });
 });
 
+// (b2) logo drift — WARN if any schema `logo` (bare URL or ImageObject.url),
+// e.g. Organization / FurnitureStore / LocalBusiness or a guide
+// publisher.logo, differs from config.logo. Keeps one consistent logo for the
+// entity in the Knowledge Graph (mirrors the sameAs check). See CLAUDE.md §5.4.
+var canonLogo = site.logo || '';
+var logoDrift = [];
+auditFiles.forEach(function(f) {
+  extractJsonLd(f.html).forEach(function(doc) {
+    walkNodes(doc, function(n) {
+      if (!n || !n.logo) return;
+      var url = (typeof n.logo === 'string') ? n.logo : n.logo.url;
+      if (url && url !== canonLogo && logoDrift.indexOf(f.rel) === -1) {
+        logoDrift.push(f.rel);
+      }
+    });
+  });
+});
+
 // (c) Guide Article/author coverage — WARN on any guide article missing either.
 var guideGaps = [];
 auditFiles.forEach(function(f) {
@@ -2284,6 +2346,12 @@ if (sameAsDrift.length) {
   sameAsDrift.forEach(function(r) { console.log('                    · ' + r); });
 } else {
   console.log('  sameAs          — all schemas match config.sameAs');
+}
+if (logoDrift.length) {
+  console.log('  logo WARN       — ' + logoDrift.length + ' file(s) differ from config.logo (' + canonLogo + '):');
+  logoDrift.forEach(function(r) { console.log('                    · ' + r); });
+} else {
+  console.log('  logo            — all schema logos match config.logo');
 }
 if (guideGaps.length) {
   console.log('  guides WARN     — ' + guideGaps.length + ' article(s) missing Article schema or author:');

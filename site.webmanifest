@@ -1,0 +1,16 @@
+{
+  "name": "Edmonton Refreshed",
+  "short_name": "Edmonton Refreshed",
+  "description": "Curated pre-owned sofas and sectionals in Edmonton — buy and sell premium used furniture with inspection, delivery, and accountability.",
+  "lang": "en-CA",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#fafaf9",
+  "theme_color": "#2c2c2c",
+  "icons": [
+    { "src": "/brand/er-favicon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/brand/er-favicon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/brand/er-favicon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
