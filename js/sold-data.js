@@ -410,7 +410,30 @@ var soldItems = [
       "../images/Sold Inventory/NE-031/natuzzi-editions-08.jpeg",
       "../images/Sold Inventory/NE-031/natuzzi-editions-03.jpeg",
       "../images/Sold Inventory/NE-031/natuzzi-editions-09.jpeg",
-    ]
+    ],
+    retained: {
+      metaTitle: "Natuzzi Editions Cesare Top-Grain Leather Sectional — Edmonton",
+      metaDescription: "Pre-owned Natuzzi Editions Cesare dark brown leather sectional, right-facing chaise — Edmonton. Good condition. Delivery available.",
+      retailEstimate: 6000,
+      retailEstimateApprox: true,
+      specs: [
+        "Natuzzi Editions",
+        "Sofa: 115 × 39 × 33 in",
+        "Chaise: 91 in",
+        "Dark Brown Top-Grain Leather",
+        "Right-Facing Chaise",
+        "Good Condition"
+      ],
+      description: "The Cesare is one of Natuzzi Editions’ bolder, larger-scale sectionals — built for presence. This one came in a deep dark brown top-grain leather with a matte finish and a right-facing chaise; wide track arms and deep, thick cushioning give it the substantial, grounded stance the model is known for, with room to seat four to five.\n\nTop-grain leather is the reason a piece like this lasts: it ages into character rather than wearing out, and responds to conditioning even after years of neglect. Block wood feet ground the silhouette, and the embossed Natuzzi badge confirms the maker.",
+      features: [
+        "Frame of solid hardwood and engineered woods with cornerblock reinforcements",
+        "Dark brown top-grain leather",
+        "Wide track arms with deep seat cushioning",
+        "Block wood feet"
+      ],
+      condition: "Good. A twelve-year-old piece that had sat nearly unused in a basement; once cleaned and the leather conditioned, the hide and seats came back like new. Only a few very small markings remain — low on the sofa face and on the side of one arm.",
+      configuration: "Three-seat sofa with a right-facing chaise, including all seat and back cushions.\n\nDelivery available for an additional fee."
+    },
   },
   {
     brand: "Natuzzi Editions",
