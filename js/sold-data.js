@@ -766,7 +766,29 @@ var soldItems = [
       "../images/Sold Inventory/UB-015/urban-barn-04.jpeg",
       "../images/Sold Inventory/UB-015/urban-barn-05.jpeg",
       "../images/Sold Inventory/UB-015/urban-barn-06.jpeg",
-    ]
+    ],
+    retained: {
+      metaTitle: "Urban Barn Karis Fabric Sofa — Edmonton",
+      metaDescription: "Pre-owned Urban Barn Karis sofa in Maia Oat oatmeal woven fabric — Edmonton. Like-new. Delivery available.",
+      retailEstimate: 2499,
+      specs: [
+        "Urban Barn",
+        "89 × 41 × 36 in",
+        "Maia Oat Woven Fabric",
+        "Low Track Arms",
+        "Natural Wood Block Legs",
+        "Like New"
+      ],
+      description: "The Urban Barn Karis is a deep, casual sofa built for sinking into — low sloped track arms, plush bench seats, and a row of scatter back pillows give it a relaxed, contemporary feel that suits a den, basement, or second living space as easily as a main room. This one came in Maia Oat, a soft oatmeal woven fabric in a warm, neutral greige that works with almost any palette, raised on natural wood block legs.\n\nWhat made it unusual: it was a brand-new Urban Barn floor model, still wrapped in cling film from the store when we collected it in Fort Saskatchewan — essentially an unused sofa at a fraction of its retail.",
+      features: [
+        "Solid and engineered wood frame",
+        "2.5 lb pocketed-coil seat cushions, fibre- and feather-wrapped",
+        "100% polyester woven upholstery",
+        "Detachable solid oak legs"
+      ],
+      condition: "Like new. Acquired as a brand-new Urban Barn floor model, still wrapped in cling film from the store — essentially unused, with no wear anywhere.",
+      configuration: "Three-seat sofa with two bench seat cushions, two back cushions, and scatter throw pillows.\n\nDelivery available for an additional fee."
+    },
   },
   {
     brand: "Urban Barn",
