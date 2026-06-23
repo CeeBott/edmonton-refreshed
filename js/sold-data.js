@@ -597,7 +597,30 @@ var soldItems = [
       "../images/Sold Inventory/FS-022/fabbrica-06.jpeg",
       "../images/Sold Inventory/FS-022/fabbrica-07.jpeg",
       "../images/Sold Inventory/FS-022/fabbrica-09.jpeg",
-    ]
+    ],
+    retained: {
+      metaTitle: "Fabbrica Charcoal Performance Fabric Sectional — Edmonton",
+      metaDescription: "Pre-owned Fabbrica sofa-and-chaise sectional in charcoal performance fabric — Edmonton. Good condition. Delivery available.",
+      retailEstimate: 8000,
+      retailEstimateApprox: true,
+      specs: [
+        "Fabbrica",
+        "Sofa: 118 × 38 × 29 in",
+        "Chaise: 79 in",
+        "Charcoal Performance Fabric",
+        "Right-Facing Chaise",
+        "Good Condition"
+      ],
+      description: "Fabbrica is a high-end European upholstery brand — niche in Edmonton, but built to a genuinely luxurious standard — and this was a sofa-and-chaise sectional in a durable charcoal performance fabric. Wide track arms, a low modern stance on block wood feet, and a right-facing chaise give it a clean, grounded presence with room to seat three to four.\n\nThe detail that sets it apart is the cushioning: deep, down-filled seats you sink into and that fluff back to shape rather than flattening over time. The charcoal performance fabric is the practical counterpoint — engineered to resist stains, pilling, and wear, so the comfort holds up to real, everyday households.",
+      features: [
+        "Deep down-filled seat and back cushions",
+        "Durable performance-fabric upholstery — resistant to stains, pilling, and wear",
+        "Wide track arms",
+        "Block wood feet"
+      ],
+      condition: "Good. Around eight years old; the down-filled cushions fluffed right back up like new and the charcoal performance fabric remained in great shape.",
+      configuration: "Sofa with a right-facing chaise, including all seat and back cushions.\n\nDelivery available for an additional fee."
+    },
   },
   {
     brand: "Crate & Barrel",
