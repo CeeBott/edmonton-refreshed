@@ -792,7 +792,7 @@ var soldItems = [
     ]
   },
   {
-    brand: "Mid-Century Teak Credena",
+    brand: "Mid-Century Teak Credenza",
     title: "Teak Record Cabinet",
     description: "A gorgeous mid-century teak record cabinet — the ultimate piece for vinyl enthusiasts who also appreciate great furniture design. Featuring open lower shelving sized perfectly for LP storage, solid teak frame, and the elegant tapered legs characteristic of Danish design from the 1960s. Functional, collectible, and endlessly stylish.",
     images: [
