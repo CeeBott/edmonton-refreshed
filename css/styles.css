@@ -1609,11 +1609,16 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   /* Retail compare on mobile */
   .listing-retail-compare { font-size: 0.9rem; }
 
-  /* Value pill: prevent horizontal overflow on the narrowest screens. Shape,
-     hug-to-content, and radius come from the base rule (which wins on source
-     order); this only adds wrapping as a safety net. */
-  .listing-value-pill {
-    flex-wrap: wrap;
+  /* Two-part value pill on mobile: stack the two segments and let each fill the
+     full width of the pill, so the colour reaches the edge and the outline traces
+     the fill exactly (no empty cap trailing the "Buy it Today" bar). Rounded on
+     the left, squared on the right. The :has() bump (0,0,2,0) outranks the base
+     rule regardless of source order, so these win on mobile; the single-segment
+     sold-stub pill (no .pill-now) is untouched. */
+  .listing-value-pill:has(.pill-now) {
+    flex-direction: column;
+    border-radius: var(--radius) 0 0 var(--radius);
+    margin: 4px 0 20px;
   }
 
   /* ── Mobile vertical rhythm ──
@@ -1818,6 +1823,11 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   letter-spacing: -0.02em;
   flex: 1;
 }
+.listing-heading-row .listing-value-pill {
+  margin: 0;
+  flex-shrink: 0;
+  align-self: center;
+}
 .listing-description {
   font-size: 0.95rem;
   color: var(--color-text-secondary);
@@ -1836,11 +1846,12 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   margin: 28px 0;
 }
 
-/* Two-part retail value pill — "Est. Retail: $X" | "Buy it Today: $Y" */
+/* Two-part retail value pill — "Est. Retail: $X" | "Buy it Today: $Y".
+   Desktop: a single horizontal, fully-rounded pill beside the title. The mobile
+   reshape (stacked, colour-filled, rounded-left/squared-right) lives in the
+   max-width:768px block below. */
 .listing-value-pill {
   display: inline-flex;
-  width: fit-content;
-  max-width: 100%;
   align-items: stretch;
   border: 1px solid var(--color-border);
   border-radius: 100px;
@@ -1849,17 +1860,6 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   font-size: 0.8rem;
   font-weight: 500;
   letter-spacing: 0.01em;
-}
-/* Two-part pill: round the left, square the right so the outline traces the
-   colour fill instead of trailing an empty rounded cap. (The single-segment
-   sold-stub pill keeps the full 100px rounding from the base rule.) */
-.listing-value-pill:has(.pill-now) {
-  border-radius: 100px 0 0 100px;
-}
-/* Active listing: the pill now sits between the CTAs and the spec pills, so it
-   takes its top spacing from the CTA block's bottom margin. */
-.listing-ctas + .listing-value-pill {
-  margin: 0 0 28px;
 }
 .listing-value-pill .pill-retail {
   padding: 7px 14px 7px 16px;

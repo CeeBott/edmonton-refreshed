@@ -381,6 +381,39 @@ document.querySelectorAll('.newsletter-form').forEach(function(form) {
 
 
 // ═══════════════════════════════════════════════════════════
+//  RETAIL VALUE PILL — responsive placement
+// ═══════════════════════════════════════════════════════════
+//  Desktop: the pill sits in the heading row, beside the title (its authored
+//  position). Mobile: it reads better stacked between the spec pills and the
+//  description, so we relocate the single element there at <=768px. No-JS
+//  crawlers keep the authored desktop position, which is fine — placement is
+//  purely visual.
+
+(function() {
+  var pill = document.querySelector('.listing-heading-row .listing-value-pill');
+  var body = document.querySelector('.listing-body');
+  if (!pill || !body) return;
+  var headingRow = pill.parentElement;
+  var specs = body.querySelector('.listing-specs');
+  if (!specs) return;
+  var mq = window.matchMedia('(max-width: 768px)');
+
+  function place() {
+    if (mq.matches) {
+      // Mobile: below the spec pills, above the description.
+      if (specs.nextElementSibling !== pill) specs.insertAdjacentElement('afterend', pill);
+    } else {
+      // Desktop: back beside the title.
+      if (pill.parentElement !== headingRow) headingRow.appendChild(pill);
+    }
+  }
+
+  place();
+  mq.addEventListener('change', place);
+})();
+
+
+// ═══════════════════════════════════════════════════════════
 //  STICKY LISTING CTA — floats while reading, parks after the FAQ
 // ═══════════════════════════════════════════════════════════
 //  The bar is `position: fixed` (floating) by default. Once the sentinel —

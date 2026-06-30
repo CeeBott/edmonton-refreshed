@@ -1076,13 +1076,13 @@ renderCredibility('listing') + '\n' +
 '            <div class="listing-brand">' + escapeHtml(item.brand) + '</div>\n' +
 '            <div class="listing-heading-row">\n' +
 '              <h1 class="listing-title">' + escapeHtml(item.title) + '</h1>\n' +
+(retailHTML ? '              ' + retailHTML + '\n' : '') +
 '            </div>\n' +
 '            <div class="listing-price">' + formatPrice(item.price) + ' <span class="listing-price-currency">CAD</span></div>\n' +
 '            <div class="listing-ctas">\n' +
 '              <a class="listing-cta" href="sms:7809651477">Text to Book a Viewing &rarr;</a>\n' +
 '              <a class="listing-cta listing-cta--secondary" href="tel:7809651477">Call 780-965-1477</a>\n' +
 '            </div>\n' +
-(retailHTML ? '            ' + retailHTML + '\n' : '') +
 '            <div class="listing-specs">' + specsHTML + '</div>\n' +
 '            ' + descriptionHTML + '\n' +
 (featuresHTML    ? '            ' + featuresHTML    + '\n' : '') +
