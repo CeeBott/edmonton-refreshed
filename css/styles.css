@@ -1609,13 +1609,11 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   /* Retail compare on mobile */
   .listing-retail-compare { font-size: 0.9rem; }
 
-  /* Value pill: prevent horizontal overflow; allow wrap and soften radius */
+  /* Value pill: prevent horizontal overflow on the narrowest screens. Shape,
+     hug-to-content, and radius come from the base rule (which wins on source
+     order); this only adds wrapping as a safety net. */
   .listing-value-pill {
-    display: flex;
     flex-wrap: wrap;
-    max-width: 100%;
-    border-radius: var(--radius);
-    font-size: 0.75rem;
   }
 
   /* ── Mobile vertical rhythm ──
@@ -1820,11 +1818,6 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   letter-spacing: -0.02em;
   flex: 1;
 }
-.listing-heading-row .listing-value-pill {
-  margin: 0;
-  flex-shrink: 0;
-  align-self: center;
-}
 .listing-description {
   font-size: 0.95rem;
   color: var(--color-text-secondary);
@@ -1846,6 +1839,8 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
 /* Two-part retail value pill — "Est. Retail: $X" | "Buy it Today: $Y" */
 .listing-value-pill {
   display: inline-flex;
+  width: fit-content;
+  max-width: 100%;
   align-items: stretch;
   border: 1px solid var(--color-border);
   border-radius: 100px;
@@ -1854,6 +1849,17 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   font-size: 0.8rem;
   font-weight: 500;
   letter-spacing: 0.01em;
+}
+/* Two-part pill: round the left, square the right so the outline traces the
+   colour fill instead of trailing an empty rounded cap. (The single-segment
+   sold-stub pill keeps the full 100px rounding from the base rule.) */
+.listing-value-pill:has(.pill-now) {
+  border-radius: 100px 0 0 100px;
+}
+/* Active listing: the pill now sits between the CTAs and the spec pills, so it
+   takes its top spacing from the CTA block's bottom margin. */
+.listing-ctas + .listing-value-pill {
+  margin: 0 0 28px;
 }
 .listing-value-pill .pill-retail {
   padding: 7px 14px 7px 16px;
@@ -2089,47 +2095,61 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   padding-bottom: 24px;
 }
 
-/* ── Sticky CTA bar — listing pages, mobile only ── */
-.listing-sticky-cta {
+/* ── Sticky CTA — listing pages, mobile only ──
+   A single, centred "Book a Viewing" button. It floats above the fold as a
+   full-bleed bar while the visitor reads, then parks in normal flow once the
+   FAQ is reached — shared.js toggles `.parked` via the `.listing-sticky-sentinel`
+   that sits directly above it — so it never covers the related links,
+   newsletter, or footer below it. */
+.listing-sticky-cta,
+.listing-sticky-sentinel {
   display: none;
 }
 @media (max-width: 768px) {
+  .listing-sticky-sentinel {
+    display: block;
+    height: 1px;
+  }
   .listing-sticky-cta {
-    display: flex;
+    display: block;
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
     z-index: 500;
-    gap: 0;
+    background: #fff;
     border-top: 1px solid rgba(0,0,0,0.12);
     box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
-  .listing-sticky-cta a {
-    flex: 1;
+  .listing-sticky-cta .sticky-cta-primary {
+    display: block;
+    width: 100%;
     padding: 16px 12px;
     text-align: center;
-    font-size: 0.875rem;
+    font-size: 0.9375rem;
     font-weight: 600;
     text-decoration: none;
     letter-spacing: 0.01em;
-  }
-  .listing-sticky-cta .sticky-cta-primary {
     background: var(--color-accent);
     color: #fff;
   }
-  .listing-sticky-cta .sticky-cta-secondary {
-    background: #fff;
-    color: var(--color-text);
-    border-left: 1px solid var(--color-border);
+  /* Parked: leave the fixed layer and sit in normal flow under the FAQ. */
+  .listing-sticky-cta.parked {
+    position: static;
+    margin: 24px 0 8px;
+    border-top: none;
+    box-shadow: none;
+    background: transparent;
+    padding-bottom: 0;
   }
-  /* Add bottom padding to page content so sticky bar doesn't obscure it */
-  .listing-sticky-cta ~ footer,
-  body:has(.listing-sticky-cta) .newsletter-embed {
-    padding-bottom: env(safe-area-inset-bottom, 0px);
+  .listing-sticky-cta.parked .sticky-cta-primary {
+    border-radius: var(--radius);
   }
-  body:has(.listing-sticky-cta) footer {
-    padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px));
+  /* While the bar is still floating (not yet parked), keep a little room at the
+     foot of the page so the fixed layer can't clip the last of the footer. */
+  body:has(.listing-sticky-cta:not(.parked)) footer {
+    padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px));
   }
 }
 

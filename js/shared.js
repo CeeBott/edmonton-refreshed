@@ -379,3 +379,35 @@ document.querySelectorAll('.newsletter-form').forEach(function(form) {
   });
 });
 
+
+// ═══════════════════════════════════════════════════════════
+//  STICKY LISTING CTA — floats while reading, parks after the FAQ
+// ═══════════════════════════════════════════════════════════
+//  The bar is `position: fixed` (floating) by default. Once the sentinel —
+//  placed in the document right above the bar, just below the FAQ — scrolls
+//  up to or past the bottom of the viewport, we add `.parked`, dropping the
+//  bar into normal flow so it sits under the FAQ and stops covering the
+//  related links, newsletter, and footer below it.
+
+(function() {
+  var bar = document.querySelector('.listing-sticky-cta');
+  var sentinel = document.querySelector('.listing-sticky-sentinel');
+  if (!bar || !sentinel || !('IntersectionObserver' in window)) return;
+
+  function update(top) {
+    bar.classList.toggle('parked', top <= window.innerHeight);
+  }
+
+  // IntersectionObserver fires on every crossing of the viewport edge and
+  // reports the sentinel's current position, which is all we need to decide
+  // whether the bar should float or park.
+  var observer = new IntersectionObserver(function(entries) {
+    update(entries[entries.length - 1].boundingClientRect.top);
+  });
+  observer.observe(sentinel);
+
+  // Set the initial state (the observer's first callback also handles this,
+  // but this guards against any timing edge on very short pages).
+  update(sentinel.getBoundingClientRect().top);
+})();
+

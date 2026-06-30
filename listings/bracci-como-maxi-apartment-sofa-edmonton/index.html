@@ -57,12 +57,12 @@
     },
     "image": "https://edmontonrefreshed.com/images/BS-044/bracci-01.jpeg",
     "itemCondition": "https://schema.org/UsedCondition",
-    "dateModified": "2026-06-29",
+    "dateModified": "2026-06-30",
     "offers": {
       "@type": "Offer",
       "priceCurrency": "CAD",
       "price": 2450,
-      "priceValidUntil": "2026-09-27",
+      "priceValidUntil": "2026-09-28",
       "availability": "https://schema.org/InStock",
       "url": "https://edmontonrefreshed.com/listings/bracci-como-maxi-apartment-sofa-edmonton/",
       "eligibleRegion": {
@@ -284,7 +284,7 @@
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"></noscript>
   <link rel="preload" as="image" imagesrcset="../../images/BS-044/bracci-01-400w.avif 400w, ../../images/BS-044/bracci-01-800w.avif 800w, ../../images/BS-044/bracci-01.avif 1200w" imagesizes="(max-width: 768px) 100vw, 550px" fetchpriority="high" type="image/avif">
-  <link rel="stylesheet" href="../../css/styles.min.css?v=7e98447e">
+  <link rel="stylesheet" href="../../css/styles.min.css?v=7dbc3e62">
   <meta name="theme-color" content="#2c2c2c">
 </head>
 <body>
@@ -366,13 +366,13 @@
             <div class="listing-brand">Bracci</div>
             <div class="listing-heading-row">
               <h1 class="listing-title">Como Maxi Apartment Sofa &mdash; Fango Victoria Leather</h1>
-              <div class="listing-value-pill"><span class="pill-retail">Est. Retail: $6,699 CAD</span><span class="pill-now">Buy it Today: $2,450 CAD</span></div>
             </div>
             <div class="listing-price">$2,450 <span class="listing-price-currency">CAD</span></div>
             <div class="listing-ctas">
               <a class="listing-cta" href="sms:7809651477">Text to Book a Viewing &rarr;</a>
               <a class="listing-cta listing-cta--secondary" href="tel:7809651477">Call 780-965-1477</a>
             </div>
+            <div class="listing-value-pill"><span class="pill-retail">Est. Retail: $6,699 CAD</span><span class="pill-now">Buy it Today: $2,450 CAD</span></div>
             <div class="listing-specs"><span class="spec-tag">Bracci</span><span class="spec-tag">78 × 40 × 30 in</span><span class="spec-tag">Victoria Semi-Aniline Leather</span><span class="spec-tag">Made in Italy</span><span class="spec-tag">Excellent Condition</span></div>
             <details class="listing-collapsible" open><summary class="listing-meta-label">Description</summary><p class="listing-description">Bracci is a Tuscan leather-furniture house that builds to order in the Quarrata furniture district &mdash; a small-batch Italian maker whose pieces rarely turn up on the secondary market in Edmonton. The Como is its low, clean-lined contemporary two-seater &mdash; Bracci calls it a &quot;maxi&quot; loveseat, but at 78 inches wide and 40 inches deep it sits and lives like a compact apartment sofa &mdash; the depth in particular is closer to a full sectional than a typical two-seater, which means genuinely generous seating rather than a perch. A tailored bench with track arms and a quietly architectural stance lifted on slim metal feet.
 
@@ -419,6 +419,14 @@ Delivery available for an additional fee.</p></details>
         </div>
       </section>
 
+      <!-- Sticky CTA (mobile only): floats while reading, parks here once the
+           FAQ is reached so it never covers the related links, newsletter, or footer. -->
+      <div class="listing-sticky-sentinel" aria-hidden="true"></div>
+      <div class="listing-sticky-cta">
+        <a href="sms:7809651477" class="sticky-cta-primary">Book a Viewing</a>
+      </div>
+
+
       <section class="listing-related" aria-labelledby="listing-related-heading">
         <h2 class="section-label" id="listing-related-heading">Related Links</h2>
         <div class="listing-related-grid">
@@ -440,12 +448,6 @@ Delivery available for an additional fee.</p></details>
 
     </div>
   </main>
-
-  <!-- Sticky CTA bar (mobile only) -->
-  <div class="listing-sticky-cta">
-    <a href="sms:7809651477" class="sticky-cta-primary">Book a Viewing &rarr; $2,450 CAD</a>
-    <a href="tel:7809651477" class="sticky-cta-secondary">Call</a>
-  </div>
 
   <footer class="site-footer">
     <div class="footer-inner">
@@ -518,7 +520,7 @@ Delivery available for an additional fee.</p></details>
     <div class="lightbox-counter" id="lightbox-counter"></div>
   </div>
 
-  <script src="../../js/shared.min.js?v=0b7831bd"></script>
+  <script src="../../js/shared.min.js?v=106534a3"></script>
   <script>
   (function() {
     var thumbs = document.querySelectorAll(".listing-thumb:not(.listing-thumb-more)");

@@ -1076,13 +1076,13 @@ renderCredibility('listing') + '\n' +
 '            <div class="listing-brand">' + escapeHtml(item.brand) + '</div>\n' +
 '            <div class="listing-heading-row">\n' +
 '              <h1 class="listing-title">' + escapeHtml(item.title) + '</h1>\n' +
-(retailHTML ? '              ' + retailHTML + '\n' : '') +
 '            </div>\n' +
 '            <div class="listing-price">' + formatPrice(item.price) + ' <span class="listing-price-currency">CAD</span></div>\n' +
 '            <div class="listing-ctas">\n' +
 '              <a class="listing-cta" href="sms:7809651477">Text to Book a Viewing &rarr;</a>\n' +
 '              <a class="listing-cta listing-cta--secondary" href="tel:7809651477">Call 780-965-1477</a>\n' +
 '            </div>\n' +
+(retailHTML ? '            ' + retailHTML + '\n' : '') +
 '            <div class="listing-specs">' + specsHTML + '</div>\n' +
 '            ' + descriptionHTML + '\n' +
 (featuresHTML    ? '            ' + featuresHTML    + '\n' : '') +
@@ -1095,6 +1095,14 @@ renderCredibility('listing') + '\n' +
 '        </div>\n' +
 '      </div>\n' +
 faqVisibleBlock +
+'\n' +
+'      <!-- Sticky CTA (mobile only): floats while reading, parks here once the\n' +
+'           FAQ is reached so it never covers the related links, newsletter, or footer. -->\n' +
+'      <div class="listing-sticky-sentinel" aria-hidden="true"></div>\n' +
+'      <div class="listing-sticky-cta">\n' +
+'        <a href="sms:7809651477" class="sticky-cta-primary">Book a Viewing</a>\n' +
+'      </div>\n' +
+'\n' +
 relatedHTML +
 '\n' +
 '      <div class="newsletter-embed">\n' +
@@ -1109,12 +1117,6 @@ relatedHTML +
 '\n' +
 '    </div>\n' +
 '  </main>\n' +
-'\n' +
-'  <!-- Sticky CTA bar (mobile only) -->\n' +
-'  <div class="listing-sticky-cta">\n' +
-'    <a href="sms:7809651477" class="sticky-cta-primary">Book a Viewing &rarr; ' + formatPrice(item.price) + ' CAD</a>\n' +
-'    <a href="tel:7809651477" class="sticky-cta-secondary">Call</a>\n' +
-'  </div>\n' +
 '\n' +
 renderFooter() + '\n' +
 '\n' +
