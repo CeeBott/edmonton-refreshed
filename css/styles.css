@@ -1617,8 +1617,16 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
      sold-stub pill (no .pill-now) is untouched. */
   .listing-value-pill:has(.pill-now) {
     flex-direction: column;
-    border-radius: var(--radius) 0 0 var(--radius);
+    border-radius: 100px 0 0 100px;
     margin: 4px 0 20px;
+    font-size: 0.72rem;
+  }
+  /* Stacked: equal left padding on both rows so "Est. Retail" and "Buy it Today"
+     start at the same x, plus a touch more vertical room so the text isn't tight
+     against the row borders. */
+  .listing-value-pill:has(.pill-now) .pill-retail,
+  .listing-value-pill:has(.pill-now) .pill-now {
+    padding: 9px 16px;
   }
 
   /* ── Mobile vertical rhythm ──
