@@ -34,6 +34,24 @@ var TEMPLATE = path.join(ROOT, 'listings', 'la-z-boy-emric-right-facing-sectiona
 // availability: "SoldOut" (recommended) — accurate for one-of-one pieces and
 // matches the visible "This piece has sold." overlay (see CLAUDE.md §6.3, §10.1).
 var MANIFEST = {
+  'pottery-barn-turner-square-arm-sofa-edmonton': {
+    sku: 'PB-045',
+    price: '3000',
+    availability: 'SoldOut',
+    brand: 'Pottery Barn',
+    brandShort: 'Pottery Barn',
+    h1: 'Turner Square Arm Sofa — Sandstone Keystone Leather',
+    model: 'Turner',
+    configuration: 'leather sofa',
+    sellHref: '/sell/leather-sofa/',
+    altBase: 'Pottery Barn Turner Square Arm Sofa',
+    metaDescription: 'This Pottery Barn Turner square arm sofa in Sandstone top-grain leather has sold. Browse current available inventory at Edmonton Refreshed — curated pre-owned sofas and sectionals in Edmonton.',
+    twitterDescription: 'This Pottery Barn Turner square arm leather sofa has sold. Browse current available inventory at Edmonton Refreshed.',
+    productDescription: 'Pottery Barn Turner square arm sofa in the Sandstone colourway of their top-grain, aniline-dyed Keystone leather — a contract-grade three-seater, 86 inches wide with a deep 44-inch seat, an engineered hardwood frame with no-sag steel springs, and down-blend-wrapped cushions for a soft, sink-in sit. Sold in like-new condition. This piece has sold; browse current available inventory at Edmonton Refreshed.',
+    introHTML: 'Pottery Barn&rsquo;s Turner is a square-arm, contract-grade leather sofa built around clean, low lines and a deep, relaxed seat &mdash; this one in the Sandstone colourway of their 100% top-grain, aniline-dyed Keystone leather, distressed with oil and wax for a soft, heritage patina. At 86 inches wide with a generous 44-inch depth, it sits like a lounge piece rather than a formal sofa, riding on an engineered hardwood frame with no-sag sinuous steel springs. The real surprise is the comfort: down-blend-wrapped seat cushions and equally cushy backs give it a genuinely deep, sink-in sit, and it came to us in like-new condition.',
+    newsletterHeading: 'Looking for a leather sofa like the Pottery Barn Turner? Enter your email and we&rsquo;ll let you know when similar pieces come in.',
+  },
+
   'natuzzi-editions-vigore-leather-sectional': {
     sku: 'NE-040',
     price: '2199',
@@ -769,11 +787,14 @@ function neutralizeLegacyDesc(s) {
 // Brand → buyer's-guide cross-link (mirror of build.js brandGuideMap), shown
 // in the retained Description collapsible.
 var BRAND_GUIDE_MAP = {
-  'Natuzzi':          { slug: 'natuzzi-sofa-review-edmonton',       label: 'Read our full Natuzzi buyer&rsquo;s guide for Edmonton' },
-  'Natuzzi Editions': { slug: 'natuzzi-sofa-review-edmonton',       label: 'Read our full Natuzzi buyer&rsquo;s guide for Edmonton' },
-  'Natuzzi Italia':   { slug: 'natuzzi-sofa-review-edmonton',       label: 'Read our full Natuzzi buyer&rsquo;s guide for Edmonton' },
-  'B&B Italia':       { slug: 'bb-italia-sofa-review-edmonton',     label: 'Read our full B&amp;B Italia buyer&rsquo;s guide for Edmonton' },
-  'Rove Concepts':    { slug: 'rove-concepts-sofa-review-edmonton', label: 'Read our full Rove Concepts buyer&rsquo;s guide for Edmonton' }
+  'Natuzzi':          { slug: 'natuzzi-sofa-review-edmonton',         label: 'Read our full Natuzzi buyer&rsquo;s guide for Edmonton' },
+  'Natuzzi Editions': { slug: 'natuzzi-sofa-review-edmonton',         label: 'Read our full Natuzzi buyer&rsquo;s guide for Edmonton' },
+  'Natuzzi Italia':   { slug: 'natuzzi-sofa-review-edmonton',         label: 'Read our full Natuzzi buyer&rsquo;s guide for Edmonton' },
+  'B&B Italia':       { slug: 'bb-italia-sofa-review-edmonton',       label: 'Read our full B&amp;B Italia buyer&rsquo;s guide for Edmonton' },
+  'Rove Concepts':    { slug: 'rove-concepts-sofa-review-edmonton',   label: 'Read our full Rove Concepts buyer&rsquo;s guide for Edmonton' },
+  'Pottery Barn':     { slug: 'pottery-barn-sofa-review-edmonton',    label: 'Read our full Pottery Barn buyer&rsquo;s guide for Edmonton' },
+  'Crate & Barrel':   { slug: 'crate-and-barrel-sofa-review-edmonton', label: 'Read our full Crate &amp; Barrel buyer&rsquo;s guide for Edmonton' },
+  'EQ3':              { slug: 'eq3-sofa-review-edmonton',             label: 'Read our full EQ3 buyer&rsquo;s guide for Edmonton' }
 };
 function brandGuideHTML(brand) {
   var bg = BRAND_GUIDE_MAP[brand];
