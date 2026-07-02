@@ -10,6 +10,11 @@
 
 var reviews = [
   {
+    name: "Janet Spriggs",
+    rating: 5,
+    text: "My husband and I purchased a couch from Collin with Edmonton Refreshed Seating. We were absolutely impressed with the quality of the piece but more impressed with Collin’s professionalism. He was a pleasure to deal with and made sure our transaction went completely smooth. DO NOT hesitate to deal with him. You won’t be disappointed!"
+  },
+  {
     name: "Dave Schmidt",
     rating: 5,
     text: "Collin is the owner of the company and he is a joy to work with. He communicates well, he is incredibly helpful, and made himself readily available for the purchase of the furniture."
@@ -53,8 +58,8 @@ var reviews = [
 
 // ── Aggregate (includes written + ratings-only) ──────────────
 var reviewAggregate = {
-  totalCount: 18,
-  ratingValue: 4.9    // (17 × 5 + 1 × 4) / 18 = 4.9444 → 4.9
+  totalCount: 19,
+  ratingValue: 4.9    // (18 × 5 + 1 × 4) / 19 = 4.9474 → 4.9
 };
 
 
