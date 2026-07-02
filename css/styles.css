@@ -1084,8 +1084,7 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   flex-direction: column;
   gap: 16px;
   transition: box-shadow 0.3s, transform 0.3s;
-  height: 290px;
-  overflow: hidden;
+  min-height: 340px;
 }
 
 .review-card:hover {
@@ -1583,7 +1582,7 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
     max-width: 280px;
     flex-shrink: 0;
     scroll-snap-align: center;
-    height: 340px;
+    min-height: 340px;
   }
 
   /* On mobile, always show carousel arrows */
