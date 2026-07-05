@@ -1268,6 +1268,25 @@ function injectAllPartials(html) {
   html = injectPartial(html, 'NAV',         function ()      { return renderNav(); });
   html = injectPartial(html, 'CREDIBILITY', function (attrs) { return renderCredibility(attrs.variant || 'buyer'); });
   html = injectPartial(html, 'FOOTER',      function ()      { return renderFooter(); });
+  // Brand guides: live-inventory cross-link. Renders a short "available right
+  // now" paragraph when the marker's brand family has live pieces — and
+  // nothing when it doesn't — so guides never claim stale availability
+  // (§8.9) and every reprice propagates on the next build. Family matching
+  // is first-word prefix, same as related links ("Natuzzi" covers Natuzzi
+  // Editions / Natuzzi Italia).
+  html = injectPartial(html, 'AVAILABLE_FROM_BRAND', function (attrs) {
+    var family = (attrs.brand || '').split(' ')[0].toLowerCase();
+    if (!family) return '';
+    var live = availableItems.filter(function (i) {
+      return !i.comingSoon && (i.brand || '').toLowerCase().indexOf(family) === 0;
+    });
+    if (!live.length) return '';
+    var links = live.map(function (i) {
+      var slug = i.slug || slugify(i.brand + '-' + i.title);
+      return '<a href="/listings/' + slug + '/">' + escapeHtml(i.title) + '</a> (' + formatPriceCAD(i.price) + ')';
+    }).join('; ');
+    return '          <p><strong>Available from ' + escapeHtml(attrs.brand) + ' in Edmonton right now:</strong> ' + links + '.</p>';
+  });
   // Config-driven inline fragments (homepage sr-only entity block, sold-page
   // tagline): the canonical §2.1-ordered brand list and the sold count render
   // from config/site.js so the pages can never drift from it.
