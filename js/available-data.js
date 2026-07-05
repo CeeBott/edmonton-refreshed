@@ -17,13 +17,13 @@
 var availableItems = [
   {
     brand: "Crate & Barrel",
-    title: "Lounge 83-Inch Bench Sofa — Taft Steel Everweave",
+    title: "Lounge 83-Inch Bench Sofa — Taft Steel Everweave (Two Available)",
     slug: "crate-and-barrel-lounge-83-bench-sofa-edmonton",
-    metaTitle: "Pre-Owned Crate & Barrel Lounge 83-Inch Bench Sofa for Sale in Edmonton",
+    metaTitle: "Pre-Owned Crate & Barrel Lounge 83-Inch Bench Sofas for Sale in Edmonton — Two Available",
     metaDescription: "Two like-new Crate & Barrel Lounge bench sofas in grey Taft Steel weave. Sold individually, inspected and cleaned. Delivery across Alberta. $1,700 CAD.",
     availabilityStarts: "2026-07-04",
     dimensions: { width: "83", depth: "41", height: "37" },
-    description: "The Lounge is Crate & Barrel's bestselling sofa for a reason: relaxed, sink-in comfort in a clean, modern shell. Slim track arms keep the profile light and maximize actual sitting space, medium-depth seats make it as easy to sit up with a book as to settle in for a movie, and the supersoft back cushions invite exactly the kind of curling up the design is known for. This is the 83-inch bench-cushion version — one long, uninterrupted seat with no centre gap, which keeps the look tailored and the seating continuous.\n\nThe upholstery is Taft in the Steel colourway, one of Crate & Barrel's Everweave performance fabrics. It reads as a modern interpretation of bouclé — a two-toned textured weave with real depth up close — while the 70% polypropylene, 30% polyester blend is engineered for the strength and durability to stand up to active family life. The fabric is woven in the United States.\n\nUnderneath, this is a benchmade sofa built in the USA: an FSC-certified hardwood frame kiln-dried to prevent warping, seat cushions of supportive plant-based polyfoam wrapped in a soft fiber and feather-down blend, and fiber-down back cushions in a special ticking fabric that keeps feathers in place while the cushions hold their shape over time. The cushions ride on a spring-up Flexolator foundation, independently tested and designed to eliminate sagging.",
+    description: "There are two of these — a matched pair of identical Lounge 83-inch bench sofas, sold individually, with the listed price per sofa. Take one, or take both: a true matched pair is genuinely rare on the resale market.\n\nThe Lounge is Crate & Barrel's bestselling sofa for a reason: relaxed, sink-in comfort in a clean, modern shell. Slim track arms keep the profile light and maximize actual sitting space, medium-depth seats make it as easy to sit up with a book as to settle in for a movie, and the supersoft back cushions invite exactly the kind of curling up the design is known for. This is the 83-inch bench-cushion version — one long, uninterrupted seat with no centre gap, which keeps the look tailored and the seating continuous.\n\nThe upholstery is Taft in the Steel colourway, one of Crate & Barrel's Everweave performance fabrics. It reads as a modern interpretation of bouclé — a two-toned textured weave with real depth up close — while the 70% polypropylene, 30% polyester blend is engineered for the strength and durability to stand up to active family life. The fabric is woven in the United States.\n\nUnderneath, this is a benchmade sofa built in the USA: an FSC-certified hardwood frame kiln-dried to prevent warping, seat cushions of supportive plant-based polyfoam wrapped in a soft fiber and feather-down blend, and fiber-down back cushions in a special ticking fabric that keeps feathers in place while the cushions hold their shape over time. The cushions ride on a spring-up Flexolator foundation, independently tested and designed to eliminate sagging.",
     features: [
       "FSC®-certified hardwood frame from responsibly managed forests, benchmade and kiln-dried to prevent warping",
       "Seat cushion: supportive plant-based polyfoam wrapped in a soft fiber and feather-down blend",
@@ -51,7 +51,6 @@ var availableItems = [
       "images/CB-046-47/crate-and-barrel-03.jpeg",
       "images/CB-046-47/crate-and-barrel-04.jpeg",
       "images/CB-046-47/crate-and-barrel-05.jpeg",
-      "images/CB-046-47/crate-and-barrel-06.jpeg",
     ]
   },
   {
