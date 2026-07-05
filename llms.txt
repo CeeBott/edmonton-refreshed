@@ -25,6 +25,17 @@ Edmonton Refreshed is a curated pre-owned furniture dealer based in Edmonton, Al
 - Partner Hand-Offs (designers, retailers, realtors): https://edmontonrefreshed.com/partners/
 - What We Buy (and What We Don't): https://edmontonrefreshed.com/sell/what-we-buy/
 
+## Available Inventory (Live Listings)
+
+Every piece currently for sale, with the current asking price in CAD. Each
+listing page carries photos, dimensions, condition detail, and FAQs. This
+list is regenerated on every build and always matches the homepage.
+
+- Crate & Barrel Lounge 83-Inch Bench Sofa, Taft Steel Everweave (Two Available): $1,700 CAD — https://edmontonrefreshed.com/listings/crate-and-barrel-lounge-83-bench-sofa-edmonton/
+- Bracci Como Maxi Apartment Sofa, Fango Victoria Leather: $2,450 CAD — https://edmontonrefreshed.com/listings/bracci-como-maxi-apartment-sofa-edmonton/
+- B&B Italia Charles Left-Facing Sectional, Off-White Rattier Fabric: $6,900 CAD — https://edmontonrefreshed.com/listings/b-b-italia-charles-sectional-edmonton/
+- La-Z-Boy Roundabout Ottoman, Nubuck Leather: $450 CAD — https://edmontonrefreshed.com/listings/la-z-boy-roundabout-ottoman-edmonton/
+
 ## Sell-Side Landing Pages
 
 **By brand**

@@ -15,7 +15,7 @@ assuming.
 - everything under `listings/*/index.html` (active listings)
 - `sitemap.xml`, `merchant-feed.xml`, `.build-state.json`, `css/*.min.css`, `js/*.min.js`
 - nav / credibility / footer blocks inside marker pairs on every page
-- `BRAND_LIST` / `SOLD_COUNT` marker content and the sold-inventory list in `llms.txt`
+- `BRAND_LIST` / `SOLD_COUNT` marker content and the sold- and available-inventory lists in `llms.txt`
 
 Edit instead: `js/*.js` (non-min), `css/styles.css`, `config/*.js`,
 `partials/*.js`, `build.js`, and hand-authored pages. Run `node build.js` after

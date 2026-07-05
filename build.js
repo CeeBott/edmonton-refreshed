@@ -2179,6 +2179,36 @@ function rebuildLlmsSoldSection() {
 }
 var llmsSoldCount = rebuildLlmsSoldSection();
 
+// ── llms.txt: regenerate the available-inventory list ────────────────────
+// Same pattern as the sold list: the bullet list under "## Available
+// Inventory (Live Listings)" mirrors every live availableItems entry
+// (coming-soon excluded) with its current asking price, so llms.txt always
+// matches the homepage — prices stay current through every reprice with no
+// manual step. The intro prose stays hand-authored.
+function rebuildLlmsAvailableSection() {
+  var llmsPath = path.join(ROOT, 'llms.txt');
+  if (!fs.existsSync(llmsPath)) return 0;
+  var txt = fs.readFileSync(llmsPath, 'utf8');
+  var header = '## Available Inventory (Live Listings)';
+  var start = txt.indexOf(header);
+  if (start === -1) return 0;
+  var next = txt.indexOf('\n## ', start + header.length);
+  var end = next === -1 ? txt.length : next + 1;
+  var section = txt.slice(start, end);
+  var firstBullet = section.indexOf('\n- ');
+  var intro = firstBullet === -1 ? section.replace(/\s+$/, '') + '\n\n' : section.slice(0, firstBullet + 1);
+  var live = availableItems.filter(function (i) { return !i.comingSoon; });
+  var bullets = live.map(function (i) {
+    var label = (i.brand + ' ' + i.title).replace(/\s+—\s+/g, ', ');
+    var slug = i.slug || slugify(i.brand + '-' + i.title);
+    return '- ' + label + ': ' + formatPriceCAD(i.price) + ' — ' + BASE_URL + 'listings/' + slug + '/';
+  }).join('\n');
+  var out = txt.slice(0, start) + intro + bullets + '\n\n' + txt.slice(end);
+  if (out !== txt) fs.writeFileSync(llmsPath, out, 'utf8');
+  return live.length;
+}
+var llmsAvailableCount = rebuildLlmsAvailableSection();
+
 var COLLIN_ID = 'https://edmontonrefreshed.com/about/#collin';
 
 function extractJsonLd(html) {
@@ -2374,7 +2404,7 @@ if (metaTitleGaps.length) {
 if (llmsGaps.length) {
   console.log('  llms WARN       — missing from llms.txt: ' + llmsGaps.join(', '));
 } else {
-  console.log('  llms.txt        — sold list regenerated (' + llmsSoldCount + ' stubs); core pages + guides all listed');
+  console.log('  llms.txt        — sold list (' + llmsSoldCount + ' stubs) + available list (' + llmsAvailableCount + ' live) regenerated; core pages + guides all listed');
 }
 
 if (ownerDangling) {
