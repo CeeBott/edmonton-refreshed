@@ -18,7 +18,14 @@
 //    psi <url>      PageSpeed Insights (Lighthouse lab + CrUX field).
 //                   Flags: --strategy mobile|desktop (mobile)
 //    crux <target>  Chrome UX Report field CWV. Flags: --origin (treat
-//                   target as origin instead of a page URL)
+//                   target as origin instead of a page URL). A 404 from the
+//                   API means no field data exists (normal below the public-
+//                   dataset traffic threshold) — reported as a result, not
+//                   an error.
+//
+//  Every printing command also takes --out <file> to write the JSON there
+//  instead of stdout (PSI responses run ~3 MB — point them at the audit's
+//  data/YYYY-MM-DD/ folder rather than flooding the terminal).
 //    cf             Cloudflare zone analytics by day (GraphQL). --days N (28)
 //    all            Standard audit bundle → docs/seo-audit/data/YYYY-MM-DD/
 //    setup          Print the one-time credential setup steps
@@ -238,6 +245,18 @@ async function crux(target, asOrigin) {
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify(asOrigin ? { origin: target } : { url: target }),
   });
+  // 404 = no field data for this URL/origin — an expected answer for new or
+  // low-traffic sites (below the public-dataset threshold), not a failure.
+  // Treat CWV as ranking-neutral and use PSI lab data for diagnostics.
+  if (res.status === 404) {
+    return {
+      noFieldData: true,
+      [asOrigin ? 'origin' : 'url']: target,
+      note: 'CrUX has no field data for this ' + (asOrigin ? 'origin' : 'URL') +
+        ' — traffic is below the public-dataset threshold. Normal for new/low-traffic sites; ' +
+        'treat Core Web Vitals as ranking-neutral and use PSI lab data for diagnostics.',
+    };
+  }
   return jsonOrThrow(res, `CrUX ${target}`);
 }
 
@@ -336,7 +355,17 @@ const SETUP = `One-time setup (~10 minutes, all free — full walkthrough in the
           node scripts/seo-fetch.mjs ga4 channels --days 7`;
 
 // ── dispatch ────────────────────────────────────────────────
-const print = (data) => console.log(JSON.stringify(data, null, 2));
+// --out <file>: write the JSON to a file instead of stdout (PSI payloads run
+// ~3 MB; during audits point them at docs/seo-audit/data/YYYY-MM-DD/).
+const print = (data) => {
+  const out = flag('out', null);
+  const json = JSON.stringify(data, null, 2);
+  if (out) {
+    mkdirSync(path.dirname(path.resolve(out)), { recursive: true });
+    writeFileSync(out, json);
+    console.log(`→ ${out}`);
+  } else console.log(json);
+};
 
 try {
   switch (cmd) {
