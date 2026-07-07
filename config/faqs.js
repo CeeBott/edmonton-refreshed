@@ -63,6 +63,12 @@ const sell = [
       'Pickups can often happen within 24 hours of an accepted offer, scheduled around you. We bring the truck and do all the lifting.',
   },
   {
+    question: 'Do you take trade-ins or buy back furniture?',
+    schemaQuestion: 'Is there a furniture trade-in or buy-back option in Edmonton?',
+    answer:
+      'What we offer is the direct-sale version of a trade-in or buy-back: we buy your sofa or sectional outright — no store credit, nothing to list. If a replacement is on the way, we can usually time pickup around the new delivery so the old piece is gone first.',
+  },
+  {
     question: 'Do you pay cash or e-transfer?',
     answer:
       'Both. Cash or e-transfer on the spot — your choice, paid before the piece leaves your home.',
