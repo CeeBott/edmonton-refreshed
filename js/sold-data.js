@@ -5,6 +5,43 @@
 
 var soldItems = [
   {
+    brand: "La-Z-Boy",
+    title: "Roundabout Ottoman — Nubuck Leather",
+    href: "/listings/la-z-boy-roundabout-ottoman-edmonton/",
+    description: "The Roundabout is La-Z-Boy's premium cocktail ottoman — a 35-inch round in genuine charcoal top-grain nubuck leather, with a button-tufted top, welt cord trim, and hidden casters. At 18 inches tall it sits at standard sofa seat height, so it works as a footrest, cocktail table, or overflow seating. Acquired and resold in like-new condition.",
+    images: [
+      "../images/LB-042/la-z-boy-05.jpeg",
+      "../images/LB-042/la-z-boy-06.jpeg",
+      "../images/LB-042/la-z-boy-03.jpeg",
+      "../images/LB-042/la-z-boy-02.jpeg",
+      "../images/LB-042/la-z-boy-01.jpeg",
+      "../images/LB-042/la-z-boy-04.jpeg",
+    ],
+    retained: {
+      metaTitle: "Pre-Owned La-Z-Boy Roundabout Nubuck Leather Ottoman for Sale in Edmonton",
+      metaDescription: "Pre-owned La-Z-Boy Roundabout cocktail ottoman in genuine nubuck leather. Hidden casters, like-new condition. Delivery available in Edmonton. $450 CAD.",
+      retailEstimate: 1569,
+      specs: ["La-Z-Boy", "35 × 35 × 18 in", "Nubuck Leather", "Hidden Casters", "Like New"],
+      description: "The Roundabout is La-Z-Boy's premium cocktail ottoman — and in nubuck leather, it's a different category of piece than the fabric version. Nubuck is top-grain leather that's been buffed on the outer surface to produce a fine, velvety texture. It has the warmth and tactility of suede with the durability of full-grain leather underneath. It develops a natural patina over time and is substantially more resistant to wear than fabric alternatives at this size.\n\nThe Roundabout's format is what makes it genuinely useful. Hidden casters let it move freely wherever it's needed — it functions as a footrest, overflow seating, or a centrepiece cocktail table depending on the room's needs at any given moment. At 35\" across, it's generously scaled without being oversized. The 18\" height puts it at standard sofa seat height, which means it works as additional seating without the awkward height differential common in smaller ottomans.\n\nButton-tufted top with welt trim detailing, double-picked blown fiber fill for cushion loft and shape retention, and high-grade foam for lasting comfort and appearance. The round format and neutral nubuck leather make it one of the more versatile accent pieces in the category — it doesn't require a matching sofa to work in a room.",
+      features: [
+        "High-grade foam seat cushion for lasting comfort and appearance",
+        "Double-picked blown fiber fill for enhanced cushioning and shape retention",
+        "Button-tufted top with welt cord trim",
+        "Hidden casters for mobility",
+        "Nubuck top-grain leather upholstery",
+        "La-Z-Boy Limited Lifetime Warranty on frame and spring system",
+      ],
+      condition: "Like new.",
+      faq: [
+        { question: "Is this real leather?", answer: "Yes. The Roundabout is upholstered in genuine top-grain nubuck leather — the same hide grade used in full-grain pieces, buffed on the outer surface to produce a fine, velvety hand. It develops a natural patina over time and is substantially more durable than suede or fabric alternatives." },
+        { question: "What is nubuck leather and how is it different from suede?", answer: "Nubuck is top-grain leather buffed on the exterior to create a soft, velvety surface. Suede, by contrast, comes from the underside of the hide (the split) and is structurally weaker. Nubuck has the look and feel of suede with the strength and longevity of full-grain leather." },
+        { question: "Can it support someone sitting on it?", answer: "Yes. The Roundabout is built as both an ottoman and overflow seating. At 18 inches tall it sits at standard sofa seat height, which is why it functions naturally as an extra seat without the awkward height differential of smaller ottomans." },
+        { question: "Do the casters lock or roll freely?", answer: "The casters are hidden under the base and roll freely so the piece can be repositioned easily — between footrest, cocktail-table, and extra-seat use. They are not lockable, but the size and weight of the ottoman keeps it stable in place during normal use." },
+        { question: "Do you deliver?", answer: "Yes. We deliver throughout Edmonton and surrounding areas, and arrange delivery across Alberta on request. Delivery is offered for an additional fee that depends on distance and access." },
+      ],
+    },
+  },
+  {
     brand: "Pottery Barn",
     title: "Turner Square Arm Sofa — Sandstone Keystone Leather",
     href: "/listings/pottery-barn-turner-square-arm-sofa-edmonton/",

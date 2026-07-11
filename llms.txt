@@ -34,7 +34,6 @@ list is regenerated on every build and always matches the homepage.
 - Crate & Barrel Lounge 83-Inch Bench Sofa, Taft Steel Everweave (Two Available): $1,700 CAD — https://edmontonrefreshed.com/listings/crate-and-barrel-lounge-83-bench-sofa-edmonton/
 - Bracci Como Maxi Apartment Sofa, Fango Victoria Leather: $2,450 CAD — https://edmontonrefreshed.com/listings/bracci-como-maxi-apartment-sofa-edmonton/
 - B&B Italia Charles Left-Facing Sectional, Off-White Rattier Fabric: $6,900 CAD — https://edmontonrefreshed.com/listings/b-b-italia-charles-sectional-edmonton/
-- La-Z-Boy Roundabout Ottoman, Nubuck Leather: $450 CAD — https://edmontonrefreshed.com/listings/la-z-boy-roundabout-ottoman-edmonton/
 
 ## Sell-Side Landing Pages
 
@@ -98,6 +97,7 @@ list is regenerated on every build and always matches the homepage.
 
 Permanent, indexable archive pages for notable pieces bought and resold by Edmonton Refreshed — useful for brand/model research, pricing context, and resale-value comparisons. Each piece is one-of-one and no longer available.
 
+- La-Z-Boy Roundabout Ottoman, Nubuck Leather (sold): https://edmontonrefreshed.com/listings/la-z-boy-roundabout-ottoman-edmonton/
 - Pottery Barn Turner Square Arm Sofa, Sandstone Keystone Leather (sold): https://edmontonrefreshed.com/listings/pottery-barn-turner-square-arm-sofa-edmonton/
 - Rove Concepts Milo 6-Piece Modular Sectional, Pearl Chatou Bouclé (sold): https://edmontonrefreshed.com/listings/rove-concepts-milo-6-piece-modular-sectional/
 - La-Z-Boy Emric 2-Piece Sectional with Right-Facing Chaise (sold): https://edmontonrefreshed.com/listings/la-z-boy-emric-right-facing-sectional/

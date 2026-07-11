@@ -34,6 +34,24 @@ var TEMPLATE = path.join(ROOT, 'listings', 'la-z-boy-emric-right-facing-sectiona
 // availability: "SoldOut" (recommended) — accurate for one-of-one pieces and
 // matches the visible "This piece has sold." overlay (see CLAUDE.md §6.3, §10.1).
 var MANIFEST = {
+  'la-z-boy-roundabout-ottoman-edmonton': {
+    sku: 'LB-042',
+    price: '300',
+    availability: 'SoldOut',
+    brand: 'La-Z-Boy',
+    brandShort: 'La-Z-Boy',
+    h1: 'Roundabout Ottoman — Nubuck Leather',
+    model: 'Roundabout',
+    configuration: 'ottoman',
+    sellHref: '/sell/',
+    altBase: 'La-Z-Boy Roundabout Nubuck Leather Ottoman',
+    metaDescription: 'This La-Z-Boy Roundabout nubuck leather ottoman has sold. Browse current available inventory at Edmonton Refreshed — curated pre-owned sofas and sectionals in Edmonton.',
+    twitterDescription: 'This La-Z-Boy Roundabout nubuck leather ottoman has sold. Browse current available inventory at Edmonton Refreshed.',
+    productDescription: 'La-Z-Boy Roundabout cocktail ottoman in charcoal top-grain nubuck leather — a 35-inch round with a button-tufted top, welt cord trim, and hidden casters, acquired from a home in Spruce Grove alongside the La-Z-Boy Emric sectional. Sold in like-new condition. This piece has sold; browse current available inventory at Edmonton Refreshed.',
+    introHTML: 'The Roundabout is La-Z-Boy&rsquo;s premium cocktail ottoman &mdash; a 35-inch round with a button-tufted top, welt cord trim, and hidden casters, upholstered in genuine top-grain nubuck leather in a versatile charcoal grey. We picked this one up from a home in Spruce Grove alongside the <a href="/listings/la-z-boy-emric-right-facing-sectional/" style="color:#2c2c2c; text-decoration:underline; text-underline-offset:2px;">Emric sectional</a> we also handled. At 18 inches tall it sits at standard sofa seat height, so it works as a footrest, a cocktail table, or genuine overflow seating &mdash; and it came to us in like-new condition.',
+    newsletterHeading: 'Looking for a leather ottoman like the La-Z-Boy Roundabout? Enter your email and we&rsquo;ll let you know when similar pieces come in.',
+  },
+
   'pottery-barn-turner-square-arm-sofa-edmonton': {
     sku: 'PB-045',
     price: '3000',
