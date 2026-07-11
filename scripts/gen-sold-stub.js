@@ -918,7 +918,7 @@ function buildBody(m, bases, chrome) {
     '          <input type="email" id="newsletter-email" name="email_address" placeholder="Your email address" autocomplete="email" required>\n' +
     '          <button type="submit">Subscribe</button>\n' +
     '        </form>\n' +
-    '        <p class="newsletter-success">Thanks! You&rsquo;re on the list.</p>\n' +
+    '        <p class="newsletter-success">Thanks! Check your junk folder for your confirmation email.</p>\n' +
     '      </div>';
 
   return '' +
