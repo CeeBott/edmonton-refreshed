@@ -13,7 +13,6 @@
 const REQUIRED_FIELDS = [
   'Brand',
   'Approximate age',
-  'Condition',
   'Name',
   'Best contact',
 ];
@@ -102,7 +101,7 @@ export default {
       '',
       `Brand: ${get('Brand')}`,
       `Approximate age: ${get('Approximate age')}`,
-      `Condition: ${get('Condition')}`,
+      `Asking price: ${get('Asking price') || '(not provided)'}`,
       '',
       `Name: ${get('Name')}`,
       `Best contact: ${get('Best contact')}`,
