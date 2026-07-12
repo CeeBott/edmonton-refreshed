@@ -8,7 +8,10 @@
 //   FROM_EMAIL       — Resend-verified sender; for first-time use,
 //                      set to "onboarding@resend.dev" (works only when
 //                      TO_EMAIL is the same address you signed up with).
-//   ALLOWED_ORIGIN   — e.g. "https://edmontonrefreshed.com"
+//   ALLOWED_ORIGIN   — comma-separated allowlist, e.g.
+//                      "https://edmontonrefreshed.com,https://www.edmontonrefreshed.com"
+//                      (www serves the site too, so both origins must be allowed
+//                      or www visitors get a CORS "Failed to fetch")
 
 const REQUIRED_FIELDS = [
   'Brand',
@@ -29,8 +32,15 @@ const MIN_FORM_FILL_MS = 2000; // Reject submissions filled in under 2 seconds �
 
 export default {
   async fetch(request, env) {
+    // ALLOWED_ORIGIN is a comma-separated allowlist (apex + www — both serve
+    // the site). Echo the request's Origin when it's on the list; otherwise
+    // fall back to the first entry so responses always carry a concrete value.
+    const allowed = (env.ALLOWED_ORIGIN || '*').split(',').map((s) => s.trim()).filter(Boolean);
+    const reqOrigin = request.headers.get('Origin') || '';
+    const allowOrigin = allowed.includes('*') ? '*'
+      : (allowed.includes(reqOrigin) ? reqOrigin : allowed[0]);
     const cors = {
-      'Access-Control-Allow-Origin': env.ALLOWED_ORIGIN || '*',
+      'Access-Control-Allow-Origin': allowOrigin,
       'Access-Control-Allow-Methods': 'POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type',
       'Vary': 'Origin',

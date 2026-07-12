@@ -7,4 +7,4 @@ compatibility_date = "2026-05-04"
 [vars]
 TO_EMAIL = "info@edmontonrefreshed.com"
 FROM_EMAIL = "Edmonton Refreshed <forms@edmontonrefreshed.com>"
-ALLOWED_ORIGIN = "https://edmontonrefreshed.com"
+ALLOWED_ORIGIN = "https://edmontonrefreshed.com,https://www.edmontonrefreshed.com"
