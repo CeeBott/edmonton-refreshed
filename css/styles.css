@@ -3117,8 +3117,7 @@ footer a:focus-visible {
   flex-direction: column;
   gap: 6px;
 }
-.sell-form-row > label,
-.sell-form-radio > legend {
+.sell-form-row > label {
   font-size: 0.85rem;
   font-weight: 500;
   color: var(--color-text);
@@ -3277,52 +3276,6 @@ footer a:focus-visible {
   margin: 0;
 }
 .sell-photo-count[hidden] { display: none; }
-.sell-form-radio {
-  border: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.sell-form-radio legend {
-  margin-bottom: 4px;
-  padding: 0;
-}
-.sell-form-radio label {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 10px 12px;
-  background: var(--color-bg);
-  border: 1px solid var(--color-border);
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.92rem;
-  line-height: 1.4;
-  transition: border-color 150ms ease, background 150ms ease;
-}
-.sell-form-radio label:hover {
-  border-color: var(--color-accent);
-}
-.sell-form-radio input[type="radio"] {
-  margin-top: 3px;
-  flex-shrink: 0;
-  accent-color: var(--color-accent);
-}
-.sell-form-radio label span {
-  color: var(--color-text);
-}
-.sell-form-radio label span strong {
-  font-weight: 600;
-}
-.sell-form-radio input[type="radio"]:checked + span {
-  color: var(--color-text);
-}
-.sell-form-radio label:has(input[type="radio"]:checked) {
-  border-color: var(--color-accent);
-  background: #ffffff;
-}
 .sell-form-ack {
   display: flex;
   flex-direction: column;

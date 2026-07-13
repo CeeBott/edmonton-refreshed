@@ -2,7 +2,7 @@
 //  SELL FORM HANDLER
 //
 //  Used on /sell/ and every /sell/[slug]-edmonton/ landing page.
-//  Posts a multipart form (Brand, Age, Condition, Name, Contact,
+//  Posts a multipart form (Brand, Age, Asking price, Name, Contact,
 //  Notes, 1–5 photos) to the Cloudflare Worker endpoint.
 //
 //  The form's "Brand" field can be pre-filled by setting its
@@ -33,6 +33,19 @@
   var form = document.getElementById('sell-form');
   var success = document.getElementById('sell-form-success');
   if (!form) return;
+
+  // Asking price (optional) — format the value as CAD dollars as the seller
+  // types, so "400" displays as "$400". Digits only; no cents.
+  var priceInput = document.getElementById('sf-price');
+  if (priceInput) {
+    var formatPrice = function () {
+      var digits = priceInput.value.replace(/[^0-9]/g, '');
+      if (!digits) { priceInput.value = ''; return; }
+      priceInput.value = '$' + Number(digits).toLocaleString('en-CA');
+    };
+    priceInput.addEventListener('input', formatPrice);
+    priceInput.addEventListener('blur', formatPrice);
+  }
 
   var photosInput = document.getElementById('sf-photos');
   var photosAdd = document.getElementById('sf-photos-add');
