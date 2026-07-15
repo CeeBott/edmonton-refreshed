@@ -417,7 +417,7 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
 /* ── Hero Sell CTA ── */
 .hero-sell-cta {
   text-align: center;
-  margin: 24px 0 0;
+  margin: var(--space-5) 0 0;
 }
 .hero-or-divider {
   display: flex;
