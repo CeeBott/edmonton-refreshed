@@ -401,7 +401,7 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   line-height: 1.7;
 }
 
-/* Quiet buyer path under the tagline — the seller CTA below keeps the visual weight */
+/* Quiet buyer path below the seller CTA — the seller CTA above keeps the visual weight */
 .hero-browse {
   margin: 20px auto 0;
   font-size: 0.9rem;
@@ -417,7 +417,7 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
 /* ── Hero Sell CTA ── */
 .hero-sell-cta {
   text-align: center;
-  margin: 0;
+  margin: 24px 0 0;
 }
 .hero-or-divider {
   display: flex;
