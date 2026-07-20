@@ -66,6 +66,14 @@
   max-width: none;
   padding-inline: 0;
 }
+/* .seller-reviews (build-injected on sell landing pages between
+   SELLER_REVIEWS markers) wraps the same .reviews-inner system, so it is
+   neutralized the same way — .reviews-inner stays the active layout box
+   and the mobile full-bleed reviews carousel carries over unchanged. */
+:where(.page) > .seller-reviews {
+  max-width: none;
+  padding-inline: 0;
+}
 .page > .l-bleed {
   max-width: none;
   padding-inline: 0;
@@ -2958,6 +2966,18 @@ footer a:focus-visible {
   color: var(--color-text);
   font-weight: 600;
   font-size: 0.95rem;
+}
+
+/* Seller reviews — build-injected above the "Send us your details" ask on
+   every sell landing page (SELLER_REVIEWS markers). Reuses the homepage
+   reviews system wholesale; only the vertical rhythm is its own — the
+   .reviews-inner 72px bottom pad would stack with .sell-send-heading's
+   56px top margin, so it is zeroed here. */
+.seller-reviews {
+  margin-top: 56px;
+}
+.seller-reviews .reviews-inner {
+  padding-bottom: 0;
 }
 
 /* Send details — section heading uses the global .section-label pattern

@@ -454,26 +454,7 @@ function generateReviewsHTML(reviews, aggregate) {
   );
 
   reviews.forEach(function(review) {
-    var stars   = '';
-    for (var i = 1; i <= 5; i++) {
-      stars += '<span class="review-star' + (i <= review.rating ? ' filled' : '') + '">&#9733;</span>';
-    }
-    var initial = review.name.charAt(0).toUpperCase();
-    var subtext = review.type === 'seller' ? 'Sold To Us' : 'Bought From Us';
-
-    lines.push(
-      '            <div class="review-card">',
-      '              <div class="review-card-header">',
-      '                <div class="review-avatar">' + initial + '</div>',
-      '                <div class="review-header-info">',
-      '                  <div class="review-author">' + escapeHtml(review.name) + '</div>',
-      '                  <div class="review-subtext">' + subtext + '</div>',
-      '                  <div class="review-card-stars">' + stars + '</div>',
-      '                </div>',
-      '              </div>',
-      '              <p class="review-text">&ldquo;' + escapeHtml(review.text) + '&rdquo;</p>',
-      '            </div>'
-    );
+    lines.push.apply(lines, reviewCardLines(review, '            '));
   });
 
   lines.push(
@@ -482,6 +463,61 @@ function generateReviewsHTML(reviews, aggregate) {
   );
 
   return lines.join('\n') + '\n      ';
+}
+
+// One review card in the homepage format — shared by the homepage static
+// fallback and the sell-landing seller-reviews section so the card markup
+// can never drift between surfaces. `pad` is the indent of the card's
+// outermost line; inner lines step by two spaces.
+function reviewCardLines(review, pad) {
+  var stars = '';
+  for (var i = 1; i <= 5; i++) {
+    stars += '<span class="review-star' + (i <= review.rating ? ' filled' : '') + '">&#9733;</span>';
+  }
+  var initial = review.name.charAt(0).toUpperCase();
+  var subtext = review.type === 'seller' ? 'Sold To Us' : 'Bought From Us';
+
+  return [
+    pad + '<div class="review-card">',
+    pad + '  <div class="review-card-header">',
+    pad + '    <div class="review-avatar">' + initial + '</div>',
+    pad + '    <div class="review-header-info">',
+    pad + '      <div class="review-author">' + escapeHtml(review.name) + '</div>',
+    pad + '      <div class="review-subtext">' + subtext + '</div>',
+    pad + '      <div class="review-card-stars">' + stars + '</div>',
+    pad + '    </div>',
+    pad + '  </div>',
+    pad + '  <p class="review-text">&ldquo;' + escapeHtml(review.text) + '&rdquo;</p>',
+    pad + '</div>'
+  ];
+}
+
+// Seller-only reviews section for sell landing pages — injected between
+// SELLER_REVIEWS_START/_END markers directly above the "Send us your
+// details" heading. Renders every review carrying type "seller" (data
+// order, newest first) in the homepage card format, and renders nothing
+// when no seller reviews exist, so the section appears and disappears
+// with the data — adding a seller review to js/reviews-data.js threads
+// it onto every sell landing page on the next build (§8.4).
+function generateSellerReviewsHTML(reviews) {
+  var sellers = reviews.filter(function (r) { return r.type === 'seller'; });
+  if (!sellers.length) return '';
+
+  var lines = [
+    '      <section class="seller-reviews">',
+    '        <div class="reviews-inner">',
+    '          <h2 class="section-label">What Sellers Say</h2>',
+    '          <div class="reviews-grid">'
+  ];
+  sellers.forEach(function (r) {
+    lines.push.apply(lines, reviewCardLines(r, '            '));
+  });
+  lines.push(
+    '          </div>',
+    '        </div>',
+    '      </section>'
+  );
+  return lines.join('\n');
 }
 
 
@@ -1289,6 +1325,11 @@ function injectAllPartials(html) {
     }).join('; ');
     return '          <p><strong>Available from ' + escapeHtml(attrs.brand) + ' in Edmonton right now:</strong> ' + links + '.</p>';
   });
+  // Sell-landing seller reviews: every review typed "seller" in
+  // js/reviews-data.js renders in the homepage card format directly above
+  // the "Send us your details" heading — the last thing read before the
+  // ask. Empty when no seller reviews exist.
+  html = injectPartial(html, 'SELLER_REVIEWS', function () { return generateSellerReviewsHTML(reviews); });
   // Config-driven inline fragments (homepage sr-only entity block, sold-page
   // tagline): the canonical §2.1-ordered brand list and the sold count render
   // from config/site.js so the pages can never drift from it.
