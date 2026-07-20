@@ -459,6 +459,7 @@ function generateReviewsHTML(reviews, aggregate) {
       stars += '<span class="review-star' + (i <= review.rating ? ' filled' : '') + '">&#9733;</span>';
     }
     var initial = review.name.charAt(0).toUpperCase();
+    var subtext = review.type === 'seller' ? 'Sold To Us' : 'Bought From Us';
 
     lines.push(
       '            <div class="review-card">',
@@ -466,6 +467,7 @@ function generateReviewsHTML(reviews, aggregate) {
       '                <div class="review-avatar">' + initial + '</div>',
       '                <div class="review-header-info">',
       '                  <div class="review-author">' + escapeHtml(review.name) + '</div>',
+      '                  <div class="review-subtext">' + subtext + '</div>',
       '                  <div class="review-card-stars">' + stars + '</div>',
       '                </div>',
       '              </div>',

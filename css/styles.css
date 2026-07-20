@@ -1126,6 +1126,13 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   letter-spacing: 0.01em;
 }
 
+.review-subtext {
+  font-size: 0.72rem;
+  color: var(--color-text-secondary);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
 .review-card-stars {
   display: flex;
   gap: 2px;

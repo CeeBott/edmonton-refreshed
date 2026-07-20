@@ -3,6 +3,9 @@
 //
 //  "rating" is out of 5.
 //  "text" is optional — omit for ratings-only entries.
+//  "type" is "buyer" (bought from us) or "seller" (sold to us);
+//  it renders as subtext under the reviewer's name. Missing
+//  type defaults to buyer.
 //  Aggregate stats at the bottom drive the summary bar.
 //
 //  To add a new review: copy a block and fill in the values.
@@ -10,56 +13,71 @@
 
 var reviews = [
   {
+    name: "Michelle Ranger",
+    rating: 5,
+    type: "seller",
+    text: "Collin purchased some furniture from me. I was fully satisfied with every interaction. He kept me informed of his exact arrival time and the amount he would offer for my items. The whole process was straightforward and took very little time and effort on my part. There were no surprises and I would do business with him again in the future based on my experience today."
+  },
+  {
     name: "Janet Spriggs",
     rating: 5,
+    type: "buyer",
     text: "My husband and I purchased a couch from Collin with Edmonton Refreshed Seating. We were absolutely impressed with the quality of the piece but more impressed with Collin’s professionalism. He was a pleasure to deal with and made sure our transaction went completely smooth. DO NOT hesitate to deal with him. You won’t be disappointed!"
   },
   {
     name: "Dave Schmidt",
     rating: 5,
+    type: "buyer",
     text: "Collin is the owner of the company and he is a joy to work with. He communicates well, he is incredibly helpful, and made himself readily available for the purchase of the furniture."
   },
   {
     name: "Sharon",
     rating: 5,
+    type: "buyer",
     text: "Quality sofa! Collin was great to work with!"
   },
   {
     name: "Leila",
     rating: 4,
+    type: "buyer",
     text: "Detailed listing, pointed out benefits as well as flaws. Excellent knowledge of the product. Great customer service — delivered my sofa next day in extremely cold weather, which I did not expect. Highly recommended. I would definitely buy from Collin again."
   },
   {
     name: "Debbie",
     rating: 5,
+    type: "buyer",
     text: "Collin was an absolute pleasure to deal with in every aspect! He was very responsive, knowledgeable about the product, answered all my questions and the item was exactly as described. Also priced very fairly. I would highly recommend Collin!"
   },
   {
     name: "Barbara",
     rating: 5,
+    type: "buyer",
     text: "This was a great shopping experience. The quality of the furniture was excellent. Service was above and beyond."
   },
   {
     name: "Andrea",
     rating: 5,
+    type: "buyer",
     text: "Very happy with my purchase. He really went above and beyond with delivery. Thank you Collin!"
   },
   {
     name: "CN",
     rating: 5,
+    type: "buyer",
     text: "Accurate description, fair pricing, pleasant and easy to deal with. Great seller!"
   },
   {
     name: "Fiona",
     rating: 5,
+    type: "buyer",
     text: "Friendly, very communicative, easy to deal with."
   }
 ];
 
 // ── Aggregate (includes written + ratings-only) ──────────────
 var reviewAggregate = {
-  totalCount: 19,
-  ratingValue: 4.9    // (18 × 5 + 1 × 4) / 19 = 4.9474 → 4.9
+  totalCount: 20,
+  ratingValue: 4.9    // (19 × 5 + 1 × 4) / 20 = 4.95 → 4.9 (rounded down — never overstate)
 };
 
 
@@ -96,12 +114,14 @@ function renderReviews() {
     }
 
     var initial = review.name.charAt(0).toUpperCase();
+    var subtext = review.type === 'seller' ? 'Sold To Us' : 'Bought From Us';
 
     return '<div class="review-card">' +
       '<div class="review-card-header">' +
         '<div class="review-avatar">' + initial + '</div>' +
         '<div class="review-header-info">' +
           '<div class="review-author">' + review.name + '</div>' +
+          '<div class="review-subtext">' + subtext + '</div>' +
           '<div class="review-card-stars">' + cardStars + '</div>' +
         '</div>' +
       '</div>' +
