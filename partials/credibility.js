@@ -20,7 +20,7 @@ function renderCredibility(variant) {
       '    <span class="credibility-sep">|</span>',
       `    <span>&#9733; ${site.rating} Rating</span>`,
       '    <span class="credibility-sep">|</span>',
-      `    <span>Proudly ${site.cityName} Owned &amp; Operated</span>`,
+      `    <span>Proudly <a href="/about/">${site.cityName} Owned &amp; Operated</a></span>`,
       '    <span class="credibility-sep">|</span>',
       `    <span>${site.offerRange}</span>`,
       '  </div>',
@@ -35,7 +35,7 @@ function renderCredibility(variant) {
       '    <span class="credibility-sep">|</span>',
       `    <span>&#9733; ${site.rating} Rating</span>`,
       '    <span class="credibility-sep">|</span>',
-      `    <span>Proudly ${site.cityName} Owned &amp; Operated</span>`,
+      `    <span>Proudly <a href="/about/">${site.cityName} Owned &amp; Operated</a></span>`,
       '  </div>',
     ].join('\n');
   }
@@ -53,7 +53,7 @@ function renderCredibility(variant) {
     '    <span class="credibility-sep">|</span>',
     `    <span>&#9733; ${site.rating} Rating</span>`,
     '    <span class="credibility-sep">|</span>',
-    `    <span>${site.cityName} Owned &amp; Operated</span>`,
+    `    <span><a href="/about/">${site.cityName} Owned &amp; Operated</a></span>`,
     '  </div>',
   ].join('\n');
 }

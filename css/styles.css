@@ -368,6 +368,15 @@ body {
   opacity: 0.35;
   font-size: 0.6rem;
 }
+/* "Edmonton Owned & Operated" → About; reads as plain text until hovered */
+.credibility-strip a {
+  color: inherit;
+  text-decoration: none;
+}
+.credibility-strip a:hover,
+.credibility-strip a:focus-visible {
+  text-decoration: underline;
+}
 
 /* ── Main Content ── */
 main { padding-top: 0; }
