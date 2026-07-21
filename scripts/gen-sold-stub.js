@@ -34,6 +34,24 @@ var TEMPLATE = path.join(ROOT, 'listings', 'la-z-boy-emric-right-facing-sectiona
 // availability: "SoldOut" (recommended) — accurate for one-of-one pieces and
 // matches the visible "This piece has sold." overlay (see CLAUDE.md §6.3, §10.1).
 var MANIFEST = {
+  'crate-and-barrel-lounge-83-bench-sofa-edmonton': {
+    sku: 'CB-046-47',
+    price: '1600',
+    availability: 'SoldOut',
+    brand: 'Crate & Barrel',
+    brandShort: 'Crate & Barrel',
+    h1: 'Lounge 83-Inch Bench Sofa — Taft Steel Everweave',
+    model: 'Lounge',
+    configuration: 'sofa',
+    sellHref: '/sell/crate-and-barrel/',
+    altBase: 'Crate & Barrel Lounge 83-Inch Bench Sofa',
+    metaDescription: 'This Crate &amp; Barrel Lounge 83-inch bench sofa in Taft Steel has sold. Browse current available inventory at Edmonton Refreshed — curated pre-owned sofas and sectionals in Edmonton.',
+    twitterDescription: 'This Crate &amp; Barrel Lounge bench sofa has sold. Browse current available inventory at Edmonton Refreshed.',
+    productDescription: 'Crate & Barrel Lounge sofa in the 83-inch bench-cushion configuration, upholstered in Taft Steel Everweave — a two-toned grey performance weave — over slim track arms, with one continuous 73-inch bench seat. Benchmade in the USA on an FSC-certified kiln-dried hardwood frame with a spring-up Flexolator foundation, 83 inches wide, 41 deep, and 37 tall. A matched pair, picked up in the Riverside area of St. Albert and label-dated May 2024, sold individually in like-new condition. This piece has sold; browse current available inventory at Edmonton Refreshed.',
+    introHTML: 'The Crate &amp; Barrel Lounge is the brand&rsquo;s bestselling sofa, and this was a matched pair &mdash; two identical 83-inch bench-cushion Lounges in Taft Steel, a two-toned grey Everweave performance fabric, sold individually. Slim track arms keep the profile light, and the single bench cushion gives one continuous 73-inch seat with no centre gap. Benchmade in the USA on an FSC-certified kiln-dried hardwood frame with a spring-up Flexolator foundation, it measures 83 inches wide, 41 deep, and 37 tall. We picked the pair up in the Riverside area of St. Albert; label-dated May 2024, both came to us in like-new condition.',
+    newsletterHeading: 'Looking for a sofa like the Crate &amp; Barrel Lounge? Enter your email and we&rsquo;ll let you know when similar pieces come in.',
+  },
+
   'la-z-boy-roundabout-ottoman-edmonton': {
     sku: 'LB-042',
     price: '300',
