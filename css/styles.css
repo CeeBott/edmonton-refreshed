@@ -1612,14 +1612,16 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   /* On mobile, always show carousel arrows */
   .carousel .carousel-btn { opacity: 1; }
 
-  /* Credibility strip — allow wrap, keep readable */
+  /* Credibility strip — allow wrap, keep readable. The strip wraps to 2+ lines
+     on mobile, so the literal "|" separators are hidden (a wrapped separator
+     dangles at the line edge); the row/column gap carries separation instead. */
   .credibility-strip {
     font-size: 0.75rem;
     padding: 8px var(--page-x);
-    gap: 10px;
+    gap: 7px 16px;
     flex-wrap: wrap;
   }
-  .credibility-strip .credibility-sep { font-size: 0.55rem; }
+  .credibility-strip .credibility-sep { display: none; }
 
   /* Newsletter — stack on narrow screens. Mobile keeps generous vertical
      rhythm so the block reads as a distinct moment between sections. */
