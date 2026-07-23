@@ -2,9 +2,13 @@ name = "edmonton-refreshed-sell"
 main = "index.js"
 compatibility_date = "2026-05-04"
 
-# Set these to match your setup. RESEND_API_KEY is set as a secret, not here.
-# Run: wrangler secret put RESEND_API_KEY
+# Set these to match your setup. Secrets are NOT set here — run:
+#   wrangler secret put RESEND_API_KEY        (sell-form email + viewing fallback)
+#   wrangler secret put TELEGRAM_BOT_TOKEN     (instant viewing-request ping)
+# TELEGRAM_CHAT_ID is an identifier (not a credential), so it lives here as a var.
+# Set it to the chat/DM id the bot should message (see the setup note below), e.g. "123456789".
 [vars]
 TO_EMAIL = "info@edmontonrefreshed.com"
 FROM_EMAIL = "Edmonton Refreshed <forms@edmontonrefreshed.com>"
 ALLOWED_ORIGIN = "https://edmontonrefreshed.com,https://www.edmontonrefreshed.com"
+TELEGRAM_CHAT_ID = ""

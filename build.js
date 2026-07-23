@@ -190,7 +190,7 @@ function buildAssets() {
   fs.writeFileSync(cssMinPath, cssMin, 'utf8');
   versions['css/styles.min.css'] = shortHash(cssMin);
 
-  var jsFiles = ['shared.js', 'available-data.js', 'sold-data.js', 'reviews-data.js', 'sell-form.js'];
+  var jsFiles = ['shared.js', 'available-data.js', 'sold-data.js', 'reviews-data.js', 'sell-form.js', 'viewing-form.js'];
   jsFiles.forEach(function(file) {
     var srcPath = path.join(ROOT, 'js', file);
     if (!fs.existsSync(srcPath)) return;
@@ -657,6 +657,7 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions) {
   assetVersions = assetVersions || {};
   var cssV    = assetVersions['css/styles.min.css'] || '';
   var sharedV = assetVersions['js/shared.min.js']   || '';
+  var viewingV = assetVersions['js/viewing-form.min.js'] || '';
   var BASE_URL       = 'https://edmontonrefreshed.com/';
   var listingUrl     = BASE_URL + 'listings/' + slug + '/';
   var priceValidUntil = todayPlusDays(90);
@@ -1118,7 +1119,7 @@ renderCredibility('listing') + '\n' +
 '            </div>\n' +
 '            <div class="listing-price">' + formatPrice(item.price) + ' <span class="listing-price-currency">CAD</span></div>\n' +
 '            <div class="listing-ctas">\n' +
-'              <a class="listing-cta" href="sms:7809651477">Text to Book a Viewing &rarr;</a>\n' +
+'              <a class="listing-cta" href="#request-viewing">Request a Viewing &rarr;</a>\n' +
 '              <a class="listing-cta listing-cta--secondary" href="tel:7809651477">Call 780-965-1477</a>\n' +
 '            </div>\n' +
 '            <div class="listing-specs">' + specsHTML + '</div>\n' +
@@ -1132,13 +1133,45 @@ renderCredibility('listing') + '\n' +
 '          </div>\n' +
 '        </div>\n' +
 '      </div>\n' +
+'\n' +
+'      <!-- Request a viewing — buyer inquiry that pings Collin instantly\n' +
+'           (Telegram, via the Worker). Universal across devices, unlike the\n' +
+'           old sms: CTA which was a no-op on desktop. See js/viewing-form.js. -->\n' +
+'      <section class="listing-viewing" id="request-viewing">\n' +
+'        <h2 class="section-label">Request a Viewing</h2>\n' +
+'        <p class="listing-viewing-lead">Leave your name and number and we&rsquo;ll text you right back to set up a time to see the ' + escapeHtml(item.brand) + '. No account, no waiting on email &mdash; just a quick reply.</p>\n' +
+'        <form class="viewing-form" id="viewing-form" novalidate>\n' +
+'          <input type="hidden" name="Piece" value="' + escapeHtml(item.brand + ' ' + item.title) + '">\n' +
+'          <input type="hidden" name="_form" value="viewing">\n' +
+'          <input type="hidden" name="Source page" value="">\n' +
+'          <label class="viewing-honey" aria-hidden="true">Leave this box unchecked<input type="checkbox" name="_honey" tabindex="-1" autocomplete="off"></label>\n' +
+'          <div class="viewing-row">\n' +
+'            <div class="viewing-field">\n' +
+'              <label for="vf-name">Your name</label>\n' +
+'              <input type="text" id="vf-name" name="Name" autocomplete="name" required>\n' +
+'            </div>\n' +
+'            <div class="viewing-field">\n' +
+'              <label for="vf-phone">Phone number</label>\n' +
+'              <input type="tel" id="vf-phone" name="Phone" autocomplete="tel" inputmode="tel" required>\n' +
+'            </div>\n' +
+'          </div>\n' +
+'          <div class="viewing-field">\n' +
+'            <label for="vf-message">Anything to add? <span class="viewing-optional">(optional)</span></label>\n' +
+'            <textarea id="vf-message" name="Message" rows="3"></textarea>\n' +
+'          </div>\n' +
+'          <button type="submit" class="viewing-submit">Request a Viewing &rarr;</button>\n' +
+'          <p class="viewing-alt">Prefer to reach out yourself? <a href="sms:7809651477">Text</a> or <a href="tel:7809651477">call 780-965-1477</a>.</p>\n' +
+'          <p class="viewing-error" role="alert" hidden></p>\n' +
+'        </form>\n' +
+'        <p class="viewing-success" id="viewing-success" role="status" hidden>Got it &mdash; we&rsquo;ll text you shortly to set up a time. Thanks!</p>\n' +
+'      </section>\n' +
 faqVisibleBlock +
 '\n' +
 '      <!-- Sticky CTA (mobile only): floats while reading, parks here once the\n' +
 '           FAQ is reached so it never covers the related links, newsletter, or footer. -->\n' +
 '      <div class="listing-sticky-sentinel" aria-hidden="true"></div>\n' +
 '      <div class="listing-sticky-cta">\n' +
-'        <a href="sms:7809651477" class="sticky-cta-primary">Book a Viewing</a>\n' +
+'        <a href="#request-viewing" class="sticky-cta-primary">Request a Viewing</a>\n' +
 '      </div>\n' +
 '\n' +
 relatedHTML +
@@ -1172,6 +1205,7 @@ renderFooter() + '\n' +
 '  </div>\n' +
 '\n' +
 '  <script src="../../js/shared.min.js?v=' + sharedV + '"></script>\n' +
+'  <script src="../../js/viewing-form.min.js?v=' + viewingV + '"></script>\n' +
 '  <script>\n' +
 '  (function() {\n' +
 '    var thumbs = document.querySelectorAll(".listing-thumb:not(.listing-thumb-more)");\n' +

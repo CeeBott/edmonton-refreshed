@@ -3389,6 +3389,121 @@ footer a:focus-visible {
   cursor: not-allowed;
   transform: none;
 }
+
+/* ── Listing "Request a Viewing" form ──
+   Buyer inquiry on every listing; shares the sell-form visual language and
+   pings Collin instantly (Telegram, via the Worker). See js/viewing-form.js. */
+.listing-viewing {
+  max-width: var(--col-narrow);
+  margin: 48px auto;
+  scroll-margin-top: calc(var(--nav-height) + 16px);
+}
+.listing-viewing .section-label { text-align: center; margin-bottom: 8px; }
+.listing-viewing-lead {
+  text-align: center;
+  font-size: 0.92rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin: 0 auto 20px;
+  max-width: 46ch;
+}
+.viewing-form {
+  padding: 24px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.viewing-form[hidden] { display: none; }
+.viewing-honey {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+/* Fields wrap to a single column on narrow screens via flex-basis — no media
+   query needed (two 180px fields can't both fit inside the ~327px mobile form). */
+.viewing-row { display: flex; flex-wrap: wrap; gap: 14px; }
+.viewing-row .viewing-field { flex: 1 1 180px; }
+.viewing-field { display: flex; flex-direction: column; gap: 6px; }
+.viewing-field label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-text);
+  letter-spacing: 0.01em;
+}
+.viewing-optional {
+  font-weight: 400;
+  color: var(--color-text-secondary);
+  font-size: 0.78rem;
+}
+.viewing-field input[type="text"],
+.viewing-field input[type="tel"],
+.viewing-field textarea {
+  width: 100%;
+  padding: 11px 12px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+  box-sizing: border-box;
+}
+.viewing-field input:focus,
+.viewing-field textarea:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(44,44,44,0.08);
+}
+.viewing-field textarea { resize: vertical; min-height: 72px; line-height: 1.5; }
+.viewing-submit {
+  margin-top: 4px;
+  padding: 14px 24px;
+  background: var(--color-accent);
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 150ms ease, transform 150ms ease;
+}
+.viewing-submit:hover { background: var(--color-accent-hover); transform: translateY(-1px); }
+.viewing-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+.viewing-alt {
+  font-size: 0.82rem;
+  color: var(--color-text-secondary);
+  text-align: center;
+  margin: 2px 0 0;
+}
+.viewing-alt a { color: var(--color-text); text-decoration: underline; }
+.viewing-error {
+  font-size: 0.85rem;
+  color: var(--color-sold-badge);
+  margin: 4px 0 0;
+  font-weight: 500;
+}
+.viewing-error[hidden] { display: none; }
+.viewing-success {
+  text-align: center;
+  font-size: 0.95rem;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin: 0;
+}
+.viewing-success[hidden] { display: none; }
+
 .sell-form-disclaimer {
   font-size: 0.78rem;
   color: var(--color-text-secondary);

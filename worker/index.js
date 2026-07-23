@@ -74,6 +74,14 @@ export default {
       return json({ ok: true }, 200, cors);
     }
 
+    // Buyer viewing-request path (listing pages) — a small, photo-less inquiry
+    // tagged `_form=viewing`. It pings Collin instantly via Telegram instead of
+    // the sell-lead email path below. The sell form never sends `_form`, so it
+    // falls straight through to the existing logic. See handleViewingRequest.
+    if ((formData.get('_form') || '').toString() === 'viewing') {
+      return handleViewingRequest(formData, env, cors);
+    }
+
     for (const field of REQUIRED_FIELDS) {
       if (!(formData.get(field) || '').toString().trim()) {
         return json({ error: `Missing required field: ${field}` }, 400, cors);
@@ -152,6 +160,81 @@ export default {
     return json({ ok: true }, 200, cors);
   },
 };
+
+// Buyer "request a viewing" inquiry from a listing page. Delivers an instant
+// Telegram ping (primary) so Collin sees it immediately; if Telegram is
+// unconfigured or down, falls back to a Resend email so no lead is ever lost.
+//
+// Env:
+//   TELEGRAM_BOT_TOKEN — secret, `wrangler secret put TELEGRAM_BOT_TOKEN`
+//   TELEGRAM_CHAT_ID   — the chat/DM id to send to (a [vars] entry is fine —
+//                        it's an identifier, not a credential)
+// Reuses RESEND_API_KEY / TO_EMAIL / FROM_EMAIL for the fallback.
+async function handleViewingRequest(formData, env, cors) {
+  const get = (k) => (formData.get(k) || '').toString().trim();
+  const name = get('Name');
+  const phone = get('Phone');
+  const piece = get('Piece');
+  const message = get('Message');
+  const sourcePage = get('Source page') || '(unknown)';
+
+  if (!name || !phone) {
+    return json({ error: 'Please include your name and phone number.' }, 400, cors);
+  }
+
+  const text =
+    '🛋️ New viewing request\n\n' +
+    'Piece: ' + (piece || '(unspecified)') + '\n' +
+    'Name: ' + name + '\n' +
+    'Phone: ' + phone + '\n' +
+    (message ? 'Message: ' + message + '\n' : '') +
+    'Page: ' + sourcePage;
+
+  // Primary — instant Telegram ping.
+  const token = env.TELEGRAM_BOT_TOKEN;
+  const chatId = env.TELEGRAM_CHAT_ID;
+  if (token && chatId) {
+    try {
+      const tg = await fetch('https://api.telegram.org/bot' + token + '/sendMessage', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: chatId, text, disable_web_page_preview: true }),
+      });
+      if (tg.ok) return json({ ok: true }, 200, cors);
+      console.error('Telegram error', tg.status, await tg.text());
+    } catch (err) {
+      console.error('Telegram fetch failed', err);
+    }
+  } else {
+    console.error('Telegram not configured (TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID missing)');
+  }
+
+  // Fallback — email via Resend so a lead is never lost if Telegram fails.
+  if (env.RESEND_API_KEY && env.TO_EMAIL && env.FROM_EMAIL) {
+    try {
+      const payload = {
+        from: env.FROM_EMAIL,
+        to: env.TO_EMAIL,
+        subject: 'Viewing request — ' + (piece || 'a piece') + ' — ' + name,
+        text,
+      };
+      if (looksLikeEmail(phone)) payload.reply_to = phone;
+      const r = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (r.ok) return json({ ok: true }, 200, cors);
+      console.error('Resend fallback error', r.status, await r.text());
+    } catch (err) {
+      console.error('Resend fallback failed', err);
+    }
+  }
+
+  return json({
+    error: 'We could not send your request right now. Please text us at 780-965-1477.',
+  }, 502, cors);
+}
 
 function json(data, status, cors) {
   return new Response(JSON.stringify(data), {
