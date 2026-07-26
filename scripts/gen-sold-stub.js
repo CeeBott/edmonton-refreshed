@@ -36,7 +36,6 @@ var TEMPLATE = path.join(ROOT, 'listings', 'la-z-boy-emric-right-facing-sectiona
 var MANIFEST = {
   'crate-and-barrel-lounge-83-bench-sofa-edmonton': {
     sku: 'CB-046-47',
-    price: '1600',
     availability: 'SoldOut',
     brand: 'Crate & Barrel',
     brandShort: 'Crate & Barrel',
@@ -54,7 +53,6 @@ var MANIFEST = {
 
   'la-z-boy-roundabout-ottoman-edmonton': {
     sku: 'LB-042',
-    price: '300',
     availability: 'SoldOut',
     brand: 'La-Z-Boy',
     brandShort: 'La-Z-Boy',
@@ -72,7 +70,6 @@ var MANIFEST = {
 
   'pottery-barn-turner-square-arm-sofa-edmonton': {
     sku: 'PB-045',
-    price: '3000',
     availability: 'SoldOut',
     brand: 'Pottery Barn',
     brandShort: 'Pottery Barn',
@@ -90,7 +87,6 @@ var MANIFEST = {
 
   'natuzzi-editions-vigore-leather-sectional': {
     sku: 'NE-040',
-    price: '2199',
     availability: 'SoldOut',
     brand: 'Natuzzi Editions',
     brandShort: 'Natuzzi',
@@ -108,7 +104,6 @@ var MANIFEST = {
 
   'natuzzi-editions-saggezza-leather-loveseat': {
     sku: 'NE-039',
-    price: '699',
     availability: 'SoldOut',
     brand: 'Natuzzi Editions',
     brandShort: 'Natuzzi',
@@ -126,7 +121,6 @@ var MANIFEST = {
 
   'natuzzi-editions-saggezza-leather-sofa': {
     sku: 'NE-038',
-    price: '899',
     availability: 'SoldOut',
     brand: 'Natuzzi Editions',
     brandShort: 'Natuzzi',
@@ -144,7 +138,6 @@ var MANIFEST = {
 
   'la-z-boy-emric-right-facing-sectional': {
     sku: 'LB-041',
-    price: '2199',
     availability: 'SoldOut',
     brand: 'La-Z-Boy',
     brandShort: 'La-Z-Boy',
@@ -162,7 +155,6 @@ var MANIFEST = {
 
   'rove-concepts-milo-6-piece-modular-sectional': {
     sku: 'RC-043',
-    price: '3900',
     availability: 'SoldOut',
     brand: 'Rove Concepts',
     brandShort: 'Rove Concepts',
@@ -180,7 +172,6 @@ var MANIFEST = {
 
   'crate-and-barrel-rochelle-sofa-chair-set': {
     sku: 'CB-037',
-    price: '1199',
     availability: 'SoldOut',
     brand: 'Crate & Barrel',
     brandShort: 'Crate & Barrel',
@@ -198,7 +189,6 @@ var MANIFEST = {
 
   'brentwood-classics-dorado-leather-sofa': {
     sku: 'BC-036',
-    price: '2199',
     availability: 'SoldOut',
     brand: 'Brentwood Classics',
     brandShort: 'Brentwood Classics',
@@ -216,7 +206,6 @@ var MANIFEST = {
 
   'natuzzi-editions-saggezza-grey-leather-sectional': {
     sku: 'NE-034',
-    price: '2600',
     availability: 'SoldOut',
     brand: 'Natuzzi Editions',
     brandShort: 'Natuzzi',
@@ -234,7 +223,6 @@ var MANIFEST = {
 
   'rove-concepts-milo-4-piece-modular-sectional': {
     sku: 'RC-033',
-    price: '1699',
     availability: 'SoldOut',
     brand: 'Rove Concepts',
     brandShort: 'Rove Concepts',
@@ -252,7 +240,6 @@ var MANIFEST = {
 
   'american-leather-tuscany-leather-sofa': {
     sku: 'AL-032',
-    price: '899',
     availability: 'SoldOut',
     brand: 'American Leather',
     brandShort: 'American Leather',
@@ -270,7 +257,6 @@ var MANIFEST = {
 
   'natuzzi-editions-cesare-leather-sectional': {
     sku: 'NE-031',
-    price: '1599',
     availability: 'SoldOut',
     brand: 'Natuzzi Editions',
     brandShort: 'Natuzzi',
@@ -288,7 +274,6 @@ var MANIFEST = {
 
   'natuzzi-editions-saggezza-brown-leather-sectional': {
     sku: 'NE-029',
-    price: '2750',
     availability: 'SoldOut',
     brand: 'Natuzzi Editions',
     brandShort: 'Natuzzi',
@@ -306,7 +291,6 @@ var MANIFEST = {
 
   'natuzzi-editions-indimenticabile-charcoal-leather-sofa': {
     sku: 'NE-028',
-    price: '1150',
     availability: 'SoldOut',
     brand: 'Natuzzi Editions',
     brandShort: 'Natuzzi',
@@ -324,7 +308,6 @@ var MANIFEST = {
 
   'natuzzi-editions-indimenticabile-light-grey-leather-sofa': {
     sku: 'NE-025',
-    price: '1325',
     availability: 'SoldOut',
     brand: 'Natuzzi Editions',
     brandShort: 'Natuzzi',
@@ -342,7 +325,6 @@ var MANIFEST = {
 
   'natuzzi-editions-sollievo-leather-sofa': {
     sku: 'NE-026',
-    price: '1150',
     availability: 'SoldOut',
     brand: 'Natuzzi Editions',
     brandShort: 'Natuzzi',
@@ -360,7 +342,6 @@ var MANIFEST = {
 
   'fabbrica-charcoal-fabric-sectional': {
     sku: 'FS-022',
-    price: '1099',
     availability: 'SoldOut',
     brand: 'Fabbrica',
     brandShort: 'Fabbrica',
@@ -378,7 +359,6 @@ var MANIFEST = {
 
   'crate-and-barrel-gather-sofa': {
     sku: 'CB-021',
-    price: '2799',
     availability: 'SoldOut',
     brand: 'Crate & Barrel',
     brandShort: 'Crate & Barrel',
@@ -396,7 +376,6 @@ var MANIFEST = {
 
   'natuzzi-italia-aniline-leather-loveseat-set': {
     sku: 'NI-006',
-    price: '999',
     availability: 'SoldOut',
     brand: 'Natuzzi Italia',
     brandShort: 'Natuzzi',
@@ -414,7 +393,6 @@ var MANIFEST = {
 
   'urban-barn-preston-leather-sofa-set': {
     sku: 'UB-019',
-    price: '1550',
     availability: 'SoldOut',
     brand: 'Urban Barn',
     brandShort: 'Urban Barn',
@@ -432,7 +410,6 @@ var MANIFEST = {
 
   'eq3-remi-leather-sofa': {
     sku: 'EQ-017',
-    price: '1200',
     availability: 'SoldOut',
     brand: 'EQ3',
     brandShort: 'EQ3',
@@ -450,7 +427,6 @@ var MANIFEST = {
 
   'urban-barn-karis-fabric-sofa': {
     sku: 'UB-015',
-    price: '1300',
     availability: 'SoldOut',
     brand: 'Urban Barn',
     brandShort: 'Urban Barn',
@@ -468,7 +444,6 @@ var MANIFEST = {
 
   'urban-barn-renfrew-leather-sofa': {
     sku: 'UB-014',
-    price: '1400',
     availability: 'SoldOut',
     brand: 'Urban Barn',
     brandShort: 'Urban Barn',
@@ -486,7 +461,6 @@ var MANIFEST = {
 
   'eq3-replay-sofa': {
     sku: 'EQ-013',
-    price: '999',
     availability: 'SoldOut',
     brand: 'EQ3',
     brandShort: 'EQ3',
@@ -1021,7 +995,7 @@ function generate(slug, m, soldItems, template, chrome) {
   var outDir = path.join(ROOT, 'listings', slug);
   fs.mkdirSync(outDir, { recursive: true });
   fs.writeFileSync(path.join(outDir, 'index.html'), html);
-  console.log('  wrote listings/' + slug + '/index.html  (' + bases.length + ' photos, ' + m.availability + ', $' + m.price + ')');
+  console.log('  wrote listings/' + slug + '/index.html  (' + bases.length + ' photos, ' + m.availability + ')');
 }
 
 function main() {
