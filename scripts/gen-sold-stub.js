@@ -503,6 +503,37 @@ function imageBase(p) {
 function relUrl(baseNoExt, suffix) { return '../../' + encodeURI(baseNoExt + suffix); }
 function absUrl(baseNoExt, suffix) { return BASE_URL + encodeURI(baseNoExt + suffix); }
 
+// Minimal image-dimension reader (PNG IHDR + JPEG SOF markers) so OG/Twitter
+// tags can declare accurate og:image:width/height/type without an image
+// library (CLAUDE.md §5.5). Returns {} when the file is missing or an
+// unhandled format, in which case the caller omits the width/height tags.
+// Mirrors `imageSize()` in build.js — build.js is a build script that runs on
+// require and exports nothing, so the helper is duplicated rather than shared.
+// Keep the two in sync (pure header parsing; it should never need to change).
+function imageSize(absPath) {
+  if (!absPath || !fs.existsSync(absPath)) return {};
+  var b = fs.readFileSync(absPath);
+  if (b.length >= 24 && b.toString('hex', 0, 8) === '89504e470d0a1a0a') {
+    return { w: b.readUInt32BE(16), h: b.readUInt32BE(20), type: 'image/png' };
+  }
+  if (b.length >= 4 && b[0] === 0xFF && b[1] === 0xD8) {
+    var i = 2;
+    while (i < b.length - 8) {
+      if (b[i] !== 0xFF) { i++; continue; }
+      var m = b[i + 1];
+      if ((m >= 0xC0 && m <= 0xC3) || (m >= 0xC5 && m <= 0xC7) ||
+          (m >= 0xC9 && m <= 0xCB) || (m >= 0xCD && m <= 0xCF)) {
+        return { h: b.readUInt16BE(i + 5), w: b.readUInt16BE(i + 7), type: 'image/jpeg' };
+      }
+      i += 2 + b.readUInt16BE(i + 2);
+    }
+  }
+  var ext = path.extname(absPath).toLowerCase();
+  if (ext === '.webp') return { type: 'image/webp' };
+  if (ext === '.svg')  return { type: 'image/svg+xml' };
+  return {};
+}
+
 // HTML-escape a plain-text manifest value (brand / h1 / fullName / altBase) for
 // HTML contexts. JSON-LD contexts keep the raw value — a literal "&" is valid
 // JSON, whereas "&amp;" there would corrupt the data (e.g. brand "Crate & Barrel").
@@ -643,6 +674,8 @@ function buildHead(m, bases, pageUrl) {
   var fullNameHtml = esc(fullName);   // HTML contexts; JSON-LD below keeps raw fullName
   var altHtml = esc(m.altBase);
   var coverAbs = absUrl(bases[0], '.jpeg');
+  // Accurate OG image dimensions read off the actual cover photo (§5.5).
+  var ogDims = imageSize(path.join(ROOT, bases[0] + '.jpeg'));
 
   // Title / description. With a retained active-listing snapshot (current
   // sold-stub standard, §6.3/§8.3) keep the original active title + description
@@ -679,6 +712,9 @@ function buildHead(m, bases, pageUrl) {
     '  <meta property="og:description" content="' + descContent + '">\n' +
     '  <meta property="og:site_name" content="Edmonton Refreshed Seating">\n' +
     '  <meta property="og:image" content="' + coverAbs + '">\n' +
+    (ogDims.w ? '  <meta property="og:image:width" content="' + ogDims.w + '">\n' : '') +
+    (ogDims.h ? '  <meta property="og:image:height" content="' + ogDims.h + '">\n' : '') +
+    '  <meta property="og:image:type" content="' + (ogDims.type || 'image/jpeg') + '">\n' +
     '  <meta property="og:image:alt" content="' + altHtml + ' — pre-owned furniture in Edmonton">\n\n' +
     '  <!-- Twitter / X -->\n' +
     '  <meta name="twitter:card" content="summary_large_image">\n' +
