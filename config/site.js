@@ -33,8 +33,13 @@ module.exports = {
   // Business stats — update sitewide by editing here
   piecesSold: '40+',
   piecesBought: '41+',
+  // rating drives the credibility strip only; the review count and the schema
+  // aggregateRating come from reviewAggregate in js/reviews-data.js, which
+  // build.js syncs into every schema block sitewide (§8.4). Keep this string
+  // equal to reviewAggregate.ratingValue — the build warns if they diverge.
+  // (A ratingCount field used to live here; it was read by nothing and became
+  // the stale figure the sell cluster was hand-authored from. Do not re-add.)
   rating: '4.9',
-  ratingCount: 18,
   offerRange: 'Most Offers $500–$2,500',
 
   // brandList — canonical ordered brand list for entity/AI surfaces (§2.1:

@@ -236,6 +236,24 @@ function injectFaviconVersions(html, versions) {
   return html;
 }
 
+// Sitewide aggregateRating sync. Every Organization / FurnitureStore /
+// LocalBusiness on the site advertises the same review aggregate, but those
+// blocks are hand-authored across 20+ pages — so adding a review used to mean
+// 20+ hand edits, and in practice they drifted silently (the whole sell cluster
+// sat at reviewCount 18 while the homepage read 20). reviewAggregate in
+// js/reviews-data.js is the single source (§8.4); this rewrites ratingValue and
+// reviewCount inside every aggregateRating object from it, the same way asset
+// hashes are rewritten. Anchored on the "aggregateRating" key, so per-review
+// "reviewRating" blocks are never touched. Idempotent.
+function injectAggregateRating(html, aggregate) {
+  if (!aggregate || typeof aggregate.totalCount !== 'number') return html;
+  return html.replace(/"aggregateRating"\s*:\s*\{[\s\S]*?\}/g, function(block) {
+    return block
+      .replace(/("ratingValue"\s*:\s*)[\d.]+/, '$1' + aggregate.ratingValue)
+      .replace(/("reviewCount"\s*:\s*)\d+/, '$1' + aggregate.totalCount);
+  });
+}
+
 // Ensure every page links the web manifest (Android "add to home screen" / PWA
 // identity + a structured app name/icons for search & AI). Inserted once after
 // the apple-touch-icon link; idempotent. Bare redirect stubs (no apple-touch
@@ -2191,12 +2209,16 @@ function relinkSoldCards(html) {
 
 var partialFiles = walkHtml(ROOT);
 var partialUpdated = 0;
+var aggregateSynced = 0;
 for (var pi = 0; pi < partialFiles.length; pi++) {
   var pPath = partialFiles[pi];
   var pOrig = fs.readFileSync(pPath, 'utf8');
   var pNext = injectAllPartials(pOrig);
   pNext = injectLandingSoldSchema(pNext, pPath);
   pNext = relinkSoldCards(pNext);
+  var pPreAggregate = pNext;
+  pNext = injectAggregateRating(pNext, reviewAggregate);
+  if (pNext !== pPreAggregate) aggregateSynced++;
   pNext = injectAssetVersions(pNext, assetVersions);
   pNext = injectFaviconVersions(pNext, assetVersions);
   pNext = injectManifestLink(pNext);
@@ -2461,6 +2483,15 @@ console.log('  sitemap.xml     — ' + sitemapStats.changed + ' URL(s) advanced;
 console.log('  merchant-feed   — ' + merchantFeedStats.items + ' product(s) in /merchant-feed.xml');
 console.log('  partials        — ' + partialUpdated + ' HTML files updated');
 console.log('  sold cards      — ' + soldCardRelinks + ' card link(s) point to sold stubs');
+
+// Review aggregate: one source (js/reviews-data.js) drives every schema block.
+// config/site.js#rating is a separate hand-set string powering the credibility
+// strip, so warn when the two disagree rather than silently showing two numbers.
+if (String(site.rating) !== String(reviewAggregate.ratingValue)) {
+  console.log('  aggregate WARN  — config.rating (' + site.rating + ') differs from reviewAggregate.ratingValue (' + reviewAggregate.ratingValue + '); credibility strip and schemas disagree');
+} else {
+  console.log('  aggregate       — ' + reviewAggregate.ratingValue + ' / ' + reviewAggregate.totalCount + ' ratings synced across all schemas (' + aggregateSynced + ' file(s) rewritten)');
+}
 
 // Entity-integrity report.
 if (ownerDangling) {
