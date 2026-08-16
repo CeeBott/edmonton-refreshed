@@ -13,6 +13,12 @@
 
 var reviews = [
   {
+    name: "Jadine",
+    rating: 5,
+    type: "buyer",
+    text: "Very happy with my purchase. Thank you"
+  },
+  {
     name: "Michelle Ranger",
     rating: 5,
     type: "seller",
@@ -76,8 +82,8 @@ var reviews = [
 
 // ── Aggregate (includes written + ratings-only) ──────────────
 var reviewAggregate = {
-  totalCount: 20,
-  ratingValue: 4.9    // (19 × 5 + 1 × 4) / 20 = 4.95 → 4.9 (rounded down — never overstate)
+  totalCount: 21,
+  ratingValue: 4.9    // (20 × 5 + 1 × 4) / 21 = 4.95 → 4.9 (rounded down — never overstate)
 };
 
 
