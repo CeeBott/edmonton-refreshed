@@ -207,6 +207,12 @@ body {
 
 .nav-contact a:hover { color: var(--color-text); }
 
+/* "Text" prefix on the nav contact link — signals SMS, not a call */
+.nav-contact-label {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
 /* Mobile nav */
 .nav-toggle {
   display: none;
