@@ -34,6 +34,7 @@ var ROOT = __dirname;
 var renderNav         = require('./partials/nav').renderNav;
 var renderFooter      = require('./partials/footer').renderFooter;
 var renderCredibility = require('./partials/credibility').renderCredibility;
+var renderSellPrelude = require('./partials/sell-prelude').renderSellPrelude;
 
 // ── FAQ source of truth (homepage / sell hub / about) ──
 var faqs = require('./config/faqs');
@@ -252,6 +253,21 @@ function injectAggregateRating(html, aggregate) {
       .replace(/("ratingValue"\s*:\s*)[\d.]+/, '$1' + aggregate.ratingValue)
       .replace(/("reviewCount"\s*:\s*)\d+/, '$1' + aggregate.totalCount);
   });
+}
+
+// Sell-form prelude + offer-expectation block (§5.13). Anchored, unmarked
+// rewrite — same class as the aggregateRating sync above: the copy lives once
+// in partials/sell-prelude.js and is stamped onto every page carrying a
+// .sell-form-prelude div (the sell hub + all 21 landing pages), so it can
+// never drift the way 22 hand-copied blocks would (§9.3). The optional
+// trailing .sell-form-offer group is swallowed by the match, which makes the
+// rewrite idempotent and self-healing if a page's copy is edited by hand.
+// Both panels are flat (no nested <div>) so the lazy </div> anchors hold.
+function injectSellPrelude(html) {
+  return html.replace(
+    /([ \t]*)<div class="sell-form-prelude">[\s\S]*?<\/div>(?:\s*<div class="sell-form-offer">[\s\S]*?<\/div>)?/g,
+    function (_m, indent) { return renderSellPrelude(indent); }
+  );
 }
 
 // Ensure every page links the web manifest (Android "add to home screen" / PWA
@@ -1382,6 +1398,8 @@ function injectAllPartials(html) {
   // the "Send us your details" heading — the last thing read before the
   // ask. Empty when no seller reviews exist.
   html = injectPartial(html, 'SELLER_REVIEWS', function () { return generateSellerReviewsHTML(reviews); });
+  // Sell-form prelude + "how our offers work" expectation block (§5.13).
+  html = injectSellPrelude(html);
   // Config-driven inline fragments (homepage sr-only entity block, sold-page
   // tagline): the canonical §2.1-ordered brand list and the sold count render
   // from config/site.js so the pages can never drift from it.

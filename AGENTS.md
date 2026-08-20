@@ -16,6 +16,7 @@ assuming.
 - `sitemap.xml`, `merchant-feed.xml`, `.build-state.json`, `css/*.min.css`, `js/*.min.js`
 - nav / credibility / footer blocks inside marker pairs on every page
 - `BRAND_LIST` / `SOLD_COUNT` / `AVAILABLE_FROM_BRAND` marker content and the sold- and available-inventory lists in `llms.txt`
+- the `.sell-form-prelude` / `.sell-form-offer` panels above every sell form (source: `partials/sell-prelude.js`)
 
 Edit instead: `js/*.js` (non-min), `css/styles.css`, `config/*.js`,
 `partials/*.js`, `build.js`, and hand-authored pages. Run `node build.js` after
@@ -23,7 +24,7 @@ any source change and commit the regenerated output.
 
 ## Layout
 - `config/`   — single-source data (site, taxonomy, FAQs)
-- `partials/` — nav / footer / credibility (injected at build)
+- `partials/` — nav / footer / credibility / sell-form prelude (injected at build)
 - `js/ css/`  — source + minified bundles
 - `images/XX-NNN/` — per-piece photos with responsive variants
 - `listings/[slug]/` — generated; `guides/`, `sell/`, `about/` — hand-authored

@@ -1669,6 +1669,7 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   .sell-checklist { padding: 22px 22px; }
   .sell-form { gap: 22px; }
   .sell-form-prelude { margin-bottom: 22px; }
+  .sell-form-offer { margin-bottom: 26px; }
   .sell-landing-hero { padding-bottom: 8px; }
   .sell-landing-sold-sub { margin-bottom: 24px; }
   .sell-landing-cluster-sub { margin-bottom: 20px; }
@@ -3860,8 +3861,40 @@ footer a:focus-visible {
   color: var(--color-text);
   line-height: 1.65;
 }
+/* Offer-expectation panel — sits directly beneath .sell-form-prelude and
+   above the form. Deliberately a shade more assertive than the prelude
+   (solid card, dark accent rule, small tracked label) because it has to be
+   read before the "What are you hoping to get?" field, but it stays a quiet
+   panel rather than a warning box. Copy is build-injected from
+   partials/sell-prelude.js. */
+.sell-form-offer {
+  max-width: var(--col-narrow);
+  margin: 0 auto 22px;
+  padding: 18px 22px;
+  background: #fff;
+  border: 1px solid #e4e1db;
+  border-left: 3px solid var(--color-accent);
+  border-radius: var(--radius);
+}
+.sell-form-offer-label {
+  margin: 0 0 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--color-text);
+}
+.sell-form-offer-body {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: var(--color-text-secondary);
+}
+
 @media (max-width: 640px) {
   .sell-form-prelude { margin-left: var(--page-x); margin-right: var(--page-x); padding: 16px 18px; font-size: 0.88rem; }
+  .sell-form-offer { margin-left: var(--page-x); margin-right: var(--page-x); padding: 16px 18px; }
+  .sell-form-offer-body { font-size: 0.88rem; }
 }
 
 /* Landing-page mid-CTA back to /sell/.
