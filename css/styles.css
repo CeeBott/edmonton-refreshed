@@ -208,11 +208,11 @@ body {
 .nav-contact a:hover { color: var(--color-text); }
 
 /* "Text" prefix on the nav contact link — signals SMS, not a call.
-   Renders in the same face, weight, and colour as the phone number beside
-   it so the pair reads as one label. */
+   Matches the phone number's face and weight so the pair reads as one
+   label; only the darker colour sets it apart. */
 .nav-contact-label {
   font-weight: inherit;
-  color: inherit;
+  color: var(--color-text);
 }
 
 /* Mobile nav */
