@@ -4,13 +4,13 @@
 //  Used on every active listing page. Posts a small buyer inquiry
 //  (Piece, Name, Phone, optional Message) to the same Cloudflare
 //  Worker endpoint as the sell form, tagged `_form=viewing` so the
-//  Worker routes it to the instant Telegram ping instead of the
-//  sell-lead email path.
+//  Worker routes it to the viewing-request email instead of the
+//  photo-bearing sell-lead path.
 //
 //  Why a form instead of the old `sms:` link: on desktop an `sms:`
 //  CTA is a silent no-op, so most desktop buyers could not reach us.
 //  This form works on every device, needs no app from the buyer, and
-//  pings Collin instantly with the buyer's number + which piece.
+//  emails Collin the buyer's number + which piece.
 //
 //  Spam defenses mirror the sell form (§5.11): a checkbox honeypot
 //  (`_honey`) and a page-load timing gate (`_elapsed_ms`), both

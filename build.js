@@ -1168,9 +1168,9 @@ renderCredibility('listing') + '\n' +
 '        </div>\n' +
 '      </div>\n' +
 '\n' +
-'      <!-- Request a viewing — buyer inquiry that pings Collin instantly\n' +
-'           (Telegram, via the Worker). Universal across devices, unlike the\n' +
-'           old sms: CTA which was a no-op on desktop. See js/viewing-form.js. -->\n' +
+'      <!-- Request a viewing — buyer inquiry emailed to Collin via the Worker.\n' +
+'           Universal across devices, unlike the old sms: CTA which was a\n' +
+'           no-op on desktop. See js/viewing-form.js. -->\n' +
 '      <section class="listing-viewing" id="request-viewing">\n' +
 '        <h2 class="section-label">Request a Viewing</h2>\n' +
 '        <p class="listing-viewing-lead">Leave your name and number and we&rsquo;ll text you right back to set up a time to see the ' + escapeHtml(item.brand) + '. No account, no waiting on email &mdash; just a quick reply.</p>\n' +
