@@ -909,20 +909,10 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions) {
     configHTML = '<details class="listing-collapsible"><summary class="listing-meta-label">Includes</summary><p class="listing-meta-text">' + escapeHtml(item.configuration) + '</p></details>';
   }
 
-  // Retail value pill — two-part badge generated from numeric retailEstimate +
-  // price. The "+" suffix is added when retailEstimateApprox is true.
-  //
-  // RETAIL_SUFFIX qualifies the Est. Retail figure: MSRP is quoted pre-tax and
-  // delivery is billed separately (every listing says so in its own copy), so
-  // the side-by-side comparison is only honest if the retail side says it too.
-  // Spelled out as "plus" rather than "+" on purpose — retailEstimateApprox
-  // already appends a "+" to the figure itself, and an approximate listing
-  // would otherwise render the unreadable "Est. Retail: $12,000+ + tax".
-  // The "Est." prefix is a hedge, and it is dropped when the figure is not a
-  // guess: retailVerified marks a current model still sold new by the brand
-  // whose exact CAD list price was read off the brand's own Canadian site.
-  // Anything discontinued, converted from USD, or inferred from a comparable
-  // model keeps "Est. Retail". Opt-in — omitting the field means "Est.".
+  // Retail value pill — two-part badge from numeric retailEstimate + price.
+  // retailEstimateApprox appends "+" to the figure, which is why RETAIL_SUFFIX
+  // spells out "plus" and never "+" (otherwise: "$12,000+ + tax").
+  // retailVerified drops the "Est." prefix. See CLAUDE.md §5.10.
   var RETAIL_SUFFIX = ' plus tax &amp; delivery';
   var retailHTML = '';
   if (item.retailEstimate) {
