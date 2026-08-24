@@ -911,11 +911,25 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions) {
 
   // Retail value pill — two-part badge generated from numeric retailEstimate +
   // price. The "+" suffix is added when retailEstimateApprox is true.
+  //
+  // RETAIL_SUFFIX qualifies the Est. Retail figure: MSRP is quoted pre-tax and
+  // delivery is billed separately (every listing says so in its own copy), so
+  // the side-by-side comparison is only honest if the retail side says it too.
+  // Spelled out as "plus" rather than "+" on purpose — retailEstimateApprox
+  // already appends a "+" to the figure itself, and an approximate listing
+  // would otherwise render the unreadable "Est. Retail: $12,000+ + tax".
+  // The "Est." prefix is a hedge, and it is dropped when the figure is not a
+  // guess: retailVerified marks a current model still sold new by the brand
+  // whose exact CAD list price was read off the brand's own Canadian site.
+  // Anything discontinued, converted from USD, or inferred from a comparable
+  // model keeps "Est. Retail". Opt-in — omitting the field means "Est.".
+  var RETAIL_SUFFIX = ' plus tax &amp; delivery';
   var retailHTML = '';
   if (item.retailEstimate) {
     var retailLabel = formatPrice(item.retailEstimate) + (item.retailEstimateApprox ? '+' : '');
+    var retailPrefix = item.retailVerified ? 'Retail: ' : 'Est. Retail: ';
     retailHTML = '<div class="listing-value-pill">' +
-      '<span class="pill-retail">Est. Retail: ' + retailLabel + ' CAD</span>' +
+      '<span class="pill-retail">' + retailPrefix + retailLabel + ' CAD' + RETAIL_SUFFIX + '</span>' +
       '<span class="pill-now">Buy it Today: ' + formatPrice(item.price) + ' CAD</span>' +
     '</div>';
   }
