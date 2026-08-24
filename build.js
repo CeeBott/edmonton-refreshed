@@ -910,9 +910,8 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions) {
   }
 
   // Retail value pill — two-part badge from numeric retailEstimate + price.
-  // retailEstimateApprox appends "+" to the figure, which is why RETAIL_SUFFIX
-  // spells out "plus" and never "+" (otherwise: "$12,000+ + tax").
-  // retailVerified drops the "Est." prefix. See CLAUDE.md §5.10.
+  // retailEstimateApprox appends "+" to the figure; retailVerified drops the
+  // "Est." prefix. See CLAUDE.md §5.10.
   var RETAIL_SUFFIX = ' plus tax &amp; delivery';
   var retailHTML = '';
   if (item.retailEstimate) {
