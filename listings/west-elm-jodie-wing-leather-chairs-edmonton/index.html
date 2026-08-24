@@ -292,7 +292,7 @@
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"></noscript>
   <link rel="preload" as="image" imagesrcset="../../images/WE-047/west-elm-01-400w.avif 400w, ../../images/WE-047/west-elm-01-800w.avif 800w, ../../images/WE-047/west-elm-01.avif 1200w" imagesizes="(max-width: 768px) 100vw, 550px" fetchpriority="high" type="image/avif">
-  <link rel="stylesheet" href="../../css/styles.min.css?v=b5c54315">
+  <link rel="stylesheet" href="../../css/styles.min.css?v=3803767a">
   <meta name="theme-color" content="#2c2c2c">
 </head>
 <body>
@@ -379,7 +379,7 @@
             <div class="listing-price">$3,000 <span class="listing-price-currency">CAD</span></div>
             <div class="listing-ctas">
               <a class="listing-cta" href="#request-viewing">Request a Viewing &rarr;</a>
-              <a class="listing-cta listing-cta--secondary" href="tel:7809651477">Call 780-965-1477</a>
+              <a class="listing-cta listing-cta--secondary" href="sms:7809651477">Text 780-965-1477</a>
             </div>
             <div class="listing-specs"><span class="spec-tag">West Elm</span><span class="spec-tag">32 × 34.5 × 34 in</span><span class="spec-tag">Beige Nubuck Leather</span><span class="spec-tag">Matched Pair</span><span class="spec-tag">Contract-Grade</span><span class="spec-tag">Like New</span></div>
             <details class="listing-collapsible" open><summary class="listing-meta-label">Description</summary><p class="listing-description">This is a matched pair of West Elm Jodie wing chairs in nubuck leather, sold together &mdash; and they are essentially brand new. They were ordered from West Elm in March 2026 and delivered on July 11, 2026, and the original order confirmation is available for verification. Ordering the same pair today means West Elm's 16-plus week lead time and a true all-in cost &mdash; with tax and delivery &mdash; of over $5,000. These are available immediately.
@@ -406,22 +406,37 @@ Delivery available for an additional fee.</p></details>
            no-op on desktop. See js/viewing-form.js. -->
       <section class="listing-viewing" id="request-viewing">
         <h2 class="section-label">Request a Viewing</h2>
-        <p class="listing-viewing-lead">Leave your name and number and we&rsquo;ll text you right back to set up a time to see the West Elm. No account, no waiting on email &mdash; just a quick reply.</p>
+        <p class="listing-viewing-lead">Leave your name and the best way to reach you and we&rsquo;ll get back to you to set up a time to see the West Elm. Phone or email &mdash; whichever you prefer.</p>
         <form class="viewing-form" id="viewing-form" novalidate>
           <input type="hidden" name="Piece" value="West Elm Jodie Wing Chair &mdash; Beige Nubuck Leather (Matched Pair)">
           <input type="hidden" name="_form" value="viewing">
           <input type="hidden" name="Source page" value="">
           <label class="viewing-honey" aria-hidden="true">Leave this box unchecked<input type="checkbox" name="_honey" tabindex="-1" autocomplete="off"></label>
-          <div class="viewing-row">
-            <div class="viewing-field">
-              <label for="vf-name">Your name</label>
-              <input type="text" id="vf-name" name="Name" autocomplete="name" required>
-            </div>
-            <div class="viewing-field">
-              <label for="vf-phone">Phone number</label>
-              <input type="tel" id="vf-phone" name="Phone" autocomplete="tel" inputmode="tel" required>
-            </div>
+          <div class="viewing-field">
+            <label for="vf-name">Your name</label>
+            <input type="text" id="vf-name" name="Name" autocomplete="name" required aria-describedby="vf-name-error">
+            <p class="viewing-field-error" id="vf-name-error" role="alert" hidden></p>
           </div>
+          <!-- Phone and email are each optional, but one must be filled. The
+               "one required" gate and both format checks run in
+               js/viewing-form.js and again in the Worker, so a bad or empty
+               contact always comes back as a visible message. -->
+          <fieldset class="viewing-contact">
+            <legend class="viewing-contact-legend">How should we reach you? <span class="viewing-optional">(fill in at least one)</span></legend>
+            <div class="viewing-row">
+              <div class="viewing-field">
+                <label for="vf-phone">Phone number <span class="viewing-optional">(optional)</span></label>
+                <input type="tel" id="vf-phone" name="Phone" autocomplete="tel" inputmode="tel" placeholder="780-555-0123" aria-describedby="vf-phone-error">
+                <p class="viewing-field-error" id="vf-phone-error" role="alert" hidden></p>
+              </div>
+              <div class="viewing-field">
+                <label for="vf-email">Email <span class="viewing-optional">(optional)</span></label>
+                <input type="email" id="vf-email" name="Email" autocomplete="email" inputmode="email" placeholder="you@example.com" aria-describedby="vf-email-error">
+                <p class="viewing-field-error" id="vf-email-error" role="alert" hidden></p>
+              </div>
+            </div>
+            <p class="viewing-field-error viewing-contact-error" id="vf-contact-error" role="alert" hidden></p>
+          </fieldset>
           <div class="viewing-field">
             <label for="vf-message">Anything to add? <span class="viewing-optional">(optional)</span></label>
             <textarea id="vf-message" name="Message" rows="3"></textarea>
@@ -430,7 +445,7 @@ Delivery available for an additional fee.</p></details>
           <p class="viewing-alt">Prefer to reach out yourself? <a href="sms:7809651477">Text</a> or <a href="tel:7809651477">call 780-965-1477</a>.</p>
           <p class="viewing-error" role="alert" hidden></p>
         </form>
-        <p class="viewing-success" id="viewing-success" role="status" hidden>Got it &mdash; we&rsquo;ll text you shortly to set up a time. Thanks!</p>
+        <p class="viewing-success" id="viewing-success" role="status" hidden>Got it &mdash; we&rsquo;ll be in touch shortly to set up a time. Thanks!</p>
       </section>
 
       <section class="faq-section listing-faq" aria-labelledby="listing-faq-heading">
@@ -565,7 +580,7 @@ Delivery available for an additional fee.</p></details>
   </div>
 
   <script src="../../js/shared.min.js?v=2d3b193a"></script>
-  <script src="../../js/viewing-form.min.js?v=6c812f29"></script>
+  <script src="../../js/viewing-form.min.js?v=88aef9b8"></script>
   <script>
   (function() {
     var thumbs = document.querySelectorAll(".listing-thumb:not(.listing-thumb-more)");

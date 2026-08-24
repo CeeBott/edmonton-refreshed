@@ -3401,7 +3401,7 @@ footer a:focus-visible {
 
 /* ── Listing "Request a Viewing" form ──
    Buyer inquiry on every listing; shares the sell-form visual language and
-   pings Collin instantly (Telegram, via the Worker). See js/viewing-form.js. */
+   emails Collin via the Worker. See js/viewing-form.js. */
 .listing-viewing {
   max-width: var(--col-narrow);
   margin: 48px auto;
@@ -3452,6 +3452,7 @@ footer a:focus-visible {
 }
 .viewing-field input[type="text"],
 .viewing-field input[type="tel"],
+.viewing-field input[type="email"],
 .viewing-field textarea {
   width: 100%;
   padding: 11px 12px;
@@ -3471,6 +3472,44 @@ footer a:focus-visible {
   box-shadow: 0 0 0 3px rgba(44,44,44,0.08);
 }
 .viewing-field textarea { resize: vertical; min-height: 72px; line-height: 1.5; }
+/* Contact group — phone + email, each optional, at least one required.
+   The fieldset is reset to a plain block so it inherits the form's stack
+   rhythm; the legend carries the "fill in at least one" rule. */
+.viewing-contact {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.viewing-contact-legend {
+  padding: 0;
+  margin-bottom: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-text);
+  letter-spacing: 0.01em;
+}
+.viewing-field input.is-invalid,
+.viewing-field textarea.is-invalid {
+  border-color: var(--color-sold-badge);
+}
+.viewing-field input.is-invalid:focus,
+.viewing-field textarea.is-invalid:focus {
+  border-color: var(--color-sold-badge);
+  box-shadow: 0 0 0 3px rgba(185,28,28,0.12);
+}
+.viewing-field-error {
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: var(--color-sold-badge);
+  font-weight: 500;
+  margin: 0;
+}
+.viewing-field-error[hidden] { display: none; }
+.viewing-contact-error { margin-top: 2px; }
 .viewing-submit {
   margin-top: 4px;
   padding: 14px 24px;

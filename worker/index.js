@@ -174,19 +174,35 @@ async function handleViewingRequest(formData, env, cors) {
   const get = (k) => (formData.get(k) || '').toString().trim();
   const name = get('Name');
   const phone = get('Phone');
+  const email = get('Email');
   const piece = get('Piece');
   const message = get('Message');
   const sourcePage = get('Source page') || '(unknown)';
 
-  if (!name || !phone) {
-    return json({ error: 'Please include your name and phone number.' }, 400, cors);
+  // Phone and email are each optional but one is required, and anything
+  // supplied must parse. Mirrors js/viewing-form.js so a client that skipped
+  // the inline checks still gets a specific, visible error instead of a lead
+  // we can't reply to. Errors are returned (not silently dropped) — the
+  // silent-drop contract covers bot signals only (§5.11).
+  if (!name) {
+    return json({ error: 'Please include your name.' }, 400, cors);
+  }
+  if (!phone && !email) {
+    return json({ error: 'Please add a phone number or an email so we can get back to you.' }, 400, cors);
+  }
+  if (phone && !looksLikePhone(phone)) {
+    return json({ error: 'That phone number doesn\'t look right. Enter it like 780-965-1477.' }, 400, cors);
+  }
+  if (email && !looksLikeEmail(email)) {
+    return json({ error: 'That email doesn\'t look right. Enter it like you@example.com.' }, 400, cors);
   }
 
   const text =
     '🛋️ New viewing request\n\n' +
     'Piece: ' + (piece || '(unspecified)') + '\n' +
     'Name: ' + name + '\n' +
-    'Phone: ' + phone + '\n' +
+    'Phone: ' + (phone || '(not provided)') + '\n' +
+    'Email: ' + (email || '(not provided)') + '\n' +
     (message ? 'Message: ' + message + '\n' : '') +
     'Page: ' + sourcePage;
 
@@ -198,7 +214,8 @@ async function handleViewingRequest(formData, env, cors) {
         subject: 'Viewing request — ' + (piece || 'a piece') + ' — ' + name,
         text,
       };
-      if (looksLikeEmail(phone)) payload.reply_to = phone;
+      const replyTo = looksLikeEmail(email) ? email : (looksLikeEmail(phone) ? phone : '');
+      if (replyTo) payload.reply_to = replyTo;
       const r = await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
@@ -232,6 +249,18 @@ function sanitizeFilename(name) {
 
 function looksLikeEmail(s) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
+}
+
+// Same rule as js/viewing-form.js's phoneIsValid: allow the common written
+// forms (7809651477, 780-965-1477, (780) 965-1477, 1 780 965 1477,
+// +1 780.965.1477), reject letters and wrong-length digit runs. Keep the two
+// in sync — the client copy is the one buyers see, this one is the backstop.
+function looksLikePhone(s) {
+  if (!/^\+?[0-9\s().-]+$/.test(s)) return false;
+  const digits = s.replace(/\D/g, '');
+  if (s.charAt(0) === '+') return digits.length >= 8 && digits.length <= 15;
+  if (digits.length === 11) return digits.charAt(0) === '1';
+  return digits.length === 10;
 }
 
 function arrayBufferToBase64(buf) {

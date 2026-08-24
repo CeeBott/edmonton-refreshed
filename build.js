@@ -1157,7 +1157,7 @@ renderCredibility('listing') + '\n' +
 '            <div class="listing-price">' + formatPrice(item.price) + ' <span class="listing-price-currency">CAD</span></div>\n' +
 '            <div class="listing-ctas">\n' +
 '              <a class="listing-cta" href="#request-viewing">Request a Viewing &rarr;</a>\n' +
-'              <a class="listing-cta listing-cta--secondary" href="tel:7809651477">Call 780-965-1477</a>\n' +
+'              <a class="listing-cta listing-cta--secondary" href="sms:7809651477">Text 780-965-1477</a>\n' +
 '            </div>\n' +
 '            <div class="listing-specs">' + specsHTML + '</div>\n' +
 '            ' + descriptionHTML + '\n' +
@@ -1176,22 +1176,37 @@ renderCredibility('listing') + '\n' +
 '           no-op on desktop. See js/viewing-form.js. -->\n' +
 '      <section class="listing-viewing" id="request-viewing">\n' +
 '        <h2 class="section-label">Request a Viewing</h2>\n' +
-'        <p class="listing-viewing-lead">Leave your name and number and we&rsquo;ll text you right back to set up a time to see the ' + escapeHtml(item.brand) + '. No account, no waiting on email &mdash; just a quick reply.</p>\n' +
+'        <p class="listing-viewing-lead">Leave your name and the best way to reach you and we&rsquo;ll get back to you to set up a time to see the ' + escapeHtml(item.brand) + '. Phone or email &mdash; whichever you prefer.</p>\n' +
 '        <form class="viewing-form" id="viewing-form" novalidate>\n' +
 '          <input type="hidden" name="Piece" value="' + escapeHtml(item.brand + ' ' + item.title) + '">\n' +
 '          <input type="hidden" name="_form" value="viewing">\n' +
 '          <input type="hidden" name="Source page" value="">\n' +
 '          <label class="viewing-honey" aria-hidden="true">Leave this box unchecked<input type="checkbox" name="_honey" tabindex="-1" autocomplete="off"></label>\n' +
-'          <div class="viewing-row">\n' +
-'            <div class="viewing-field">\n' +
-'              <label for="vf-name">Your name</label>\n' +
-'              <input type="text" id="vf-name" name="Name" autocomplete="name" required>\n' +
-'            </div>\n' +
-'            <div class="viewing-field">\n' +
-'              <label for="vf-phone">Phone number</label>\n' +
-'              <input type="tel" id="vf-phone" name="Phone" autocomplete="tel" inputmode="tel" required>\n' +
-'            </div>\n' +
+'          <div class="viewing-field">\n' +
+'            <label for="vf-name">Your name</label>\n' +
+'            <input type="text" id="vf-name" name="Name" autocomplete="name" required aria-describedby="vf-name-error">\n' +
+'            <p class="viewing-field-error" id="vf-name-error" role="alert" hidden></p>\n' +
 '          </div>\n' +
+'          <!-- Phone and email are each optional, but one must be filled. The\n' +
+'               "one required" gate and both format checks run in\n' +
+'               js/viewing-form.js and again in the Worker, so a bad or empty\n' +
+'               contact always comes back as a visible message. -->\n' +
+'          <fieldset class="viewing-contact">\n' +
+'            <legend class="viewing-contact-legend">How should we reach you? <span class="viewing-optional">(fill in at least one)</span></legend>\n' +
+'            <div class="viewing-row">\n' +
+'              <div class="viewing-field">\n' +
+'                <label for="vf-phone">Phone number <span class="viewing-optional">(optional)</span></label>\n' +
+'                <input type="tel" id="vf-phone" name="Phone" autocomplete="tel" inputmode="tel" placeholder="780-555-0123" aria-describedby="vf-phone-error">\n' +
+'                <p class="viewing-field-error" id="vf-phone-error" role="alert" hidden></p>\n' +
+'              </div>\n' +
+'              <div class="viewing-field">\n' +
+'                <label for="vf-email">Email <span class="viewing-optional">(optional)</span></label>\n' +
+'                <input type="email" id="vf-email" name="Email" autocomplete="email" inputmode="email" placeholder="you@example.com" aria-describedby="vf-email-error">\n' +
+'                <p class="viewing-field-error" id="vf-email-error" role="alert" hidden></p>\n' +
+'              </div>\n' +
+'            </div>\n' +
+'            <p class="viewing-field-error viewing-contact-error" id="vf-contact-error" role="alert" hidden></p>\n' +
+'          </fieldset>\n' +
 '          <div class="viewing-field">\n' +
 '            <label for="vf-message">Anything to add? <span class="viewing-optional">(optional)</span></label>\n' +
 '            <textarea id="vf-message" name="Message" rows="3"></textarea>\n' +
@@ -1200,7 +1215,7 @@ renderCredibility('listing') + '\n' +
 '          <p class="viewing-alt">Prefer to reach out yourself? <a href="sms:7809651477">Text</a> or <a href="tel:7809651477">call 780-965-1477</a>.</p>\n' +
 '          <p class="viewing-error" role="alert" hidden></p>\n' +
 '        </form>\n' +
-'        <p class="viewing-success" id="viewing-success" role="status" hidden>Got it &mdash; we&rsquo;ll text you shortly to set up a time. Thanks!</p>\n' +
+'        <p class="viewing-success" id="viewing-success" role="status" hidden>Got it &mdash; we&rsquo;ll be in touch shortly to set up a time. Thanks!</p>\n' +
 '      </section>\n' +
 faqVisibleBlock +
 '\n' +
