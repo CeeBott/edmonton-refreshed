@@ -31,6 +31,7 @@ Every piece currently for sale, with the current asking price in CAD. Each
 listing page carries photos, dimensions, condition detail, and FAQs. This
 list is regenerated on every build and always matches the homepage.
 
+- Crate & Barrel Aris 2-Piece Bench Sectional with Right-Arm Chaise, Thrive Ink: $2,600 CAD — https://edmontonrefreshed.com/listings/crate-and-barrel-aris-bench-sectional-edmonton/
 - West Elm Jodie Wing Chair, Beige Nubuck Leather (Matched Pair): $3,000 CAD — https://edmontonrefreshed.com/listings/west-elm-jodie-wing-leather-chairs-edmonton/
 - Bracci Como Maxi Apartment Sofa, Fango Victoria Leather: $1,800 CAD — https://edmontonrefreshed.com/listings/bracci-como-maxi-apartment-sofa-edmonton/
 - B&B Italia Charles Left-Facing Sectional, Off-White Rattier Fabric: $5,200 CAD — https://edmontonrefreshed.com/listings/b-b-italia-charles-sectional-edmonton/
