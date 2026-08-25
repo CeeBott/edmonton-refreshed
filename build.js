@@ -75,6 +75,16 @@ function formatPriceCAD(n) {
   return formatPrice(n) + ' CAD';
 }
 
+// Substitute the `{price}` token in authored prose (currently listing
+// metaDescription, §5.5) with the item's live asking price. The price is stored
+// exactly once — as a number on the item — so a reprice is a one-number edit and
+// can never leave a stale figure behind in hand-written copy (§8.1). Authoring a
+// literal "$X,XXX CAD" instead still renders, but the build warns about it.
+function applyPriceToken(str, price) {
+  var money = Number.isFinite(price) ? formatPriceCAD(price) : '';
+  return String(str).replace(/\{price\}/g, money);
+}
+
 // \u2500\u2500 Content hashing \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
 //  First 8 hex of SHA-256. Used for asset cache-busting and for sitemap
 //  freshness comparisons.
@@ -935,7 +945,7 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions) {
   // Meta description: use item.metaDescription if provided, otherwise auto-generate
   var rawDesc;
   if (item.metaDescription) {
-    rawDesc = item.metaDescription;
+    rawDesc = applyPriceToken(item.metaDescription, item.price);
   } else {
     var condSpec    = (item.specs || []).filter(function(s) { return /condition/i.test(s); })[0];
     var condition   = condSpec || ((item.specs && item.specs.length > 0) ? item.specs[item.specs.length - 1] : '');
@@ -2506,6 +2516,59 @@ auditFiles.forEach(function (f) {
   if (llmsAuditText.indexOf(BASE_URL + rel) === -1) llmsGaps.push('/' + rel);
 });
 
+// (g) Hardcoded asking price in an authored metaDescription — WARN. The price
+//     belongs in exactly one place (the item's `price` number); prose should
+//     carry the `{price}` token (§5.5). A literal figure is the drift-prone
+//     "update every copy" pattern (§9.3) and silently goes stale on a reprice.
+var PRICE_LITERAL_RE = /\$[\d,]+(?:\.\d+)?\s*CAD\b/i;
+var metaPriceStale = [];
+var metaPriceHardcoded = [];
+availableItems.forEach(function (i) {
+  if (i.comingSoon || !i.metaDescription) return;
+  var m = i.metaDescription.match(PRICE_LITERAL_RE);
+  if (!m) return;
+  var slug = i.slug || slugify(i.brand + '-' + i.title);
+  var current = Number.isFinite(i.price) ? formatPriceCAD(i.price) : null;
+  var found = m[0].replace(/\s+/g, ' ');
+  if (current && found.toUpperCase() !== current.toUpperCase()) {
+    metaPriceStale.push(slug + ' (says ' + found + ', price is ' + current + ')');
+  } else {
+    metaPriceHardcoded.push(slug);
+  }
+});
+
+// (h) Redirect-stub price drift — WARN. An old-slug stub's <meta description>
+//     is a frozen hand-authored snapshot the build never regenerates (§8.1), so
+//     it goes stale on a reprice. Worse, when the target sells the price must be
+//     REMOVED, not updated — a sold asking price in any tracked file leaks the
+//     seller-side negotiation floor (§6.3, source-files rule).
+var activePriceBySlug = {};
+availableItems.forEach(function (i) {
+  if (i.comingSoon || !Number.isFinite(i.price)) return;
+  activePriceBySlug[i.slug || slugify(i.brand + '-' + i.title)] = formatPriceCAD(i.price);
+});
+var stubPriceGaps = [];
+var listingsAuditDir = path.join(ROOT, 'listings');
+(fs.existsSync(listingsAuditDir) ? fs.readdirSync(listingsAuditDir) : []).forEach(function (dir) {
+  var file = path.join(listingsAuditDir, dir, 'index.html');
+  if (!fs.existsSync(file)) return;
+  var html = fs.readFileSync(file, 'utf8');
+  if (!/<meta[^>]+http-equiv=["']?refresh/i.test(html)) return;
+  var descM = html.match(/<meta\s+name=["']description["']\s+content=["']([^"']*)["']/i);
+  if (!descM) return;
+  var priceM = descM[1].match(PRICE_LITERAL_RE);
+  if (!priceM) return;
+  var found = priceM[0].replace(/\s+/g, ' ');
+  var targetM = html.match(/url=[^"'>]*\/listings\/([^\/"'>]+)\//i);
+  var target = targetM ? targetM[1] : null;
+  var live = target ? activePriceBySlug[target] : null;
+  if (!live) {
+    stubPriceGaps.push(dir + ' — target is not active inventory; strip the price (§6.3)');
+  } else if (found.toUpperCase() !== live.toUpperCase()) {
+    stubPriceGaps.push(dir + ' — says ' + found + ', target is ' + live);
+  }
+});
+
 // ── Summary ──────────────────────────────────────────
 var assetSummary = Object.keys(assetVersions)
   .map(function(k) { return k.split('/').pop() + ' ' + assetVersions[k]; })
@@ -2568,6 +2631,19 @@ if (llmsGaps.length) {
   console.log('  llms WARN       — missing from llms.txt: ' + llmsGaps.join(', '));
 } else {
   console.log('  llms.txt        — sold list (' + llmsSoldCount + ' stubs) + available list (' + llmsAvailableCount + ' live) regenerated; core pages + guides all listed');
+}
+if (metaPriceStale.length) {
+  console.log('  price WARN      — stale price in metaDescription: ' + metaPriceStale.join('; '));
+} else if (metaPriceHardcoded.length) {
+  console.log('  price WARN      — hardcoded price in metaDescription (use the {price} token, §5.5): ' + metaPriceHardcoded.join(', '));
+} else {
+  console.log('  price           — every active metaDescription renders its price from the {price} token');
+}
+if (stubPriceGaps.length) {
+  console.log('  stub-price WARN — redirect stub price(s) out of sync:');
+  stubPriceGaps.forEach(function (g) { console.log('                      ' + g); });
+} else {
+  console.log('  stub-price      — redirect stub prices agree with live inventory');
 }
 
 if (ownerDangling) {

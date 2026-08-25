@@ -814,6 +814,11 @@ function formatPrice(n) { return '$' + PRICE_FMT.format(n); }
 function neutralizeMeta(s) {
   return String(s)
     .replace(/\s*\bfor sale\b/gi, '')
+    // {price} token (§5.5) — the active listing's price is substituted at build
+    // time, so a retained snapshot carries the token, not a number. Dropping it
+    // is how the asking price stays off a sold page (§6.3). The literal-figure
+    // regex below stays as a backstop for pre-token snapshots.
+    .replace(/\s*\{price\}\.?/g, '')
     .replace(/\s*\$[\d,]+(?:\.\d+)?\s*CAD\b\.?/gi, '')
     .replace(/\s{2,}/g, ' ')
     .replace(/\s+([.,;:])/g, '$1')
