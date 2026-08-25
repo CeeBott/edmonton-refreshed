@@ -833,6 +833,23 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   margin-left: 2px;
 }
 
+/* Retail anchor above the card price — the same value comparison the listing
+   page carries in .listing-value-pill, so the grid shows what a piece is worth
+   instead of an unexplained number. Quiet by design: the ask stays the loudest
+   figure on the card. */
+.card-retail {
+  margin-top: auto;
+  margin-bottom: 2px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--color-text-secondary);
+}
+/* The anchor inherits the price's bottom-push so the pair travels together. */
+.card-retail + .card-price {
+  margin-top: 0;
+}
+
 /* ── Sold Badge ── */
 .card-meta {
   display: flex;

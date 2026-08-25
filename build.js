@@ -75,6 +75,21 @@ function formatPriceCAD(n) {
   return formatPrice(n) + ' CAD';
 }
 
+// Retail anchor label — e.g. "Est. Retail: $28,000 CAD plus tax & delivery".
+// retailEstimateApprox appends "+" to the figure; retailVerified drops the
+// "Est." hedge (§5.10). Returns '' when the item carries no retailEstimate.
+// One helper feeds both surfaces that show the comparison — the listing-page
+// value pill and the homepage card anchor — so they can never disagree.
+// Mirrored client-side in js/available-data.js for the JS render path.
+var RETAIL_SUFFIX = ' plus tax &amp; delivery';
+
+function retailLabel(item) {
+  if (!item.retailEstimate) return '';
+  return (item.retailVerified ? 'Retail: ' : 'Est. Retail: ') +
+    formatPrice(item.retailEstimate) + (item.retailEstimateApprox ? '+' : '') +
+    ' CAD' + RETAIL_SUFFIX;
+}
+
 // Substitute the `{price}` token in authored prose (currently listing
 // metaDescription, §5.5) with the item's live asking price. The price is stored
 // exactly once — as a number on the item — so a reprice is a one-number edit and
@@ -359,6 +374,12 @@ function generateAvailableHTML(items) {
       ? '            <div class="card-price card-price--muted">Listing coming soon</div>'
       : '            <div class="card-price">' + formatPrice(item.price) + ' <span class="card-price-currency">CAD</span></div>';
 
+    // Retail anchor — the same comparison the listing page carries, so the
+    // value is legible on the grid rather than one click away (§5.10).
+    var retailAnchor = (item.comingSoon || !item.retailEstimate)
+      ? ''
+      : '            <div class="card-retail">' + retailLabel(item) + '</div>';
+
     lines.push(
       '        <div class="card">',
       imgHtml,
@@ -366,13 +387,15 @@ function generateAvailableHTML(items) {
       brandLine,
       titleLine,
       '            <div class="card-specs">' + specs + '</div>',
+      retailAnchor,
       priceCta,
       '          </div>',
       '        </div>'
     );
   });
 
-  return lines.join('\n') + '\n      ';
+  // filter(Boolean) drops the retail anchor's empty slot on items without one.
+  return lines.filter(Boolean).join('\n') + '\n      ';
 }
 
 function generateSoldHTML(items) {
@@ -920,15 +943,11 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions) {
   }
 
   // Retail value pill — two-part badge from numeric retailEstimate + price.
-  // retailEstimateApprox appends "+" to the figure; retailVerified drops the
-  // "Est." prefix. See CLAUDE.md §5.10.
-  var RETAIL_SUFFIX = ' plus tax &amp; delivery';
+  // The retail side comes from the shared retailLabel() helper (§5.10).
   var retailHTML = '';
   if (item.retailEstimate) {
-    var retailLabel = formatPrice(item.retailEstimate) + (item.retailEstimateApprox ? '+' : '');
-    var retailPrefix = item.retailVerified ? 'Retail: ' : 'Est. Retail: ';
     retailHTML = '<div class="listing-value-pill">' +
-      '<span class="pill-retail">' + retailPrefix + retailLabel + ' CAD' + RETAIL_SUFFIX + '</span>' +
+      '<span class="pill-retail">' + retailLabel(item) + '</span>' +
       '<span class="pill-now">Buy it Today: ' + formatPrice(item.price) + ' CAD</span>' +
     '</div>';
   }

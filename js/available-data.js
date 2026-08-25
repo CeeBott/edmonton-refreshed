@@ -208,6 +208,17 @@ function slugify(str) {
 var _AVAILABLE_PRICE_FMT = new Intl.NumberFormat('en-CA', { maximumFractionDigits: 0 });
 function formatPrice(n) { return '$' + _AVAILABLE_PRICE_FMT.format(n); }
 
+// Retail anchor label — mirror of retailLabel() in build.js, which feeds the
+// crawler fallback and the listing-page value pill. Keep the two in sync: a
+// visitor sees this copy, a crawler sees the Node one. See CLAUDE.md §5.10.
+var _RETAIL_SUFFIX = ' plus tax &amp; delivery';
+function retailLabel(item) {
+  if (!item.retailEstimate) return '';
+  return (item.retailVerified ? 'Retail: ' : 'Est. Retail: ') +
+    formatPrice(item.retailEstimate) + (item.retailEstimateApprox ? '+' : '') +
+    ' CAD' + _RETAIL_SUFFIX;
+}
+
 function renderAvailable() {
   var grid = document.getElementById('available-grid');
   if (availableItems.length === 0) {
@@ -231,6 +242,11 @@ function renderAvailable() {
       ? '<div class="card-price card-price--muted">Listing coming soon</div>'
       : '<div class="card-price">' + formatPrice(item.price) + ' <span class="card-price-currency">CAD</span></div>';
 
+    // Retail anchor — same comparison the listing page carries (§5.10).
+    var retailAnchor = (item.comingSoon || !item.retailEstimate)
+      ? ''
+      : '<div class="card-retail">' + retailLabel(item) + '</div>';
+
     return '<div class="card">' +
       (item.images && item.images.length > 0
         ? buildCarousel(item.images, item.brand + ' ' + item.title)
@@ -242,6 +258,7 @@ function renderAvailable() {
         '<div class="card-specs">' +
           item.specs.map(function(s) { return '<span class="spec-tag">' + s + '</span>'; }).join('') +
         '</div>' +
+        retailAnchor +
         priceCta +
       '</div>' +
     '</div>';
