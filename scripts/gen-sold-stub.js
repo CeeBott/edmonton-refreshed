@@ -645,6 +645,7 @@ function buildImageObjectSchema(bases, altBase, pageUrl, brand) {
       '            "@type": "Organization",\n' +
       '            "name": "Edmonton Refreshed"\n' +
       '          },\n' +
+      '          "copyrightNotice": "\u00a9 Edmonton Refreshed",\n' +
       '          "creditText": "Photo by Edmonton Refreshed",\n' +
       '          "license": "https://edmontonrefreshed.com/",\n' +
       '          "acquireLicensePage": "https://edmontonrefreshed.com/"\n' +

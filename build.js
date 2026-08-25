@@ -662,6 +662,10 @@ function generateProductSchemas(items) {
       }
     };
 
+    // validFrom = the date the offer became valid (Google Merchant listing
+    // recommended field). Sourced from availabilityStarts (§5.10) so there is
+    // one date behind both properties.
+    if (item.availabilityStarts) schema.offers["validFrom"] = item.availabilityStarts;
     if (sku) schema["sku"] = sku;
     if (imageUrl) schema["image"] = imageUrl;
     var material = materialFor(item);
@@ -783,7 +787,11 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions) {
       }
     }
   };
-  if (item.availabilityStarts) offers["availabilityStarts"] = item.availabilityStarts;
+  if (item.availabilityStarts) {
+    offers["availabilityStarts"] = item.availabilityStarts;
+    // Google Merchant listing recommended field — same source date.
+    offers["validFrom"] = item.availabilityStarts;
+  }
 
   var productSchema = {
     "@context": "https://schema.org",
@@ -1489,6 +1497,11 @@ function walkHtml(dir, files) {
 //  meaningful, not just timestamps.
 
 var BASE_URL = 'https://edmontonrefreshed.com/';
+// §5.16 — Google's Image Metadata rich result recommends copyrightNotice
+// alongside creditText/creator/copyrightHolder. One value, used by every
+// ImageObject emit (mirrored in scripts/gen-sold-stub.js — see §5.5's note on
+// necessary duplication between the two generators).
+var COPYRIGHT_NOTICE = '\u00a9 Edmonton Refreshed';
 var STATE_PATH = path.join(ROOT, '.build-state.json');
 
 // Strip build-volatile bits so the same content hashes identically across
@@ -1586,6 +1599,7 @@ function generateSoldGallerySchema(soldItems) {
           about: { '@type': 'Brand', name: item.brand },
           creator: ORG,
           copyrightHolder: ORG,
+          copyrightNotice: COPYRIGHT_NOTICE,
           creditText: 'Photo by Edmonton Refreshed',
           license: BASE_URL,
           acquireLicensePage: BASE_URL,
@@ -1780,6 +1794,7 @@ function generateLandingSoldSchema(meta, cards) {
         about: { '@type': 'Brand', name: card.brand },
         creator: ORG,
         copyrightHolder: ORG,
+        copyrightNotice: COPYRIGHT_NOTICE,
         creditText: 'Photo by Edmonton Refreshed',
         license: BASE_URL,
         acquireLicensePage: BASE_URL,
