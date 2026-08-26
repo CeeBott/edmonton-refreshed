@@ -208,13 +208,60 @@ function escapeRegExp(s) {
 //  injected into every HTML reference automatically. No manual version
 //  tracking; bumping versions is a side effect of editing source.
 
+// Park every calc(...) expression behind a placeholder so the operator-tightening
+// pass cannot touch its insides. CSS requires whitespace around `+` and `-`
+// inside calc() — `calc(100% + 6px)` is valid, `calc(100%+6px)` is not, and an
+// invalid value makes the browser drop the WHOLE declaration silently. The `+`
+// in the tightening character class is there for the sibling combinator
+// (`a + b`), but it matched inside calc() too and quietly broke every such rule
+// in the stylesheet. Nested calc() is handled by the balanced-paren scan.
+function parkCalcExpressions(src, parked) {
+  var out = '';
+  var i = 0;
+  while (i < src.length) {
+    var at = src.indexOf('calc(', i);
+    if (at === -1) { out += src.slice(i); break; }
+    out += src.slice(i, at);
+    var depth = 0, j = at + 4;             // position of the '('
+    for (; j < src.length; j++) {
+      if (src[j] === '(') depth++;
+      else if (src[j] === ')') { depth--; if (depth === 0) { j++; break; } }
+    }
+    parked.push(src.slice(at, j).replace(/\s+/g, ' '));
+    out += '__CALC' + (parked.length - 1) + '__';
+    i = j;
+  }
+  return out;
+}
+
 function minifyCSS(src) {
-  return src
-    .replace(/\/\*[\s\S]*?\*\//g, '')           // strip block comments
+  var parked = [];
+  var out = src
+    .replace(/\/\*[\s\S]*?\*\//g, '');         // strip block comments
+  out = parkCalcExpressions(out, parked);
+  out = out
     .replace(/\s+/g, ' ')                       // collapse all whitespace
     .replace(/\s*([{}:;,>+~])\s*/g, '$1')       // tighten around CSS operators
     .replace(/;}/g, '}')                        // drop trailing semicolons
     .trim();
+  return out.replace(/__CALC(\d+)__/g, function(_, n) { return parked[Number(n)]; });
+}
+
+// Guard against the above regressing. Scoped to `+` deliberately: `-` is not in
+// the tightening character class and is ambiguous anyway (custom properties,
+// negative values, e-notation), so checking it invites false positives. `+` is
+// the operator that was actually being stripped, and inside calc() it must have
+// whitespace on both sides or the browser drops the declaration.
+function assertValidCalc(css, label) {
+  var bad = [];
+  var re = /calc\((?:[^()]|\([^()]*\))*\)/g, m;
+  while ((m = re.exec(css)) !== null) {
+    if (/(?:[^\s]\+|\+[^\s])/.test(m[0])) bad.push(m[0]);
+  }
+  if (bad.length) {
+    console.log('  calc WARN       — ' + label + ': calc() needs spaces around + — ' + bad.slice(0, 3).join(', '));
+  }
+  return bad.length;
 }
 
 function minifyJS(src) {
@@ -232,6 +279,7 @@ function buildAssets() {
   var cssSrcPath = path.join(ROOT, 'css', 'styles.css');
   var cssMinPath = path.join(ROOT, 'css', 'styles.min.css');
   var cssMin = minifyCSS(fs.readFileSync(cssSrcPath, 'utf8'));
+  assertValidCalc(cssMin, 'css/styles.min.css');
   fs.writeFileSync(cssMinPath, cssMin, 'utf8');
   versions['css/styles.min.css'] = shortHash(cssMin);
 
