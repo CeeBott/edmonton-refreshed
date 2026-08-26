@@ -4122,12 +4122,20 @@ footer a:focus-visible {
    the single-column margins from the max-width:768px block rather than
    inheriting the grid's margin-bottom reset. */
 @media (min-width: 901px) {
+  /* Wider than the 1100px page column: the gallery is the point of a listing
+     page, and the fact stack reads fine in a narrower measure. Overriding
+     max-width only is the sanctioned way to resize a .page child (§7.2) — the
+     primitive still supplies the horizontal inset. */
+  .listing-hero:has(.listing-layout--split) { max-width: 1320px; }
   .listing-layout--split {
     display: grid;
-    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-    gap: 44px;
+    grid-template-columns: minmax(0, 1.62fr) minmax(0, 1fr);
+    gap: 48px;
     align-items: start;
   }
+  /* Taller frame to match the wider column — a 4:3 gallery this wide would run
+     past the fold on a laptop, so the crop opens up rather than up-scaling. */
+  .listing-layout--split .listing-carousel .carousel { aspect-ratio: 3/2; }
   /* Gallery holds position while the (taller) info column scrolls past it. */
   .listing-layout--split .listing-carousel {
     position: sticky;
@@ -4150,14 +4158,19 @@ footer a:focus-visible {
 }
 
 /* ── Condition bar ── */
-.listing-condition {
-  margin: 4px 0 28px;
-  padding: 18px 20px 16px;
+/* Keeps its card look now that it is a <details>: the border and background
+   sit on the element, the padding on an inner wrapper so the summary row still
+   aligns with every other collapsible label in the column. */
+.listing-condition.listing-collapsible {
+  margin: 4px 0 20px;
   border: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
   border-radius: var(--radius);
   background: var(--color-surface);
+  padding: 4px 18px 2px;
 }
-.listing-condition .listing-meta-label { margin-bottom: 14px; }
+.listing-condition.listing-collapsible[open] { padding-bottom: 16px; }
+.listing-condition-body { padding-top: 8px; }
 .condition-bar {
   display: flex;
   gap: 5px;
@@ -4199,14 +4212,6 @@ footer a:focus-visible {
   margin: 0;
 }
 .condition-grade strong { color: var(--color-text); font-weight: 600; }
-.condition-note {
-  font-size: 0.875rem;
-  line-height: 1.7;
-  color: var(--color-text-secondary);
-  margin: 10px 0 0;
-  padding-top: 12px;
-  border-top: 1px solid var(--color-border);
-}
 .condition-standards { margin-top: 12px; }
 .condition-standards > summary {
   cursor: pointer;
@@ -4260,9 +4265,7 @@ footer a:focus-visible {
 }
 
 /* ── Labelled Details / Measurements ── */
-.listing-detail-block { margin: 0 0 26px; }
-.listing-detail-block .listing-meta-label { margin-bottom: 10px; }
-.listing-detail-list { margin: 0; }
+.listing-detail-list { margin: 0 0 6px; }
 .listing-detail-row {
   display: grid;
   grid-template-columns: 130px 1fr;
@@ -4301,9 +4304,7 @@ footer a:focus-visible {
 }
 
 /* ── Delivery ── */
-.listing-delivery { margin: 0 0 28px; }
-.listing-delivery .listing-meta-label { margin-bottom: 9px; }
-.listing-delivery-list { list-style: none; margin: 0; padding: 0; }
+.listing-delivery-list { list-style: none; margin: 0 0 10px; padding: 0; }
 .listing-delivery-list li {
   position: relative;
   padding: 3px 0 3px 16px;
@@ -4321,15 +4322,16 @@ footer a:focus-visible {
 }
 
 /* ── Brand note ── */
-.listing-brand-note {
-  margin: 28px 0 4px;
-  padding-top: 22px;
+/* Feature bullets folded into Details sit under the labelled rows. */
+.listing-detail-block .listing-features { margin: 12px 0 12px; }
+.listing-detail-block .listing-detail-list + .listing-features {
+  padding-top: 12px;
   border-top: 1px solid var(--color-border);
 }
-.listing-brand-note .listing-meta-label { margin-bottom: 8px; }
 
 @media (max-width: 768px) {
-  .listing-condition { padding: 16px 16px 14px; margin-bottom: 24px; }
+  .listing-condition.listing-collapsible { padding: 2px 15px; }
+  .listing-condition.listing-collapsible[open] { padding-bottom: 14px; }
   .condition-step-label { font-size: 0.54rem; letter-spacing: 0.03em; }
   .condition-rubric-row { grid-template-columns: 1fr; gap: 2px; }
   .listing-detail-row { grid-template-columns: 112px 1fr; }

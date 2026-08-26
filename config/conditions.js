@@ -19,25 +19,32 @@
 //  NOT a separate grade — the guide folds it into Excellent. Adding a
 //  fifth tier here would publish two disagreeing standards on one site.
 //  Change one and you must change the other, guide title included.
+//
+//  ── OBSERVABLE SIGNS ONLY ──
+//  A definition states what is or is not present on the piece — pilling,
+//  fading, staining, cushion compression, sag. It never infers how much the
+//  piece was used or how old it is. "Minimal use" and "1-2 years old" are
+//  guesses about a history we did not witness and cannot stand behind; the
+//  labelled Year field carries the date when we actually know it.
 // ═══════════════════════════════════════════════════════════
 
 // Order is the render order of the bar, lowest grade first.
 var conditionGrades = [
   {
     name: "Fair",
-    definition: "Heavy pilling, fading or staining, and permanent cushion indentation. Structural or cosmetic issues are present and priced in.",
+    definition: "Heavy pilling, fading, or staining. Permanent cushion indentation, possibly some sag. Structurally sound.",
   },
   {
     name: "Good",
-    definition: "Clearly used but structurally sound. Cushions show visible indentation, with obvious pilling or fading and possibly a small stain.",
+    definition: "Visible pilling or fading, and possibly a small stain. Cushions show indentation.",
   },
   {
     name: "Very Good",
-    definition: "Well maintained. Cushions stay reasonably firm, wear is minimal, and any patina reads as natural rather than as damage.",
+    definition: "Light pilling or fading at most. Cushions stay reasonably firm.",
   },
   {
     name: "Excellent",
-    definition: "Minimal use. Cushions hold firm, there is no pilling or fading, and seams and stitching are intact. Honest excellent condition is rare.",
+    definition: "No pilling, fading, or flattening of cushions present.",
   },
 ];
 

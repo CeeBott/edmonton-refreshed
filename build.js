@@ -787,36 +787,45 @@ function buildConditionBlock(item) {
       '</div>';
   }).join('');
 
-  return '<section class="listing-condition" aria-label="Condition">' +
-      '<h2 class="listing-meta-label">Condition</h2>' +
-      '<ol class="condition-bar" role="img" aria-label="Condition: ' + escapeHtml(grade.name) +
-        ' — ' + (idx + 1) + ' out of ' + conditionGrades.length + '">' + steps + '</ol>' +
-      '<p class="condition-grade"><strong>' + escapeHtml(grade.name) + '</strong> &mdash; ' + escapeHtml(grade.definition) + '</p>' +
-      (item.condition ? '<p class="condition-note">' + escapeHtml(item.condition) + '</p>' : '') +
-      '<details class="condition-standards">' +
-        '<summary>How we grade condition</summary>' +
-        '<dl class="condition-rubric">' + rubricRows + '</dl>' +
-        '<p class="condition-rubric-note">' + escapeHtml(conditionScopeNote) + '</p>' +
-        '<p class="condition-rubric-link"><a href="' + conditionGuideHref + '">' +
-          escapeHtml(conditionGuideLabel) + ' &rarr;</a></p>' +
-      '</details>' +
-    '</section>';
+  // Grade line + the rubric disclosure sit together: the definition states the
+  // grade, the link opens the full scale beneath it. The piece-specific note is
+  // deliberately not repeated here — the grade and the photos carry it.
+  return '<details class="listing-collapsible listing-condition" open>' +
+      '<summary class="listing-meta-label">Condition</summary>' +
+      '<div class="listing-condition-body">' +
+        '<ol class="condition-bar" role="img" aria-label="Condition: ' + escapeHtml(grade.name) +
+          ' — ' + (idx + 1) + ' out of ' + conditionGrades.length + '">' + steps + '</ol>' +
+        '<p class="condition-grade"><strong>' + escapeHtml(grade.name) + '</strong> &mdash; ' + escapeHtml(grade.definition) + '</p>' +
+        '<details class="condition-standards">' +
+          '<summary>How we grade condition</summary>' +
+          '<dl class="condition-rubric">' + rubricRows + '</dl>' +
+          '<p class="condition-rubric-note">' + escapeHtml(conditionScopeNote) + '</p>' +
+          '<p class="condition-rubric-link"><a href="' + conditionGuideHref + '">' +
+            escapeHtml(conditionGuideLabel) + ' &rarr;</a></p>' +
+        '</details>' +
+      '</div>' +
+    '</details>';
 }
 
-// Shared <dl> renderer for the Details / Measurements blocks.
-function buildDefinitionBlock(label, rows, extraClass) {
+// Shared collapsible <dl> renderer for the Details / Measurements blocks.
+// `extraHTML` is appended inside the same section — Details uses it to carry
+// the feature bullets, so construction notes live with the labelled facts
+// instead of in a section of their own.
+function buildDefinitionBlock(label, rows, opts) {
+  opts = opts || {};
   var live = rows.filter(function(r) { return r && r.value; });
-  if (live.length === 0) return '';
+  if (live.length === 0 && !opts.extraHTML) return '';
   var body = live.map(function(r) {
     return '<div class="listing-detail-row">' +
         '<dt>' + escapeHtml(r.label) + '</dt>' +
         '<dd>' + escapeHtml(r.value) + '</dd>' +
       '</div>';
   }).join('');
-  return '<section class="listing-detail-block' + (extraClass ? ' ' + extraClass : '') + '">' +
-      '<h2 class="listing-meta-label">' + escapeHtml(label) + '</h2>' +
-      '<dl class="listing-detail-list">' + body + '</dl>' +
-    '</section>';
+  return '<details class="listing-collapsible listing-detail-block"' + (opts.open ? ' open' : '') + '>' +
+      '<summary class="listing-meta-label">' + escapeHtml(label) + '</summary>' +
+      (live.length ? '<dl class="listing-detail-list">' + body + '</dl>' : '') +
+      (opts.extraHTML || '') +
+    '</details>';
 }
 
 // "2023-03" → "March 2023"; "2023" → "2023". Anything else passes through.
@@ -833,19 +842,27 @@ function formatProductionDate(value) {
 // Labelled Details — the facts a used-furniture buyer looks for first, pulled
 // out of prose and given names. Brand / retail / SKU compose from data that
 // already exists; model / productionDate / material / color are the new fields.
-function buildDetailsBlock(item, listingSku) {
+function buildDetailsBlock(item) {
   if (!listingUsesFactStack(item)) return '';
+  // Construction bullets ride inside Details rather than in a Features section
+  // of their own — they are facts about the same piece, read at the same time.
+  var featuresHTML = (item.features && item.features.length)
+    ? '<ul class="listing-features">' +
+        item.features.map(function(f) { return '<li>' + escapeHtml(f) + '</li>'; }).join('') +
+      '</ul>'
+    : '';
   return buildDefinitionBlock('Details', [
-    { label: 'Brand',           value: item.brand },
-    { label: 'Model',           value: item.model },
-    { label: 'Year',            value: formatProductionDate(item.productionDate) },
-    { label: 'Material',        value: item.material },
-    { label: 'Colour',          value: item.color },
+    { label: 'Brand',    value: item.brand },
+    { label: 'Model',    value: item.model },
+    { label: 'Year',     value: formatProductionDate(item.productionDate) },
+    { label: 'Material', value: item.material },
+    { label: 'Colour',   value: item.color },
     // No 'Original retail' row: the value pill beside the price already shows
     // that figure, and repeating it here restates one number twice on one
     // screen. retailFigure() stays available for surfaces without a pill.
-    { label: 'Inventory no.',   value: listingSku },
-  ]);
+    // No inventory number either — it is an internal reference with no buyer
+    // value. It still rides in the Product schema sku for Merchant Center.
+  ], { open: true, extraHTML: featuresHTML });
 }
 
 // Labelled Measurements. width/depth/height also drive the Product schema's
@@ -862,7 +879,7 @@ function buildMeasurementsBlock(item) {
   (d.extra || []).forEach(function(e) {
     if (e && e.label && e.value) rows.push({ label: e.label, value: e.value });
   });
-  return buildDefinitionBlock('Measurements', rows);
+  return buildDefinitionBlock('Measurements', rows, {});
 }
 
 // One-of-one line. True of every piece we carry, stated where the decision is
@@ -879,14 +896,14 @@ function buildOneOfOneHTML(item) {
 // Mirrors the Offer shippingDetails already emitted in the Product schema.
 function buildDeliveryBlock(item) {
   if (!listingUsesFactStack(item)) return '';
-  return '<section class="listing-delivery">' +
-      '<h2 class="listing-meta-label">Delivery</h2>' +
+  return '<details class="listing-collapsible listing-delivery">' +
+      '<summary class="listing-meta-label">Delivery</summary>' +
       '<ul class="listing-delivery-list">' +
         '<li>Edmonton and surrounding areas, typically within a few days of purchase.</li>' +
         '<li>Anywhere in Alberta by arrangement.</li>' +
         '<li>Charged as a flat fee based on distance and access &mdash; quoted before you commit.</li>' +
       '</ul>' +
-    '</section>';
+    '</details>';
 }
 
 // Brand blurb — one factual note per manufacturer from config/brands.js,
@@ -895,10 +912,10 @@ function buildBrandBlurbHTML(item) {
   if (!listingUsesFactStack(item)) return '';
   var blurb = brandBlurbs[item.brand];
   if (!blurb) return '';
-  return '<section class="listing-brand-note">' +
-      '<h2 class="listing-meta-label">About ' + escapeHtml(item.brand) + '</h2>' +
+  return '<details class="listing-collapsible listing-brand-note">' +
+      '<summary class="listing-meta-label">About ' + escapeHtml(item.brand) + '</summary>' +
       '<p class="listing-meta-text">' + escapeHtml(blurb) + '</p>' +
-    '</section>';
+    '</details>';
 }
 
 function generateListingPage(item, slug, allItems, soldItems, assetVersions) {
@@ -1125,7 +1142,7 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions) {
 
   // Optional features list (construction specs etc.)
   var featuresHTML = '';
-  if (item.features && item.features.length > 0) {
+  if (item.features && item.features.length > 0 && !listingUsesFactStack(item)) {
     featuresHTML = '<details class="listing-collapsible"><summary class="listing-meta-label">Features</summary><ul class="listing-features">' +
       item.features.map(function(f) { return '<li>' + escapeHtml(f) + '</li>'; }).join('') +
       '</ul></details>';
@@ -1142,7 +1159,7 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions) {
   // Info-column fact stack (renders only on listings carrying conditionGrade).
   var usesFactStack   = listingUsesFactStack(item);
   var conditionBarHTML = buildConditionBlock(item);
-  var detailsBlockHTML = buildDetailsBlock(item, listingSku);
+  var detailsBlockHTML = buildDetailsBlock(item);
   var measurementsHTML = buildMeasurementsBlock(item);
   var oneOfOneHTML     = buildOneOfOneHTML(item);
   var deliveryHTML     = buildDeliveryBlock(item);
