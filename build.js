@@ -862,7 +862,7 @@ function buildDetailsBlock(item) {
     // screen. retailFigure() stays available for surfaces without a pill.
     // No inventory number either — it is an internal reference with no buyer
     // value. It still rides in the Product schema sku for Merchant Center.
-  ], { open: true, extraHTML: featuresHTML });
+  ], { extraHTML: featuresHTML });
 }
 
 // Labelled Measurements. width/depth/height also drive the Product schema's
@@ -900,8 +900,7 @@ function buildDeliveryBlock(item) {
       '<summary class="listing-meta-label">Delivery</summary>' +
       '<ul class="listing-delivery-list">' +
         '<li>Edmonton and surrounding areas, typically within a few days of purchase.</li>' +
-        '<li>Anywhere in Alberta by arrangement.</li>' +
-        '<li>Charged as a flat fee based on distance and access &mdash; quoted before you commit.</li>' +
+        '<li>Within Alberta or across Canada can be arranged.</li>' +
       '</ul>' +
     '</details>';
 }
@@ -1422,11 +1421,15 @@ renderCredibility('listing') + '\n' +
 // pill row would repeat the same facts. Homepage cards keep their pills.
 (usesFactStack ? '' : '            <div class="listing-specs">' + specsHTML + '</div>\n') +
 (conditionBarHTML ? '            ' + conditionBarHTML + '\n' : '') +
+// Description sits directly under the condition bar on fact-stack listings —
+// it is the only section expanded on load, so it reads before the collapsed
+// stack. Listings not yet migrated keep it in its original slot below.
+(usesFactStack ? '            ' + descriptionHTML + '\n' : '') +
 (detailsBlockHTML ? '            ' + detailsBlockHTML + '\n' : '') +
 (measurementsHTML ? '            ' + measurementsHTML + '\n' : '') +
 (oneOfOneHTML     ? '            ' + oneOfOneHTML     + '\n' : '') +
 (deliveryHTML     ? '            ' + deliveryHTML     + '\n' : '') +
-'            ' + descriptionHTML + '\n' +
+(usesFactStack ? '' : '            ' + descriptionHTML + '\n') +
 (featuresHTML    ? '            ' + featuresHTML    + '\n' : '') +
 (conditionHTML   ? '            ' + conditionHTML   + '\n' : '') +
 (configHTML      ? '            ' + configHTML      + '\n' : '') +

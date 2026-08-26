@@ -24,7 +24,7 @@ var availableItems = [
     availabilityStarts: "2026-08-24",
     model: "Aris 2-Piece Bench Sectional",
     productionDate: "2023-03",
-    material: "Thrive performance fabric — 97% olefin, 3% polyester",
+    material: "Thrive Performance Fabric",
     materialFeed: "Olefin",
     color: "Ink",
     conditionGrade: "Excellent",
