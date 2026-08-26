@@ -885,15 +885,23 @@ function buildConditionBlock(item) {
       '</div>';
   }).join('');
 
-  // Grade line + the rubric disclosure sit together: the definition states the
-  // grade, the link opens the full scale beneath it. The piece-specific note is
-  // deliberately not repeated here — the grade and the photos carry it.
+  // Grade line, then this piece's own note, then the rubric disclosure.
+  //
+  // The per-piece note is NOT optional decoration. A tier definition is generic
+  // by construction: it names the signs typical of that grade, which on any
+  // given piece may be the wrong signs. The B&B Italia Charles is the worked
+  // example — graded Fair, whose definition cites pilling and cushion
+  // compression, on a piece recorded as having frame, cushions and down fill
+  // all intact and no pilling at all. Without the note beside it the page
+  // asserts defects the piece does not have. The note is what makes the grade
+  // honest, so it renders wherever the grade does.
   return '<details class="listing-collapsible listing-condition" open>' +
       '<summary class="listing-meta-label">Condition</summary>' +
       '<div class="listing-condition-body">' +
         '<ol class="condition-bar" role="img" aria-label="Condition: ' + escapeHtml(grade.name) +
           ' — ' + (idx + 1) + ' out of ' + conditionGrades.length + '">' + steps + '</ol>' +
         '<p class="condition-grade"><strong>' + escapeHtml(grade.name) + '</strong> &mdash; ' + escapeHtml(grade.definition) + '</p>' +
+        (item.condition ? '<p class="condition-note">' + escapeHtml(item.condition) + '</p>' : '') +
         '<details class="condition-standards">' +
           '<summary>How we grade condition</summary>' +
           '<dl class="condition-rubric">' + rubricRows + '</dl>' +
