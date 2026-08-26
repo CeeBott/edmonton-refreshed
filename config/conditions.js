@@ -18,11 +18,21 @@
 //  tier here would publish two disagreeing standards on one site. Change
 //  one and you must change the other, guide title included.
 //
-//  ── ONE LINE, NOT A CHECKLIST ──
-//  The wording is deliberately looser than that guide's diagnostic table.
-//  The guide is the rubric a seller grades their own piece against, test by
-//  test; this is the one line a buyer reads beside a piece we have already
-//  graded. It should not read as a checklist deteriorating tier by tier.
+//  ── DEGREE ONLY, NEVER A NAMED DEFECT ──
+//  A definition states HOW MUCH wear a piece shows, never WHICH defects it
+//  shows. No pilling, no staining, no cushion compression — those belong in
+//  the per-piece `condition` note, which renders directly beneath the grade.
+//
+//  This is not a style preference, it is a correctness rule. A definition here
+//  is generic by construction: it renders identically on every piece at that
+//  grade. The moment it names a defect it is asserting that defect on pieces
+//  that do not have it. That is exactly what happened — a Fair definition
+//  citing pilling and cushion compression rendered on the B&B Italia Charles,
+//  whose own notes record frame, cushions and down fill all intact and no
+//  pilling at all. The page claimed damage the sofa did not have.
+//
+//  The scale says where the piece sits. The note says what is actually there.
+//  Keep those jobs separate.
 //
 //  ── NO CLAIMS ABOUT HISTORY ──
 //  A definition describes the piece in front of you. It never states how
@@ -32,22 +42,10 @@
 
 // Order is the render order of the bar, lowest grade first.
 var conditionGrades = [
-  {
-    name: "Fair",
-    definition: "Pilling, subtle stains, and cushion compression present. Structurally sound.",
-  },
-  {
-    name: "Good",
-    definition: "Some signs of use. Well cared for without visible staining or significant upholstery degradation.",
-  },
-  {
-    name: "Very Good",
-    definition: "No pilling, no stains, cushions hold their loft with next to no persistent indentation.",
-  },
-  {
-    name: "Excellent",
-    definition: "Very few signs of use, nearly new condition.",
-  },
+  { name: "Fair",      definition: "Well loved, structurally sound." },
+  { name: "Good",      definition: "Signs of use." },
+  { name: "Very Good", definition: "Minimal signs of use." },
+  { name: "Excellent", definition: "Next to no signs of use." },
 ];
 
 // Shown under the rubric. States only what the site already claims elsewhere
