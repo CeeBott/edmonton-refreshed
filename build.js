@@ -42,6 +42,15 @@ var faqs = require('./config/faqs');
 // ── Site config (sameAs URLs, business stats, etc.) ──
 var site = require('./config/site');
 
+// ── Listing reference content ──
+// Condition grade scale (§5.10 conditionGrade) and per-brand blurbs. Both are
+// single sources of truth rendered onto every listing that opts in.
+var conditionGrades     = require('./config/conditions').conditionGrades;
+var conditionScopeNote  = require('./config/conditions').conditionScopeNote;
+var conditionGuideHref  = require('./config/conditions').conditionGuideHref;
+var conditionGuideLabel = require('./config/conditions').conditionGuideLabel;
+var brandBlurbs        = require('./config/brands').brandBlurbs;
+
 
 // ── Utilities ────────────────────────────────────────────
 
@@ -88,6 +97,16 @@ function retailLabel(item) {
   return (item.retailVerified ? 'Retail: ' : 'Est. Retail: ') +
     formatPrice(item.retailEstimate) + (item.retailEstimateApprox ? '+' : '') +
     ' CAD' + RETAIL_SUFFIX;
+}
+
+// Bare retail figure for the labelled Details block — same approx/verified
+// rules as retailLabel(), but no "Est. Retail:" prefix (the <dt> supplies the
+// label) and no HTML entities (the caller escapes it). Verified figures render
+// plain; unverified ones keep the hedge as a trailing "(est.)".
+function retailFigure(item) {
+  if (!item.retailEstimate) return '';
+  return formatPrice(item.retailEstimate) + (item.retailEstimateApprox ? '+' : '') +
+    ' CAD' + (item.retailVerified ? '' : ' (est.)');
 }
 
 // Substitute the `{price}` token in authored prose (currently listing
@@ -724,6 +743,164 @@ function buildThumbnailStrip(images, alt, prefix) {
   return '<div class="listing-thumbnails">' + thumbs + overflow + '</div>';
 }
 
+// ── Listing info-column blocks ───────────────────────────
+// The scannable fact stack that sits beside the gallery: condition bar,
+// labelled Details, labelled Measurements, one-of-one line, delivery, and the
+// brand blurb. Each renders only when its data exists, so a listing that has
+// not been migrated to the standard yet is untouched (and stays single-column).
+// An item opts in by carrying `conditionGrade` — see listingUsesFactStack().
+
+function listingUsesFactStack(item) {
+  return !!(item && item.conditionGrade);
+}
+
+// Condition bar — a five-segment meter filled cumulatively up to the piece's
+// grade, the shared definition of that grade, the piece-specific observation,
+// and the full rubric in a <details> (no modal: it stays crawlable text and
+// needs no JS). Definitions come from config/conditions.js, never from data.
+function buildConditionBlock(item) {
+  if (!item.conditionGrade) return '';
+  var idx = -1;
+  for (var i = 0; i < conditionGrades.length; i++) {
+    if (conditionGrades[i].name.toLowerCase() === String(item.conditionGrade).toLowerCase()) idx = i;
+  }
+  if (idx === -1) {
+    console.log('  condition WARN — unknown conditionGrade "' + item.conditionGrade + '" on ' + (item.slug || item.title));
+    return '';
+  }
+  var grade = conditionGrades[idx];
+
+  var steps = conditionGrades.map(function(g, n) {
+    var cls = 'condition-step' +
+      (n <= idx ? ' is-filled' : '') +
+      (n === idx ? ' is-active' : '');
+    return '<li class="' + cls + '">' +
+        '<span class="condition-step-seg"></span>' +
+        '<span class="condition-step-label">' + escapeHtml(g.name) + '</span>' +
+      '</li>';
+  }).join('');
+
+  var rubricRows = conditionGrades.slice().reverse().map(function(g) {
+    return '<div class="condition-rubric-row">' +
+        '<dt>' + escapeHtml(g.name) + '</dt>' +
+        '<dd>' + escapeHtml(g.definition) + '</dd>' +
+      '</div>';
+  }).join('');
+
+  return '<section class="listing-condition" aria-label="Condition">' +
+      '<h2 class="listing-meta-label">Condition</h2>' +
+      '<ol class="condition-bar" role="img" aria-label="Condition: ' + escapeHtml(grade.name) +
+        ' — ' + (idx + 1) + ' out of ' + conditionGrades.length + '">' + steps + '</ol>' +
+      '<p class="condition-grade"><strong>' + escapeHtml(grade.name) + '</strong> &mdash; ' + escapeHtml(grade.definition) + '</p>' +
+      (item.condition ? '<p class="condition-note">' + escapeHtml(item.condition) + '</p>' : '') +
+      '<details class="condition-standards">' +
+        '<summary>How we grade condition</summary>' +
+        '<dl class="condition-rubric">' + rubricRows + '</dl>' +
+        '<p class="condition-rubric-note">' + escapeHtml(conditionScopeNote) + '</p>' +
+        '<p class="condition-rubric-link"><a href="' + conditionGuideHref + '">' +
+          escapeHtml(conditionGuideLabel) + ' &rarr;</a></p>' +
+      '</details>' +
+    '</section>';
+}
+
+// Shared <dl> renderer for the Details / Measurements blocks.
+function buildDefinitionBlock(label, rows, extraClass) {
+  var live = rows.filter(function(r) { return r && r.value; });
+  if (live.length === 0) return '';
+  var body = live.map(function(r) {
+    return '<div class="listing-detail-row">' +
+        '<dt>' + escapeHtml(r.label) + '</dt>' +
+        '<dd>' + escapeHtml(r.value) + '</dd>' +
+      '</div>';
+  }).join('');
+  return '<section class="listing-detail-block' + (extraClass ? ' ' + extraClass : '') + '">' +
+      '<h2 class="listing-meta-label">' + escapeHtml(label) + '</h2>' +
+      '<dl class="listing-detail-list">' + body + '</dl>' +
+    '</section>';
+}
+
+// "2023-03" → "March 2023"; "2023" → "2023". Anything else passes through.
+var MONTH_NAMES = ['January','February','March','April','May','June',
+                   'July','August','September','October','November','December'];
+function formatProductionDate(value) {
+  if (!value) return '';
+  var m = /^(\d{4})-(\d{2})(?:-\d{2})?$/.exec(String(value));
+  if (!m) return String(value);
+  var mi = parseInt(m[2], 10) - 1;
+  return (MONTH_NAMES[mi] ? MONTH_NAMES[mi] + ' ' : '') + m[1];
+}
+
+// Labelled Details — the facts a used-furniture buyer looks for first, pulled
+// out of prose and given names. Brand / retail / SKU compose from data that
+// already exists; model / productionDate / material / color are the new fields.
+function buildDetailsBlock(item, listingSku) {
+  if (!listingUsesFactStack(item)) return '';
+  return buildDefinitionBlock('Details', [
+    { label: 'Brand',           value: item.brand },
+    { label: 'Model',           value: item.model },
+    { label: 'Year',            value: formatProductionDate(item.productionDate) },
+    { label: 'Material',        value: item.material },
+    { label: 'Colour',          value: item.color },
+    // No 'Original retail' row: the value pill beside the price already shows
+    // that figure, and repeating it here restates one number twice on one
+    // screen. retailFigure() stays available for surfaces without a pill.
+    { label: 'Inventory no.',   value: listingSku },
+  ]);
+}
+
+// Labelled Measurements. width/depth/height also drive the Product schema's
+// QuantitativeValue blocks; `dimensions.extra` is visible-only (seat heights,
+// reclined depths, a companion ottoman) and emits no schema.
+function buildMeasurementsBlock(item) {
+  if (!listingUsesFactStack(item) || !item.dimensions) return '';
+  var d = item.dimensions;
+  var rows = [
+    { label: 'Width',  value: d.width  ? d.width  + ' in' : '' },
+    { label: 'Depth',  value: d.depth  ? d.depth  + ' in' : '' },
+    { label: 'Height', value: d.height ? d.height + ' in' : '' },
+  ];
+  (d.extra || []).forEach(function(e) {
+    if (e && e.label && e.value) rows.push({ label: e.label, value: e.value });
+  });
+  return buildDefinitionBlock('Measurements', rows);
+}
+
+// One-of-one line. True of every piece we carry, stated where the decision is
+// made rather than only on the homepage.
+function buildOneOfOneHTML(item) {
+  if (!listingUsesFactStack(item)) return '';
+  return '<p class="listing-oneofone">' +
+      '<span class="listing-oneofone-mark" aria-hidden="true"></span>' +
+      'One of one &mdash; this is the only ' + escapeHtml(item.brand) + ' like it we have.' +
+    '</p>';
+}
+
+// Delivery — answered beside the CTA instead of buried in Includes and the FAQ.
+// Mirrors the Offer shippingDetails already emitted in the Product schema.
+function buildDeliveryBlock(item) {
+  if (!listingUsesFactStack(item)) return '';
+  return '<section class="listing-delivery">' +
+      '<h2 class="listing-meta-label">Delivery</h2>' +
+      '<ul class="listing-delivery-list">' +
+        '<li>Edmonton and surrounding areas, typically within a few days of purchase.</li>' +
+        '<li>Anywhere in Alberta by arrangement.</li>' +
+        '<li>Charged as a flat fee based on distance and access &mdash; quoted before you commit.</li>' +
+      '</ul>' +
+    '</section>';
+}
+
+// Brand blurb — one factual note per manufacturer from config/brands.js,
+// rendered on every listing of that brand. Renders nothing for an unlisted brand.
+function buildBrandBlurbHTML(item) {
+  if (!listingUsesFactStack(item)) return '';
+  var blurb = brandBlurbs[item.brand];
+  if (!blurb) return '';
+  return '<section class="listing-brand-note">' +
+      '<h2 class="listing-meta-label">About ' + escapeHtml(item.brand) + '</h2>' +
+      '<p class="listing-meta-text">' + escapeHtml(blurb) + '</p>' +
+    '</section>';
+}
+
 function generateListingPage(item, slug, allItems, soldItems, assetVersions) {
   assetVersions = assetVersions || {};
   var cssV    = assetVersions['css/styles.min.css'] || '';
@@ -814,8 +991,24 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions) {
 
   if (listingSku) productSchema["sku"] = listingSku;
 
-  var listingMaterial = materialFor(item);
+  // An explicit item.material beats the spec-pill/leather inference in
+  // materialFor() — the labelled Details field is the authored value.
+  var listingMaterial = item.material || materialFor(item);
   if (listingMaterial) productSchema["material"] = listingMaterial;
+  if (item.color)          productSchema["color"]          = item.color;
+  if (item.model)          productSchema["model"]          = item.model;
+  if (item.productionDate) productSchema["productionDate"] = item.productionDate;
+
+  // Cosmetic condition grade (config/conditions.js). Schema.org's itemCondition
+  // enum is only New/Used/Refurbished, so the finer grade rides along as an
+  // additionalProperty rather than distorting itemCondition, which stays Used.
+  if (item.conditionGrade) {
+    productSchema["additionalProperty"] = [{
+      "@type": "PropertyValue",
+      "name": "Condition grade",
+      "value": item.conditionGrade
+    }];
+  }
 
   var breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -938,11 +1131,22 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions) {
       '</ul></details>';
   }
 
-  // Optional condition section
+  // Optional condition section. Suppressed on fact-stack listings — the same
+  // note renders inside the condition bar block there, so keeping the
+  // collapsible too would state condition twice on one page.
   var conditionHTML = '';
-  if (item.condition) {
+  if (item.condition && !listingUsesFactStack(item)) {
     conditionHTML = '<details class="listing-collapsible"><summary class="listing-meta-label">Condition</summary><p class="listing-meta-text">' + escapeHtml(item.condition) + '</p></details>';
   }
+
+  // Info-column fact stack (renders only on listings carrying conditionGrade).
+  var usesFactStack   = listingUsesFactStack(item);
+  var conditionBarHTML = buildConditionBlock(item);
+  var detailsBlockHTML = buildDetailsBlock(item, listingSku);
+  var measurementsHTML = buildMeasurementsBlock(item);
+  var oneOfOneHTML     = buildOneOfOneHTML(item);
+  var deliveryHTML     = buildDeliveryBlock(item);
+  var brandNoteHTML    = buildBrandBlurbHTML(item);
 
   // Optional configuration / includes section
   var configHTML = '';
@@ -1180,7 +1384,7 @@ renderCredibility('listing') + '\n' +
 '      </nav>\n' +
 '\n' +
 '      <div class="listing-hero">\n' +
-'        <div class="listing-layout">\n' +
+'        <div class="listing-layout' + (usesFactStack ? ' listing-layout--split' : '') + '">\n' +
 '          <div class="listing-carousel">\n' +
 '            ' + carouselHTML + '\n' +
 '            ' + buildThumbnailStrip(item.images || [], item.brand + ' ' + item.title, imgPrefix) + '\n' +
@@ -1196,11 +1400,20 @@ renderCredibility('listing') + '\n' +
 '              <a class="listing-cta" href="#request-viewing">Request a Viewing &rarr;</a>\n' +
 '              <a class="listing-cta listing-cta--secondary" href="sms:7809651477">Text 780-965-1477</a>\n' +
 '            </div>\n' +
-'            <div class="listing-specs">' + specsHTML + '</div>\n' +
+// Spec pills are suppressed on fact-stack listings: brand, material, colour and
+// dimensions all carry labels in Details/Measurements there, so the unlabelled
+// pill row would repeat the same facts. Homepage cards keep their pills.
+(usesFactStack ? '' : '            <div class="listing-specs">' + specsHTML + '</div>\n') +
+(conditionBarHTML ? '            ' + conditionBarHTML + '\n' : '') +
+(detailsBlockHTML ? '            ' + detailsBlockHTML + '\n' : '') +
+(measurementsHTML ? '            ' + measurementsHTML + '\n' : '') +
+(oneOfOneHTML     ? '            ' + oneOfOneHTML     + '\n' : '') +
+(deliveryHTML     ? '            ' + deliveryHTML     + '\n' : '') +
 '            ' + descriptionHTML + '\n' +
 (featuresHTML    ? '            ' + featuresHTML    + '\n' : '') +
 (conditionHTML   ? '            ' + conditionHTML   + '\n' : '') +
 (configHTML      ? '            ' + configHTML      + '\n' : '') +
+(brandNoteHTML   ? '            ' + brandNoteHTML   + '\n' : '') +
 '            ' + trustStatementHTML + '\n' +
 '            ' + sellLineHTML + '\n' +
 '            <a class="listing-back" href="/">&larr; All Available Pieces</a>\n' +
@@ -2120,7 +2333,13 @@ function generateMerchantFeed(items) {
     L.push('      <g:google_product_category>' + escapeXml(mfGoogleCategory(item)) + '</g:google_product_category>');
     L.push('      <g:product_type>' + escapeXml('Pre-Owned Furniture > ' + mfPieceType(item)) + '</g:product_type>');
     L.push('      <g:identifier_exists>no</g:identifier_exists>');  // one-of-one used pieces: no GTIN/MPN
-    if (mfIsLeather(item)) L.push('      <g:material>Leather</g:material>');
+    // Google's material attribute wants the dominant material as a short value
+    // ("Leather", "Olefin"), not the descriptive blend string the page shows —
+    // so the feed reads item.materialFeed, NOT item.material. Falls back to the
+    // leather sniff; a piece with neither simply omits the attribute.
+    var feedMaterial = item.materialFeed || (mfIsLeather(item) ? 'Leather' : '');
+    if (feedMaterial) L.push('      <g:material>' + escapeXml(feedMaterial) + '</g:material>');
+    if (item.color)   L.push('      <g:color>' + escapeXml(item.color) + '</g:color>');
 
     // Dimensions → product_detail (inches), when known.
     if (item.dimensions) {
@@ -2130,6 +2349,16 @@ function generateMerchantFeed(items) {
         L.push('        <g:section_name>Dimensions</g:section_name>');
         L.push('        <g:attribute_name>' + (d.charAt(0).toUpperCase() + d.slice(1)) + '</g:attribute_name>');
         L.push('        <g:attribute_value>' + escapeXml(item.dimensions[d] + ' in') + '</g:attribute_value>');
+        L.push('      </g:product_detail>');
+      });
+      // Piece-specific extras (seat heights, reclined depths, a companion
+      // ottoman) — visible-only on the page, but valid feed detail here.
+      (item.dimensions.extra || []).forEach(function(e) {
+        if (!e || !e.label || !e.value) return;
+        L.push('      <g:product_detail>');
+        L.push('        <g:section_name>Dimensions</g:section_name>');
+        L.push('        <g:attribute_name>' + escapeXml(e.label) + '</g:attribute_name>');
+        L.push('        <g:attribute_value>' + escapeXml(e.value) + '</g:attribute_value>');
         L.push('      </g:product_detail>');
       });
     }

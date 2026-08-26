@@ -7,7 +7,7 @@
     <item>
       <g:id>CB-048</g:id>
       <g:title>Crate &amp; Barrel Aris 2-Piece Bench Sectional with Right-Arm Chaise — Thrive Ink</g:title>
-      <g:description>The Aris is a Crate &amp; Barrel exclusive, and it is the piece the brand builds when the brief is modern lines without a hard seat. Clean-lined track arms and broad decks keep the profile tailored and architectural, while the bench seats and deep back cushions do the opposite of what a low, squared-off sectional usually does — they invite you to sink in. Two bolster pillows come with it to fine-tune the lean. This is the two-piece configuration: a left-arm sofa and a right-arm chaise, so the chaise sits on the right as you face the piece. At 109 inches across with the chaise running 69 inches deep, it is a room-defining L rather than an apartment sectional — it wants a living room it can anchor. The bench seat on each module is a single uninterrupted cushion, so there is no centre gap down the seating surface. The upholstery is Thrive in the Ink colourway — one of Crate &amp; Barrel&apos;s performance fabrics, and a textured basketweave rather than a flat weave. A heathered warp combined with a bouclé yarn gives it real tonal variation up close: it reads as a deep heathered denim-slate that shifts with the light. The blend is 97% olefin and 3% polyester woven in the United States, which is the practical part — olefin is solution-dyed and resists staining and fading, so it holds up to pets, kids, and daily use, and it is GREENGUARD Gold Certified for low chemical emissions. Underneath is a hardwood frame carrying FSC certification, meaning the wood is traceable to forests certified as responsibly managed. The seat cushions are a polyfoam core wrapped in a feather-down blend — the combination that gives the Aris its support-plus-softness — and the back cushions are a polyfiber blend encased in polyester sheeting so they hold their shape rather than flattening. It is made in the USA of domestic and imported materials.</g:description>
+      <g:description>The Aris is a Crate &amp; Barrel exclusive — the piece the brand builds when the brief is modern lines without a hard seat. Clean-lined track arms and broad decks keep the profile tailored and architectural, but the bench seats and deep back cushions do the opposite of what a low, squared-off sectional usually does: they invite you to sink in. This is the two-piece configuration — a left-arm sofa with a right-arm chaise, forming a right-facing L. At 109 inches across with the chaise running 69 inches deep, it is a room-defining piece rather than an apartment sectional. The Thrive Ink upholstery reads as a deep heathered denim-slate that shifts with the light: a textured basketweave rather than a flat weave, with real tonal variation up close.</g:description>
       <g:link>https://edmontonrefreshed.com/listings/crate-and-barrel-aris-bench-sectional-edmonton/</g:link>
       <g:image_link>https://edmontonrefreshed.com/images/CB-048/crate-and-barrel-01.jpeg</g:image_link>
       <g:additional_image_link>https://edmontonrefreshed.com/images/CB-048/crate-and-barrel-02.jpeg</g:additional_image_link>
@@ -26,6 +26,8 @@
       <g:google_product_category>Furniture &gt; Sofas</g:google_product_category>
       <g:product_type>Pre-Owned Furniture &gt; Sectionals</g:product_type>
       <g:identifier_exists>no</g:identifier_exists>
+      <g:material>Olefin</g:material>
+      <g:color>Ink</g:color>
       <g:product_detail>
         <g:section_name>Dimensions</g:section_name>
         <g:attribute_name>Width</g:attribute_name>
@@ -40,6 +42,16 @@
         <g:section_name>Dimensions</g:section_name>
         <g:attribute_name>Height</g:attribute_name>
         <g:attribute_value>31.25 in</g:attribute_value>
+      </g:product_detail>
+      <g:product_detail>
+        <g:section_name>Dimensions</g:section_name>
+        <g:attribute_name>Height over back cushion</g:attribute_name>
+        <g:attribute_value>32.5 in</g:attribute_value>
+      </g:product_detail>
+      <g:product_detail>
+        <g:section_name>Dimensions</g:section_name>
+        <g:attribute_name>Sofa module depth</g:attribute_name>
+        <g:attribute_value>37.5 in</g:attribute_value>
       </g:product_detail>
       <g:shipping>
         <g:country>CA</g:country>

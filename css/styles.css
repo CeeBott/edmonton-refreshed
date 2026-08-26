@@ -4111,3 +4111,234 @@ footer a:focus-visible {
   margin: 36px auto 18px;
   max-width: var(--col-mid);
 }
+
+/* ── Listing info column — fact stack ──
+   The scannable block beside the gallery on listings carrying a
+   conditionGrade: condition bar, labelled Details/Measurements, one-of-one
+   line, delivery, and the brand note. Listings not yet migrated keep the
+   single-column stack and none of these rules apply to them. */
+
+/* Two-column split. Scoped to a min-width query so the 769–900px band keeps
+   the single-column margins from the max-width:768px block rather than
+   inheriting the grid's margin-bottom reset. */
+@media (min-width: 901px) {
+  .listing-layout--split {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: 44px;
+    align-items: start;
+  }
+  /* Gallery holds position while the (taller) info column scrolls past it. */
+  .listing-layout--split .listing-carousel {
+    position: sticky;
+    top: calc(var(--nav-height) + 16px);
+    margin-bottom: 0;
+  }
+  /* The value pill sits under the title in the narrower column rather than
+     beside it — the heading row has no room to run them side by side. */
+  .listing-layout--split .listing-heading-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .listing-layout--split .listing-title { font-size: 1.5rem; }
+  .listing-layout--split .listing-cta {
+    padding: 13px 24px;
+    margin-right: 10px;
+  }
+  .listing-layout--split .listing-cta--secondary { padding: 12px 24px; }
+}
+
+/* ── Condition bar ── */
+.listing-condition {
+  margin: 4px 0 28px;
+  padding: 18px 20px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+}
+.listing-condition .listing-meta-label { margin-bottom: 14px; }
+.condition-bar {
+  display: flex;
+  gap: 5px;
+  list-style: none;
+  margin: 0 0 14px;
+  padding: 0;
+}
+/* Equal-width steps with no hardcoded count — the bar tracks however many
+   tiers config/conditions.js defines. */
+.condition-bar > li { flex: 1 1 0; min-width: 0; }
+.condition-step-seg {
+  display: block;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--color-border);
+}
+/* Cumulative fill — every segment up to and including the grade lights up, so
+   the bar reads as a level rather than a lone highlighted notch. */
+.condition-step.is-filled .condition-step-seg { background: var(--color-accent); }
+.condition-step-label {
+  display: block;
+  margin-top: 7px;
+  font-size: 0.6rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--color-text-secondary);
+  opacity: 0.65;
+}
+.condition-step.is-active .condition-step-label {
+  color: var(--color-text);
+  font-weight: 600;
+  opacity: 1;
+}
+.condition-grade {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+.condition-grade strong { color: var(--color-text); font-weight: 600; }
+.condition-note {
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+  margin: 10px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border);
+}
+.condition-standards { margin-top: 12px; }
+.condition-standards > summary {
+  cursor: pointer;
+  list-style: none;
+  font-size: 0.78rem;
+  color: var(--color-text-secondary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s;
+}
+.condition-standards > summary::-webkit-details-marker { display: none; }
+.condition-standards > summary:hover { color: var(--color-text); }
+.condition-rubric { margin: 14px 0 0; }
+.condition-rubric-row {
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  gap: 6px 14px;
+  padding: 7px 0;
+  border-top: 1px solid var(--color-border);
+}
+.condition-rubric-row dt {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text);
+}
+.condition-rubric-row dd {
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+.condition-rubric-link {
+  margin: 10px 0 0;
+  font-size: 0.78rem;
+}
+.condition-rubric-link a {
+  color: var(--color-text-secondary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s;
+}
+.condition-rubric-link a:hover { color: var(--color-text); }
+.condition-rubric-note {
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+  margin: 12px 0 0;
+  opacity: 0.85;
+}
+
+/* ── Labelled Details / Measurements ── */
+.listing-detail-block { margin: 0 0 26px; }
+.listing-detail-block .listing-meta-label { margin-bottom: 10px; }
+.listing-detail-list { margin: 0; }
+.listing-detail-row {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 4px 16px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+.listing-detail-row:last-child { border-bottom: none; }
+.listing-detail-row dt {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+}
+.listing-detail-row dd {
+  font-size: 0.85rem;
+  color: var(--color-text);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ── One-of-one line ── */
+.listing-oneofone {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--color-text);
+  margin: 0 0 24px;
+}
+.listing-oneofone-mark {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-success);
+}
+
+/* ── Delivery ── */
+.listing-delivery { margin: 0 0 28px; }
+.listing-delivery .listing-meta-label { margin-bottom: 9px; }
+.listing-delivery-list { list-style: none; margin: 0; padding: 0; }
+.listing-delivery-list li {
+  position: relative;
+  padding: 3px 0 3px 16px;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+}
+.listing-delivery-list li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  top: 2px;
+  font-size: 0.75rem;
+  opacity: 0.6;
+}
+
+/* ── Brand note ── */
+.listing-brand-note {
+  margin: 28px 0 4px;
+  padding-top: 22px;
+  border-top: 1px solid var(--color-border);
+}
+.listing-brand-note .listing-meta-label { margin-bottom: 8px; }
+
+@media (max-width: 768px) {
+  .listing-condition { padding: 16px 16px 14px; margin-bottom: 24px; }
+  .condition-step-label { font-size: 0.54rem; letter-spacing: 0.03em; }
+  .condition-rubric-row { grid-template-columns: 1fr; gap: 2px; }
+  .listing-detail-row { grid-template-columns: 112px 1fr; }
+}
+
+@media (max-width: 400px) {
+  /* "Very Good" and "Excellent" collide under a 320–400px bar. Drop the labels
+     — the .condition-grade line directly below already names the grade in bold,
+     so the bar degrades to a pure level indicator with no loss of meaning. */
+  .condition-step-label { display: none; }
+  .condition-bar { margin-bottom: 10px; }
+}
