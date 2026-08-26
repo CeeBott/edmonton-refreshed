@@ -2908,6 +2908,54 @@ var metaTitleGaps = availableItems.filter(function (i) {
   return !i.comingSoon && !/for Sale in Edmonton/.test(i.metaTitle || '');
 }).map(function (i) { return i.slug || slugify(i.brand + '-' + i.title); });
 
+// (i) Listing completeness — WARN on the fact-stack gaps that fail SILENTLY.
+//     Every item here produces a page that builds, renders, and looks fine
+//     while quietly missing a section or falling back to the deprecated
+//     single-column layout (§10.20). Nothing in this group is an error; a
+//     legitimately unknown productionDate is deliberately NOT checked.
+var listingGaps = [];
+availableItems.forEach(function (i) {
+  if (i.comingSoon) return;
+  var slug = i.slug || slugify(i.brand + '-' + i.title);
+  var miss = [];
+
+  // The silent one: no grade means no fact stack at all.
+  if (!i.conditionGrade) {
+    listingGaps.push(slug + ' — no conditionGrade, so it renders in the deprecated single-column layout (§10.20)');
+    return;                                   // the rest is moot until it opts in
+  }
+  // §5.19: a grade without its note leaves a generic definition standing alone.
+  if (!i.condition)  miss.push('condition note (§5.19 — the grade is generic without it)');
+  if (!i.model)      miss.push('model');
+  if (!i.color)      miss.push('color');
+  if (!i.material)   miss.push('material');
+  // material set but nothing usable for the feed, and not sniffable as leather.
+  // `materialFeed: null` records a deliberate omission (the fibre genuinely is
+  // not stated anywhere) and silences this, the same way merchantFeed's
+  // shippingRate: null means "omit the block" rather than "not filled in yet".
+  if (i.material && !i.materialFeed && !i.hasOwnProperty('materialFeed') && !mfIsLeather(i)) {
+    miss.push('materialFeed (feed drops g:material; set null if the fibre is genuinely unstated)');
+  }
+  // §5.20: no blurb means no "About {Brand}" section on every piece of that brand.
+  if (!brandBlurbs[i.brand]) miss.push('config/brands.js blurb for "' + i.brand + '"');
+  // §5.10: one paragraph, ~80-120 words. Generous threshold — this is here to
+  // catch drift back toward the 400-word form, not to police a word count.
+  var words = String(i.description || '').split(/\s+/).filter(Boolean).length;
+  if (words > 170) miss.push('description is ' + words + ' words (§5.10: one paragraph, ~80-120)');
+  else if (/\n\s*\n/.test(i.description || '')) miss.push('description is multi-paragraph (§5.10: one)');
+
+  if (miss.length) listingGaps.push(slug + ' — ' + miss.join('; '));
+});
+
+// (j) Condition scale integrity — §5.19 is a [Core Invariant]: a tier
+//     definition states degree of wear, never a named defect, because it
+//     renders identically on every piece at that grade. §9.11 is what happens
+//     when it does not hold.
+var DEFECT_WORDS = /\b(pilling|pill|stain|stains|staining|fade|fading|faded|indentation|compression|compressed|sag|sagging|scuff|scuffs|tear|tears|odou?r|crack|cracking|scratch|scratches)\b/i;
+var conditionScaleGaps = conditionGrades.filter(function (g) {
+  return DEFECT_WORDS.test(g.definition);
+}).map(function (g) { return g.name + ': "' + g.definition + '"'; });
+
 // (f) llms.txt coverage — WARN when a hand-added core page or a live guide is
 //     missing from llms.txt (the class of gap that left /partners/ unlisted).
 var llmsAuditText = fs.existsSync(path.join(ROOT, 'llms.txt'))
@@ -3051,6 +3099,18 @@ if (stubPriceGaps.length) {
   stubPriceGaps.forEach(function (g) { console.log('                      ' + g); });
 } else {
   console.log('  stub-price      — redirect stub prices agree with live inventory');
+}
+if (listingGaps.length) {
+  console.log('  listing WARN    — ' + listingGaps.length + ' active listing(s) incomplete:');
+  listingGaps.forEach(function (g) { console.log('                      ' + g); });
+} else {
+  console.log('  listing         — every active listing carries the full fact-stack treatment');
+}
+if (conditionScaleGaps.length) {
+  console.log('  cond-scale WARN — tier definition names a defect (§5.19 — state degree, not defect):');
+  conditionScaleGaps.forEach(function (g) { console.log('                      ' + g); });
+} else {
+  console.log('  cond-scale      — tier definitions state degree of wear, no named defects');
 }
 
 if (ownerDangling) {
