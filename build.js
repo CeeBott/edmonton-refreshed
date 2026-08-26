@@ -852,10 +852,12 @@ function listingUsesFactStack(item) {
   return !!(item && item.conditionGrade);
 }
 
-// Condition bar — a five-segment meter filled cumulatively up to the piece's
-// grade, the shared definition of that grade, the piece-specific observation,
-// and the full rubric in a <details> (no modal: it stays crawlable text and
-// needs no JS). Definitions come from config/conditions.js, never from data.
+// Condition bar — one segment per grade with ONLY the piece's own grade filled,
+// its label emphasised, the shared definition of that grade, and the full rubric
+// in a <details> (no modal: it stays crawlable text and needs no JS). The fill
+// marks where this piece sits on the scale; it is not a progress meter, so it
+// does not fill cumulatively up to the grade. Definitions come from
+// config/conditions.js, never from data.
 function buildConditionBlock(item) {
   if (!item.conditionGrade) return '';
   var idx = -1;
@@ -869,9 +871,7 @@ function buildConditionBlock(item) {
   var grade = conditionGrades[idx];
 
   var steps = conditionGrades.map(function(g, n) {
-    var cls = 'condition-step' +
-      (n <= idx ? ' is-filled' : '') +
-      (n === idx ? ' is-active' : '');
+    var cls = 'condition-step' + (n === idx ? ' is-active' : '');
     return '<li class="' + cls + '">' +
         '<span class="condition-step-seg"></span>' +
         '<span class="condition-step-label">' + escapeHtml(g.name) + '</span>' +

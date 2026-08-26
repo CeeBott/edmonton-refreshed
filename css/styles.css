@@ -4300,9 +4300,9 @@ footer a:focus-visible {
   border-radius: 3px;
   background: var(--color-border);
 }
-/* Cumulative fill — every segment up to and including the grade lights up, so
-   the bar reads as a level rather than a lone highlighted notch. */
-.condition-step.is-filled .condition-step-seg { background: var(--color-accent); }
+/* Only the piece's own grade is filled. The bar marks a position on the scale,
+   not a level reached, so it deliberately does not fill cumulatively. */
+.condition-step.is-active .condition-step-seg { background: var(--color-accent); }
 .condition-step-label {
   display: block;
   margin-top: 7px;
@@ -4445,15 +4445,19 @@ footer a:focus-visible {
 @media (max-width: 768px) {
   .listing-condition.listing-collapsible { padding: 2px 15px; }
   .listing-condition.listing-collapsible[open] { padding-bottom: 14px; }
-  .condition-step-label { font-size: 0.54rem; letter-spacing: 0.03em; }
+  .condition-step-label { font-size: 0.58rem; letter-spacing: 0.03em; }
+  /* Collapsible headers are the primary navigation of a listing on mobile, so
+     the summary row gets a 44px tap target rather than the desktop 34px. */
+  .listing-body summary.listing-meta-label { padding: 13px 0; }
   .condition-rubric-row { grid-template-columns: 1fr; gap: 2px; }
   .listing-detail-row { grid-template-columns: 112px 1fr; }
 }
 
-@media (max-width: 400px) {
-  /* "Very Good" and "Excellent" collide under a 320–400px bar. Drop the labels
-     — the .condition-grade line directly below already names the grade in bold,
-     so the bar degrades to a pure level indicator with no loss of meaning. */
-  .condition-step-label { display: none; }
+@media (max-width: 360px) {
+  /* Only at the very narrowest (iPhone SE 1st gen, older Android) do four
+     labels get tight. Shrink them rather than hide them: now that a single
+     segment is filled instead of the bar filling cumulatively, the labels are
+     the only thing that says what the bar means. */
+  .condition-step-label { font-size: 0.5rem; letter-spacing: 0; }
   .condition-bar { margin-bottom: 10px; }
 }
