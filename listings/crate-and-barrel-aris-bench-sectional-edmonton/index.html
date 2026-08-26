@@ -310,7 +310,7 @@
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"></noscript>
   <link rel="preload" as="image" imagesrcset="../../images/CB-048/crate-and-barrel-01-400w.avif 400w, ../../images/CB-048/crate-and-barrel-01-800w.avif 800w, ../../images/CB-048/crate-and-barrel-01.avif 1200w" imagesizes="(max-width: 768px) 100vw, 550px" fetchpriority="high" type="image/avif">
-  <link rel="stylesheet" href="../../css/styles.min.css?v=8f5a842d">
+  <link rel="stylesheet" href="../../css/styles.min.css?v=5bed8f63">
   <meta name="theme-color" content="#2c2c2c">
 </head>
 <body>
@@ -417,40 +417,121 @@
       <section class="buyer-reviews">
         <div class="reviews-inner">
           <h2 class="section-label">What Buyers Say</h2>
-          <div class="reviews-grid">
-            <div class="review-card">
-              <div class="review-card-header">
-                <div class="review-avatar">J</div>
-                <div class="review-header-info">
-                  <div class="review-author">Jadine</div>
-                  <div class="review-subtext">Bought From Us</div>
-                  <div class="review-card-stars"><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span></div>
+          <div class="reviews-carousel" data-reviews-carousel>
+            <button class="reviews-carousel-btn reviews-carousel-prev" type="button" aria-label="Previous reviews" hidden><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" width="20" height="20"><path d="M15 18l-6-6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="reviews-grid" tabindex="0" role="group" aria-label="Customer reviews">
+              <div class="review-card">
+                <div class="review-card-header">
+                  <div class="review-avatar">J</div>
+                  <div class="review-header-info">
+                    <div class="review-author">Jadine</div>
+                    <div class="review-subtext">Bought From Us</div>
+                    <div class="review-card-stars"><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span></div>
+                  </div>
                 </div>
+                <p class="review-text">&ldquo;Very happy with my purchase. Thank you&rdquo;</p>
               </div>
-              <p class="review-text">&ldquo;Very happy with my purchase. Thank you&rdquo;</p>
-            </div>
-            <div class="review-card">
-              <div class="review-card-header">
-                <div class="review-avatar">J</div>
-                <div class="review-header-info">
-                  <div class="review-author">Janet Spriggs</div>
-                  <div class="review-subtext">Bought From Us</div>
-                  <div class="review-card-stars"><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span></div>
+              <div class="review-card">
+                <div class="review-card-header">
+                  <div class="review-avatar">J</div>
+                  <div class="review-header-info">
+                    <div class="review-author">Janet Spriggs</div>
+                    <div class="review-subtext">Bought From Us</div>
+                    <div class="review-card-stars"><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span></div>
+                  </div>
                 </div>
+                <p class="review-text">&ldquo;My husband and I purchased a couch from Collin with Edmonton Refreshed Seating. We were absolutely impressed with the quality of the piece but more impressed with Collin&rsquo;s professionalism. He was a pleasure to deal with and made sure our transaction went completely smooth. DO NOT hesitate to deal with him. You won&rsquo;t be disappointed!&rdquo;</p>
               </div>
-              <p class="review-text">&ldquo;My husband and I purchased a couch from Collin with Edmonton Refreshed Seating. We were absolutely impressed with the quality of the piece but more impressed with Collin&rsquo;s professionalism. He was a pleasure to deal with and made sure our transaction went completely smooth. DO NOT hesitate to deal with him. You won&rsquo;t be disappointed!&rdquo;</p>
-            </div>
-            <div class="review-card">
-              <div class="review-card-header">
-                <div class="review-avatar">D</div>
-                <div class="review-header-info">
-                  <div class="review-author">Dave Schmidt</div>
-                  <div class="review-subtext">Bought From Us</div>
-                  <div class="review-card-stars"><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span></div>
+              <div class="review-card">
+                <div class="review-card-header">
+                  <div class="review-avatar">D</div>
+                  <div class="review-header-info">
+                    <div class="review-author">Dave Schmidt</div>
+                    <div class="review-subtext">Bought From Us</div>
+                    <div class="review-card-stars"><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span></div>
+                  </div>
                 </div>
+                <p class="review-text">&ldquo;Collin is the owner of the company and he is a joy to work with. He communicates well, he is incredibly helpful, and made himself readily available for the purchase of the furniture.&rdquo;</p>
               </div>
-              <p class="review-text">&ldquo;Collin is the owner of the company and he is a joy to work with. He communicates well, he is incredibly helpful, and made himself readily available for the purchase of the furniture.&rdquo;</p>
+              <div class="review-card">
+                <div class="review-card-header">
+                  <div class="review-avatar">S</div>
+                  <div class="review-header-info">
+                    <div class="review-author">Sharon</div>
+                    <div class="review-subtext">Bought From Us</div>
+                    <div class="review-card-stars"><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span></div>
+                  </div>
+                </div>
+                <p class="review-text">&ldquo;Quality sofa! Collin was great to work with!&rdquo;</p>
+              </div>
+              <div class="review-card">
+                <div class="review-card-header">
+                  <div class="review-avatar">L</div>
+                  <div class="review-header-info">
+                    <div class="review-author">Leila</div>
+                    <div class="review-subtext">Bought From Us</div>
+                    <div class="review-card-stars"><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star">&#9733;</span></div>
+                  </div>
+                </div>
+                <p class="review-text">&ldquo;Detailed listing, pointed out benefits as well as flaws. Excellent knowledge of the product. Great customer service &mdash; delivered my sofa next day in extremely cold weather, which I did not expect. Highly recommended. I would definitely buy from Collin again.&rdquo;</p>
+              </div>
+              <div class="review-card">
+                <div class="review-card-header">
+                  <div class="review-avatar">D</div>
+                  <div class="review-header-info">
+                    <div class="review-author">Debbie</div>
+                    <div class="review-subtext">Bought From Us</div>
+                    <div class="review-card-stars"><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span></div>
+                  </div>
+                </div>
+                <p class="review-text">&ldquo;Collin was an absolute pleasure to deal with in every aspect! He was very responsive, knowledgeable about the product, answered all my questions and the item was exactly as described. Also priced very fairly. I would highly recommend Collin!&rdquo;</p>
+              </div>
+              <div class="review-card">
+                <div class="review-card-header">
+                  <div class="review-avatar">B</div>
+                  <div class="review-header-info">
+                    <div class="review-author">Barbara</div>
+                    <div class="review-subtext">Bought From Us</div>
+                    <div class="review-card-stars"><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span></div>
+                  </div>
+                </div>
+                <p class="review-text">&ldquo;This was a great shopping experience. The quality of the furniture was excellent. Service was above and beyond.&rdquo;</p>
+              </div>
+              <div class="review-card">
+                <div class="review-card-header">
+                  <div class="review-avatar">A</div>
+                  <div class="review-header-info">
+                    <div class="review-author">Andrea</div>
+                    <div class="review-subtext">Bought From Us</div>
+                    <div class="review-card-stars"><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span></div>
+                  </div>
+                </div>
+                <p class="review-text">&ldquo;Very happy with my purchase. He really went above and beyond with delivery. Thank you Collin!&rdquo;</p>
+              </div>
+              <div class="review-card">
+                <div class="review-card-header">
+                  <div class="review-avatar">C</div>
+                  <div class="review-header-info">
+                    <div class="review-author">CN</div>
+                    <div class="review-subtext">Bought From Us</div>
+                    <div class="review-card-stars"><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span></div>
+                  </div>
+                </div>
+                <p class="review-text">&ldquo;Accurate description, fair pricing, pleasant and easy to deal with. Great seller!&rdquo;</p>
+              </div>
+              <div class="review-card">
+                <div class="review-card-header">
+                  <div class="review-avatar">F</div>
+                  <div class="review-header-info">
+                    <div class="review-author">Fiona</div>
+                    <div class="review-subtext">Bought From Us</div>
+                    <div class="review-card-stars"><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span><span class="review-star filled">&#9733;</span></div>
+                  </div>
+                </div>
+                <p class="review-text">&ldquo;Friendly, very communicative, easy to deal with.&rdquo;</p>
+              </div>
             </div>
+            <button class="reviews-carousel-btn reviews-carousel-next" type="button" aria-label="Next reviews" hidden><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" width="20" height="20"><path d="M9 18l6-6-6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
           </div>
         </div>
       </section>
@@ -636,7 +717,7 @@
     <div class="lightbox-counter" id="lightbox-counter"></div>
   </div>
 
-  <script src="../../js/shared.min.js?v=2d3b193a"></script>
+  <script src="../../js/shared.min.js?v=d1f81259"></script>
   <script src="../../js/viewing-form.min.js?v=88aef9b8"></script>
   <script>
   (function() {

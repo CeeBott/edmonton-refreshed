@@ -446,3 +446,78 @@ document.querySelectorAll('.newsletter-form').forEach(function(form) {
   update(sentinel.getBoundingClientRect().top);
 })();
 
+
+// ── Reviews carousel (listing pages) ─────────────────────
+// Horizontal review track with prev/next arrows. The track is a plain
+// overflow-x scroller, so touch swipe, trackpad, and keyboard all work with no
+// JS at all — this only adds the desktop arrows and keeps them in sync with the
+// scroll position. Arrows ship hidden and are revealed only when the track
+// actually overflows, so a listing with two reviews shows no dead controls.
+(function initReviewsCarousels() {
+  var carousels = document.querySelectorAll('[data-reviews-carousel]');
+  if (!carousels.length) return;
+
+  carousels.forEach(function(carousel) {
+    var track = carousel.querySelector('.reviews-grid');
+    var prev  = carousel.querySelector('.reviews-carousel-prev');
+    var next  = carousel.querySelector('.reviews-carousel-next');
+    if (!track || !prev || !next) return;
+
+    // Scroll by one card plus its gap, so a click always lands a card edge on
+    // the snap point rather than leaving a sliver showing.
+    function step() {
+      var card = track.querySelector('.review-card');
+      if (!card) return track.clientWidth;
+      var styles = window.getComputedStyle(track);
+      var gap = parseFloat(styles.columnGap || styles.gap) || 0;
+      return card.getBoundingClientRect().width + gap;
+    }
+
+    function update() {
+      // 1px of slack absorbs sub-pixel rounding at the track's right edge.
+      var max = track.scrollWidth - track.clientWidth;
+      var overflows = max > 1;
+      prev.hidden = !overflows || track.scrollLeft <= 1;
+      next.hidden = !overflows || track.scrollLeft >= max - 1;
+    }
+
+    // Deliberately no `behavior` option: passing 'smooth' overrides the CSS, and
+    // where a smooth scroll cannot animate the request is dropped outright and
+    // the arrow does nothing. Omitting it defers to scroll-behavior in CSS,
+    // which also lets the reduced-motion override switch the animation off.
+    //
+    // The fallback covers the case where the animation never starts at all —
+    // a backgrounded or non-rendered tab, an engine that ignores the request.
+    // If the track has not moved a frame or two later, land the scroll
+    // instantly so an arrow is never dead. When the animation IS running,
+    // scrollLeft has already changed by then and this leaves it alone.
+    function nudge(delta) {
+      var from = track.scrollLeft;
+      track.scrollBy({ left: delta });
+      setTimeout(function() {
+        // 'instant', not 'auto' and not a scrollLeft assignment. Per CSSOM,
+        // behavior:'auto' means "use the CSS scroll-behavior property" — with
+        // smooth set there it resolves straight back to smooth and gets
+        // dropped again, and a plain scrollLeft assignment goes through the
+        // same animated path. 'instant' is the only value that bypasses it.
+        if (track.scrollLeft === from) track.scrollBy({ left: delta, behavior: 'instant' });
+        update();
+      }, 60);
+      // A smooth animation lands well after that check, and the scroll event
+      // that would normally refresh the arrows is not guaranteed to fire (it is
+      // suppressed in a non-rendered tab). Refresh once the animation has had
+      // time to settle so the arrows can never show a stale enabled state.
+      setTimeout(update, 500);
+    }
+
+    prev.addEventListener('click', function() { nudge(-step()); });
+    next.addEventListener('click', function() { nudge(step()); });
+    track.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+
+    // Card widths depend on fonts and images, so re-check once those settle.
+    update();
+    window.addEventListener('load', update);
+    if (window.ResizeObserver) new ResizeObserver(update).observe(track);
+  });
+})();

@@ -3023,6 +3023,81 @@ footer a:focus-visible {
    need less air beneath them than the sell-cluster equivalent. */
 .buyer-reviews { margin-bottom: 8px; }
 
+/* ── Reviews carousel (listing pages) ──
+   The listing block shows every buyer review, so the track scrolls
+   horizontally at all widths rather than wrapping into a grid. Scoped to
+   .buyer-reviews: the homepage and sell-cluster .reviews-grid keep their
+   wrapping grid on desktop and their existing mobile carousel untouched. */
+.reviews-carousel { position: relative; }
+.buyer-reviews .reviews-grid {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  /* The track is focusable for keyboard scrolling; keep the default outline
+     off the full-bleed edge and draw it just inside instead. */
+  outline-offset: -2px;
+}
+.buyer-reviews .reviews-grid::-webkit-scrollbar { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  /* The arrows defer to this value, so turning it off here is all that is
+     needed to make them jump rather than glide. */
+  .buyer-reviews .reviews-grid { scroll-behavior: auto; }
+}
+.buyer-reviews .reviews-grid .review-card {
+  flex: 0 0 320px;
+  max-width: 320px;
+  scroll-snap-align: start;
+  /* Cards sit in a scroll track, so the hover lift would clip against
+     overflow. Keep the shadow change, drop the transform. */
+  transform: none;
+}
+.buyer-reviews .reviews-grid .review-card:hover { transform: none; }
+
+.reviews-carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(4px);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  box-shadow: var(--shadow-sm);
+  transition: background 0.2s, opacity 0.2s;
+}
+.reviews-carousel-btn[hidden] { display: none; }
+.reviews-carousel-btn:hover { background: #fff; box-shadow: var(--shadow-md); }
+.reviews-carousel-prev { left: -8px; }
+.reviews-carousel-next { right: -8px; }
+
+@media (max-width: 768px) {
+  /* Match the sitewide mobile reviews carousel: full-bleed track with the
+     page inset re-added inside, and no arrows — the swipe is the affordance. */
+  .buyer-reviews .reviews-grid {
+    gap: 16px;
+    padding: 0 var(--page-x);
+    -webkit-mask-image: linear-gradient(to right, transparent, var(--page-x), black calc(100% - var(--page-x)), transparent);
+    mask-image: linear-gradient(to right, transparent, var(--page-x), black calc(100% - var(--page-x)), transparent);
+  }
+  .buyer-reviews .reviews-grid .review-card {
+    flex: 0 0 280px;
+    max-width: 280px;
+    scroll-snap-align: center;
+  }
+  .reviews-carousel-btn { display: none; }
+}
+
 /* Send details — section heading uses the global .section-label pattern
    (uppercase tracked sans-serif) and centers above the form to mark the
    transition from informational content to the conversion surface. */

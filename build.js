@@ -656,29 +656,47 @@ function generateSellerReviewsHTML(reviews) {
 
 
 // Buyer reviews for listing pages — the buyer-side twin of
-// generateSellerReviewsHTML above. Renders the most recent reviews carrying
-// text and a non-seller type, in the same card format, directly above the
-// "Request a Viewing" form: the last thing read before the ask, exactly as
-// seller reviews sit above the sell form. Capped so the block stays a nudge
-// rather than a page of its own; the homepage carries the full set.
+// generateSellerReviewsHTML above. Renders EVERY review carrying text and a
+// non-seller type, in the same card format, directly above the "Request a
+// Viewing" form: the last thing read before the ask, exactly as seller reviews
+// sit above the sell form.
+//
+// The full set is shown rather than a sample, so the track is a horizontal
+// carousel at every breakpoint (mobile already scrolled .reviews-grid; the
+// arrows and desktop scroll behaviour are scoped to .buyer-reviews so the
+// homepage and sell-cluster grids are untouched). Arrows are wired in
+// js/shared.js and hide themselves when the track has nothing to scroll.
 // Renders nothing when there are no buyer reviews with text.
-var LISTING_REVIEW_CAP = 3;
 function generateBuyerReviewsHTML(reviews) {
   var buyers = (reviews || []).filter(function (r) {
     return r.type !== 'seller' && r.text;
-  }).slice(0, LISTING_REVIEW_CAP);
+  });
   if (!buyers.length) return '';
+
+  var arrow = function (dir) {
+    var d = dir === 'prev' ? 'M15 18l-6-6 6-6' : 'M9 18l6-6-6-6';
+    return '<button class="reviews-carousel-btn reviews-carousel-' + dir + '" type="button" ' +
+      'aria-label="' + (dir === 'prev' ? 'Previous reviews' : 'Next reviews') + '" hidden>' +
+      '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" width="20" height="20">' +
+      '<path d="' + d + '" fill="none" stroke="currentColor" stroke-width="2" ' +
+      'stroke-linecap="round" stroke-linejoin="round"/></svg></button>';
+  };
 
   var lines = [
     '      <section class="buyer-reviews">',
     '        <div class="reviews-inner">',
     '          <h2 class="section-label">What Buyers Say</h2>',
-    '          <div class="reviews-grid">'
+    '          <div class="reviews-carousel" data-reviews-carousel>',
+    '            ' + arrow('prev'),
+    // tabindex makes the track keyboard-scrollable for anyone not using the arrows.
+    '            <div class="reviews-grid" tabindex="0" role="group" aria-label="Customer reviews">'
   ];
   buyers.forEach(function (r) {
-    lines.push.apply(lines, reviewCardLines(r, '            '));
+    lines.push.apply(lines, reviewCardLines(r, '              '));
   });
   lines.push(
+    '            </div>',
+    '            ' + arrow('next'),
     '          </div>',
     '        </div>',
     '      </section>'
