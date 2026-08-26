@@ -4135,12 +4135,40 @@ footer a:focus-visible {
   }
   /* Taller frame to match the wider column — a 4:3 gallery this wide would run
      past the fold on a laptop, so the crop opens up rather than up-scaling. */
-  .listing-layout--split .listing-carousel .carousel { aspect-ratio: 3/2; }
-  /* Gallery holds position while the (taller) info column scrolls past it. */
+  /* Gallery holds position while the info column scrolls past it, and releases
+     at the foot of .listing-hero — which is exactly where #request-viewing
+     begins, so the photos stop right above the viewing form.
+
+     Sticky travel here equals (info column height - gallery height), because a
+     grid item sticks within its own grid area and that area ends with the row.
+     Two things therefore have to hold, and both are enforced below:
+       1. The gallery must fit the viewport. A sticky box taller than the
+          screen pins its top off-screen and never fully shows — it reads as
+          "sticky is broken" even though it is working.
+       2. The gallery must be shorter than the info column, or the row is
+          gallery-height and there is no travel at all to stick through. */
   .listing-layout--split .listing-carousel {
     position: sticky;
     top: calc(var(--nav-height) + 16px);
     margin-bottom: 0;
+  }
+  .listing-layout--split .listing-carousel .carousel {
+    /* `height` must be overridden explicitly, not just aspect-ratio: the
+       @media (min-width: 769px) rule above sets height: min(62vh, 560px), and
+       an explicit height beats aspect-ratio for sizing. Leaving it in place
+       pinned this frame to ~558px tall no matter how wide the column got —
+       and since the photos are 4:3 and letterbox against a wider frame, they
+       were height-limited and never actually grew. */
+    height: auto;
+    /* 4:3 matches the source photos (§5.3), so a landscape shot fills the
+       frame edge to edge with no letterboxing — the largest the image can
+       render at this column width. */
+    aspect-ratio: 4/3;
+    /* Cap against viewport height so the whole gallery is always on screen to
+       pin: nav + top offset + thumbnail strip + a little foot room. The
+       aspect-ratio yields to max-height, so a short laptop just letterboxes
+       rather than pushing the gallery off the bottom of the screen. */
+    max-height: calc(100vh - var(--nav-height) - 120px);
   }
   /* The value pill sits under the title in the narrower column rather than
      beside it — the heading row has no room to run them side by side. */
