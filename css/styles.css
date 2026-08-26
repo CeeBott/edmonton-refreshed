@@ -4151,6 +4151,10 @@ footer a:focus-visible {
     position: sticky;
     top: calc(var(--nav-height) + 16px);
     margin-bottom: 0;
+    /* Belt and braces: a stretched grid item fills its area and cannot travel,
+       so sticky silently does nothing. align-items:start on the container
+       already handles it — this survives anyone overriding that later. */
+    align-self: start;
   }
   .listing-layout--split .listing-carousel .carousel {
     /* `height` must be overridden explicitly, not just aspect-ratio: the
