@@ -655,6 +655,38 @@ function generateSellerReviewsHTML(reviews) {
 }
 
 
+// Buyer reviews for listing pages — the buyer-side twin of
+// generateSellerReviewsHTML above. Renders the most recent reviews carrying
+// text and a non-seller type, in the same card format, directly above the
+// "Request a Viewing" form: the last thing read before the ask, exactly as
+// seller reviews sit above the sell form. Capped so the block stays a nudge
+// rather than a page of its own; the homepage carries the full set.
+// Renders nothing when there are no buyer reviews with text.
+var LISTING_REVIEW_CAP = 3;
+function generateBuyerReviewsHTML(reviews) {
+  var buyers = (reviews || []).filter(function (r) {
+    return r.type !== 'seller' && r.text;
+  }).slice(0, LISTING_REVIEW_CAP);
+  if (!buyers.length) return '';
+
+  var lines = [
+    '      <section class="buyer-reviews">',
+    '        <div class="reviews-inner">',
+    '          <h2 class="section-label">What Buyers Say</h2>',
+    '          <div class="reviews-grid">'
+  ];
+  buyers.forEach(function (r) {
+    lines.push.apply(lines, reviewCardLines(r, '            '));
+  });
+  lines.push(
+    '          </div>',
+    '        </div>',
+    '      </section>'
+  );
+  return lines.join('\n');
+}
+
+
 // ── Product schema (static, for index.html <head>) ───────
 
 function generateProductSchemas(items) {
@@ -965,7 +997,7 @@ function buildBrandBlurbHTML(item) {
     '</details>';
 }
 
-function generateListingPage(item, slug, allItems, soldItems, assetVersions) {
+function generateListingPage(item, slug, allItems, soldItems, assetVersions, reviews, reviewAggregate) {
   assetVersions = assetVersions || {};
   var cssV    = assetVersions['css/styles.min.css'] || '';
   var sharedV = assetVersions['js/shared.min.js']   || '';
@@ -1054,6 +1086,10 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions) {
   }
 
   if (listingSku) productSchema["sku"] = listingSku;
+  productSchema["url"] = listingUrl;
+  // Free-text category, kept identical to the merchant feed's product_type so
+  // the on-page entity and the feed describe the piece the same way.
+  productSchema["category"] = 'Pre-Owned Furniture > ' + mfPieceType(item);
 
   // An explicit item.material beats the spec-pill/leather inference in
   // materialFor() — the labelled Details field is the authored value.
@@ -1167,6 +1203,18 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions) {
     },
     "sameAs": site.sameAs
   };
+  // Business rating on the LocalBusiness node, matching every other page on the
+  // site (§8.4 keeps the numbers in one place). It goes here and NOT on the
+  // Product: Google requires product review markup to be about that specific
+  // product, and attaching a business-wide rating to a one-of-one piece is a
+  // manual-action risk — the same reasoning §6.3 records for sold stubs.
+  if (reviewAggregate && reviewAggregate.ratingValue && reviewAggregate.totalCount) {
+    localBusinessSchema["aggregateRating"] = {
+      "@type": "AggregateRating",
+      "ratingValue": reviewAggregate.ratingValue,
+      "reviewCount": reviewAggregate.totalCount
+    };
+  }
 
   // Image prefix: listing page is at /listings/[slug]/, images are at root /images/
   var imgPrefix = '../../';
@@ -1211,6 +1259,7 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions) {
   var oneOfOneHTML     = buildOneOfOneHTML(item);
   var deliveryHTML     = buildDeliveryBlock(item);
   var brandNoteHTML    = buildBrandBlurbHTML(item);
+  var buyerReviewsHTML = usesFactStack ? generateBuyerReviewsHTML(reviews) : '';
 
   // Optional configuration / includes section
   var configHTML = '';
@@ -1489,6 +1538,7 @@ renderCredibility('listing') + '\n' +
 '        </div>\n' +
 '      </div>\n' +
 '\n' +
+(buyerReviewsHTML ? buyerReviewsHTML + '\n\n' : '') +
 '      <!-- Request a viewing — buyer inquiry emailed to Collin via the Worker.\n' +
 '           Universal across devices, unlike the old sms: CTA which was a\n' +
 '           no-op on desktop. See js/viewing-form.js. -->\n' +
@@ -2541,7 +2591,7 @@ availableItems.forEach(function(item) {
   var itemDir    = path.join(listingsDir, slug);
   if (!fs.existsSync(itemDir)) fs.mkdirSync(itemDir);
 
-  var html = generateListingPage(item, slug, availableItems, soldItems, assetVersions);
+  var html = generateListingPage(item, slug, availableItems, soldItems, assetVersions, reviews, reviewAggregate);
   fs.writeFileSync(path.join(itemDir, 'index.html'), html, 'utf8');
   listingCount++;
 });

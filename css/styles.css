@@ -70,7 +70,8 @@
    SELLER_REVIEWS markers) wraps the same .reviews-inner system, so it is
    neutralized the same way — .reviews-inner stays the active layout box
    and the mobile full-bleed reviews carousel carries over unchanged. */
-:where(.page) > .seller-reviews {
+:where(.page) > .seller-reviews,
+:where(.page) > .buyer-reviews {
   max-width: none;
   padding-inline: 0;
 }
@@ -3010,12 +3011,17 @@ footer a:focus-visible {
    reviews system wholesale; only the vertical rhythm is its own — the
    .reviews-inner 72px bottom pad would stack with .sell-send-heading's
    56px top margin, so it is zeroed here. */
-.seller-reviews {
+.seller-reviews,
+.buyer-reviews {
   margin-top: 56px;
 }
-.seller-reviews .reviews-inner {
+.seller-reviews .reviews-inner,
+.buyer-reviews .reviews-inner {
   padding-bottom: 0;
 }
+/* Buyer reviews sit directly above the viewing form on a listing page, so they
+   need less air beneath them than the sell-cluster equivalent. */
+.buyer-reviews { margin-bottom: 8px; }
 
 /* Send details — section heading uses the global .section-label pattern
    (uppercase tracked sans-serif) and centers above the form to mark the
