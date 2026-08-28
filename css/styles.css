@@ -589,6 +589,12 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   padding-bottom: 80px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  /* Every implicit row is sized to the tallest card on the grid, so cards are
+     uniform across rows and not merely within one. Without it a row holding a
+     single card — or cards whose spec pills wrap to fewer lines — sizes to its
+     own content and reads as a differently-sized card. The price/retail pair
+     stays bottom-aligned via .card-price's margin-top: auto. */
+  grid-auto-rows: 1fr;
   gap: 24px;
 }
 
