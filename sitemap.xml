@@ -3,13 +3,13 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://edmontonrefreshed.com/</loc>
-    <lastmod>2026-08-28</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/sold/</loc>
-    <lastmod>2026-08-25</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -309,7 +309,7 @@
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/guides/crate-and-barrel-sofa-review-edmonton/</loc>
-    <lastmod>2026-08-24</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -441,7 +441,7 @@
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/listings/crate-and-barrel-aris-bench-sectional-edmonton/</loc>
-    <lastmod>2026-08-26</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -476,59 +476,8 @@
     </image:image>
   </url>
   <url>
-    <loc>https://edmontonrefreshed.com/listings/west-elm-jodie-wing-leather-chairs-edmonton/</loc>
-    <lastmod>2026-08-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-    <image:image>
-      <image:loc>https://edmontonrefreshed.com/images/WE-047/west-elm-01.jpeg</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://edmontonrefreshed.com/images/WE-047/west-elm-02.jpeg</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://edmontonrefreshed.com/images/WE-047/west-elm-03.jpeg</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://edmontonrefreshed.com/images/WE-047/west-elm-04.jpeg</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://edmontonrefreshed.com/images/WE-047/west-elm-05.jpeg</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://edmontonrefreshed.com/images/WE-047/west-elm-06.jpeg</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://edmontonrefreshed.com/images/WE-047/west-elm-07.jpeg</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://edmontonrefreshed.com/images/WE-047/west-elm-08.jpeg</image:loc>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://edmontonrefreshed.com/listings/bracci-como-maxi-apartment-sofa-edmonton/</loc>
-    <lastmod>2026-08-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-    <image:image>
-      <image:loc>https://edmontonrefreshed.com/images/BS-044/bracci-01.jpeg</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://edmontonrefreshed.com/images/BS-044/bracci-02.jpeg</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://edmontonrefreshed.com/images/BS-044/bracci-03.jpeg</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://edmontonrefreshed.com/images/BS-044/bracci-04.jpeg</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://edmontonrefreshed.com/images/BS-044/bracci-05.jpeg</image:loc>
-    </image:image>
-  </url>
-  <url>
     <loc>https://edmontonrefreshed.com/listings/b-b-italia-charles-sectional-edmonton/</loc>
-    <lastmod>2026-08-26</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -572,6 +521,57 @@
     </image:image>
     <image:image>
       <image:loc>https://edmontonrefreshed.com/images/BB-030/bb-italia-13.jpeg</image:loc>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://edmontonrefreshed.com/listings/west-elm-jodie-wing-leather-chairs-edmonton/</loc>
+    <lastmod>2026-08-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/WE-047/west-elm-01.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/WE-047/west-elm-02.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/WE-047/west-elm-03.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/WE-047/west-elm-04.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/WE-047/west-elm-05.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/WE-047/west-elm-06.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/WE-047/west-elm-07.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/WE-047/west-elm-08.jpeg</image:loc>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://edmontonrefreshed.com/listings/bracci-como-maxi-apartment-sofa-edmonton/</loc>
+    <lastmod>2026-08-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/BS-044/bracci-01.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/BS-044/bracci-02.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/BS-044/bracci-03.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/BS-044/bracci-04.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/BS-044/bracci-05.jpeg</image:loc>
     </image:image>
   </url>
   <url>

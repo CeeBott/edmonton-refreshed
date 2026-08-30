@@ -32,8 +32,6 @@ listing page carries photos, dimensions, condition detail, and FAQs. This
 list is regenerated on every build and always matches the homepage.
 
 - Crate & Barrel Aris 2-Piece Bench Sectional with Right-Arm Chaise, Thrive Ink: $3,200 CAD — https://edmontonrefreshed.com/listings/crate-and-barrel-aris-bench-sectional-edmonton/
-- West Elm Jodie Wing Chair, Beige Nubuck Leather (Matched Pair): $2,700 CAD — https://edmontonrefreshed.com/listings/west-elm-jodie-wing-leather-chairs-edmonton/
-- Bracci Como Maxi Apartment Sofa, Fango Victoria Leather: $1,650 CAD — https://edmontonrefreshed.com/listings/bracci-como-maxi-apartment-sofa-edmonton/
 - B&B Italia Charles Left-Facing Sectional, Off-White Rattier Fabric: $5,200 CAD — https://edmontonrefreshed.com/listings/b-b-italia-charles-sectional-edmonton/
 
 ## Sell-Side Landing Pages
@@ -98,6 +96,8 @@ list is regenerated on every build and always matches the homepage.
 
 Permanent, indexable archive pages for notable pieces bought and resold by Edmonton Refreshed — useful for brand/model research, pricing context, and resale-value comparisons. Each piece is one-of-one and no longer available.
 
+- West Elm Jodie Wing Chair, Beige Nubuck Leather (Matched Pair) (sold): https://edmontonrefreshed.com/listings/west-elm-jodie-wing-leather-chairs-edmonton/
+- Bracci Como Maxi Apartment Sofa, Fango Victoria Leather (sold): https://edmontonrefreshed.com/listings/bracci-como-maxi-apartment-sofa-edmonton/
 - Crate & Barrel Lounge 83-Inch Bench Sofa, Taft Steel Everweave (sold): https://edmontonrefreshed.com/listings/crate-and-barrel-lounge-83-bench-sofa-edmonton/
 - La-Z-Boy Roundabout Ottoman, Nubuck Leather (sold): https://edmontonrefreshed.com/listings/la-z-boy-roundabout-ottoman-edmonton/
 - Pottery Barn Turner Square Arm Sofa, Sandstone Keystone Leather (sold): https://edmontonrefreshed.com/listings/pottery-barn-turner-square-arm-sofa-edmonton/
