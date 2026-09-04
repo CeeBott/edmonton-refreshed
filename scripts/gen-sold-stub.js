@@ -34,6 +34,40 @@ var TEMPLATE = path.join(ROOT, 'listings', 'la-z-boy-emric-right-facing-sectiona
 // availability: "SoldOut" (recommended) — accurate for one-of-one pieces and
 // matches the visible "This piece has sold." overlay (see CLAUDE.md §6.3, §10.1).
 var MANIFEST = {
+  'west-elm-jodie-wing-leather-chairs-edmonton': {
+    sku: 'WE-047',
+    availability: 'SoldOut',
+    brand: 'West Elm',
+    brandShort: 'West Elm',
+    h1: 'Jodie Wing Chair — Beige Nubuck Leather (Matched Pair)',
+    model: 'Jodie',
+    configuration: 'wing chair',
+    sellHref: '/sell/west-elm/',
+    altBase: 'West Elm Jodie Wing Chair in Beige Nubuck Leather',
+    metaDescription: 'This matched pair of West Elm Jodie wing chairs in beige nubuck leather has sold. Browse current available inventory at Edmonton Refreshed — curated pre-owned sofas and sectionals in Edmonton.',
+    twitterDescription: 'This matched pair of West Elm Jodie nubuck leather wing chairs has sold. Browse current available inventory at Edmonton Refreshed.',
+    productDescription: 'West Elm Jodie wing chairs in beige nubuck leather — a matched pair, acquired from the Royal Gardens area of southwest Edmonton and sold together. Flared wings, a deep rounded seat, and full curved arms on solid oak legs in an Almond finish, each chair 32 inches wide, 34.5 deep, and 34 tall over a kiln-dried frame with high-gauge sinuous springs. Contract-grade and GREENGUARD Gold Certified, delivered new by West Elm in July 2026 and sold in essentially brand-new condition. This piece has sold; browse current available inventory at Edmonton Refreshed.',
+    introHTML: 'The Jodie is West Elm&rsquo;s sculptural take on the classic wing chair &mdash; flared wings, a deep rounded seat, and full curved arms that wrap the sitter, riding low on solid oak legs in a water-based Almond finish. The back and profile are as resolved as the front, so the chairs work floating in a room rather than only against a wall. The upholstery is beige nubuck: 100% top-grain, full aniline dyed hide buffed to a suede-like texture and a velvety matte finish. Each chair measures 32 inches wide, 34.5 deep, and 34 tall over a kiln-dried frame with high-gauge sinuous springs, and both are contract-grade and GREENGUARD Gold Certified. We acquired this matched pair from the Royal Gardens area of southwest Edmonton &mdash; delivered new by West Elm in July 2026, they came to us in essentially brand-new condition and were sold together.',
+    newsletterHeading: 'Looking for leather chairs like the West Elm Jodie? Enter your email and we&rsquo;ll let you know when similar pieces come in.',
+  },
+
+  'bracci-como-maxi-apartment-sofa-edmonton': {
+    sku: 'BS-044',
+    availability: 'SoldOut',
+    brand: 'Bracci',
+    brandShort: 'Bracci',
+    h1: 'Como Maxi Apartment Sofa — Fango Victoria Leather',
+    model: 'Como',
+    configuration: 'leather sofa',
+    sellHref: '/sell/leather-sofa/',
+    altBase: 'Bracci Como Maxi Apartment Sofa in Fango Victoria Leather',
+    metaDescription: 'This Bracci Como maxi apartment sofa in Fango Victoria leather has sold. Browse current available inventory at Edmonton Refreshed — curated pre-owned sofas and sectionals in Edmonton.',
+    twitterDescription: 'This Bracci Como maxi apartment sofa in Fango Victoria leather has sold. Browse current available inventory at Edmonton Refreshed.',
+    productDescription: 'Bracci Como maxi in the Fango colourway of Victoria semi-aniline leather, acquired from the Graydon Hills neighbourhood of south Edmonton — a low, clean-lined two-seater bench-made in Italy&apos;s Quarrata furniture district, with track arms, slim metal feet, and heavy contrast baseball stitching. 78 inches wide, 40 deep, and 30 tall over a kiln-dried fir and beech frame on high-resilience elastic webbing. Sold in good condition. This piece has sold; browse current available inventory at Edmonton Refreshed.',
+    introHTML: 'Bracci is a Tuscan leather house that builds to order in the Quarrata furniture district, and its pieces rarely reach the secondary market here. The Como is its low, clean-lined two-seater: a tailored bench with track arms on slim metal feet. Bracci calls it a maxi loveseat, but at 78 inches wide and 40 deep it sits like a compact apartment sofa &mdash; that depth is closer to a sectional than a two-seater, so it seats properly rather than perching. Heavy contrast baseball stitching runs the arms, seat and back, and it is the visual signature of the design. The hide is Category 35 Victoria, a thick semi-aniline cowhide tanned in Italy, in the warm taupe-greige Fango colourway. We picked this one up from the Graydon Hills neighbourhood of south Edmonton, and it came to us in good condition &mdash; clean, supple leather with light, even patina over a solid, quiet frame.',
+    newsletterHeading: 'Looking for a leather sofa like the Bracci Como? Enter your email and we&rsquo;ll let you know when similar pieces come in.',
+  },
+
   'crate-and-barrel-lounge-83-bench-sofa-edmonton': {
     sku: 'CB-046-47',
     availability: 'SoldOut',
