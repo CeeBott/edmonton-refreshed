@@ -3024,6 +3024,37 @@ var listingsAuditDir = path.join(ROOT, 'listings');
   }
 });
 
+// ── Sold-stub completeness (HARD FAIL) ───────────────
+// A soldItems entry carrying an href asserts the piece has a sold stub at that
+// URL. If the page there is still the ACTIVE listing — Product schema, InStock,
+// or a visible asking price — the §8.3 transition was abandoned after the data
+// migration (steps 1-3) and the stub was never generated. That state is silent:
+// the piece is gone from the homepage and the feed, and the sitemap already
+// lists the URL at stub priority, while the page itself still advertises a sold
+// one-of-one as purchasable and publishes its asking price (§6.3). There is no
+// legitimate case for it, so it fails the build rather than warning.
+var soldStubGaps = [];
+(soldItems || []).forEach(function (item) {
+  if (!item.href) return;
+  var slug = String(item.href).replace(/^\/listings\//, '').replace(/\/$/, '');
+  var file = path.join(ROOT, 'listings', slug, 'index.html');
+  var label = (item.brand || '?') + ' ' + (item.title || '?') + ' (' + slug + ')';
+  if (!fs.existsSync(file)) {
+    soldStubGaps.push(label + ' — no page at that href; run: node scripts/gen-sold-stub.js ' + slug);
+    return;
+  }
+  var html = fs.readFileSync(file, 'utf8');
+  var live = [];
+  if (/"@type":\s*"Product"/.test(html))            live.push('Product schema');
+  if (/schema\.org\/InStock/.test(html))            live.push('InStock');
+  if (/class="listing-price"/.test(html))            live.push('visible asking price');
+  if (/id="request-viewing"/.test(html))             live.push('viewing form');
+  if (live.length) {
+    soldStubGaps.push(label + ' — still the ACTIVE listing (' + live.join(', ') +
+      '); run: node scripts/gen-sold-stub.js ' + slug);
+  }
+});
+
 // ── Summary ──────────────────────────────────────────
 var assetSummary = Object.keys(assetVersions)
   .map(function(k) { return k.split('/').pop() + ' ' + assetVersions[k]; })
@@ -3112,8 +3143,18 @@ if (conditionScaleGaps.length) {
 } else {
   console.log('  cond-scale      — tier definitions state degree of wear, no named defects');
 }
+if (soldStubGaps.length) {
+  console.log('  sold-stub FAIL  — ' + soldStubGaps.length + ' sold piece(s) still published as available (§6.3):');
+  soldStubGaps.forEach(function (g) { console.log('                      ' + g); });
+} else {
+  console.log('  sold-stub       — every sold piece with an href has a generated stub');
+}
 
 if (ownerDangling) {
   console.error('\nBuild FAILED entity-integrity check (dangling owner @id). See above.');
+  process.exitCode = 1;
+}
+if (soldStubGaps.length) {
+  console.error('\nBuild FAILED sold-stub completeness check — a sold piece is still published as available (§6.3). See above.');
   process.exitCode = 1;
 }
