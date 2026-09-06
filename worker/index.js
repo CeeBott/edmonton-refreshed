@@ -169,7 +169,13 @@ export default {
       `Original purchase price: ${get('Original purchase price') || '(not provided)'}`,
       `Receipt attached: ${hasReceipt ? 'yes' : 'no'}`,
       `Pets in home: ${get('Pets in home') || '(not answered)'}`,
-      `Asking price: ${get('Asking price') || '(not provided)'}`,
+      // The "what are you hoping to get?" field was removed from the form
+      // (§10.22). This line is retained CONDITIONALLY, not as a live field:
+      // cached pages served before the removal still POST one, and silently
+      // discarding a number a seller volunteered would lose real information.
+      // It disappears on its own once no page sends it. Do not re-add the
+      // field to bring the line back.
+      ...(get('Asking price') ? [`Asking price (legacy field): ${get('Asking price')}`] : []),
       '',
       `Name: ${get('Name')}`,
       `Best contact: ${get('Best contact')}`,

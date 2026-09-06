@@ -10,10 +10,12 @@
  *                              costs are priced in, the offer lands below
  *                              what a private sale would net, and the trade
  *                              on offer is certainty rather than top dollar.
- *                              Sets the
- *                              seller's expectation BEFORE the "What are you
- *                              hoping to get?" field, which was drawing wildly
- *                              optimistic numbers.
+ *                              Added because inbound leads carried wildly
+ *                              optimistic asking prices. The field that
+ *                              collected those numbers has since been removed
+ *                              (§10.22), which makes this panel the primary
+ *                              place expectations get set — so it matters
+ *                              more now, not less.
  *
  * Injected by build.js as an anchored, unmarked rewrite (same class as the
  * aggregateRating sync — §4.3) so the copy exists in exactly one place

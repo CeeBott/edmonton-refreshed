@@ -40,8 +40,8 @@
  * ── Worker contract ─────────────────────────────────────────────────
  * Field `name` attributes are the wire format the Cloudflare Worker reads
  * (§5.11): Brand, Year of purchase, Original purchase price, receipt, Pets in
- * home, photos, Name, Best contact, Asking price, Notes, plus the _honey
- * checkbox honeypot (which must stay a CHECKBOX — §9.1) and Acknowledged.
+ * home, photos, Name, Best contact, Notes, plus the _honey checkbox honeypot
+ * (which must stay a CHECKBOX — §9.1) and Acknowledged.
  * Renaming any of these here without updating worker/index.js breaks
  * submissions.
  *
@@ -55,12 +55,10 @@
  *
  * ── Field order ─────────────────────────────────────────────────────
  * The provenance cluster (year → original price → receipt) sits together
- * because those three answers come from one place: the receipt. "What are you
- * hoping to get?" is deliberately placed at the far end of the form, below
- * contact details, rather than adjacent to the original purchase price — a
- * seller who has just typed a retail figure and is immediately asked what they
- * want will anchor off it, which is the §5.13 / §10.12 pricing-anchor problem
- * pointed inward at our own intake.
+ * because those three answers come from one place: the receipt.
+ *
+ * There is deliberately NO "what are you hoping to get?" field — see §10.22.
+ * Do not add one back next to the original purchase price, or anywhere else.
  */
 
 var DEFAULTS = {
@@ -166,11 +164,6 @@ function renderSellForm(opts) {
   p('  <div class="sell-form-row">');
   p('    <label for="sf-contact">Best contact (phone or email)</label>');
   p('    <input type="text" id="sf-contact" name="Best contact" placeholder="Phone number or email" required>');
-  p('  </div>');
-  p('');
-  p('  <div class="sell-form-row">');
-  p('    <label for="sf-price">What are you hoping to get? <span class="sell-form-req-note">(optional)</span></label>');
-  p('    <input type="text" id="sf-price" name="Asking price" inputmode="numeric" autocomplete="off" placeholder="Know what you&rsquo;d like to get? Share it here.">');
   p('  </div>');
   p('');
   p('  <div class="sell-form-row">');

@@ -3,8 +3,8 @@
 //
 //  Used on /sell/ and every /sell/[slug]/ landing page.
 //  Posts a multipart form (Brand, Year of purchase, Original purchase
-//  price, receipt, Pets in home, 1–5 photos, Name, Contact, Asking
-//  price, Notes) to the Cloudflare Worker endpoint.
+//  price, receipt, Pets in home, 1–5 photos, Name, Contact, Notes)
+//  to the Cloudflare Worker endpoint.
 //
 //  The MARKUP is not authored here — it is generated from
 //  partials/sell-form.js and stamped onto all 22 sell pages by
@@ -42,21 +42,18 @@
   var success = document.getElementById('sell-form-success');
   if (!form) return;
 
-  // Money fields (both optional) — format the value as CAD dollars as the
-  // seller types, so "400" displays as "$400". Digits only; no cents.
-  // sf-price is "what are you hoping to get", sf-msrp the original purchase
-  // price.
-  ['sf-price', 'sf-msrp'].forEach(function (id) {
-    var el = document.getElementById(id);
-    if (!el) return;
+  // Original purchase price (optional) — format the value as CAD dollars as
+  // the seller types, so "400" displays as "$400". Digits only; no cents.
+  var msrpInput = document.getElementById('sf-msrp');
+  if (msrpInput) {
     var formatMoney = function () {
-      var digits = el.value.replace(/[^0-9]/g, '');
-      if (!digits) { el.value = ''; return; }
-      el.value = '$' + Number(digits).toLocaleString('en-CA');
+      var digits = msrpInput.value.replace(/[^0-9]/g, '');
+      if (!digits) { msrpInput.value = ''; return; }
+      msrpInput.value = '$' + Number(digits).toLocaleString('en-CA');
     };
-    el.addEventListener('input', formatMoney);
-    el.addEventListener('blur', formatMoney);
-  });
+    msrpInput.addEventListener('input', formatMoney);
+    msrpInput.addEventListener('blur', formatMoney);
+  }
 
   var photosInput = document.getElementById('sf-photos');
   var photosAdd = document.getElementById('sf-photos-add');
