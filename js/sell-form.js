@@ -1,13 +1,17 @@
 // ═══════════════════════════════════════════════════════════
 //  SELL FORM HANDLER
 //
-//  Used on /sell/ and every /sell/[slug]-edmonton/ landing page.
-//  Posts a multipart form (Brand, Age, Asking price, Name, Contact,
-//  Notes, 1–5 photos) to the Cloudflare Worker endpoint.
+//  Used on /sell/ and every /sell/[slug]/ landing page.
+//  Posts a multipart form (Brand, Year of purchase, Original purchase
+//  price, receipt, Pets in home, 1–5 photos, Name, Contact, Asking
+//  price, Notes) to the Cloudflare Worker endpoint.
 //
-//  The form's "Brand" field can be pre-filled by setting its
-//  value in HTML — that's how the brand-specific landing pages
-//  pass context to the dispatcher (e.g. "Natuzzi", "Rove Concepts").
+//  The MARKUP is not authored here — it is generated from
+//  partials/sell-form.js and stamped onto all 22 sell pages by
+//  build.js (§5.11). This file owns submit behaviour only: money
+//  formatting, the photo picker, in-browser compression, the size
+//  gates, and the fetch. Adding a field means editing the partial,
+//  this file, and worker/index.js.
 // ═══════════════════════════════════════════════════════════
 
 (function () {
@@ -21,6 +25,10 @@
   // compressImage), so the cap should essentially never fire in practice;
   // it exists to catch the rare case where compression fails on every file.
   var MAX_TOTAL_BYTES = 18 * 1024 * 1024;
+  // Optional receipt/invoice. A PDF cannot be downscaled the way compressImage
+  // handles photos, so it gets its own per-file cap. Must stay in lock-step
+  // with MAX_RECEIPT_BYTES in worker/index.js (§5.11).
+  var MAX_RECEIPT_BYTES = 8 * 1024 * 1024;
   // Compression targets — 1600px on the long edge, JPEG quality 0.82.
   // A typical 4 MB phone photo lands around 250–400 KB at these settings.
   var COMPRESS_MAX_DIM = 1600;
@@ -34,18 +42,21 @@
   var success = document.getElementById('sell-form-success');
   if (!form) return;
 
-  // Asking price (optional) — format the value as CAD dollars as the seller
-  // types, so "400" displays as "$400". Digits only; no cents.
-  var priceInput = document.getElementById('sf-price');
-  if (priceInput) {
-    var formatPrice = function () {
-      var digits = priceInput.value.replace(/[^0-9]/g, '');
-      if (!digits) { priceInput.value = ''; return; }
-      priceInput.value = '$' + Number(digits).toLocaleString('en-CA');
+  // Money fields (both optional) — format the value as CAD dollars as the
+  // seller types, so "400" displays as "$400". Digits only; no cents.
+  // sf-price is "what are you hoping to get", sf-msrp the original purchase
+  // price.
+  ['sf-price', 'sf-msrp'].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    var formatMoney = function () {
+      var digits = el.value.replace(/[^0-9]/g, '');
+      if (!digits) { el.value = ''; return; }
+      el.value = '$' + Number(digits).toLocaleString('en-CA');
     };
-    priceInput.addEventListener('input', formatPrice);
-    priceInput.addEventListener('blur', formatPrice);
-  }
+    el.addEventListener('input', formatMoney);
+    el.addEventListener('blur', formatMoney);
+  });
 
   var photosInput = document.getElementById('sf-photos');
   var photosAdd = document.getElementById('sf-photos-add');
@@ -289,11 +300,41 @@
       processedPhotos.push(await compressImage(selectedPhotos[p]));
     }
 
-    var totalCompressed = 0;
+    // Optional receipt. An image receipt goes through the same compression as
+    // the photos; a PDF cannot be, so it is passed through and gated on size
+    // alone. Either way it counts against the shared email budget below.
+    var receiptInput = document.getElementById('sf-receipt');
+    var receiptErr = document.getElementById('sf-receipt-error');
+    var processedReceipt = null;
+    if (receiptInput && receiptInput.files && receiptInput.files[0]) {
+      var rawReceipt = receiptInput.files[0];
+      processedReceipt = /^image\//.test(rawReceipt.type)
+        ? await compressImage(rawReceipt)
+        : rawReceipt;
+      if (processedReceipt.size > MAX_RECEIPT_BYTES) {
+        if (receiptErr) {
+          receiptErr.textContent =
+            'That receipt is ' + (processedReceipt.size / 1024 / 1024).toFixed(1) + ' MB, ' +
+            'over the ' + (MAX_RECEIPT_BYTES / 1024 / 1024).toFixed(0) + ' MB limit. ' +
+            'Please attach a smaller file or a photo of it — or leave it off and ' +
+            'send it separately once we reply.';
+          receiptErr.hidden = false;
+        }
+        receiptInput.focus();
+        if (submit) {
+          submit.disabled = false;
+          submit.textContent = originalSubmitText;
+        }
+        return;
+      }
+      if (receiptErr) receiptErr.hidden = true;
+    }
+
+    var totalCompressed = processedReceipt ? processedReceipt.size : 0;
     for (var q = 0; q < processedPhotos.length; q++) totalCompressed += processedPhotos[q].size;
     if (totalCompressed > MAX_TOTAL_BYTES) {
       showPhotosError(
-        'Photos still total ' + (totalCompressed / 1024 / 1024).toFixed(1) + ' MB ' +
+        'Your attachments still total ' + (totalCompressed / 1024 / 1024).toFixed(1) + ' MB ' +
         'after optimization. Please send fewer photos or lower-resolution shots ' +
         'from your phone — or text them to 780-965-1477.'
       );
@@ -308,6 +349,10 @@
     try {
       var fd = new FormData(form);
       fd.delete('photos');
+      fd.delete('receipt');
+      if (processedReceipt) {
+        fd.append('receipt', processedReceipt, processedReceipt.name || 'receipt');
+      }
       for (var i = 0; i < processedPhotos.length; i++) {
         fd.append('photos', processedPhotos[i], processedPhotos[i].name || ('photo-' + (i + 1) + '.jpg'));
       }

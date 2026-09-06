@@ -436,6 +436,9 @@ function injectSellForm(html, filepath) {
       brand:            meta.brand,
       notesLabel:       meta.notesLabel,
       notesPlaceholder: meta.notesPlaceholder,
+      // Edmonton-local, via today() — never new Date().getFullYear(), which
+      // reintroduces the §9.5 UTC off-by-one on a UTC runner every Dec 31.
+      currentYear:      today().slice(0, 4),
     });
   });
 }

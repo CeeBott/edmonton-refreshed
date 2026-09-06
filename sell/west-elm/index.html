@@ -243,7 +243,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="../../css/styles.min.css?v=edc20056">
+  <link rel="stylesheet" href="../../css/styles.min.css?v=af1f102d">
   <meta name="theme-color" content="#2c2c2c">
 </head>
 <body>
@@ -436,21 +436,50 @@
         </div>
 
         <div class="sell-form-row">
-          <label for="sf-age">Approximate age</label>
-          <select id="sf-age" name="Approximate age" required>
-            <option value="">Select age range</option>
-            <option>0&ndash;3 years</option>
-            <option>4&ndash;7 years</option>
-            <option>8&ndash;10 years</option>
-            <option>11&ndash;15 years</option>
-            <option>15+ years</option>
+          <label for="sf-year">Year purchased or made</label>
+          <select id="sf-year" name="Year of purchase" required>
+            <option value="">Select a year</option>
+            <option>2026</option>
+            <option>2025</option>
+            <option>2024</option>
+            <option>2023</option>
+            <option>2022</option>
+            <option>2021</option>
+            <option>2020</option>
+            <option>2019</option>
+            <option>2018</option>
+            <option>2017</option>
+            <option>2016</option>
+            <option>2015</option>
+            <option>2014</option>
+            <option>2013</option>
+            <option>2012</option>
+            <option>2011 or earlier</option>
+            <option>Not sure</option>
           </select>
+          <p class="sell-form-hint">An approximate year is fine &mdash; it is a much better guide to value than an age range.</p>
         </div>
 
         <div class="sell-form-row">
-          <label for="sf-price">What are you hoping to get? <span class="sell-form-req-note">(optional)</span></label>
-          <input type="text" id="sf-price" name="Asking price" inputmode="numeric" autocomplete="off" placeholder="Know what you&rsquo;d like to get? Share it here.">
+          <label for="sf-msrp">Original purchase price <span class="sell-form-req-note">(optional)</span></label>
+          <input type="text" id="sf-msrp" name="Original purchase price" inputmode="numeric" autocomplete="off" placeholder="What it sold for new">
+          <p class="sell-form-hint">Pre-tax, for a single piece, in CAD. An approximate figure is fine.</p>
         </div>
+
+        <div class="sell-form-row">
+          <label for="sf-receipt">Receipt or invoice <span class="sell-form-req-note">(optional)</span></label>
+          <input type="file" id="sf-receipt" name="receipt" accept="image/*,application/pdf" class="sell-form-file">
+          <p class="sell-form-hint">A photo or PDF of the original receipt, if you still have it. It confirms the year and price, which usually means a stronger offer &mdash; and lets us show the next owner exactly what the piece is.</p>
+          <p class="sell-form-error" id="sf-receipt-error" hidden></p>
+        </div>
+
+        <fieldset class="sell-form-row sell-form-choice">
+          <legend>Pets in the home</legend>
+          <p class="sell-form-hint">This tells us what cleaning the piece will need. It does not disqualify anything.</p>
+          <label class="sell-form-choice-option"><input type="radio" name="Pets in home" value="Non-hypoallergenic cat or dog" required> <span>Cat or dog</span></label>
+          <label class="sell-form-choice-option"><input type="radio" name="Pets in home" value="Hypoallergenic cat or dog"> <span>Hypoallergenic cat or dog</span></label>
+          <label class="sell-form-choice-option"><input type="radio" name="Pets in home" value="None"> <span>No pets</span></label>
+        </fieldset>
 
         <div class="sell-form-row">
           <label id="sf-photos-label">Photos <span class="sell-form-req-note">(minimum 1 photo &mdash; more are welcome)</span></label>
@@ -472,6 +501,11 @@
         <div class="sell-form-row">
           <label for="sf-contact">Best contact (phone or email)</label>
           <input type="text" id="sf-contact" name="Best contact" placeholder="Phone number or email" required>
+        </div>
+
+        <div class="sell-form-row">
+          <label for="sf-price">What are you hoping to get? <span class="sell-form-req-note">(optional)</span></label>
+          <input type="text" id="sf-price" name="Asking price" inputmode="numeric" autocomplete="off" placeholder="Know what you&rsquo;d like to get? Share it here.">
         </div>
 
         <div class="sell-form-row">
@@ -705,7 +739,7 @@
   <!-- FOOTER_END -->
 
   <script src="../../js/shared.min.js?v=d1f81259"></script>
-  <script src="../../js/sell-form.min.js?v=96b993e1"></script>
+  <script src="../../js/sell-form.min.js?v=8f023d8b"></script>
 
 </body>
 </html>

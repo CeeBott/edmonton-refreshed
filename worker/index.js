@@ -15,10 +15,27 @@
 
 const REQUIRED_FIELDS = [
   'Brand',
-  'Approximate age',
   'Name',
   'Best contact',
 ];
+
+// Age is required, but which field carries it depends on which version of the
+// site the submission came from: the form moved from an "Approximate age"
+// range select to an exact "Year of purchase" (§5.11). The static site and this
+// Worker deploy independently (§4.8), so for a window after either one ships
+// there are pages in the wild sending the other field — and a hard requirement
+// on one name would reject every submission from those pages with a "Missing
+// required field" error the seller can do nothing about. Accepting either makes
+// the deploy order irrelevant.
+//
+// Once GitHub Pages has served the new form for long enough that no cached page
+// sends the old name, 'Approximate age' can be dropped from this list.
+const AGE_FIELDS = ['Year of purchase', 'Approximate age'];
+
+// A receipt is optional but can be a PDF, which the client cannot compress the
+// way it downscales photos. Capped separately so one large scan cannot eat the
+// whole email budget; the client enforces the same number (§5.11).
+const MAX_RECEIPT_BYTES = 8 * 1024 * 1024;
 
 const MAX_PHOTOS = 5;
 const MIN_PHOTOS = 1;
@@ -87,6 +104,12 @@ export default {
         return json({ error: `Missing required field: ${field}` }, 400, cors);
       }
     }
+    const ageValue = AGE_FIELDS
+      .map((f) => (formData.get(f) || '').toString().trim())
+      .find(Boolean);
+    if (!ageValue) {
+      return json({ error: 'Missing required field: Year of purchase' }, 400, cors);
+    }
 
     const photos = formData.getAll('photos').filter((p) => p instanceof File && p.size > 0);
     if (photos.length < MIN_PHOTOS) {
@@ -112,13 +135,40 @@ export default {
       });
     }
 
+    // Optional receipt/invoice — a photo or a PDF. Counted against the same
+    // email budget as the photos, with its own per-file cap because a PDF
+    // scan bypasses the client's image compression entirely.
+    const receipt = formData.get('receipt');
+    const hasReceipt = receipt instanceof File && receipt.size > 0;
+    if (hasReceipt) {
+      if (receipt.size > MAX_RECEIPT_BYTES) {
+        return json({
+          error: `That receipt is larger than ${(MAX_RECEIPT_BYTES / 1024 / 1024).toFixed(0)} MB. Please send a smaller file, or leave it off and email it separately.`,
+        }, 400, cors);
+      }
+      totalBytes += receipt.size;
+      if (totalBytes > MAX_TOTAL_BYTES) {
+        return json({
+          error: `Photos and receipt exceed ${(MAX_TOTAL_BYTES / 1024 / 1024).toFixed(0)} MB total. Please send smaller files.`,
+        }, 400, cors);
+      }
+      const rbuf = await receipt.arrayBuffer();
+      attachments.push({
+        filename: sanitizeFilename(receipt.name || 'receipt'),
+        content: arrayBufferToBase64(rbuf),
+      });
+    }
+
     const get = (k) => (formData.get(k) || '').toString().trim();
     const sourcePage = get('Source page') || '(unknown)';
     const lines = [
       `Submitted from: ${sourcePage}`,
       '',
       `Brand: ${get('Brand')}`,
-      `Approximate age: ${get('Approximate age')}`,
+      `Year purchased / made: ${ageValue}`,
+      `Original purchase price: ${get('Original purchase price') || '(not provided)'}`,
+      `Receipt attached: ${hasReceipt ? 'yes' : 'no'}`,
+      `Pets in home: ${get('Pets in home') || '(not answered)'}`,
       `Asking price: ${get('Asking price') || '(not provided)'}`,
       '',
       `Name: ${get('Name')}`,
