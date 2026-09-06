@@ -35,6 +35,7 @@ var renderNav         = require('./partials/nav').renderNav;
 var renderFooter      = require('./partials/footer').renderFooter;
 var renderCredibility = require('./partials/credibility').renderCredibility;
 var renderSellPrelude = require('./partials/sell-prelude').renderSellPrelude;
+var renderSellForm = require('./partials/sell-form').renderSellForm;
 
 // ── FAQ source of truth (homepage / sell hub / about) ──
 var faqs = require('./config/faqs');
@@ -360,6 +361,83 @@ function injectSellPrelude(html) {
     /([ \t]*)<div class="sell-form-prelude">[\s\S]*?<\/div>(?:\s*<div class="sell-form-offer">[\s\S]*?<\/div>)?/g,
     function (_m, indent) { return renderSellPrelude(indent); }
   );
+}
+
+// Sell form (§5.11). Per-page values for the three things that legitimately
+// differ — see partials/sell-form.js for what they are and why. Keyed by
+// repo-relative path, same convention as LANDING_SOLD_SCHEMA_META (§5.16).
+// A page carrying a sell form but missing from this map renders the form with
+// defaults (blank brand, so the acknowledgment checkbox is included), which is
+// the correct shape for any new non-brand landing page; add an entry only to
+// pre-fill a brand or tailor the notes copy.
+var SELL_FORM_META = {
+  'sell/index.html':                                 {},
+  // Brand pages — pre-filled brand, no acknowledgment checkbox (§5.11).
+  'sell/natuzzi/index.html':                         { brand: 'Natuzzi' },
+  'sell/rove-concepts/index.html':                   { brand: 'Rove Concepts' },
+  'sell/eq3/index.html':                             { brand: 'EQ3' },
+  'sell/crate-and-barrel/index.html':                { brand: 'Crate &amp; Barrel' },
+  'sell/restoration-hardware/index.html':            { brand: 'Restoration Hardware' },
+  'sell/west-elm/index.html':                        { brand: 'West Elm' },
+  // Legacy -edmonton full-page stubs (§5.13) — retired brands, form retained.
+  'sell/american-leather-edmonton/index.html':       { brand: 'American Leather' },
+  'sell/bb-italia-edmonton/index.html':              { brand: 'B&amp;B Italia' },
+  // Piece-type pages — all defaults.
+  'sell/sofa/index.html':                            {},
+  'sell/leather-sofa/index.html':                    {},
+  'sell/couch/index.html':                           {},
+  'sell/leather-couch/index.html':                   {},
+  'sell/sectional/index.html':                       {},
+  'sell/leather-sectional/index.html':               {},
+  // Situational pages — notes copy tailored to the circumstance.
+  'sell/furniture-consignment/index.html':           {},
+  'sell/selling-furniture-before-moving/index.html': {
+    notesLabel:       'Anything we should know? (Move date, building access, etc.)',
+    notesPlaceholder: 'Move date, building access, anything else',
+  },
+  'sell/downsizing-furniture/index.html': {
+    notesLabel:       'Anything we should know? (Multiple pieces, building access, timing)',
+    notesPlaceholder: 'Number of pieces, building access, timing, anything else',
+  },
+  'sell/sell-furniture-fast/index.html': {
+    notesLabel:       'Anything we should know? (Timeline, building access, etc.)',
+    notesPlaceholder: 'When does the piece need to be gone? Any access notes?',
+  },
+  'sell/estate-furniture/index.html': {
+    notesLabel:       'Anything we should know? (Multiple pieces, timeline, executor details)',
+    notesPlaceholder: 'Number of pieces, timeline, who the offer should be paid to',
+  },
+  'sell/sell-designer-furniture/index.html': {
+    notesLabel:       'Anything we should know? (Model name, leather grade, original retailer)',
+    notesPlaceholder: 'Model, fabric/leather, where it was originally purchased',
+  },
+  'sell/what-we-buy/index.html': {
+    notesLabel:       'Anything we should know? (Model name, leather grade, original retailer)',
+    notesPlaceholder: 'Model, fabric/leather, where it was originally purchased',
+  },
+};
+
+// Anchored, unmarked rewrite of the whole <form class="sell-form"> element —
+// same class as injectSellPrelude above. The form markup lived as 22 hand-
+// copied blocks kept in sync by instruction alone (§5.11), which is the §9.3
+// pattern that already produced §10.17 and §10.18; it had drifted. Now one
+// source, stamped onto every page that carries the form. Idempotent: the
+// match consumes the previous render, so a hand-edited page self-heals.
+//
+// The form contains no nested <form>, so the lazy </form> anchor is safe.
+function injectSellForm(html, filepath) {
+  var re = /([ \t]*)<form class="sell-form"[\s\S]*?<\/form>/;
+  if (!re.test(html)) return html;
+  var rel = path.relative(ROOT, filepath).split(path.sep).join('/');
+  var meta = SELL_FORM_META[rel] || {};
+  return html.replace(re, function (_m, indent) {
+    return renderSellForm({
+      indent:           indent,
+      brand:            meta.brand,
+      notesLabel:       meta.notesLabel,
+      notesPlaceholder: meta.notesPlaceholder,
+    });
+  });
 }
 
 // Ensure every page links the web manifest (Android "add to home screen" / PWA
@@ -2667,6 +2745,7 @@ for (var pi = 0; pi < partialFiles.length; pi++) {
   var pPath = partialFiles[pi];
   var pOrig = fs.readFileSync(pPath, 'utf8');
   var pNext = injectAllPartials(pOrig);
+  pNext = injectSellForm(pNext, pPath);
   pNext = injectLandingSoldSchema(pNext, pPath);
   pNext = relinkSoldCards(pNext);
   var pPreAggregate = pNext;
