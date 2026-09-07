@@ -61,9 +61,11 @@
  * Do not add one back next to the original purchase price, or anywhere else.
  */
 
-// The deep rubric lives in one place (config/conditions.js), so the form's
-// link cannot drift from the one every listing page renders.
-var CONDITION_GUIDE_HREF = require('../config/conditions').conditionGuideHref;
+// Required marker. Every field on this form is mandatory (§5.11), so the
+// asterisk is a visual cue only — aria-hidden keeps screen readers from
+// announcing "star" on all ten labels, since each control already carries a
+// `required` attribute, which is what assistive tech actually reports.
+var REQ = ' <span class="sell-form-req" aria-hidden="true">*</span>';
 
 var DEFAULTS = {
   brandPlaceholder: 'e.g. Natuzzi, EQ3, Rove Concepts (or &lsquo;unsure&rsquo;)',
@@ -115,10 +117,16 @@ function yearOptions(currentYear) {
 // Definitions are the seller-facing wording: same degree of wear as
 // config/conditions.js, phrased for someone assessing their own piece. Degree
 // only, never a named defect (§5.19).
+//
+// Do NOT copy this wording back into config/conditions.js. Those definitions
+// render on every listing at that grade and are bound by the stricter "no
+// claims about history" rule there — "expected with normal use and age" is fine
+// as guidance to a seller sizing up their own piece, and would be an unfounded
+// claim about provenance if published on a listing.
 var CONDITION_OPTIONS = [
   ['Excellent / Like New', 'Virtually no signs of use'],
   ['Very Good',            'Minimal signs of use, apparent on close inspection'],
-  ['Good',                 'Signs of use expected with normal use'],
+  ['Good',                 'Signs of use expected with normal use and age'],
   ['Fair',                 'Obvious cosmetic wear, structurally sound'],
 ];
 
@@ -139,52 +147,57 @@ function renderSellForm(opts) {
   p('  <input type="checkbox" name="_honey" class="sell-form-honey" tabindex="-1" autocomplete="off" aria-hidden="true">');
   p('');
   p('  <div class="sell-form-row">');
-  p('    <label for="sf-brand">Brand</label>');
+  p('    <label for="sf-brand">Brand' + REQ + '</label>');
   p('    <input type="text" id="sf-brand" name="Brand" placeholder="' + DEFAULTS.brandPlaceholder + '" autocomplete="off" value="' + brand + '" required>');
   p('  </div>');
   p('');
+  // Second field, directly under Brand: asking about the receipt up front
+  // primes everything downstream — both provenance fields below say "if no
+  // invoice is available", and the upload asks for it again.
+  p('  <fieldset class="sell-form-row sell-form-choice">');
+  p('    <legend>Do you have the original receipt?' + REQ + '</legend>');
+  p('    <p class="sell-form-hint">Having original documentation showing purchase dates and prices helps us make a stronger, more confident offer.</p>');
+  p('    <label class="sell-form-choice-option"><input type="radio" name="Has receipt" value="Yes" required> <span>Yes</span></label>');
+  p('    <label class="sell-form-choice-option"><input type="radio" name="Has receipt" value="No"> <span>No</span></label>');
+  p('  </fieldset>');
+  p('');
   p('  <div class="sell-form-row">');
-  p('    <label for="sf-year">Year purchased or made</label>');
+  p('    <label for="sf-year">Year purchased or manufactured' + REQ + '</label>');
   p('    <select id="sf-year" name="Year of purchase" required>');
   years.forEach(function (opt) { p('      ' + opt); });
   p('    </select>');
-  p('    <p class="sell-form-hint">An approximate year is fine &mdash; it is a much better guide to value than an age range.</p>');
+  p('    <p class="sell-form-hint">Enter approx. year of purchase if no invoice is available</p>');
   p('  </div>');
   p('');
+  // No hint under this one by design: the per-option definitions carry the
+  // whole explanation, and a "most sellers grade one tier high" nudge above
+  // them read as a warning rather than help.
   p('  <div class="sell-form-row">');
-  p('    <label for="sf-condition">Condition</label>');
+  p('    <label for="sf-condition">Condition' + REQ + '</label>');
   p('    <select id="sf-condition" name="Condition" required>');
   p('      <option value="">Select a condition</option>');
   CONDITION_OPTIONS.forEach(function (c) {
     p('      <option value="' + c[0] + '">' + c[0] + ' &mdash; ' + c[1] + '</option>');
   });
   p('    </select>');
-  p('    <p class="sell-form-hint">Most sellers grade a piece one tier high. <a href="' + CONDITION_GUIDE_HREF + '">How we grade condition</a>, with a 60-second self-check.</p>');
   p('  </div>');
   p('');
   p('  <div class="sell-form-row">');
-  p('    <label for="sf-msrp">Original purchase price</label>');
-  p('    <input type="text" id="sf-msrp" name="Original purchase price" inputmode="numeric" autocomplete="off" placeholder="What it sold for new" required>');
-  p('    <p class="sell-form-hint">Pre-tax, for a single piece, in CAD. An approximate figure is fine if you no longer have the receipt.</p>');
+  p('    <label for="sf-msrp">Original purchase price' + REQ + '</label>');
+  p('    <input type="text" id="sf-msrp" name="Original purchase price" inputmode="numeric" autocomplete="off" placeholder="$" required>');
+  p('    <p class="sell-form-hint">Enter the price pre-tax and any shipping fees. Enter the approximate price if the invoice is unavailable</p>');
   p('  </div>');
   p('');
   p('  <fieldset class="sell-form-row sell-form-choice">');
-  p('    <legend>Pets in the home</legend>');
+  p('    <legend>Pets in the home' + REQ + '</legend>');
   p('    <p class="sell-form-hint">This tells us what cleaning the piece will need. It does not disqualify anything.</p>');
   p('    <label class="sell-form-choice-option"><input type="radio" name="Pets in home" value="Non-hypoallergenic cat or dog" required> <span>Cat or dog</span></label>');
   p('    <label class="sell-form-choice-option"><input type="radio" name="Pets in home" value="Hypoallergenic cat or dog"> <span>Hypoallergenic cat or dog</span></label>');
   p('    <label class="sell-form-choice-option"><input type="radio" name="Pets in home" value="None"> <span>No pets</span></label>');
   p('  </fieldset>');
   p('');
-  p('  <fieldset class="sell-form-row sell-form-choice">');
-  p('    <legend>Do you have the original receipt?</legend>');
-  p('    <p class="sell-form-hint">A receipt confirms the year and what the piece cost new, which usually means a stronger offer. If you have one, add it with your photos below.</p>');
-  p('    <label class="sell-form-choice-option"><input type="radio" name="Has receipt" value="Yes" required> <span>Yes</span></label>');
-  p('    <label class="sell-form-choice-option"><input type="radio" name="Has receipt" value="No"> <span>No</span></label>');
-  p('  </fieldset>');
-  p('');
   p('  <div class="sell-form-row">');
-  p('    <label id="sf-photos-label">Photos and receipt <span class="sell-form-req-note">' + DEFAULTS.photosNote + '</span></label>');
+  p('    <label id="sf-photos-label">Photos and receipt' + REQ + ' <span class="sell-form-req-note">' + DEFAULTS.photosNote + '</span></label>');
   p('    <div class="sell-photo-picker">');
   // Deliberately NOT `required`: the input is cleared after every selection
   // (files are held in a JS array so they can accumulate across picks), so a
@@ -195,22 +208,22 @@ function renderSellForm(opts) {
   p('      <ul class="sell-photo-list" id="sf-photos-list" hidden aria-live="polite"></ul>');
   p('      <p class="sell-photo-count" id="sf-photos-count" hidden></p>');
   p('    </div>');
-  p('    <p class="sell-form-hint">Front, side, and close-ups of any wear &mdash; plus the receipt, if you have one. A phone photo of it is fine; so is a PDF. Photos are automatically optimized before sending, so use full-resolution shots from your phone.</p>');
+  p('    <p class="sell-form-hint">Include photos of your item, including any relevant wear, as well as your original purchase receipt/invoice if it&rsquo;s available.</p>');
   p('    <p class="sell-form-error" id="sf-photos-error" hidden></p>');
   p('  </div>');
   p('');
   p('  <div class="sell-form-row">');
-  p('    <label for="sf-name">Your name</label>');
+  p('    <label for="sf-name">Your name' + REQ + '</label>');
   p('    <input type="text" id="sf-name" name="Name" autocomplete="name" required>');
   p('  </div>');
   p('');
   p('  <div class="sell-form-row">');
-  p('    <label for="sf-contact">Best contact (phone or email)</label>');
+  p('    <label for="sf-contact">Best contact (phone or email)' + REQ + '</label>');
   p('    <input type="text" id="sf-contact" name="Best contact" placeholder="Phone number or email" required>');
   p('  </div>');
   p('');
   p('  <div class="sell-form-row">');
-  p('    <label for="sf-notes">' + notesLabel + '</label>');
+  p('    <label for="sf-notes">' + notesLabel + REQ + '</label>');
   p('    <textarea id="sf-notes" name="Notes" rows="4" placeholder="' + notesPlaceholder + '" required></textarea>');
   p('  </div>');
   p('');

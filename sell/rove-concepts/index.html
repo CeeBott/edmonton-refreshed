@@ -335,7 +335,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="../../css/styles.min.css?v=eb939228">
+  <link rel="stylesheet" href="../../css/styles.min.css?v=b6ea03fe">
   <meta name="theme-color" content="#2c2c2c">
 </head>
 <body>
@@ -523,12 +523,19 @@
         <input type="checkbox" name="_honey" class="sell-form-honey" tabindex="-1" autocomplete="off" aria-hidden="true">
 
         <div class="sell-form-row">
-          <label for="sf-brand">Brand</label>
+          <label for="sf-brand">Brand <span class="sell-form-req" aria-hidden="true">*</span></label>
           <input type="text" id="sf-brand" name="Brand" placeholder="e.g. Natuzzi, EQ3, Rove Concepts (or &lsquo;unsure&rsquo;)" autocomplete="off" value="Rove Concepts" required>
         </div>
 
+        <fieldset class="sell-form-row sell-form-choice">
+          <legend>Do you have the original receipt? <span class="sell-form-req" aria-hidden="true">*</span></legend>
+          <p class="sell-form-hint">Having original documentation showing purchase dates and prices helps us make a stronger, more confident offer.</p>
+          <label class="sell-form-choice-option"><input type="radio" name="Has receipt" value="Yes" required> <span>Yes</span></label>
+          <label class="sell-form-choice-option"><input type="radio" name="Has receipt" value="No"> <span>No</span></label>
+        </fieldset>
+
         <div class="sell-form-row">
-          <label for="sf-year">Year purchased or made</label>
+          <label for="sf-year">Year purchased or manufactured <span class="sell-form-req" aria-hidden="true">*</span></label>
           <select id="sf-year" name="Year of purchase" required>
             <option value="">Select a year</option>
             <option>2026</option>
@@ -549,66 +556,58 @@
             <option>2011 or earlier</option>
             <option>Not sure</option>
           </select>
-          <p class="sell-form-hint">An approximate year is fine &mdash; it is a much better guide to value than an age range.</p>
+          <p class="sell-form-hint">Enter approx. year of purchase if no invoice is available</p>
         </div>
 
         <div class="sell-form-row">
-          <label for="sf-condition">Condition</label>
+          <label for="sf-condition">Condition <span class="sell-form-req" aria-hidden="true">*</span></label>
           <select id="sf-condition" name="Condition" required>
             <option value="">Select a condition</option>
             <option value="Excellent / Like New">Excellent / Like New &mdash; Virtually no signs of use</option>
             <option value="Very Good">Very Good &mdash; Minimal signs of use, apparent on close inspection</option>
-            <option value="Good">Good &mdash; Signs of use expected with normal use</option>
+            <option value="Good">Good &mdash; Signs of use expected with normal use and age</option>
             <option value="Fair">Fair &mdash; Obvious cosmetic wear, structurally sound</option>
           </select>
-          <p class="sell-form-hint">Most sellers grade a piece one tier high. <a href="/guides/what-condition-means-furniture-grading-edmonton/">How we grade condition</a>, with a 60-second self-check.</p>
         </div>
 
         <div class="sell-form-row">
-          <label for="sf-msrp">Original purchase price</label>
-          <input type="text" id="sf-msrp" name="Original purchase price" inputmode="numeric" autocomplete="off" placeholder="What it sold for new" required>
-          <p class="sell-form-hint">Pre-tax, for a single piece, in CAD. An approximate figure is fine if you no longer have the receipt.</p>
+          <label for="sf-msrp">Original purchase price <span class="sell-form-req" aria-hidden="true">*</span></label>
+          <input type="text" id="sf-msrp" name="Original purchase price" inputmode="numeric" autocomplete="off" placeholder="$" required>
+          <p class="sell-form-hint">Enter the price pre-tax and any shipping fees. Enter the approximate price if the invoice is unavailable</p>
         </div>
 
         <fieldset class="sell-form-row sell-form-choice">
-          <legend>Pets in the home</legend>
+          <legend>Pets in the home <span class="sell-form-req" aria-hidden="true">*</span></legend>
           <p class="sell-form-hint">This tells us what cleaning the piece will need. It does not disqualify anything.</p>
           <label class="sell-form-choice-option"><input type="radio" name="Pets in home" value="Non-hypoallergenic cat or dog" required> <span>Cat or dog</span></label>
           <label class="sell-form-choice-option"><input type="radio" name="Pets in home" value="Hypoallergenic cat or dog"> <span>Hypoallergenic cat or dog</span></label>
           <label class="sell-form-choice-option"><input type="radio" name="Pets in home" value="None"> <span>No pets</span></label>
         </fieldset>
 
-        <fieldset class="sell-form-row sell-form-choice">
-          <legend>Do you have the original receipt?</legend>
-          <p class="sell-form-hint">A receipt confirms the year and what the piece cost new, which usually means a stronger offer. If you have one, add it with your photos below.</p>
-          <label class="sell-form-choice-option"><input type="radio" name="Has receipt" value="Yes" required> <span>Yes</span></label>
-          <label class="sell-form-choice-option"><input type="radio" name="Has receipt" value="No"> <span>No</span></label>
-        </fieldset>
-
         <div class="sell-form-row">
-          <label id="sf-photos-label">Photos and receipt <span class="sell-form-req-note">(at least 1 photo &mdash; up to 6 files)</span></label>
+          <label id="sf-photos-label">Photos and receipt <span class="sell-form-req" aria-hidden="true">*</span> <span class="sell-form-req-note">(at least 1 photo &mdash; up to 6 files)</span></label>
           <div class="sell-photo-picker">
             <input type="file" id="sf-photos" name="photos" accept="image/*,application/pdf" multiple class="sell-photo-input" aria-labelledby="sf-photos-label">
             <button type="button" class="sell-photo-add" id="sf-photos-add" aria-describedby="sf-photos-label">+ Add photos</button>
             <ul class="sell-photo-list" id="sf-photos-list" hidden aria-live="polite"></ul>
             <p class="sell-photo-count" id="sf-photos-count" hidden></p>
           </div>
-          <p class="sell-form-hint">Front, side, and close-ups of any wear &mdash; plus the receipt, if you have one. A phone photo of it is fine; so is a PDF. Photos are automatically optimized before sending, so use full-resolution shots from your phone.</p>
+          <p class="sell-form-hint">Include photos of your item, including any relevant wear, as well as your original purchase receipt/invoice if it&rsquo;s available.</p>
           <p class="sell-form-error" id="sf-photos-error" hidden></p>
         </div>
 
         <div class="sell-form-row">
-          <label for="sf-name">Your name</label>
+          <label for="sf-name">Your name <span class="sell-form-req" aria-hidden="true">*</span></label>
           <input type="text" id="sf-name" name="Name" autocomplete="name" required>
         </div>
 
         <div class="sell-form-row">
-          <label for="sf-contact">Best contact (phone or email)</label>
+          <label for="sf-contact">Best contact (phone or email) <span class="sell-form-req" aria-hidden="true">*</span></label>
           <input type="text" id="sf-contact" name="Best contact" placeholder="Phone number or email" required>
         </div>
 
         <div class="sell-form-row">
-          <label for="sf-notes">Anything we should know?</label>
+          <label for="sf-notes">Anything we should know? <span class="sell-form-req" aria-hidden="true">*</span></label>
           <textarea id="sf-notes" name="Notes" rows="4" placeholder="Anything we should know?" required></textarea>
         </div>
 

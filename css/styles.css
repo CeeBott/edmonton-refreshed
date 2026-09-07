@@ -3274,6 +3274,14 @@ footer a:focus-visible {
   color: var(--color-text);
   letter-spacing: 0.01em;
 }
+/* Required marker. --color-accent (#2c2c2c) is indistinguishable from the
+   label text (#1a1a1a), and the error red would read as ten failures on a form
+   where every field is simply mandatory. Muted grey marks them without
+   shouting. */
+.sell-form-req {
+  color: var(--color-text-secondary);
+  font-weight: 600;
+}
 .sell-form-req-note {
   font-weight: 400;
   color: var(--color-text-secondary);
