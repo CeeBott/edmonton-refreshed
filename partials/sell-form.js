@@ -156,7 +156,11 @@ function renderSellForm(opts) {
   // invoice is available", and the upload asks for it again.
   p('  <fieldset class="sell-form-row sell-form-choice">');
   p('    <legend>Do you have the original receipt?' + REQ + '</legend>');
-  p('    <p class="sell-form-hint">Having original documentation showing purchase dates and prices helps us make a stronger, more confident offer.</p>');
+  // The second sentence is load-bearing. Stating only the upside of having a
+  // receipt implies a downside to not having one, and this is the second field
+  // on the form — early enough that a seller answering "No" could read it as
+  // being disqualified and leave before investing anything.
+  p('    <p class="sell-form-hint">Having original documentation showing purchase dates and prices helps us make a stronger, more confident offer. It isn&rsquo;t required &mdash; we make offers either way.</p>');
   p('    <label class="sell-form-choice-option"><input type="radio" name="Has receipt" value="Yes" required> <span>Yes</span></label>');
   p('    <label class="sell-form-choice-option"><input type="radio" name="Has receipt" value="No"> <span>No</span></label>');
   p('  </fieldset>');
@@ -223,8 +227,11 @@ function renderSellForm(opts) {
   p('  </div>');
   p('');
   p('  <div class="sell-form-row">');
-  p('    <label for="sf-notes">' + notesLabel + REQ + '</label>');
-  p('    <textarea id="sf-notes" name="Notes" rows="4" placeholder="' + notesPlaceholder + '" required></textarea>');
+  // The one optional field. It is the last thing before submit, and "anything
+  // we should know?" has a legitimate answer of "no" — required, it would sit
+  // at the highest-abandonment position on the form collecting "n/a".
+  p('    <label for="sf-notes">' + notesLabel + ' <span class="sell-form-req-note">(optional)</span></label>');
+  p('    <textarea id="sf-notes" name="Notes" rows="4" placeholder="' + notesPlaceholder + '"></textarea>');
   p('  </div>');
   p('');
   if (ack) {
