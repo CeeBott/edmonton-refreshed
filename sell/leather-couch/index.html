@@ -412,7 +412,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="../../css/styles.min.css?v=af1f102d">
+  <link rel="stylesheet" href="../../css/styles.min.css?v=eb939228">
   <meta name="theme-color" content="#2c2c2c">
 </head>
 <body>
@@ -630,16 +630,21 @@
         </div>
 
         <div class="sell-form-row">
-          <label for="sf-msrp">Original purchase price <span class="sell-form-req-note">(optional)</span></label>
-          <input type="text" id="sf-msrp" name="Original purchase price" inputmode="numeric" autocomplete="off" placeholder="What it sold for new">
-          <p class="sell-form-hint">Pre-tax, for a single piece, in CAD. An approximate figure is fine.</p>
+          <label for="sf-condition">Condition</label>
+          <select id="sf-condition" name="Condition" required>
+            <option value="">Select a condition</option>
+            <option value="Excellent / Like New">Excellent / Like New &mdash; Virtually no signs of use</option>
+            <option value="Very Good">Very Good &mdash; Minimal signs of use, apparent on close inspection</option>
+            <option value="Good">Good &mdash; Signs of use expected with normal use</option>
+            <option value="Fair">Fair &mdash; Obvious cosmetic wear, structurally sound</option>
+          </select>
+          <p class="sell-form-hint">Most sellers grade a piece one tier high. <a href="/guides/what-condition-means-furniture-grading-edmonton/">How we grade condition</a>, with a 60-second self-check.</p>
         </div>
 
         <div class="sell-form-row">
-          <label for="sf-receipt">Receipt or invoice <span class="sell-form-req-note">(optional)</span></label>
-          <input type="file" id="sf-receipt" name="receipt" accept="image/*,application/pdf" class="sell-form-file">
-          <p class="sell-form-hint">A photo or PDF of the original receipt, if you still have it. It confirms the year and price, which usually means a stronger offer &mdash; and lets us show the next owner exactly what the piece is.</p>
-          <p class="sell-form-error" id="sf-receipt-error" hidden></p>
+          <label for="sf-msrp">Original purchase price</label>
+          <input type="text" id="sf-msrp" name="Original purchase price" inputmode="numeric" autocomplete="off" placeholder="What it sold for new" required>
+          <p class="sell-form-hint">Pre-tax, for a single piece, in CAD. An approximate figure is fine if you no longer have the receipt.</p>
         </div>
 
         <fieldset class="sell-form-row sell-form-choice">
@@ -650,15 +655,22 @@
           <label class="sell-form-choice-option"><input type="radio" name="Pets in home" value="None"> <span>No pets</span></label>
         </fieldset>
 
+        <fieldset class="sell-form-row sell-form-choice">
+          <legend>Do you have the original receipt?</legend>
+          <p class="sell-form-hint">A receipt confirms the year and what the piece cost new, which usually means a stronger offer. If you have one, add it with your photos below.</p>
+          <label class="sell-form-choice-option"><input type="radio" name="Has receipt" value="Yes" required> <span>Yes</span></label>
+          <label class="sell-form-choice-option"><input type="radio" name="Has receipt" value="No"> <span>No</span></label>
+        </fieldset>
+
         <div class="sell-form-row">
-          <label id="sf-photos-label">Photos <span class="sell-form-req-note">(minimum 1 photo &mdash; more are welcome)</span></label>
+          <label id="sf-photos-label">Photos and receipt <span class="sell-form-req-note">(at least 1 photo &mdash; up to 6 files)</span></label>
           <div class="sell-photo-picker">
-            <input type="file" id="sf-photos" name="photos" accept="image/*" multiple class="sell-photo-input" aria-labelledby="sf-photos-label">
+            <input type="file" id="sf-photos" name="photos" accept="image/*,application/pdf" multiple class="sell-photo-input" aria-labelledby="sf-photos-label">
             <button type="button" class="sell-photo-add" id="sf-photos-add" aria-describedby="sf-photos-label">+ Add photos</button>
             <ul class="sell-photo-list" id="sf-photos-list" hidden aria-live="polite"></ul>
             <p class="sell-photo-count" id="sf-photos-count" hidden></p>
           </div>
-          <p class="sell-form-hint">Front, side, and close-ups of any wear. You can add photos one at a time or several at once. Photos are automatically optimized before sending — feel free to use full-resolution shots from your phone.</p>
+          <p class="sell-form-hint">Front, side, and close-ups of any wear &mdash; plus the receipt, if you have one. A phone photo of it is fine; so is a PDF. Photos are automatically optimized before sending, so use full-resolution shots from your phone.</p>
           <p class="sell-form-error" id="sf-photos-error" hidden></p>
         </div>
 
@@ -674,7 +686,7 @@
 
         <div class="sell-form-row">
           <label for="sf-notes">Anything we should know?</label>
-          <textarea id="sf-notes" name="Notes" rows="4" placeholder="Anything we should know?"></textarea>
+          <textarea id="sf-notes" name="Notes" rows="4" placeholder="Anything we should know?" required></textarea>
         </div>
 
         <div class="sell-form-ack">
@@ -989,7 +1001,7 @@
   <!-- FOOTER_END -->
 
   <script src="../../js/shared.min.js?v=d1f81259"></script>
-  <script src="../../js/sell-form.min.js?v=9ee9b76a"></script>
+  <script src="../../js/sell-form.min.js?v=35ec5dc6"></script>
 
 </body>
 </html>

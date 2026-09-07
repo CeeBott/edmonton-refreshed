@@ -3,8 +3,9 @@
 //
 //  Used on /sell/ and every /sell/[slug]/ landing page.
 //  Posts a multipart form (Brand, Year of purchase, Original purchase
-//  price, receipt, Pets in home, 1–5 photos, Name, Contact, Notes)
-//  to the Cloudflare Worker endpoint.
+//  price, Condition, Pets in home, Has receipt, 1–6 files (photos
+//  plus the receipt), Name, Contact, Notes) to the Cloudflare Worker
+//  endpoint.
 //
 //  The MARKUP is not authored here — it is generated from
 //  partials/sell-form.js and stamped onto all 22 sell pages by
@@ -17,7 +18,9 @@
 (function () {
   var SELL_FORM_ENDPOINT = 'https://edmonton-refreshed-sell.cbottrell1990.workers.dev/';
   var MIN_PHOTOS = 1;
-  var MAX_PHOTOS = 5;
+  // 6, not 5: the receipt now rides in this same picker (§5.11), and it should
+  // not cost the seller a photo slot.
+  var MAX_PHOTOS = 6;
   // 18 MB raw — Cloudflare Email Routing forwards messages up to 25 MB
   // on-the-wire, and base64-encoded attachments expand by 4/3. Anything
   // under 18 MB raw stays comfortably below the 25 MB email ceiling.
@@ -25,10 +28,6 @@
   // compressImage), so the cap should essentially never fire in practice;
   // it exists to catch the rare case where compression fails on every file.
   var MAX_TOTAL_BYTES = 18 * 1024 * 1024;
-  // Optional receipt/invoice. A PDF cannot be downscaled the way compressImage
-  // handles photos, so it gets its own per-file cap. Must stay in lock-step
-  // with MAX_RECEIPT_BYTES in worker/index.js (§5.11).
-  var MAX_RECEIPT_BYTES = 8 * 1024 * 1024;
   // Compression targets — 1600px on the long edge, JPEG quality 0.82.
   // A typical 4 MB phone photo lands around 250–400 KB at these settings.
   var COMPRESS_MAX_DIM = 1600;
@@ -187,13 +186,24 @@
         var item = document.createElement('li');
         item.className = 'sell-photo-item';
 
-        var url = URL.createObjectURL(file);
-        objectUrls.push(url);
-
-        var img = document.createElement('img');
-        img.alt = file.name || ('Photo ' + (idx + 1));
-        img.src = url;
-        img.loading = 'lazy';
+        // A PDF receipt has no decodable preview — an <img> would render as a
+        // broken image. Give non-images a labelled tile instead.
+        var isImage = /^image\//i.test(file.type || '');
+        var img;
+        if (isImage) {
+          var url = URL.createObjectURL(file);
+          objectUrls.push(url);
+          img = document.createElement('img');
+          img.alt = file.name || ('Photo ' + (idx + 1));
+          img.src = url;
+          img.loading = 'lazy';
+        } else {
+          img = document.createElement('span');
+          img.className = 'sell-photo-doc';
+          img.setAttribute('role', 'img');
+          img.setAttribute('aria-label', 'Document: ' + (file.name || 'attachment'));
+          img.textContent = 'PDF';
+        }
 
         var meta = document.createElement('span');
         meta.className = 'sell-photo-meta';
@@ -216,7 +226,7 @@
         photosList.appendChild(item);
       });
 
-      var word = selectedPhotos.length === 1 ? 'photo' : 'photos';
+      var word = selectedPhotos.length === 1 ? 'file' : 'files';
       photosCount.textContent = selectedPhotos.length + ' of ' + MAX_PHOTOS + ' ' + word + ' (' + fmtSize(totalBytes()) + ')';
     }
 
@@ -236,7 +246,9 @@
     for (var i = 0; i < newFiles.length; i++) {
       var f = newFiles[i];
       if (selectedPhotos.length >= MAX_PHOTOS) { skipped++; continue; }
-      if (!/^image\//i.test(f.type)) { skipped++; continue; }
+      // Images plus PDF — the receipt uploads here alongside the photos, and
+      // plenty of people have it as a phone photo rather than a document.
+      if (!/^image\//i.test(f.type) && f.type !== 'application/pdf') { skipped++; continue; }
       var dup = selectedPhotos.some(function (s) {
         return s.name === f.name && s.size === f.size && s.lastModified === f.lastModified;
       });
@@ -248,7 +260,7 @@
     photosInput.value = '';
 
     if (added === 0 && skipped > 0 && selectedPhotos.length >= MAX_PHOTOS) {
-      showPhotosError('Maximum of ' + MAX_PHOTOS + ' photos. Remove one to add another.');
+      showPhotosError('Maximum of ' + MAX_PHOTOS + ' files. Remove one to add another.');
     } else {
       showPhotosError('');
     }
@@ -272,7 +284,7 @@
       return;
     }
     if (selectedPhotos.length > MAX_PHOTOS) {
-      showPhotosError('Please attach no more than ' + MAX_PHOTOS + ' photos.');
+      showPhotosError('Please attach no more than ' + MAX_PHOTOS + ' files.');
       photosAdd.focus();
       return;
     }
@@ -297,42 +309,12 @@
       processedPhotos.push(await compressImage(selectedPhotos[p]));
     }
 
-    // Optional receipt. An image receipt goes through the same compression as
-    // the photos; a PDF cannot be, so it is passed through and gated on size
-    // alone. Either way it counts against the shared email budget below.
-    var receiptInput = document.getElementById('sf-receipt');
-    var receiptErr = document.getElementById('sf-receipt-error');
-    var processedReceipt = null;
-    if (receiptInput && receiptInput.files && receiptInput.files[0]) {
-      var rawReceipt = receiptInput.files[0];
-      processedReceipt = /^image\//.test(rawReceipt.type)
-        ? await compressImage(rawReceipt)
-        : rawReceipt;
-      if (processedReceipt.size > MAX_RECEIPT_BYTES) {
-        if (receiptErr) {
-          receiptErr.textContent =
-            'That receipt is ' + (processedReceipt.size / 1024 / 1024).toFixed(1) + ' MB, ' +
-            'over the ' + (MAX_RECEIPT_BYTES / 1024 / 1024).toFixed(0) + ' MB limit. ' +
-            'Please attach a smaller file or a photo of it — or leave it off and ' +
-            'send it separately once we reply.';
-          receiptErr.hidden = false;
-        }
-        receiptInput.focus();
-        if (submit) {
-          submit.disabled = false;
-          submit.textContent = originalSubmitText;
-        }
-        return;
-      }
-      if (receiptErr) receiptErr.hidden = true;
-    }
-
-    var totalCompressed = processedReceipt ? processedReceipt.size : 0;
+    var totalCompressed = 0;
     for (var q = 0; q < processedPhotos.length; q++) totalCompressed += processedPhotos[q].size;
     if (totalCompressed > MAX_TOTAL_BYTES) {
       showPhotosError(
         'Your attachments still total ' + (totalCompressed / 1024 / 1024).toFixed(1) + ' MB ' +
-        'after optimization. Please send fewer photos or lower-resolution shots ' +
+        'after optimization. Please send fewer files or lower-resolution shots ' +
         'from your phone — or text them to 780-965-1477.'
       );
       photosAdd.focus();
@@ -346,10 +328,6 @@
     try {
       var fd = new FormData(form);
       fd.delete('photos');
-      fd.delete('receipt');
-      if (processedReceipt) {
-        fd.append('receipt', processedReceipt, processedReceipt.name || 'receipt');
-      }
       for (var i = 0; i < processedPhotos.length; i++) {
         fd.append('photos', processedPhotos[i], processedPhotos[i].name || ('photo-' + (i + 1) + '.jpg'));
       }

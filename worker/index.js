@@ -32,12 +32,14 @@ const REQUIRED_FIELDS = [
 // sends the old name, 'Approximate age' can be dropped from this list.
 const AGE_FIELDS = ['Year of purchase', 'Approximate age'];
 
-// A receipt is optional but can be a PDF, which the client cannot compress the
-// way it downscales photos. Capped separately so one large scan cannot eat the
-// whole email budget; the client enforces the same number (§5.11).
+// The receipt used to be its own upload field; it now rides in `photos`
+// (§5.11). This cap still guards the LEGACY `receipt` part that pages cached
+// before that change continue to send.
 const MAX_RECEIPT_BYTES = 8 * 1024 * 1024;
 
-const MAX_PHOTOS = 5;
+// 6, not 5: the receipt uploads through the same picker as the photos
+// (§5.11) and should not cost the seller a photo slot.
+const MAX_PHOTOS = 6;
 const MIN_PHOTOS = 1;
 // 18 MB raw — must stay under Cloudflare Email Routing's 25 MB on-the-wire
 // limit once base64-encoded (raw × 4/3 plus headers). The client compresses
@@ -135,9 +137,12 @@ export default {
       });
     }
 
-    // Optional receipt/invoice — a photo or a PDF. Counted against the same
-    // email budget as the photos, with its own per-file cap because a PDF
-    // scan bypasses the client's image compression entirely.
+    // LEGACY separate receipt part. The current form uploads the receipt in
+    // `photos`, but pages cached before that change still POST a `receipt`
+    // field, and dropping it would silently discard the document the seller
+    // chose to attach. Counted against the same email budget, with its own
+    // per-file cap because a PDF bypasses the client's image compression.
+    // Remove once no cached page sends it.
     const receipt = formData.get('receipt');
     const hasReceipt = receipt instanceof File && receipt.size > 0;
     if (hasReceipt) {
@@ -166,9 +171,11 @@ export default {
       '',
       `Brand: ${get('Brand')}`,
       `Year purchased / made: ${ageValue}`,
+      `Condition (seller's own assessment): ${get('Condition') || '(not answered)'}`,
       `Original purchase price: ${get('Original purchase price') || '(not provided)'}`,
-      `Receipt attached: ${hasReceipt ? 'yes' : 'no'}`,
+      `Has receipt: ${get('Has receipt') || '(not answered)'}`,
       `Pets in home: ${get('Pets in home') || '(not answered)'}`,
+      `Files attached: ${attachments.length}`,
       // The "what are you hoping to get?" field was removed from the form
       // (§10.22). This line is retained CONDITIONALLY, not as a live field:
       // cached pages served before the removal still POST one, and silently

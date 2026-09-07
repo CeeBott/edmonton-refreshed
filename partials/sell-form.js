@@ -61,10 +61,16 @@
  * Do not add one back next to the original purchase price, or anywhere else.
  */
 
+// The deep rubric lives in one place (config/conditions.js), so the form's
+// link cannot drift from the one every listing page renders.
+var CONDITION_GUIDE_HREF = require('../config/conditions').conditionGuideHref;
+
 var DEFAULTS = {
   brandPlaceholder: 'e.g. Natuzzi, EQ3, Rove Concepts (or &lsquo;unsure&rsquo;)',
-  // Must agree with MIN_PHOTOS / MAX_PHOTOS in worker/index.js (1 and 5).
-  photosNote: '(minimum 1 photo &mdash; more are welcome)',
+  // Must agree with MIN_PHOTOS / MAX_PHOTOS in js/sell-form.js and
+  // worker/index.js (1 and 6). The receipt uploads through this same field,
+  // which is why the cap is 6 rather than 5 and the wording says "files".
+  photosNote: '(at least 1 photo &mdash; up to 6 files)',
   notesLabel: 'Anything we should know?',
   notesPlaceholder: 'Anything we should know?',
   // Oldest discrete year offered before the catch-all bucket. 14 back from the
@@ -93,6 +99,28 @@ function yearOptions(currentYear) {
   out.push('<option>Not sure</option>');
   return out;
 }
+
+// Condition options. These are the §5.19 grades, in the same order and with
+// the same meaning as config/conditions.js — deliberately NOT a second scale.
+//
+// The seller's answer here is compared directly against the grade that ends up
+// on the listing, so the two must name the same tiers. The top tier is labelled
+// "Excellent / Like New" because that is exactly how the published rubric
+// (guides/what-condition-means-furniture-grading-edmonton/) heads it: sellers
+// think in "like new", and the guide already treats the two as one tier. Do not
+// split them into separate options — that publishes a five-tier scale against
+// the site's four (§5.19), and shifts every label down one so a seller's
+// "Excellent" would mean our "Very Good".
+//
+// Definitions are the seller-facing wording: same degree of wear as
+// config/conditions.js, phrased for someone assessing their own piece. Degree
+// only, never a named defect (§5.19).
+var CONDITION_OPTIONS = [
+  ['Excellent / Like New', 'Virtually no signs of use'],
+  ['Very Good',            'Minimal signs of use, apparent on close inspection'],
+  ['Good',                 'Signs of use expected with normal use'],
+  ['Fair',                 'Obvious cosmetic wear, structurally sound'],
+];
 
 function renderSellForm(opts) {
   var o = opts || {};
@@ -124,16 +152,20 @@ function renderSellForm(opts) {
   p('  </div>');
   p('');
   p('  <div class="sell-form-row">');
-  p('    <label for="sf-msrp">Original purchase price <span class="sell-form-req-note">(optional)</span></label>');
-  p('    <input type="text" id="sf-msrp" name="Original purchase price" inputmode="numeric" autocomplete="off" placeholder="What it sold for new">');
-  p('    <p class="sell-form-hint">Pre-tax, for a single piece, in CAD. An approximate figure is fine.</p>');
+  p('    <label for="sf-condition">Condition</label>');
+  p('    <select id="sf-condition" name="Condition" required>');
+  p('      <option value="">Select a condition</option>');
+  CONDITION_OPTIONS.forEach(function (c) {
+    p('      <option value="' + c[0] + '">' + c[0] + ' &mdash; ' + c[1] + '</option>');
+  });
+  p('    </select>');
+  p('    <p class="sell-form-hint">Most sellers grade a piece one tier high. <a href="' + CONDITION_GUIDE_HREF + '">How we grade condition</a>, with a 60-second self-check.</p>');
   p('  </div>');
   p('');
   p('  <div class="sell-form-row">');
-  p('    <label for="sf-receipt">Receipt or invoice <span class="sell-form-req-note">(optional)</span></label>');
-  p('    <input type="file" id="sf-receipt" name="receipt" accept="image/*,application/pdf" class="sell-form-file">');
-  p('    <p class="sell-form-hint">A photo or PDF of the original receipt, if you still have it. It confirms the year and price, which usually means a stronger offer &mdash; and lets us show the next owner exactly what the piece is.</p>');
-  p('    <p class="sell-form-error" id="sf-receipt-error" hidden></p>');
+  p('    <label for="sf-msrp">Original purchase price</label>');
+  p('    <input type="text" id="sf-msrp" name="Original purchase price" inputmode="numeric" autocomplete="off" placeholder="What it sold for new" required>');
+  p('    <p class="sell-form-hint">Pre-tax, for a single piece, in CAD. An approximate figure is fine if you no longer have the receipt.</p>');
   p('  </div>');
   p('');
   p('  <fieldset class="sell-form-row sell-form-choice">');
@@ -144,15 +176,26 @@ function renderSellForm(opts) {
   p('    <label class="sell-form-choice-option"><input type="radio" name="Pets in home" value="None"> <span>No pets</span></label>');
   p('  </fieldset>');
   p('');
+  p('  <fieldset class="sell-form-row sell-form-choice">');
+  p('    <legend>Do you have the original receipt?</legend>');
+  p('    <p class="sell-form-hint">A receipt confirms the year and what the piece cost new, which usually means a stronger offer. If you have one, add it with your photos below.</p>');
+  p('    <label class="sell-form-choice-option"><input type="radio" name="Has receipt" value="Yes" required> <span>Yes</span></label>');
+  p('    <label class="sell-form-choice-option"><input type="radio" name="Has receipt" value="No"> <span>No</span></label>');
+  p('  </fieldset>');
+  p('');
   p('  <div class="sell-form-row">');
-  p('    <label id="sf-photos-label">Photos <span class="sell-form-req-note">' + DEFAULTS.photosNote + '</span></label>');
+  p('    <label id="sf-photos-label">Photos and receipt <span class="sell-form-req-note">' + DEFAULTS.photosNote + '</span></label>');
   p('    <div class="sell-photo-picker">');
-  p('      <input type="file" id="sf-photos" name="photos" accept="image/*" multiple class="sell-photo-input" aria-labelledby="sf-photos-label">');
+  // Deliberately NOT `required`: the input is cleared after every selection
+  // (files are held in a JS array so they can accumulate across picks), so a
+  // markup `required` would block submission even with files chosen. The
+  // minimum is enforced in js/sell-form.js against that array instead.
+  p('      <input type="file" id="sf-photos" name="photos" accept="image/*,application/pdf" multiple class="sell-photo-input" aria-labelledby="sf-photos-label">');
   p('      <button type="button" class="sell-photo-add" id="sf-photos-add" aria-describedby="sf-photos-label">+ Add photos</button>');
   p('      <ul class="sell-photo-list" id="sf-photos-list" hidden aria-live="polite"></ul>');
   p('      <p class="sell-photo-count" id="sf-photos-count" hidden></p>');
   p('    </div>');
-  p('    <p class="sell-form-hint">Front, side, and close-ups of any wear. You can add photos one at a time or several at once. Photos are automatically optimized before sending — feel free to use full-resolution shots from your phone.</p>');
+  p('    <p class="sell-form-hint">Front, side, and close-ups of any wear &mdash; plus the receipt, if you have one. A phone photo of it is fine; so is a PDF. Photos are automatically optimized before sending, so use full-resolution shots from your phone.</p>');
   p('    <p class="sell-form-error" id="sf-photos-error" hidden></p>');
   p('  </div>');
   p('');
@@ -168,7 +211,7 @@ function renderSellForm(opts) {
   p('');
   p('  <div class="sell-form-row">');
   p('    <label for="sf-notes">' + notesLabel + '</label>');
-  p('    <textarea id="sf-notes" name="Notes" rows="4" placeholder="' + notesPlaceholder + '"></textarea>');
+  p('    <textarea id="sf-notes" name="Notes" rows="4" placeholder="' + notesPlaceholder + '" required></textarea>');
   p('  </div>');
   p('');
   if (ack) {
