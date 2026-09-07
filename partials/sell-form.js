@@ -119,14 +119,14 @@ function yearOptions(currentYear) {
 // only, never a named defect (§5.19).
 //
 // Do NOT copy this wording back into config/conditions.js. Those definitions
-// render on every listing at that grade and are bound by the stricter "no
-// claims about history" rule there — "expected with normal use and age" is fine
-// as guidance to a seller sizing up their own piece, and would be an unfounded
-// claim about provenance if published on a listing.
+// render on every listing at that grade and are bound by the stricter rules
+// there: degree only, no named defects, and no claims about how long a piece
+// was owned or how heavily it was used. Guidance that helps a seller size up
+// their own piece can assert more than a published grade definition may.
 var CONDITION_OPTIONS = [
   ['Excellent / Like New', 'Virtually no signs of use'],
   ['Very Good',            'Minimal signs of use, apparent on close inspection'],
-  ['Good',                 'Signs of use expected with normal use and age'],
+  ['Good',                 'Signs of use expected with normal use'],
   ['Fair',                 'Obvious cosmetic wear, structurally sound'],
 ];
 
