@@ -60,7 +60,7 @@ var availableItems = [
     ],
     retailEstimate: 4838,
     retailVerified: true,
-    price: 3200,
+    price: 2900,
     specs: ["Crate & Barrel", "109 × 69 × 31.25 in", "Thrive Ink Performance Fabric", "Right-Arm Chaise", "Made in USA", "Excellent Condition"],
     images: [
       "images/CB-048/crate-and-barrel-01.jpeg",
