@@ -1666,25 +1666,16 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   /* Retail compare on mobile */
   .listing-retail-compare { font-size: 0.9rem; }
 
-  /* Two-part value pill on mobile: stack the two segments and let each fill the
-     full width of the pill, so the colour reaches the edge and the outline traces
-     the fill exactly (no empty cap trailing the "Buy it Today" bar). Rounded on
-     the left, squared on the right. The :has() bump (0,0,2,0) outranks the base
-     rule regardless of source order, so these win on mobile; the single-segment
-     sold-stub pill (no .pill-now) is untouched. */
-  .listing-value-pill:has(.pill-now) {
-    flex-direction: column;
-    border-radius: 100px 0 0 100px;
-    margin: 4px 0 20px;
-    font-size: 0.72rem;
-  }
-  /* Stacked: equal left padding on both rows so "Est. Retail" and "Buy it Today"
-     start at the same x, plus a touch more vertical room so the text isn't tight
-     against the row borders. */
-  .listing-value-pill:has(.pill-now) .pill-retail,
-  .listing-value-pill:has(.pill-now) .pill-now {
-    padding: 9px 16px;
-  }
+  /* Value pill on mobile: retail side only. The asking price prints in full
+     size two lines below the pill, so the dark "Buy it Today" segment
+     published the same figure twice within a thumb's width — and the stacked,
+     half-rounded shape it forced read as broken rather than designed. With one
+     segment the base fully-rounded pill applies again, and it reads as the
+     retail anchor above the price. Desktop keeps both halves.
+     Spacing is owned by .listing-heading-row's column gap: a margin here would
+     tie on specificity (0,0,2,0) and lose on source order. */
+  .listing-value-pill .pill-now { display: none; }
+  .listing-value-pill:has(.pill-now) { font-size: 0.72rem; }
 
   /* ── Mobile vertical rhythm ──
      Loosens spacing between sections, paragraphs, and CTA blocks so
@@ -2255,6 +2246,13 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   /* Tighten spacing on the new Features / Condition / Includes sections */
   .listing-meta-label { margin-bottom: 6px; }
   .listing-features li { font-size: 0.875rem; }
+
+  /* Hero CTAs are hidden on mobile: the fixed "Request a Viewing" bar sits at
+     the foot of the viewport the whole way down the page, so the pair of
+     buttons under the price asked for the same thing a second time. Desktop
+     has no sticky bar and keeps them. The .listing-cta rule below still
+     applies — guide CTA boxes reuse the class. */
+  .listing-ctas { display: none; }
 
   /* Stack CTA buttons vertically, full width */
   .listing-cta {
