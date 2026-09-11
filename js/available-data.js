@@ -108,7 +108,7 @@ var availableItems = [
       { question: "What condition is the sectional in?", answer: "Structurally excellent. The frame, cushions, and down fill are all intact. The Rattier fabric shows subtle tonal variation on the seating surface from previous spot-cleaning; the effect is minor and reads as natural textile variation at conversational distance. Covers are removable and can be professionally laundered or replaced if desired." },
     ],
     retailEstimate: 28000,
-    price: 5200,
+    price: 4200,
     specs: ["B&B Italia", "129 × 91 × 29 in", "Steel Frame", "Rattier Fabric", "Good Condition", "North America Shipping Available"],
     images: [
       "images/BB-030/bb-italia-14.jpeg",
