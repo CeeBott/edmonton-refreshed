@@ -917,6 +917,24 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   flex-shrink: 0;
 }
 
+/* Reserved (§5.10) — same pill shape as Coming Soon, outlined rather than
+   filled so it reads as a status, not a promotion. */
+.reserved-badge {
+  background: transparent;
+  color: var(--color-text);
+  box-shadow: inset 0 0 0 1px var(--color-text);
+}
+.listing-reserved-note {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+  margin: -8px 0 24px;
+}
+.listing-reserved-note .reserved-badge {
+  margin-right: 6px;
+  vertical-align: 1px;
+}
+
 .card-price--muted {
   font-size: 0.8rem;
   font-weight: 400;

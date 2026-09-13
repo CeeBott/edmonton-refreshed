@@ -198,6 +198,24 @@ function todayPlusDays(n) {
   return isoDate(d);
 }
 
+// Reserved (§5.10): sold to a buyer but not yet delivered and paid for. The
+// piece stays live — listing page, price, sitemap — but stops being offered:
+// Product availability → Reserved, feed → out_of_stock, dropped from
+// related links and brand-guide availability lines, and the viewing form
+// becomes a backup-buyer form. `reserved` holds the ISO date it was reserved
+// so a stale reservation can be flagged (see RESERVED_STALE_DAYS).
+function isReserved(item) {
+  return !!(item && item.reserved);
+}
+
+// Homepage grid order: reserved pieces move to the end so the grid leads with
+// what can actually be bought. Stable — everything else keeps data order.
+// Mirrored in js/available-data.js (renderAvailable).
+function displayOrder(items) {
+  return items.filter(function (i) { return !isReserved(i); })
+    .concat(items.filter(isReserved));
+}
+
 function escapeRegExp(s) {
   return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
@@ -512,7 +530,9 @@ function generateAvailableHTML(items) {
 
     var brandLine = item.comingSoon
       ? '            <div class="card-meta"><div class="card-brand">' + escapeHtml(item.brand) + '</div><span class="coming-soon-badge">Coming Soon</span></div>'
-      : '            <div class="card-brand">' + escapeHtml(item.brand) + '</div>';
+      : isReserved(item)
+        ? '            <div class="card-meta"><div class="card-brand">' + escapeHtml(item.brand) + '</div><span class="coming-soon-badge reserved-badge">Reserved</span></div>'
+        : '            <div class="card-brand">' + escapeHtml(item.brand) + '</div>';
 
     var titleLine = item.comingSoon
       ? '            <div class="card-title">' + escapeHtml(item.title) + '</div>'
@@ -820,7 +840,7 @@ function generateProductSchemas(items) {
         "priceCurrency": "CAD",
         "price": item.price,
         "priceValidUntil": priceValidUntil,
-        "availability": "https://schema.org/InStock",
+        "availability": isReserved(item) ? "https://schema.org/Reserved" : "https://schema.org/InStock",
         "url": listingUrl,
         "eligibleRegion": { "@type": "Country", "name": "CA" },
         "areaServed": { "@type": "Country", "name": "CA" },
@@ -1129,7 +1149,7 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions, rev
     "priceCurrency": "CAD",
     "price": item.price,
     "priceValidUntil": priceValidUntil,
-    "availability": "https://schema.org/InStock",
+    "availability": isReserved(item) ? "https://schema.org/Reserved" : "https://schema.org/InStock",
     "url": listingUrl,
     "eligibleRegion": { "@type": "Country", "name": "CA" },
     "areaServed": { "@type": "Country", "name": "CA" },
@@ -1384,6 +1404,24 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions, rev
     '</div>';
   }
 
+  // Reserved (§5.10): price stays visible, a notice sits under it, and every
+  // "Request a Viewing" ask becomes a backup-buyer ask. Same form, same Worker
+  // path — the Piece value carries the flag so the email subject shows it.
+  var reserved = isReserved(item);
+  var reservedNoteHTML = reserved
+    ? '<p class="listing-reserved-note"><span class="coming-soon-badge reserved-badge">Reserved</span> This piece is reserved for a buyer. If the sale doesn&rsquo;t go ahead, it goes to the next person in line.</p>'
+    : '';
+  var viewingAsk      = reserved ? 'Ask to Be Next in Line' : 'Request a Viewing';
+  var viewingHeading  = reserved ? 'Ask to Be Next in Line' : 'Request a Viewing';
+  var viewingLead     = reserved
+    ? 'The ' + escapeHtml(item.brand) + ' is reserved. Leave your name and the best way to reach you, and if the sale doesn&rsquo;t go ahead we&rsquo;ll reach out to you first. Phone or email &mdash; whichever you prefer.'
+    : 'Leave your name and the best way to reach you and we&rsquo;ll get back to you to set up a time to see the ' + escapeHtml(item.brand) + '. Phone or email &mdash; whichever you prefer.';
+  var viewingPiece    = item.brand + ' ' + item.title + (reserved ? ' (RESERVED — backup buyer)' : '');
+  var viewingSubmit   = reserved ? 'Put Me Next in Line' : 'Request a Viewing';
+  var viewingSuccess  = reserved
+    ? 'Got it &mdash; if the ' + escapeHtml(item.brand) + ' becomes available, you&rsquo;ll hear from us first. Thanks!'
+    : 'Got it &mdash; we&rsquo;ll be in touch shortly to set up a time. Thanks!';
+
   // Strip variant spec (anything after em-dash) from title for concise SEO title
   var cleanTitle  = item.title.split(/\s+[—–-]\s+/)[0];
   // Title: use item.metaTitle if provided, otherwise auto-generate
@@ -1459,7 +1497,7 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions, rev
   if (allItems && allItems.length > 0) {
     var brandKey = (item.brand || '').toLowerCase();
     var otherLive = allItems.filter(function(i) {
-      if (i.comingSoon) return false;
+      if (i.comingSoon || isReserved(i)) return false;   // a reserved piece is a dead end as a suggestion
       var iSlug = i.slug || slugify(i.brand + '-' + i.title);
       return iSlug !== slug;
     }).slice(0, 3);
@@ -1616,8 +1654,9 @@ renderCredibility('listing') + '\n' +
 (retailHTML ? '              ' + retailHTML + '\n' : '') +
 '            </div>\n' +
 '            <div class="listing-price">' + formatPrice(item.price) + ' <span class="listing-price-currency">CAD</span></div>\n' +
+(reservedNoteHTML ? '            ' + reservedNoteHTML + '\n' : '') +
 '            <div class="listing-ctas">\n' +
-'              <a class="listing-cta" href="#request-viewing">Request a Viewing &rarr;</a>\n' +
+'              <a class="listing-cta" href="#request-viewing">' + viewingAsk + ' &rarr;</a>\n' +
 '              <a class="listing-cta listing-cta--secondary" href="sms:7809651477">Text 780-965-1477</a>\n' +
 '            </div>\n' +
 // Spec pills are suppressed on fact-stack listings: brand, material, colour and
@@ -1650,10 +1689,10 @@ renderCredibility('listing') + '\n' +
 '           Universal across devices, unlike the old sms: CTA which was a\n' +
 '           no-op on desktop. See js/viewing-form.js. -->\n' +
 '      <section class="listing-viewing" id="request-viewing">\n' +
-'        <h2 class="section-label">Request a Viewing</h2>\n' +
-'        <p class="listing-viewing-lead">Leave your name and the best way to reach you and we&rsquo;ll get back to you to set up a time to see the ' + escapeHtml(item.brand) + '. Phone or email &mdash; whichever you prefer.</p>\n' +
+'        <h2 class="section-label">' + viewingHeading + '</h2>\n' +
+'        <p class="listing-viewing-lead">' + viewingLead + '</p>\n' +
 '        <form class="viewing-form" id="viewing-form" novalidate>\n' +
-'          <input type="hidden" name="Piece" value="' + escapeHtml(item.brand + ' ' + item.title) + '">\n' +
+'          <input type="hidden" name="Piece" value="' + escapeHtml(viewingPiece) + '">\n' +
 '          <input type="hidden" name="_form" value="viewing">\n' +
 '          <input type="hidden" name="Source page" value="">\n' +
 '          <label class="viewing-honey" aria-hidden="true">Leave this box unchecked<input type="checkbox" name="_honey" tabindex="-1" autocomplete="off"></label>\n' +
@@ -1686,11 +1725,11 @@ renderCredibility('listing') + '\n' +
 '            <label for="vf-message">Anything to add? <span class="viewing-optional">(optional)</span></label>\n' +
 '            <textarea id="vf-message" name="Message" rows="3"></textarea>\n' +
 '          </div>\n' +
-'          <button type="submit" class="viewing-submit">Request a Viewing &rarr;</button>\n' +
+'          <button type="submit" class="viewing-submit">' + viewingSubmit + ' &rarr;</button>\n' +
 '          <p class="viewing-alt">Prefer to reach out yourself? <a href="sms:7809651477">Text</a> or <a href="tel:7809651477">call 780-965-1477</a>.</p>\n' +
 '          <p class="viewing-error" role="alert" hidden></p>\n' +
 '        </form>\n' +
-'        <p class="viewing-success" id="viewing-success" role="status" hidden>Got it &mdash; we&rsquo;ll be in touch shortly to set up a time. Thanks!</p>\n' +
+'        <p class="viewing-success" id="viewing-success" role="status" hidden>' + viewingSuccess + '</p>\n' +
 '      </section>\n' +
 faqVisibleBlock +
 '\n' +
@@ -1698,7 +1737,7 @@ faqVisibleBlock +
 '           FAQ is reached so it never covers the related links, newsletter, or footer. -->\n' +
 '      <div class="listing-sticky-sentinel" aria-hidden="true"></div>\n' +
 '      <div class="listing-sticky-cta">\n' +
-'        <a href="#request-viewing" class="sticky-cta-primary">Request a Viewing</a>\n' +
+'        <a href="#request-viewing" class="sticky-cta-primary">' + viewingAsk + '</a>\n' +
 '      </div>\n' +
 '\n' +
 relatedHTML +
@@ -1877,7 +1916,7 @@ function injectAllPartials(html) {
     var family = (attrs.brand || '').split(' ')[0].toLowerCase();
     if (!family) return '';
     var live = availableItems.filter(function (i) {
-      return !i.comingSoon && (i.brand || '').toLowerCase().indexOf(family) === 0;
+      return !i.comingSoon && !isReserved(i) && (i.brand || '').toLowerCase().indexOf(family) === 0;
     });
     if (!live.length) return '';
     var links = live.map(function (i) {
@@ -2415,7 +2454,9 @@ function generateSitemap(items, soldItems) {
 //
 //  Pre-owned furniture specifics:
 //    · condition          = used
-//    · availability       = in_stock (feed only ever holds live stock)
+//    · availability       = in_stock, or out_of_stock for a reserved piece (the
+//                           feed has no reserved value; keeping the item means
+//                           a fallen-through sale needs no re-submission)
 //    · identifier_exists  = no  (one-of-one pieces carry no GTIN/MPN)
 //    · shipping           = a flat local rate scoped to one region (config), so
 //                           Google treats items as locally available without
@@ -2551,7 +2592,7 @@ function generateMerchantFeed(items) {
     images.slice(1, 11).forEach(function(p) {   // Google allows up to 10 additional images
       L.push('      <g:additional_image_link>' + imagePathToUrl(p) + '</g:additional_image_link>');
     });
-    L.push('      <g:availability>in_stock</g:availability>');
+    L.push('      <g:availability>' + (isReserved(item) ? 'out_of_stock' : 'in_stock') + '</g:availability>');
     L.push('      <g:price>' + mfPrice(item.price) + '</g:price>');
     L.push('      <g:condition>used</g:condition>');
     L.push('      <g:brand>' + escapeXml(item.brand) + '</g:brand>');
@@ -2634,7 +2675,7 @@ var soldItems       = extractArray(soldSrc,        'soldItems');
 var reviews         = extractArray(reviewsSrc,     'reviews');
 var reviewAggregate = extractObject(reviewsSrc,    'reviewAggregate');
 
-var availableHTML = generateAvailableHTML(availableItems);
+var availableHTML = generateAvailableHTML(displayOrder(availableItems));
 var soldHTML      = generateSoldHTML(soldItems);
 var reviewsHTML   = generateReviewsHTML(reviews, reviewAggregate);
 var productSchema = generateProductSchemas(availableItems);
@@ -2653,7 +2694,7 @@ indexContent = injectBetweenMarkers(
 );
 
 // Update LCP preload to always match the first available (non-coming-soon) item
-var firstVisible = availableItems.filter(function(i) { return !i.comingSoon; })[0];
+var firstVisible = displayOrder(availableItems).filter(function(i) { return !i.comingSoon; })[0];
 if (firstVisible && firstVisible.images && firstVisible.images.length > 0) {
   var lcpAvifSrcset = avifSrcsetFor(firstVisible.images[0]);
   indexContent = indexContent.replace(
@@ -2854,7 +2895,7 @@ function rebuildLlmsAvailableSection() {
   var bullets = live.map(function (i) {
     var label = (i.brand + ' ' + i.title).replace(/\s+—\s+/g, ', ');
     var slug = i.slug || slugify(i.brand + '-' + i.title);
-    return '- ' + label + ': ' + formatPriceCAD(i.price) + ' — ' + BASE_URL + 'listings/' + slug + '/';
+    return '- ' + label + ': ' + formatPriceCAD(i.price) + (isReserved(i) ? ' (reserved)' : '') + ' — ' + BASE_URL + 'listings/' + slug + '/';
   }).join('\n');
   var out = txt.slice(0, start) + intro + bullets + '\n\n' + txt.slice(end);
   if (out !== txt) fs.writeFileSync(llmsPath, out, 'utf8');
@@ -3027,6 +3068,28 @@ availableItems.forEach(function (i) {
   else if (/\n\s*\n/.test(i.description || '')) miss.push('description is multi-paragraph (§5.10: one)');
 
   if (miss.length) listingGaps.push(slug + ' — ' + miss.join('; '));
+});
+
+// (k) Reserved staleness — WARN. A reservation is meant to last days, not
+//     weeks. One that outlives RESERVED_STALE_DAYS usually means the piece was
+//     delivered and nobody ran §8.3 — the page still says "Reserved" and the
+//     feed still carries it. Also catches a `reserved` value that isn't an
+//     ISO date, since the age check depends on it.
+var RESERVED_STALE_DAYS = 10;
+var reservedGaps = [];
+var reservedCount = 0;
+availableItems.forEach(function (i) {
+  if (!isReserved(i)) return;
+  reservedCount++;
+  var slug = i.slug || slugify(i.brand + '-' + i.title);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(String(i.reserved))) {
+    reservedGaps.push(slug + ' — reserved: ' + JSON.stringify(i.reserved) + ' is not a YYYY-MM-DD date');
+    return;
+  }
+  var ageDays = Math.round((Date.parse(today()) - Date.parse(i.reserved)) / 86400000);
+  if (ageDays > RESERVED_STALE_DAYS) {
+    reservedGaps.push(slug + ' — reserved ' + ageDays + ' days ago (' + i.reserved + '); sold → /mark-sold (§8.3), fell through → remove `reserved`');
+  }
 });
 
 // (j) Condition scale integrity — §5.19 is a [Core Invariant]: a tier
@@ -3218,6 +3281,12 @@ if (listingGaps.length) {
   listingGaps.forEach(function (g) { console.log('                      ' + g); });
 } else {
   console.log('  listing         — every active listing carries the full fact-stack treatment');
+}
+if (reservedGaps.length) {
+  console.log('  reserved WARN   — ' + reservedGaps.length + ' reservation(s) need attention:');
+  reservedGaps.forEach(function (g) { console.log('                      ' + g); });
+} else {
+  console.log('  reserved        — ' + reservedCount + ' reserved piece(s), none older than ' + RESERVED_STALE_DAYS + ' days');
 }
 if (conditionScaleGaps.length) {
   console.log('  cond-scale WARN — tier definition names a defect (§5.19 — state degree, not defect):');

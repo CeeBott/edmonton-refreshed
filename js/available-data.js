@@ -22,6 +22,7 @@ var availableItems = [
     metaTitle: "Pre-Owned Crate & Barrel Aris Sectional Sofa for Sale in Edmonton",
     metaDescription: "Pre-owned Crate & Barrel Aris 2-piece bench sectional with right-arm chaise in Thrive Ink performance fabric. Delivery across Alberta. {price}.",
     availabilityStarts: "2026-08-24",
+    reserved: "2026-09-13",
     model: "Aris 2-Piece Bench Sectional",
     productionDate: "2023-03",
     material: "Thrive Performance Fabric",
@@ -161,13 +162,20 @@ function renderAvailable() {
     return;
   }
 
-  grid.innerHTML = availableItems.map(function(item) {
+  // Reserved pieces render last — mirror of displayOrder() in build.js, so the
+  // crawler fallback and the JS grid agree on order (§5.10).
+  var ordered = availableItems.filter(function(i) { return !i.reserved; })
+    .concat(availableItems.filter(function(i) { return !!i.reserved; }));
+
+  grid.innerHTML = ordered.map(function(item) {
     var slug = item.slug || slugify(item.brand + '-' + item.title);
     var listingUrl = '/listings/' + slug + '/';
 
     var brandLine = item.comingSoon
       ? '<div class="card-meta"><div class="card-brand">' + item.brand + '</div><span class="coming-soon-badge">Coming Soon</span></div>'
-      : '<div class="card-brand">' + item.brand + '</div>';
+      : item.reserved
+        ? '<div class="card-meta"><div class="card-brand">' + item.brand + '</div><span class="coming-soon-badge reserved-badge">Reserved</span></div>'
+        : '<div class="card-brand">' + item.brand + '</div>';
 
     var titleEl = item.comingSoon
       ? '<div class="card-title">' + item.title + '</div>'
