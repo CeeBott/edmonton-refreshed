@@ -366,6 +366,68 @@ function injectAggregateRating(html, aggregate) {
   });
 }
 
+// Review aggregate — calculated, never typed (§8.4). Every written review plus
+// every star-only rating in ratingsOnly. The average is rounded DOWN to one
+// decimal so it never overstates; integer math (sum × 10 / count) keeps float
+// error away from the boundary. js/reviews-data.js mirrors this for the browser
+// render (separate runtime, same necessary duplication as formatPrice) — keep
+// the two identical.
+function computeReviewAggregate(reviews, ratingsOnly) {
+  var ratings = reviews.map(function (r) { return r.rating; }).concat(ratingsOnly || []);
+  var sum = ratings.reduce(function (a, b) { return a + b; }, 0);
+  return {
+    totalCount: ratings.length,
+    ratingValue: ratings.length ? Math.floor(sum * 10 / ratings.length) / 10 : 0
+  };
+}
+
+// Review schema bodies. The homepage and sell hub FurnitureStore schemas carry a
+// "review" array mirroring the visible cards, which used to be prepended by hand
+// on both pages for every review. This regenerates every "review": [ … ] array
+// from the written reviews in data order (newest first), keeping the page's own
+// indentation. The bracket scan is string-aware, so a "]" inside review text
+// cannot end the array early. Pages without the key are untouched. Idempotent.
+function injectReviewSchema(html, reviews) {
+  var re = /^([ \t]*)"review"\s*:\s*\[/gm;
+  var out = '';
+  var last = 0;
+  var m;
+  while ((m = re.exec(html))) {
+    var indent = m[1];
+    var i = m.index + m[0].length - 1;
+    var depth = 0;
+    var inStr = false;
+    for (; i < html.length; i++) {
+      var ch = html[i];
+      if (inStr) {
+        if (ch === '\\') { i++; continue; }
+        if (ch === '"') inStr = false;
+        continue;
+      }
+      if (ch === '"') { inStr = true; continue; }
+      if (ch === '[') depth++;
+      if (ch === ']') { depth--; if (depth === 0) break; }
+    }
+    if (i >= html.length) return html; // unbalanced — leave the page alone
+    var pad = indent + '  ';
+    var jsonStr = function (s) { return JSON.stringify(s).replace(/</g, '\\u003c'); };
+    var items = reviews.filter(function (r) { return r.text; }).map(function (r) {
+      return [
+        pad + '{',
+        pad + '  "@type": "Review",',
+        pad + '  "author": { "@type": "Person", "name": ' + jsonStr(r.name) + ' },',
+        pad + '  "reviewRating": { "@type": "Rating", "ratingValue": ' + r.rating + ', "bestRating": 5 },',
+        pad + '  "reviewBody": ' + jsonStr(r.text),
+        pad + '}'
+      ].join('\n');
+    });
+    out += html.slice(last, m.index) + indent + '"review": [\n' + items.join(',\n') + '\n' + indent + ']';
+    last = i + 1;
+    re.lastIndex = last;
+  }
+  return last ? out + html.slice(last) : html;
+}
+
 // Sell-form prelude + offer-expectation block (§5.13). Anchored, unmarked
 // rewrite — same class as the aggregateRating sync above: the copy lives once
 // in partials/sell-prelude.js and is stamped onto every page carrying a
@@ -2673,7 +2735,12 @@ var reviewsSrc    = fs.readFileSync(path.join(ROOT, 'js', 'reviews-data.js'),   
 var availableItems  = extractArray(availableSrc,  'availableItems');
 var soldItems       = extractArray(soldSrc,        'soldItems');
 var reviews         = extractArray(reviewsSrc,     'reviews');
-var reviewAggregate = extractObject(reviewsSrc,    'reviewAggregate');
+var ratingsOnly     = extractArray(reviewsSrc,     'ratingsOnly');
+var reviewAggregate = computeReviewAggregate(reviews, ratingsOnly);
+// The credibility strip's ★ rating is the same calculated figure every schema
+// publishes — assigned here, before any partial renders, so the two can never
+// disagree (§5.9, §8.4). partials/credibility.js reads site.rating at call time.
+site.rating = reviewAggregate.ratingValue.toFixed(1);
 
 var availableHTML = generateAvailableHTML(displayOrder(availableItems));
 var soldHTML      = generateSoldHTML(soldItems);
@@ -2794,6 +2861,7 @@ for (var pi = 0; pi < partialFiles.length; pi++) {
   pNext = relinkSoldCards(pNext);
   var pPreAggregate = pNext;
   pNext = injectAggregateRating(pNext, reviewAggregate);
+  pNext = injectReviewSchema(pNext, reviews);
   if (pNext !== pPreAggregate) aggregateSynced++;
   pNext = injectAssetVersions(pNext, assetVersions);
   pNext = injectFaviconVersions(pNext, assetVersions);
@@ -2902,6 +2970,21 @@ function rebuildLlmsAvailableSection() {
   return live.length;
 }
 var llmsAvailableCount = rebuildLlmsAvailableSection();
+
+// ── llms.txt: the business-facts rating line ─────────────────────────────
+// "- Rating: X stars (N ratings)" follows the calculated review aggregate
+// (§8.4), so a new review or star-only rating needs no llms.txt edit.
+function rebuildLlmsRatingLine() {
+  var llmsPath = path.join(ROOT, 'llms.txt');
+  if (!fs.existsSync(llmsPath)) return false;
+  var txt = fs.readFileSync(llmsPath, 'utf8');
+  if (!/^- Rating: /m.test(txt)) return false;
+  var line = '- Rating: ' + reviewAggregate.ratingValue.toFixed(1) + ' stars (' + reviewAggregate.totalCount + ' ratings)';
+  var out = txt.replace(/^- Rating: .*$/m, line);
+  if (out !== txt) fs.writeFileSync(llmsPath, out, 'utf8');
+  return true;
+}
+var llmsRatingSynced = rebuildLlmsRatingLine();
 
 var COLLIN_ID = 'https://edmontonrefreshed.com/about/#collin';
 
@@ -3214,14 +3297,16 @@ console.log('  merchant-feed   — ' + merchantFeedStats.items + ' product(s) in
 console.log('  partials        — ' + partialUpdated + ' HTML files updated');
 console.log('  sold cards      — ' + soldCardRelinks + ' card link(s) point to sold stubs');
 
-// Review aggregate: one source (js/reviews-data.js) drives every schema block.
-// config/site.js#rating is a separate hand-set string powering the credibility
-// strip, so warn when the two disagree rather than silently showing two numbers.
-if (String(site.rating) !== String(reviewAggregate.ratingValue)) {
-  console.log('  aggregate WARN  — config.rating (' + site.rating + ') differs from reviewAggregate.ratingValue (' + reviewAggregate.ratingValue + '); credibility strip and schemas disagree');
-} else {
-  console.log('  aggregate       — ' + reviewAggregate.ratingValue + ' / ' + reviewAggregate.totalCount + ' ratings synced across all schemas (' + aggregateSynced + ' file(s) rewritten)');
-}
+// Review aggregate: calculated once from js/reviews-data.js (reviews +
+// ratingsOnly) and published everywhere — schema aggregateRating and Review
+// bodies, the credibility strip, the homepage bar, llms.txt. The only hand
+// input is the rating itself, so guard that: anything but a whole 1–5 would
+// silently skew the published average.
+var badRatings = reviews.map(function (r) { return r.rating; }).concat(ratingsOnly)
+  .filter(function (n) { return !(n === 1 || n === 2 || n === 3 || n === 4 || n === 5); });
+console.log('  aggregate       — ' + reviewAggregate.ratingValue.toFixed(1) + ' / ' + reviewAggregate.totalCount + ' ratings (' + reviews.length + ' written + ' + ratingsOnly.length + ' star-only) synced across all schemas (' + aggregateSynced + ' file(s) rewritten)');
+if (badRatings.length) console.log('  aggregate WARN  — ' + badRatings.length + ' rating(s) not a whole number 1–5: ' + badRatings.join(', '));
+if (!llmsRatingSynced) console.log('  aggregate WARN  — llms.txt has no "- Rating:" line to sync');
 
 // Entity-integrity report.
 if (ownerDangling) {

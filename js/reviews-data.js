@@ -2,13 +2,14 @@
 //  REVIEWS DATA
 //
 //  "rating" is out of 5.
-//  "text" is optional — omit for ratings-only entries.
+//  "text" is the written review — every entry here renders a card.
 //  "type" is "buyer" (bought from us) or "seller" (sold to us);
 //  it renders as subtext under the reviewer's name. Missing
 //  type defaults to buyer.
-//  Aggregate stats at the bottom drive the summary bar.
 //
-//  To add a new review: copy a block and fill in the values.
+//  To add a written review: copy a block to the TOP and fill it in.
+//  To add a star-only rating (no text): append it to ratingsOnly below.
+//  Never type a count or average — the aggregate is calculated.
 // ═══════════════════════════════════════════════════════════
 
 var reviews = [
@@ -80,11 +81,24 @@ var reviews = [
   }
 ];
 
-// ── Aggregate (includes written + ratings-only) ──────────────
-var reviewAggregate = {
-  totalCount: 22,
-  ratingValue: 4.9    // (21 × 5 + 1 × 4) / 22 = 4.95 → 4.9 (rounded down — never overstate)
-};
+// ── Star-only ratings (no written text) ──────────────────────
+// One number per rating, newest last. To add one, append ", 5".
+// They count toward the aggregate but render no card.
+var ratingsOnly = [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5];
+
+// ── Aggregate — calculated, never typed (§8.4) ───────────────
+// Every written review plus every star-only rating. The average is
+// rounded DOWN to one decimal — never overstate. build.js mirrors
+// this (computeReviewAggregate) for the static pages; keep the two
+// identical.
+var reviewAggregate = (function () {
+  var ratings = reviews.map(function (r) { return r.rating; }).concat(ratingsOnly);
+  var sum = ratings.reduce(function (a, b) { return a + b; }, 0);
+  return {
+    totalCount: ratings.length,
+    ratingValue: ratings.length ? Math.floor(sum * 10 / ratings.length) / 10 : 0
+  };
+})();
 
 
 // ═══════════════════════════════════════════════════════════
