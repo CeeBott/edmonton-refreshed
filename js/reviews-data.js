@@ -82,8 +82,8 @@ var reviews = [
 
 // ── Aggregate (includes written + ratings-only) ──────────────
 var reviewAggregate = {
-  totalCount: 21,
-  ratingValue: 4.9    // (20 × 5 + 1 × 4) / 21 = 4.95 → 4.9 (rounded down — never overstate)
+  totalCount: 22,
+  ratingValue: 4.9    // (21 × 5 + 1 × 4) / 22 = 4.95 → 4.9 (rounded down — never overstate)
 };
 
 
