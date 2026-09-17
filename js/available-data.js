@@ -86,6 +86,7 @@ var availableItems = [
     model: "Charles",
     productionDate: "2007",
     material: "Esopo Rattier",
+    materialFeed: "Fabric",
     color: "Off White",
     conditionGrade: "Fair",
     dimensions: { width: "129", depth: "91", height: "29" },
