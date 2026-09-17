@@ -14,6 +14,12 @@
 
 var reviews = [
   {
+    name: "Alison Matthews",
+    rating: 5,
+    type: "buyer",
+    text: "I'm really delighted with this high quality sofa! Great experience dealing with Edmonton Refreshed. Collin was responsive and totally professional. Trustworthy documentation of the item, time to check it over in person, and I really appreciated the prompt and convenient delivery. He made the whole process seamless. Thank you, Collin!!"
+  },
+  {
     name: "Jadine",
     rating: 5,
     type: "buyer",
