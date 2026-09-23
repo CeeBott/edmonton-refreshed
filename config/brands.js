@@ -19,6 +19,9 @@
 // ═══════════════════════════════════════════════════════════
 
 var brandBlurbs = {
+  "American Leather":
+    "American Leather builds its upholstery to order at its own factory in Dallas, Texas, and is best known for the Comfort Sleeper sofa bed. Its leathers are sold in lettered categories by hide quality and finish, so two pieces of the same model can differ substantially in the leather they carry.",
+
   "Crate & Barrel":
     "Crate & Barrel designs its upholstery in-house rather than reselling other makers' lines, so its sofas and sectionals are exclusive to the brand and do not turn up under other labels. Frames are typically hardwood, and the house performance fabrics are specified for daily use in active households rather than for showroom life.",
 
