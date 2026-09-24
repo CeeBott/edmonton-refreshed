@@ -31,6 +31,7 @@ Every piece currently for sale, with the current asking price in CAD. Each
 listing page carries photos, dimensions, condition detail, and FAQs. This
 list is regenerated on every build and always matches the homepage.
 
+- Crate & Barrel Gather 89-Inch Wood Base Bench Sofa, Tribute Gravel: $2,300 CAD — https://edmontonrefreshed.com/listings/crate-and-barrel-gather-89-bench-sofa-edmonton/
 - American Leather Carson L-Shaped Sectional, Haven Heritage Champagne Aniline Leather: $4,200 CAD — https://edmontonrefreshed.com/listings/american-leather-carson-sectional-edmonton/
 - Crate & Barrel Aris 2-Piece Bench Sectional with Right-Arm Chaise, Thrive Ink: $2,900 CAD (reserved) — https://edmontonrefreshed.com/listings/crate-and-barrel-aris-bench-sectional-edmonton/
 - B&B Italia Charles Left-Facing Sectional, Off-White Rattier Fabric: $4,200 CAD — https://edmontonrefreshed.com/listings/b-b-italia-charles-sectional-edmonton/
