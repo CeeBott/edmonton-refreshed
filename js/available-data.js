@@ -71,6 +71,7 @@ var availableItems = [
       "images/CB-050/crate-and-barrel-04.jpeg",
       "images/CB-050/crate-and-barrel-05.jpeg",
       "images/CB-050/crate-and-barrel-06.jpeg",
+      "images/CB-050/crate-and-barrel-07.jpeg",
     ]
   },
   {
@@ -140,6 +141,8 @@ var availableItems = [
       "images/AL-049/american-leather-16.jpeg",
       "images/AL-049/american-leather-17.jpeg",
       "images/AL-049/american-leather-18.jpeg",
+      "images/AL-049/american-leather-19.jpeg",
+      "images/AL-049/american-leather-20.jpeg",
     ]
   },
   {
