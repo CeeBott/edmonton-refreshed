@@ -81,6 +81,7 @@ var availableItems = [
     metaTitle: "Pre-Owned American Leather Carson Leather Sectional for Sale in Edmonton",
     metaDescription: "Pre-owned American Leather Carson L-shaped sectional in Haven Heritage full-aniline leather. Delivery across Alberta. {price}.",
     availabilityStarts: "2026-09-23",
+    reserved: "2026-09-26",
     model: "Carson",
     productionDate: "2015-07",
     material: "Haven Heritage Leather",
