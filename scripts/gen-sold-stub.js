@@ -34,6 +34,23 @@ var TEMPLATE = path.join(ROOT, 'listings', 'la-z-boy-emric-right-facing-sectiona
 // availability: "SoldOut" (recommended) — accurate for one-of-one pieces and
 // matches the visible "This piece has sold." overlay (see CLAUDE.md §6.3, §10.1).
 var MANIFEST = {
+  'crate-and-barrel-aris-bench-sectional-edmonton': {
+    sku: 'CB-048',
+    availability: 'SoldOut',
+    brand: 'Crate & Barrel',
+    brandShort: 'Crate & Barrel',
+    h1: 'Aris 2-Piece Bench Sectional with Right-Arm Chaise — Thrive Ink',
+    model: 'Aris',
+    configuration: 'sectional',
+    sellHref: '/sell/crate-and-barrel/',
+    altBase: 'Crate & Barrel Aris 2-Piece Bench Sectional',
+    metaDescription: 'This Crate &amp; Barrel Aris two-piece bench sectional in Thrive Ink has sold. Browse current available inventory at Edmonton Refreshed — curated pre-owned sofas and sectionals in Edmonton.',
+    twitterDescription: 'This Crate &amp; Barrel Aris bench sectional has sold. Browse current available inventory at Edmonton Refreshed.',
+    productDescription: 'Crate & Barrel Aris two-piece bench sectional in Thrive Ink, a heathered blue-slate performance basketweave — a left-arm sofa and a right-arm chaise forming a right-facing L, 109 inches wide with a 69-inch-deep chaise, one uninterrupted bench cushion per module, and feather-down-wrapped foam over an FSC-certified hardwood frame. Manufactured in March 2023, acquired from the Spruce Village area of Spruce Grove, and sold in excellent condition. This piece has sold; browse current available inventory at Edmonton Refreshed.',
+    introHTML: 'The Aris is a Crate &amp; Barrel exclusive &mdash; a two-piece sectional built from a left-arm sofa and a right-arm chaise that join into a right-facing L. Each module carries a single uninterrupted bench cushion, so there is no centre gap down the seat, and the chaise runs 69 inches deep for full-length lounging while the sofa module stays at 37.5. The cushions are feather-down-wrapped foam over an FSC-certified hardwood frame, upholstered in Thrive Ink: a solution-dyed olefin basketweave in a deep heathered blue-slate, rated for pets and kids and GREENGUARD Gold Certified. We acquired this one from the Spruce Village area of Spruce Grove; manufactured in March 2023 and kept in a single home, it came to us in excellent condition with both bolster pillows and the original Crate &amp; Barrel label intact.',
+    newsletterHeading: 'Looking for a sectional like the Crate &amp; Barrel Aris? Enter your email and we&rsquo;ll let you know when similar pieces come in.',
+  },
+
   'west-elm-jodie-wing-leather-chairs-edmonton': {
     sku: 'WE-047',
     availability: 'SoldOut',
