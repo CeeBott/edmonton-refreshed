@@ -599,7 +599,7 @@ function pluralize(s) { return /(?:ch|sh|s|x|z)$/i.test(s) ? s + 'es' : s + 's';
 // Sell pages keyed by piece configuration (no brand involved). When a piece's
 // sellHref is one of these, the closing-line anchor uses the pluralized
 // configuration ("we buy leather sofas directly") instead of the brand.
-var CONFIG_SELL_PAGES = ['/sell/sectional/', '/sell/leather-sectional/', '/sell/sofa/', '/sell/leather-sofa/', '/sell/couch/', '/sell/leather-couch/'];
+var CONFIG_SELL_PAGES = ['/sell/sectional/', '/sell/leather-sectional/', '/sell/sofa/', '/sell/leather-sofa/'];
 
 function isoDate() {
   return new Date().toLocaleDateString('en-CA', { timeZone: 'America/Edmonton' });

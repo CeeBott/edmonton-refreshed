@@ -13,6 +13,12 @@
  *   notesLabel / notesPlaceholder
  *               Situational wording for the form's optional Notes field.
  *   soldSchema  { name, description } for the Recently sold ItemList (§5.16).
+ *   showcase    { brand, match, leather } — which pieces this page features in
+ *               its hero mosaic and Recently sold strip. brand = brand family
+ *               (first word); match = "sofa|loveseat" style title test;
+ *               leather = true for leather only. Omit to feature everything.
+ *   mosaic      { caption, images: [[path, alt], ...] } pins the hero photos
+ *               instead of picking them from showcase (the hub).
  *   howTo       { heading, name, basis, note } for the shared How it works
  *               block and its HowTo schema (partials/sell-howto.js).
  *               heading = the visible h2; name = the HowTo schema name;
@@ -24,6 +30,16 @@
 module.exports = {
   'sell/index.html': {
     type: "hub",
+    // Pinned hero photos (Collin approved this set, 2026-09-27).
+    mosaic: {
+      caption: 'Recent buys from Edmonton homes',
+      images: [
+        ['images/BB-030/bb-italia-01.jpeg', 'B&B Italia Charles sofa'],
+        ['images/PB-045/pottery-barn-01.jpeg', 'Pottery Barn Turner leather sofa'],
+        ['images/Sold Inventory/NE-029/natuzzi-editions-01.jpeg', 'Natuzzi Editions Saggezza leather sectional'],
+        ['images/CB-048/crate-and-barrel-01.jpeg', 'Crate & Barrel Aris sectional'],
+      ],
+    },
     soldSchema: {
       name: "Recently Purchased Pieces in Edmonton",
       description: "Photos of pre-owned sofas and sectionals recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.",
@@ -35,6 +51,7 @@ module.exports = {
   },
   'sell/natuzzi/index.html': {
     type: "brand",
+    showcase: { brand: 'Natuzzi' },
     brand: "Natuzzi",
     soldSchema: {
       name: "Recently Purchased Natuzzi Pieces in Edmonton",
@@ -48,6 +65,7 @@ module.exports = {
   },
   'sell/rove-concepts/index.html': {
     type: "brand",
+    showcase: { brand: 'Rove Concepts' },
     brand: "Rove Concepts",
     soldSchema: {
       name: "Recently Purchased Rove Concepts Pieces in Edmonton",
@@ -61,6 +79,7 @@ module.exports = {
   },
   'sell/eq3/index.html': {
     type: "brand",
+    showcase: { brand: 'EQ3' },
     brand: "EQ3",
     soldSchema: {
       name: "Recently Purchased EQ3 Pieces in Edmonton",
@@ -74,6 +93,7 @@ module.exports = {
   },
   'sell/crate-and-barrel/index.html': {
     type: "brand",
+    showcase: { brand: 'Crate & Barrel' },
     brand: "Crate &amp; Barrel",
     soldSchema: {
       name: "Recently Purchased Crate & Barrel Pieces in Edmonton",
@@ -87,6 +107,11 @@ module.exports = {
   },
   'sell/restoration-hardware/index.html': {
     type: "brand",
+    soldSchema: {
+      name: "Recently Purchased Restoration Hardware Pieces in Edmonton",
+      description: "Photos of pre-owned Restoration Hardware sofas and sectionals purchased and resold by Edmonton Refreshed.",
+    },
+    showcase: { brand: 'Restoration Hardware' },
     brand: "Restoration Hardware",
     howTo: {
       heading: "How selling your Restoration Hardware piece works",
@@ -96,6 +121,11 @@ module.exports = {
   },
   'sell/west-elm/index.html': {
     type: "brand",
+    soldSchema: {
+      name: "Recently Purchased West Elm Pieces in Edmonton",
+      description: "Photos of pre-owned West Elm sofas, sectionals, and chairs purchased and resold by Edmonton Refreshed.",
+    },
+    showcase: { brand: 'West Elm' },
     brand: "West Elm",
     howTo: {
       heading: "How selling your West Elm piece works",
@@ -113,6 +143,11 @@ module.exports = {
   },
   'sell/sofa/index.html': {
     type: "piece",
+    soldSchema: {
+      name: "Recently Purchased Sofas in Edmonton",
+      description: "Photos of pre-owned sofas and loveseats purchased and resold by Edmonton Refreshed.",
+    },
+    showcase: { match: 'sofa|loveseat' },
     howTo: {
       heading: "How selling your sofa works",
       name: "How to Sell a Sofa in Edmonton",
@@ -121,6 +156,7 @@ module.exports = {
   },
   'sell/leather-sofa/index.html': {
     type: "piece",
+    showcase: { match: 'sofa|loveseat', leather: true },
     soldSchema: {
       name: "Recently Purchased Leather Sofas in Edmonton",
       description: "Photos of pre-owned leather sofas recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.",
@@ -131,32 +167,9 @@ module.exports = {
       basis: "brand, leather grade (aniline, semi-aniline, or top-grain), age, and condition",
     },
   },
-  'sell/couch/index.html': {
-    type: "piece",
-    soldSchema: {
-      name: "Recently Purchased Couches in Edmonton",
-      description: "Photos of pre-owned couches and sofas recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.",
-    },
-    howTo: {
-      heading: "How selling your couch works",
-      name: "How to Sell a Couch in Edmonton",
-      basis: "brand, age, upholstery, and condition",
-    },
-  },
-  'sell/leather-couch/index.html': {
-    type: "piece",
-    soldSchema: {
-      name: "Recently Purchased Leather Couches in Edmonton",
-      description: "Photos of pre-owned leather couches recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.",
-    },
-    howTo: {
-      heading: "How selling your leather couch works",
-      name: "How to Sell a Leather Couch in Edmonton",
-      basis: "brand, leather grade (aniline, semi-aniline, or top-grain), age, and condition",
-    },
-  },
   'sell/sectional/index.html': {
     type: "piece",
+    showcase: { match: 'sectional' },
     soldSchema: {
       name: "Recently Purchased Sectionals in Edmonton",
       description: "Photos of pre-owned sectionals recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.",
@@ -169,6 +182,7 @@ module.exports = {
   },
   'sell/leather-sectional/index.html': {
     type: "piece",
+    showcase: { match: 'sectional', leather: true },
     soldSchema: {
       name: "Recently Purchased Leather Sectionals in Edmonton",
       description: "Photos of pre-owned leather sectionals recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.",
@@ -266,6 +280,10 @@ module.exports = {
   },
   'sell/what-we-buy/index.html': {
     type: "eligibility",
+    soldSchema: {
+      name: "Pieces We've Bought in Edmonton",
+      description: "Photos of pre-owned sofas and sectionals purchased and resold by Edmonton Refreshed.",
+    },
     notesLabel: "Anything we should know? (Model name, leather grade, original retailer)",
     notesPlaceholder: "Model, fabric/leather, where it was originally purchased",
     howTo: {

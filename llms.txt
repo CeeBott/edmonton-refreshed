@@ -50,8 +50,6 @@ list is regenerated on every build and always matches the homepage.
 - Sell a leather sectional in Edmonton: https://edmontonrefreshed.com/sell/leather-sectional/
 - Sell a sofa in Edmonton: https://edmontonrefreshed.com/sell/sofa/
 - Sell a leather sofa in Edmonton: https://edmontonrefreshed.com/sell/leather-sofa/
-- Sell a couch in Edmonton: https://edmontonrefreshed.com/sell/couch/
-- Sell a leather couch in Edmonton: https://edmontonrefreshed.com/sell/leather-couch/
 
 **By situation**
 - Furniture consignment alternative in Edmonton: https://edmontonrefreshed.com/sell/furniture-consignment/

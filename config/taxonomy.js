@@ -19,8 +19,6 @@ const furnitureTypes = [
   { name: 'Leather Sectionals', nav: 'Leather Sectional', slug: 'leather-sectional' },
   { name: 'Sofas',              nav: 'Sofa',              slug: 'sofa' },
   { name: 'Leather Sofas',      nav: 'Leather Sofa',      slug: 'leather-sofa' },
-  { name: 'Couches',            nav: 'Couch',             slug: 'couch' },
-  { name: 'Leather Couches',    nav: 'Leather Couch',     slug: 'leather-couch' },
 ];
 
 // Selling situations — the "Sell By Situation" footer column.

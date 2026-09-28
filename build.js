@@ -507,6 +507,12 @@ function injectSellCluster(html, filepath) {
     sellClusterWarnings.push(rel + ' carries FIT_CHECK, but brand pages never show the fit check');
   }
   var hasLists = html.indexOf('FIT_LISTS_START') !== -1;
+  html = injectPartial(html, 'RECENT_SOLD', function (attrs) {
+    return generateRecentSoldHTML(Object.assign({}, meta.showcase || {}, attrs));
+  });
+  html = injectPartial(html, 'HERO_MOSAIC', function () {
+    return generateHeroMosaic(meta, SELL_PAGES['sell/index.html']);
+  });
   html = injectPartial(html, 'FIT_CHECK', function () { return isBrand ? '' : renderFitCheck('      ', hasLists); });
   html = injectPartial(html, 'FIT_LISTS', function () { return renderFitLists('        '); });
 
@@ -844,16 +850,91 @@ function soldVariantSrcset(rel, ext) {
   return parts.join(', ');
 }
 
+// Hero mosaic for sell pages (HERO_MOSAIC markers): four real photos in the
+// intro. config/sell-pages.js → mosaic ({ images: [...], caption }) pins an
+// explicit set (the hub); otherwise the build picks from the page's showcase
+// filter: live inventory first, then sold pieces older than the ones the
+// Recently sold strip already shows, then those, then extra photos of the same
+// pieces. A brand with nothing to show falls back to the hub's set.
+function mosaicPicture(rel, sizes, alt) {
+  rel = rel.replace(/^(?:\.\.\/)+/, '').replace(/^\/+/, '');
+  var sources = ['avif', 'webp'].map(function (ext) {
+    var set = soldVariantSrcset(rel, ext);
+    return set ? '<source type="image/' + ext + '" srcset="' + set + '" sizes="' + sizes + '">' : '';
+  }).join('');
+  var jpegSet = soldVariantSrcset(rel, 'jpeg');
+  return '<picture>' + sources + '<img src="/' + encodeURI(rel) + '"' +
+    (jpegSet ? ' srcset="' + jpegSet + '" sizes="' + sizes + '"' : '') +
+    ' alt="' + escapeHtml(alt) + '" loading="lazy"></picture>';
+}
+
+function generateHeroMosaic(meta, hubMeta) {
+  var f = meta.showcase || {};
+  var chosen = [];
+  if (meta.mosaic && meta.mosaic.images) {
+    chosen = meta.mosaic.images.map(function (m) { return { rel: m[0], alt: m[1] }; });
+  } else {
+    var label = function (i) { return i.brand + ' ' + (i.title || '').split(' \u2014 ')[0]; };
+    var live = availableItems.filter(function (i) { return !isReserved(i) && pieceMatches(i, f); });
+    var sold = soldItems.filter(function (i) { return pieceMatches(i, f); });
+    var ordered = live.concat(sold.slice(6), sold.slice(0, 6));
+    ordered.slice(0, 4).forEach(function (i) { chosen.push({ rel: i.images[0], alt: label(i) }); });
+    for (var n = 1; chosen.length < 4 && n < 4; n++) {
+      ordered.forEach(function (i) {
+        if (chosen.length < 4 && i.images[n]) chosen.push({ rel: i.images[n], alt: label(i) });
+      });
+    }
+    if (!chosen.length && hubMeta && hubMeta.mosaic) return generateHeroMosaic(hubMeta);
+  }
+  if (!chosen.length) return '';
+  var sizes = ['(max-width: 900px) 60vw, 330px', '(max-width: 900px) 25vw, 160px', '(max-width: 900px) 25vw, 160px', '(max-width: 900px) 45vw, 160px'];
+  var caption = (meta.mosaic && meta.mosaic.caption) ||
+    (f.brand ? escapeHtml(f.brand) + ' pieces we&rsquo;ve bought' : 'Pieces we&rsquo;ve bought in Edmonton');
+  return [
+    '        <figure class="sell-intro-mosaic">',
+    chosen.slice(0, 4).map(function (c, k) { return '          ' + mosaicPicture(c.rel, sizes[k], c.alt); }).join('\n'),
+    '          <figcaption>' + caption + '</figcaption>',
+    '        </figure>',
+  ].join('\n');
+}
+
+// Piece filter shared by the Recently sold strip and the hero mosaic.
+// f = { brand, match, leather } from config/sell-pages.js → showcase (or the
+// marker's own attributes): brand = brand family by first word; match = a
+// "sofa|loveseat" style alternation tested against the title; leather =
+// "true" to keep only leather pieces. Ottomans never qualify.
+function pieceMatches(item, f) {
+  if (!item || !item.images || !item.images.length) return false;
+  if (item.comingSoon) return false;
+  var title = item.title || '';
+  if (/ottoman/i.test(title)) return false;
+  var family = ((f && f.brand) || '').split(' ')[0].toLowerCase();
+  if (family && (item.brand || '').toLowerCase().indexOf(family) !== 0) return false;
+  if (f && f.match && !new RegExp('\\b(' + f.match + ')', 'i').test(title)) return false;
+  if (f && String(f.leather) === 'true') {
+    var text = title + ' ' + (item.material || '') + ' ' + (item.description || '');
+    if (!/leather/i.test(text) || /faux|bonded/i.test(title)) return false;
+  }
+  return true;
+}
+
 function generateRecentSoldHTML(attrs) {
   var count = parseInt(attrs.count, 10) || 6;
-  var family = (attrs.brand || '').split(' ')[0].toLowerCase();
-  var picks = soldItems.filter(function (item) {
-    if (!item.images || !item.images.length) return false;
-    if (/ottoman/i.test(item.title || '')) return false;
-    if (family && (item.brand || '').toLowerCase().indexOf(family) !== 0) return false;
-    return true;
-  }).slice(0, count);
-  if (!picks.length) return '';
+  var picks = soldItems.filter(function (item) { return pieceMatches(item, attrs); }).slice(0, count);
+  if (!picks.length) {
+    // Nothing sold yet for this brand or type: say so plainly rather than
+    // show unrelated pieces. Disappears on its own once one sells.
+    var what = attrs.brand ? escapeHtml(attrs.brand) + ' pieces' : 'pieces like this';
+    return [
+      '      <section class="sell-landing-sold">',
+      '        <div class="sell-section-head">',
+      '          <h2 class="sell-h2">Recently sold</h2>',
+      '          <a href="/sold/" class="sell-link">Full archive &rarr;</a>',
+      '        </div>',
+      '        <p class="sell-muted">We don&rsquo;t have ' + what + ' in our sold archive yet. If you have one, we&rsquo;re actively looking.</p>',
+      '      </section>',
+    ].join('\n');
+  }
   var sizes = '(max-width: 768px) 62vw, 180px';
   var cards = picks.map(function (item) {
     var rel = item.images[0].replace(/^(?:\.\.\/)+/, '').replace(/^\/+/, '');
@@ -1635,9 +1716,11 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions, rev
         ? { href: '/sell/leather-sofa/', anchor: 'sell your leather sofa' }
         : { href: '/sell/sofa/',         anchor: 'sell your sofa' };
     } else if (pc.type === 'couch') {
+      // The couch sell pages were retired 2026-09-27 (§10.24); a couch is a
+      // sofa, so it gets the sofa pages.
       sellLineTarget = pc.leather
-        ? { href: '/sell/leather-couch/', anchor: 'sell your leather couch' }
-        : { href: '/sell/couch/',         anchor: 'sell your couch' };
+        ? { href: '/sell/leather-sofa/', anchor: 'sell your leather sofa' }
+        : { href: '/sell/sofa/',         anchor: 'sell your sofa' };
     } else {
       sellLineTarget = { href: '/sell/', anchor: 'sell your piece' };
     }
@@ -2085,8 +2168,8 @@ function injectAllPartials(html) {
   // the "Send us your details" heading — the last thing read before the
   // ask. Empty when no seller reviews exist.
   html = injectPartial(html, 'SELLER_REVIEWS', function () { return generateSellerReviewsHTML(reviews); });
-  // Sell pages: the newest sold pieces, straight from js/sold-data.js.
-  html = injectPartial(html, 'RECENT_SOLD', function (attrs) { return generateRecentSoldHTML(attrs); });
+  // RECENT_SOLD and HERO_MOSAIC are per-page (they read config/sell-pages.js),
+  // so they are injected in injectSellCluster, which knows the file.
   // Sell-form prelude + "how our offers work" expectation block (§5.13).
   html = injectSellPrelude(html);
   // Config-driven inline fragments (homepage sr-only entity block, sold-page
@@ -2392,7 +2475,9 @@ function injectLandingSoldSchema(html, filepath) {
   var meta = (SELL_PAGES[rel] || {}).soldSchema;
   if (!meta) return html;
   var cards = parseSellLandingSoldCards(html);
-  if (!cards) return html;
+  // No sold cards on the page (e.g. a brand with nothing sold yet): empty the
+  // marker pair so a stale ItemList can't outlive the cards it described.
+  if (!cards) return html.substring(0, ss + startMarker.length) + '\n  ' + html.substring(se);
   return html.substring(0, ss + startMarker.length) +
          '\n  <script type="application/ld+json">\n  ' +
          generateLandingSoldSchema(meta, cards) +
