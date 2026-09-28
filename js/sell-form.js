@@ -44,25 +44,18 @@
   // ── Mass-market brand warning ──
   // Mass-market brands were 42% of all passed leads (Leads tab, Apr to Sep
   // 2026). A soft note under the Brand field, shown while the seller types,
-  // puts that at the moment they decide to submit. It never blocks: the list
-  // is matched loosely and a seller can still send. Names come from the
-  // brands actually passed on in the ledger, plus the ones the site already
-  // names (IKEA, Ashley, Leon's, The Brick).
-  var MASS_MARKET = [
-    ['IKEA', /\bikea\b/i],
-    ['Ashley', /\bashley\b/i],
-    ["Leon\u2019s", /\bleon'?\u2019?s\b/i],
-    ['The Brick', /\b(the )?brick\b/i],
-    ['Structube', /\bstructube\b/i],
-    ['Wayfair', /\bwayfair\b/i],
-    ['Wayfair', /\bwilla arlo\b/i],
-    ['Walmart', /\bwal-?mart\b/i],
-    ['Costco', /\bcostco\b/i],
-    ['Kort & Co.', /\bkort\b/i]
-  ];
+  // puts that at the moment they decide to submit. It never blocks.
+  // The list is rendered into data-brands by partials/sell-form.js from
+  // config/buy-criteria.js, so it has one source. Pairs of [label, pattern].
+  var MASS_MARKET = [];
   var brandInput = document.getElementById('sf-brand');
   var brandWarn = document.getElementById('sf-brand-warn');
-  if (brandInput && brandWarn) {
+  try {
+    MASS_MARKET = JSON.parse((brandWarn && brandWarn.getAttribute('data-brands')) || '[]').map(function (b) {
+      return [b[0], new RegExp(b[1], 'i')];
+    });
+  } catch (_) { MASS_MARKET = []; }
+  if (brandInput && brandWarn && MASS_MARKET.length) {
     var checkBrand = function () {
       var hit = null;
       for (var b = 0; b < MASS_MARKET.length; b++) {

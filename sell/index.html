@@ -207,25 +207,25 @@
     "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Sell Your Sofa or Sectional in Edmonton",
-    "description": "Three steps to sell your sofa or sectional to Edmonton Refreshed — an offer today, pickup on your schedule.",
+    "description": "How selling to Edmonton Refreshed works: send details and photos, get an offer if your piece is a fit, and we handle pickup and payment.",
     "step": [
       {
         "@type": "HowToStep",
-        "position": "1",
-        "name": "Send photos and details",
-        "text": "Text or email a few photos along with brand, approximate age, and condition. Both contact options on our sell page open pre-filled templates for speed."
+        "position": 1,
+        "name": "Send details and photos",
+        "text": "Take photos and fill out the form below."
       },
       {
         "@type": "HowToStep",
-        "position": "2",
-        "name": "Receive a straightforward offer",
-        "text": "We get you an offer today based on brand, age, and condition — no negotiating back and forth."
+        "position": 2,
+        "name": "Get an offer",
+        "text": "We aim to reply to every submission the same day we receive it. If your piece is a fit, the offer is based on brand, age, and condition."
       },
       {
         "@type": "HowToStep",
-        "position": "3",
-        "name": "We handle everything else",
-        "text": "We schedule pickup at your convenience and pay cash or e-transfer on the spot. You don't lift a thing."
+        "position": 3,
+        "name": "We handle pickup",
+        "text": "Our crew collects it in an enclosed truck, anywhere in the Edmonton area. You’re paid cash or e-transfer before it leaves. You don’t lift a thing."
       }
     ]
   }
@@ -598,6 +598,7 @@
         </figure>
       </section>
 
+      <!-- FIT_CHECK_START -->
       <section class="sell-fitcheck" aria-labelledby="fitcheck-title">
         <p class="sell-eyebrow" id="fitcheck-title">Before you send photos</p>
         <div class="sell-fitcheck-cols">
@@ -621,6 +622,7 @@
         </div>
         <p class="sell-fitcheck-foot"><a href="#is-it-a-fit">Full list of brands we buy &darr;</a></p>
       </section>
+  <!-- FIT_CHECK_END -->
 
       <section class="sell-howto">
         <h2 class="sell-h2">How it works</h2>
@@ -744,7 +746,7 @@
             <div class="sell-form-row">
               <label for="sf-brand">Brand <span class="sell-form-req" aria-hidden="true">*</span></label>
               <input type="text" id="sf-brand" name="Brand" placeholder="e.g. Natuzzi, EQ3, Rove Concepts (or &lsquo;unsure&rsquo;)" autocomplete="off" value="" required aria-describedby="sf-brand-warn">
-              <p class="sell-form-brand-warn" id="sf-brand-warn" role="status" hidden></p>
+              <p class="sell-form-brand-warn" id="sf-brand-warn" role="status" data-brands="[[&quot;IKEA&quot;,&quot;\\bikea\\b&quot;],[&quot;Ashley&quot;,&quot;\\bashley\\b&quot;],[&quot;Leon’s&quot;,&quot;\\bleon[’']?s\\b&quot;],[&quot;The Brick&quot;,&quot;\\b(the )?brick\\b&quot;],[&quot;Structube&quot;,&quot;\\bstructube\\b&quot;],[&quot;Wayfair&quot;,&quot;\\bwayfair\\b&quot;],[&quot;Wayfair&quot;,&quot;\\bwilla arlo\\b&quot;],[&quot;Walmart&quot;,&quot;\\bwal-?mart\\b&quot;],[&quot;Costco&quot;,&quot;\\bcostco\\b&quot;],[&quot;Kort &amp; Co.&quot;,&quot;\\bkort\\b&quot;]]" hidden></p>
             </div>
 
             <fieldset class="sell-form-row sell-form-choice">
@@ -865,13 +867,12 @@
       <section id="is-it-a-fit">
         <h2 class="sell-h2">Is my piece a fit?</h2>
         <p class="sell-bypiece">By piece: <a href="/sell/sectional/">Sectional</a> &middot; <a href="/sell/leather-sectional/">Leather sectional</a> &middot; <a href="/sell/sofa/">Sofa</a> &middot; <a href="/sell/leather-sofa/">Leather sofa</a> &middot; <a href="/sell/couch/">Couch</a> &middot; <a href="/sell/leather-couch/">Leather couch</a></p>
+        <!-- FIT_LISTS_START -->
         <div class="sell-fitfull">
           <div class="sell-fitfull-col">
             <h3>Brands we buy</h3>
             <p class="sell-muted">Sofas and sectionals, including <a href="/sell/sell-designer-furniture/">designer furniture</a>, ideally within 10 years old, in Good condition or better.</p>
-            <ul class="sell-tags">
-              <li>B&amp;B Italia</li><li><a href="/sell/natuzzi/">Natuzzi Italia</a></li><li>Herman Miller</li><li>Knoll</li><li>Roche Bobois</li><li><a href="/sell/restoration-hardware/">Restoration Hardware</a></li><li>Design Within Reach</li><li><a href="/sell/rove-concepts/">Rove Concepts</a></li><li><a href="/sell/eq3/">EQ3</a></li><li><a href="/sell/west-elm/">West Elm</a></li><li><a href="/sell/crate-and-barrel/">Crate &amp; Barrel</a></li><li>Pottery Barn</li><li>American Leather</li><li>Room &amp; Board</li><li>Natuzzi Editions</li><li>Younger</li><li>VanGogh</li><li>Brentwood Classics</li><li>Palliser</li><li>Decor-Rest</li><li>La-Z-Boy <small>(leather &amp; premium)</small></li><li>Urban Barn, Sunpan, CB2, Article <small>(select)</small></li><li>Signature Lane &amp; Cottswood Interiors</li>
-            </ul>
+            <ul class="sell-tags"><li>B&amp;B Italia</li><li><a href="/sell/natuzzi/">Natuzzi Italia</a></li><li>Herman Miller</li><li>Knoll</li><li>Roche Bobois</li><li><a href="/sell/restoration-hardware/">Restoration Hardware</a></li><li>Design Within Reach</li><li><a href="/sell/rove-concepts/">Rove Concepts</a></li><li><a href="/sell/eq3/">EQ3</a></li><li><a href="/sell/west-elm/">West Elm</a></li><li><a href="/sell/crate-and-barrel/">Crate &amp; Barrel</a></li><li>Pottery Barn</li><li>American Leather</li><li>Room &amp; Board</li><li>Natuzzi Editions</li><li>Younger</li><li>VanGogh</li><li>Brentwood Classics</li><li>Palliser</li><li>Decor-Rest</li><li>La-Z-Boy <small>(leather &amp; premium)</small></li><li>Urban Barn, Sunpan, CB2, Article <small>(select)</small></li><li>Signature Lane &amp; Cottswood Interiors</li></ul>
           </div>
           <div class="sell-fitfull-col">
             <h3>Not a fit</h3>
@@ -889,6 +890,7 @@
             </ul>
           </div>
         </div>
+  <!-- FIT_LISTS_END -->
         <p class="sell-center"><a class="sell-link" href="/sell/what-we-buy/">Full breakdown of what we buy, with examples &rarr;</a></p>
       </section>
 
@@ -973,6 +975,8 @@
 
   <div class="sell-sticky-cta" aria-hidden="true"><a href="#sell-details" tabindex="-1">Get an Offer</a></div>
 
+
+
   <div class="newsletter-embed">
     <p class="newsletter-heading">Not ready to sell yet? Get on our list &mdash; we&rsquo;ll reach out when we&rsquo;re actively sourcing pieces in your category.</p>
     <form class="newsletter-form" action="https://app.kit.com/forms/9233085/subscriptions" method="post" data-sv-form="9233085" data-uid="47c0cc8b38">
@@ -1044,7 +1048,7 @@
   <!-- FOOTER_END -->
 
   <script src="../js/shared.min.js?v=d1f81259"></script>
-  <script src="../js/sell-form.min.js?v=151ef08d"></script>
+  <script src="../js/sell-form.min.js?v=771c37f6"></script>
 
   
 </body>

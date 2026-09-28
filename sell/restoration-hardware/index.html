@@ -89,7 +89,7 @@
     "name": "Sell Your Restoration Hardware Sofa or Sectional in Edmonton",
     "description": "Skip Marketplace. Send photos of your RH piece — Cloud, Belgian, Maxwell and others — offer back today, pickup included, paid at the door.",
     "url": "https://edmontonrefreshed.com/sell/restoration-hardware/",
-    "dateModified": "2026-08-20",
+    "dateModified": "2026-09-27",
     "provider": {
       "@type": "FurnitureStore",
       "@id": "https://edmontonrefreshed.com/#business",
@@ -143,13 +143,26 @@
     "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Sell a Restoration Hardware Sofa or Sectional in Edmonton",
-    "description": "Four steps to sell your RH piece — Cloud, Belgian, Maxwell, and others — to Edmonton Refreshed.",
-    "totalTime": "P2D",
+    "description": "How selling to Edmonton Refreshed works: send details and photos, get an offer if your piece is a fit, and we handle pickup and payment.",
     "step": [
-      { "@type": "HowToStep", "position": 1, "name": "Send photos and details", "text": "Submit three to five photos plus the RH collection name (Cloud, Belgian, Maxwell, Petite, etc.), approximate age, and condition through the form on this page." },
-      { "@type": "HowToStep", "position": 2, "name": "Receive an offer today", "text": "We reply with a written offer today — usually within a few hours on business days — based on the collection, upholstery (leather grade or fabric type), age, and condition." },
-      { "@type": "HowToStep", "position": 3, "name": "Schedule pickup", "text": "If you accept, we schedule pickup anywhere in Edmonton, St. Albert, Sherwood Park, Spruce Grove, Leduc, or Fort Saskatchewan. RH pieces are heavy and oversized; we bring the crew and equipment." },
-      { "@type": "HowToStep", "position": 4, "name": "Paid before we leave", "text": "We confirm condition matches the photos, pay by e-transfer or cash before we leave with the piece, and load it ourselves. You don't lift a thing." }
+      {
+        "@type": "HowToStep",
+        "position": 1,
+        "name": "Send details and photos",
+        "text": "Take photos and fill out the form below."
+      },
+      {
+        "@type": "HowToStep",
+        "position": 2,
+        "name": "Get an offer",
+        "text": "We aim to reply to every submission the same day we receive it. If your piece is a fit, the offer is based on the collection, upholstery (leather grade or fabric type), age, and condition."
+      },
+      {
+        "@type": "HowToStep",
+        "position": 3,
+        "name": "We handle pickup",
+        "text": "Our crew collects it in an enclosed truck, anywhere in the Edmonton area. You’re paid cash or e-transfer before it leaves. You don’t lift a thing."
+      }
     ]
   }
   </script>
@@ -357,36 +370,23 @@
 
       <section class="sell-howto">
         <h2 class="sell-section-heading">How selling your Restoration Hardware piece works</h2>
-        <div class="sell-steps">
-          <div class="sell-step">
-            <span class="sell-step-num">1</span>
-            <div>
-              <strong>Send photos and details</strong>
-              <p>Submit three to five photos plus the RH collection name (Cloud, Belgian, Maxwell, Petite, Lancaster, etc.), age, and condition through the form on this page.</p>
-            </div>
-          </div>
-          <div class="sell-step">
-            <span class="sell-step-num">2</span>
-            <div>
-              <strong>Get an offer today</strong>
-              <p>We reply with a written offer today &mdash; usually within a few hours on business days &mdash; based on the collection, upholstery (leather grade or fabric type), age, and condition.</p>
-            </div>
-          </div>
-          <div class="sell-step">
-            <span class="sell-step-num">3</span>
-            <div>
-              <strong>Schedule pickup</strong>
-              <p>If you accept, pickup is typically scheduled within 48 hours. We come to you anywhere in Edmonton, St. Albert, Sherwood Park, Spruce Grove, Leduc, or Fort Saskatchewan, and handle modular disassembly for Cloud and Petite Cloud configurations.</p>
-            </div>
-          </div>
-          <div class="sell-step">
-            <span class="sell-step-num">4</span>
-            <div>
-              <strong>Paid on the spot</strong>
-              <p>We confirm condition matches the photos, pay by e-transfer or cash before we leave, and load the piece ourselves. RH-scale pieces are heavy &mdash; we bring the crew and equipment for it.</p>
-            </div>
-          </div>
-        </div>
+        <ol class="sell-howto-steps">
+          <li>
+            <span class="sell-howto-num">1</span>
+            <strong>Send details and photos</strong>
+            <p>Take photos and fill out the form below.</p>
+          </li>
+          <li>
+            <span class="sell-howto-num">2</span>
+            <strong>Get an offer</strong>
+            <p>We aim to reply to every submission the same day we receive it. If your piece is a fit, the offer is based on the collection, upholstery (leather grade or fabric type), age, and condition.</p>
+          </li>
+          <li>
+            <span class="sell-howto-num">3</span>
+            <strong>We handle pickup</strong>
+            <p>Our crew collects it in an enclosed truck, anywhere in the Edmonton area. You&rsquo;re paid cash or e-transfer before it leaves. You don&rsquo;t lift a thing.</p>
+          </li>
+        </ol>
       </section>
       <!-- SELLER_REVIEWS_START -->
       <section class="seller-reviews">
@@ -411,7 +411,7 @@
 
 
       <h2 class="section-label sell-send-heading" id="sell-details">Send us your details</h2>
-      <p class="sell-send-lead">Fill out the form below &mdash; we get you an offer today. The more detail you give, the faster and more accurate the offer.</p>
+      <p class="sell-send-lead">Fill out the form below. The more detail you give, the faster and more accurate the offer.</p>
 
       <div class="sell-form-prelude">
         <img class="sell-form-host-photo" src="/images/about/collin-bottrell-400w.jpeg" alt="Collin Bottrell" width="56" height="56" loading="lazy">
@@ -424,8 +424,8 @@
       </details>
 
       <div id="sell-form-success" class="sell-form-success" hidden>
-        <p><strong>Thanks &mdash; your details are in.</strong></p>
-        <p>We'll review your photos and get you an offer today. If you don't see anything by tomorrow, check your spam folder or text us at <a href="sms:7809651477">780-965-1477</a>.</p>
+        <p><strong>Thanks, your details are in.</strong></p>
+        <p>We&rsquo;ll review your photos and aim to reply the same day. If you haven&rsquo;t heard from us by tomorrow, check your spam folder or text us at <a href="sms:7809651477">780-965-1477</a>.</p>
       </div>
 
       <form class="sell-form" id="sell-form" method="POST" enctype="multipart/form-data" novalidate>
@@ -437,7 +437,7 @@
           <div class="sell-form-row">
             <label for="sf-brand">Brand <span class="sell-form-req" aria-hidden="true">*</span></label>
             <input type="text" id="sf-brand" name="Brand" placeholder="e.g. Natuzzi, EQ3, Rove Concepts (or &lsquo;unsure&rsquo;)" autocomplete="off" value="Restoration Hardware" required aria-describedby="sf-brand-warn">
-            <p class="sell-form-brand-warn" id="sf-brand-warn" role="status" hidden></p>
+            <p class="sell-form-brand-warn" id="sf-brand-warn" role="status" data-brands="[[&quot;IKEA&quot;,&quot;\\bikea\\b&quot;],[&quot;Ashley&quot;,&quot;\\bashley\\b&quot;],[&quot;Leon’s&quot;,&quot;\\bleon[’']?s\\b&quot;],[&quot;The Brick&quot;,&quot;\\b(the )?brick\\b&quot;],[&quot;Structube&quot;,&quot;\\bstructube\\b&quot;],[&quot;Wayfair&quot;,&quot;\\bwayfair\\b&quot;],[&quot;Wayfair&quot;,&quot;\\bwilla arlo\\b&quot;],[&quot;Walmart&quot;,&quot;\\bwal-?mart\\b&quot;],[&quot;Costco&quot;,&quot;\\bcostco\\b&quot;],[&quot;Kort &amp; Co.&quot;,&quot;\\bkort\\b&quot;]]" hidden></p>
           </div>
 
           <fieldset class="sell-form-row sell-form-choice">
@@ -689,6 +689,9 @@
     </div>
   </main>
 
+  <div class="sell-sticky-cta" aria-hidden="true"><a href="#sell-details" tabindex="-1">Get an Offer</a></div>
+
+
   <div class="newsletter-embed">
     <p class="newsletter-heading">Not ready to sell yet? Get on our list &mdash; we&rsquo;ll reach out when we&rsquo;re actively sourcing pieces in your category.</p>
     <form class="newsletter-form" action="https://app.kit.com/forms/9233085/subscriptions" method="post" data-sv-form="9233085" data-uid="47c0cc8b38">
@@ -760,7 +763,7 @@
   <!-- FOOTER_END -->
 
   <script src="../../js/shared.min.js?v=d1f81259"></script>
-  <script src="../../js/sell-form.min.js?v=151ef08d"></script>
+  <script src="../../js/sell-form.min.js?v=771c37f6"></script>
 
 </body>
 </html>

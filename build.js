@@ -36,6 +36,15 @@ var renderFooter      = require('./partials/footer').renderFooter;
 var renderCredibility = require('./partials/credibility').renderCredibility;
 var renderSellPrelude = require('./partials/sell-prelude').renderSellPrelude;
 var renderSellForm = require('./partials/sell-form').renderSellForm;
+var renderSellSuccess = require('./partials/sell-form').renderSellSuccess;
+var renderSellSticky = require('./partials/sell-form').renderSellSticky;
+var renderFitCheck = require('./partials/sell-fit').renderFitCheck;
+var renderFitLists = require('./partials/sell-fit').renderFitLists;
+var renderHowTo = require('./partials/sell-howto').renderHowTo;
+var renderHowToSchema = require('./partials/sell-howto').renderHowToSchema;
+// Per-page settings for every sell-cluster page (§5.13): form pre-fill and
+// notes copy, Recently sold schema name, How it works heading and basis.
+var SELL_PAGES = require('./config/sell-pages');
 
 // ── FAQ source of truth (homepage / sell hub / about) ──
 var faqs = require('./config/faqs');
@@ -447,57 +456,12 @@ function injectSellPrelude(html) {
 
 // Sell form (§5.11). Per-page values for the three things that legitimately
 // differ — see partials/sell-form.js for what they are and why. Keyed by
-// repo-relative path, same convention as LANDING_SOLD_SCHEMA_META (§5.16).
+// repo-relative path in config/sell-pages.js.
 // A page carrying a sell form but missing from this map renders the form with
 // defaults (blank brand, so the acknowledgment checkbox is included), which is
 // the correct shape for any new non-brand landing page; add an entry only to
 // pre-fill a brand or tailor the notes copy.
-var SELL_FORM_META = {
-  'sell/index.html':                                 {},
-  // Brand pages — pre-filled brand, no acknowledgment checkbox (§5.11).
-  'sell/natuzzi/index.html':                         { brand: 'Natuzzi' },
-  'sell/rove-concepts/index.html':                   { brand: 'Rove Concepts' },
-  'sell/eq3/index.html':                             { brand: 'EQ3' },
-  'sell/crate-and-barrel/index.html':                { brand: 'Crate &amp; Barrel' },
-  'sell/restoration-hardware/index.html':            { brand: 'Restoration Hardware' },
-  'sell/west-elm/index.html':                        { brand: 'West Elm' },
-  // Legacy -edmonton full-page stubs (§5.13) — retired brands, form retained.
-  'sell/american-leather-edmonton/index.html':       { brand: 'American Leather' },
-  'sell/bb-italia-edmonton/index.html':              { brand: 'B&amp;B Italia' },
-  // Piece-type pages — all defaults.
-  'sell/sofa/index.html':                            {},
-  'sell/leather-sofa/index.html':                    {},
-  'sell/couch/index.html':                           {},
-  'sell/leather-couch/index.html':                   {},
-  'sell/sectional/index.html':                       {},
-  'sell/leather-sectional/index.html':               {},
-  // Situational pages — notes copy tailored to the circumstance.
-  'sell/furniture-consignment/index.html':           {},
-  'sell/selling-furniture-before-moving/index.html': {
-    notesLabel:       'Anything we should know? (Move date, building access, etc.)',
-    notesPlaceholder: 'Move date, building access, anything else',
-  },
-  'sell/downsizing-furniture/index.html': {
-    notesLabel:       'Anything we should know? (Multiple pieces, building access, timing)',
-    notesPlaceholder: 'Number of pieces, building access, timing, anything else',
-  },
-  'sell/sell-furniture-fast/index.html': {
-    notesLabel:       'Anything we should know? (Timeline, building access, etc.)',
-    notesPlaceholder: 'When does the piece need to be gone? Any access notes?',
-  },
-  'sell/estate-furniture/index.html': {
-    notesLabel:       'Anything we should know? (Multiple pieces, timeline, executor details)',
-    notesPlaceholder: 'Number of pieces, timeline, who the offer should be paid to',
-  },
-  'sell/sell-designer-furniture/index.html': {
-    notesLabel:       'Anything we should know? (Model name, leather grade, original retailer)',
-    notesPlaceholder: 'Model, fabric/leather, where it was originally purchased',
-  },
-  'sell/what-we-buy/index.html': {
-    notesLabel:       'Anything we should know? (Model name, leather grade, original retailer)',
-    notesPlaceholder: 'Model, fabric/leather, where it was originally purchased',
-  },
-};
+// Per-page values now live in config/sell-pages.js (SELL_PAGES above).
 
 // Anchored, unmarked rewrite of the whole <form class="sell-form"> element —
 // same class as injectSellPrelude above. The form markup lived as 22 hand-
@@ -511,7 +475,7 @@ function injectSellForm(html, filepath) {
   var re = /([ \t]*)<form class="sell-form"[\s\S]*?<\/form>/;
   if (!re.test(html)) return html;
   var rel = path.relative(ROOT, filepath).split(path.sep).join('/');
-  var meta = SELL_FORM_META[rel] || {};
+  var meta = SELL_PAGES[rel] || {};
   return html.replace(re, function (_m, indent) {
     return renderSellForm({
       indent:           indent,
@@ -523,6 +487,55 @@ function injectSellForm(html, filepath) {
       currentYear:      today().slice(0, 4),
     });
   });
+}
+
+// Shared sell-cluster blocks (§5.13), all driven by config/sell-pages.js and
+// config/buy-criteria.js so nothing below is hand-copied across pages:
+//   - FIT_CHECK / FIT_LISTS markers → the buying rules (never on brand pages)
+//   - <section class="sell-howto"> + its HowTo JSON-LD → one set of steps
+//   - #sell-form-success → the thank-you message
+//   - the mobile sticky "Get an Offer" bar, after </main> on any form page
+// Each is an anchored rewrite, idempotent and self-healing like the form.
+var sellClusterWarnings = [];
+function injectSellCluster(html, filepath) {
+  var rel = path.relative(ROOT, filepath).split(path.sep).join('/');
+  var meta = SELL_PAGES[rel] || {};
+  var hasForm = /<form class="sell-form"/.test(html);
+
+  var isBrand = meta.type === 'brand';
+  if (isBrand && html.indexOf('FIT_CHECK_START') !== -1) {
+    sellClusterWarnings.push(rel + ' carries FIT_CHECK, but brand pages never show the fit check');
+  }
+  var hasLists = html.indexOf('FIT_LISTS_START') !== -1;
+  html = injectPartial(html, 'FIT_CHECK', function () { return isBrand ? '' : renderFitCheck('      ', hasLists); });
+  html = injectPartial(html, 'FIT_LISTS', function () { return renderFitLists('        '); });
+
+  if (meta.howTo) {
+    var howRe = /([ \t]*)<section class="sell-howto">[\s\S]*?<\/section>/;
+    var hm = html.match(howRe);
+    if (hm) {
+      var formAt = html.indexOf('<form class="sell-form"');
+      var opts = {
+        indent: hm[1],
+        v2: html.indexOf('class="page sell-v2"') !== -1,
+        formBelow: formAt !== -1 && hm.index < formAt,
+      };
+      html = html.replace(howRe, function () { return renderHowTo(meta.howTo, opts); });
+      html = html.replace(
+        /<script type="application\/ld\+json">\s*\{\s*"@context": "https:\/\/schema\.org",\s*"@type": "HowTo"[\s\S]*?<\/script>/,
+        function () { return renderHowToSchema(meta.howTo, opts); }
+      );
+    }
+  }
+
+  if (hasForm) {
+    html = html.replace(/([ \t]*)<div id="sell-form-success"[\s\S]*?<\/div>/, function (_m, indent) {
+      return renderSellSuccess(indent);
+    });
+    html = html.replace(/\n+[ \t]*<div class="sell-sticky-cta"[\s\S]*?<\/div>\n/, '\n');
+    html = html.replace(/<\/main>\n/, '</main>\n\n' + renderSellSticky() + '\n');
+  }
+  return html;
 }
 
 // Ensure every page links the web manifest (Android "add to home screen" / PWA
@@ -2263,81 +2276,12 @@ function injectSoldGallerySchema(html, soldItems) {
 // Images' Licensable badge. Each sell-landing page hand-picks a subset of
 // sold cards in its .sell-landing-sold-grid; this generator derives the
 // schema from that visible grid so the schema and the cards can never drift
-// out of sync. Pages without an entry in LANDING_SOLD_SCHEMA_META — or
+// out of sync. Pages without a soldSchema entry in config/sell-pages.js — or
 // without the marker pair — are left untouched.
 
 // Per-page metadata for the landing-sold schema. Keyed by repo-relative path
 // to keep the inject site free of long description strings.
-var LANDING_SOLD_SCHEMA_META = {
-  'sell/index.html': {
-    name: 'Recently Purchased Pieces in Edmonton',
-    description: 'Photos of pre-owned sofas and sectionals recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.',
-  },
-  'partners/index.html': {
-    name: 'Pieces Recently Bought Through Edmonton Refreshed',
-    description: 'Photos of pre-owned premium sofas and sectionals purchased directly from Edmonton homes and resold by Edmonton Refreshed.',
-  },
-  'sell/natuzzi/index.html': {
-    name: 'Recently Purchased Natuzzi Pieces in Edmonton',
-    description: 'Photos of pre-owned Natuzzi Italia and Natuzzi Editions sofas and sectionals purchased and resold by Edmonton Refreshed.',
-  },
-  'sell/selling-furniture-before-moving/index.html': {
-    name: 'Recently Purchased Pieces from Edmonton Sellers',
-    description: 'Photos of pre-owned sofas and sectionals recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.',
-  },
-  'sell/downsizing-furniture/index.html': {
-    name: 'Recently Purchased Pieces from Edmonton Households',
-    description: 'Photos of pre-owned sofas and sectionals recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.',
-  },
-  'sell/furniture-consignment/index.html': {
-    name: 'Recently Purchased Pieces in Edmonton — Direct Buyouts',
-    description: 'Photos of pre-owned sofas and sectionals purchased outright in Edmonton — an alternative to local consignment channels.',
-  },
-  'sell/estate-furniture/index.html': {
-    name: 'Recently Purchased Pieces from Edmonton Estates and Family Homes',
-    description: 'Photos of pre-owned sofas and sectionals purchased from estates and family homes across Edmonton and surrounding communities.',
-  },
-  'sell/couch/index.html': {
-    name: 'Recently Purchased Couches in Edmonton',
-    description: 'Photos of pre-owned couches and sofas recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.',
-  },
-  'sell/sectional/index.html': {
-    name: 'Recently Purchased Sectionals in Edmonton',
-    description: 'Photos of pre-owned sectionals recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.',
-  },
-  'sell/sell-furniture-fast/index.html': {
-    name: 'Recently Purchased Pieces in Edmonton — Fast Buyouts',
-    description: 'Photos of pre-owned sofas and sectionals recently purchased on tight timelines by Edmonton Refreshed across Edmonton and surrounding communities.',
-  },
-  'sell/sell-designer-furniture/index.html': {
-    name: 'Recently Purchased Designer Pieces in Edmonton',
-    description: 'Photos of pre-owned designer and premium sofas and sectionals recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.',
-  },
-  'sell/leather-sofa/index.html': {
-    name: 'Recently Purchased Leather Sofas in Edmonton',
-    description: 'Photos of pre-owned leather sofas recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.',
-  },
-  'sell/leather-sectional/index.html': {
-    name: 'Recently Purchased Leather Sectionals in Edmonton',
-    description: 'Photos of pre-owned leather sectionals recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.',
-  },
-  'sell/leather-couch/index.html': {
-    name: 'Recently Purchased Leather Couches in Edmonton',
-    description: 'Photos of pre-owned leather couches recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.',
-  },
-  'sell/crate-and-barrel/index.html': {
-    name: 'Recently Purchased Crate & Barrel Pieces in Edmonton',
-    description: 'Photos of pre-owned Crate & Barrel sofas and sectionals — Lounge, Axis, Gather, Rochelle and others — purchased and resold by Edmonton Refreshed.',
-  },
-  'sell/rove-concepts/index.html': {
-    name: 'Recently Purchased Rove Concepts Pieces in Edmonton',
-    description: 'Photos of pre-owned Rove Concepts sofas and sectionals — Milo, Porter, Kaye, Luca, and others — purchased and resold by Edmonton Refreshed.',
-  },
-  'sell/eq3/index.html': {
-    name: 'Recently Purchased EQ3 Pieces in Edmonton',
-    description: 'Photos of pre-owned EQ3 sofas and sectionals — Replay, Remi, Salema, Cello, and others — purchased and resold by Edmonton Refreshed.',
-  },
-};
+// Per-page name/description: config/sell-pages.js → soldSchema.
 
 // Decode the small set of HTML entities that appear in card-brand / card-title
 // div text. Card image src attributes are already URL-encoded and don't need
@@ -2445,7 +2389,7 @@ function injectLandingSoldSchema(html, filepath) {
   var se = html.indexOf(endMarker, ss);
   if (se === -1) return html;
   var rel = path.relative(ROOT, filepath).split(path.sep).join('/');
-  var meta = LANDING_SOLD_SCHEMA_META[rel];
+  var meta = (SELL_PAGES[rel] || {}).soldSchema;
   if (!meta) return html;
   var cards = parseSellLandingSoldCards(html);
   if (!cards) return html;
@@ -2939,6 +2883,7 @@ for (var pi = 0; pi < partialFiles.length; pi++) {
   var pOrig = fs.readFileSync(pPath, 'utf8');
   var pNext = injectAllPartials(pOrig);
   pNext = injectSellForm(pNext, pPath);
+  pNext = injectSellCluster(pNext, pPath);
   pNext = injectLandingSoldSchema(pNext, pPath);
   pNext = relinkSoldCards(pNext);
   var pPreAggregate = pNext;
@@ -3378,6 +3323,11 @@ console.log('  sitemap.xml     — ' + sitemapStats.changed + ' URL(s) advanced;
 console.log('  merchant-feed   — ' + merchantFeedStats.items + ' product(s) in /merchant-feed.xml');
 console.log('  partials        — ' + partialUpdated + ' HTML files updated');
 console.log('  sold cards      — ' + soldCardRelinks + ' card link(s) point to sold stubs');
+if (sellClusterWarnings.length) {
+  sellClusterWarnings.forEach(function (w) { console.log('  sell-pages WARN — ' + w); });
+} else {
+  console.log('  sell-pages      — ' + Object.keys(SELL_PAGES).length + ' pages in config/sell-pages.js; shared blocks in sync');
+}
 
 // Review aggregate: calculated once from js/reviews-data.js (reviews +
 // ratingsOnly) and published everywhere — schema aggregateRating and Review

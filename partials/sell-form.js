@@ -69,6 +69,14 @@
 // `required` attribute, which is what assistive tech actually reports.
 var REQ = ' <span class="sell-form-req" aria-hidden="true">*</span>';
 
+// Buying rules (mass-market brand list, acknowledgment examples) come from
+// config/buy-criteria.js, the single source for what we buy.
+var rules = require('../config/buy-criteria');
+
+function attrJson(v) {
+  return JSON.stringify(v).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+}
+
 var DEFAULTS = {
   brandPlaceholder: 'e.g. Natuzzi, EQ3, Rove Concepts (or &lsquo;unsure&rsquo;)',
   // Must agree with MIN_PHOTOS / MAX_PHOTOS in js/sell-form.js and
@@ -165,7 +173,7 @@ function renderSellForm(opts) {
   // Filled by js/sell-form.js when the brand typed is one we don't buy. A soft
   // warning, never a block: it lands at the moment the seller is deciding,
   // instead of in a fit list they may have scrolled past.
-  p('      <p class="sell-form-brand-warn" id="sf-brand-warn" role="status" hidden></p>');
+  p('      <p class="sell-form-brand-warn" id="sf-brand-warn" role="status" data-brands="' + attrJson(rules.massMarketBrands) + '" hidden></p>');
   p('    </div>');
   p('');
   // Second field, directly under Brand: asking about the receipt up front
@@ -272,7 +280,7 @@ function renderSellForm(opts) {
     p('      <input type="checkbox" id="sf-ack" name="Acknowledged" value="yes" required>');
     p('      <span>I understand Edmonton Refreshed primarily purchases higher-end furniture from select brands and may not be able to make offers on mass-market furniture.</span>');
     p('    </label>');
-    p('    <p class="sell-form-ack-note">Examples of brands we typically do not purchase include IKEA, Ashley, Leon&rsquo;s, The Brick, and similar mass-market furniture brands.</p>');
+    p('    <p class="sell-form-ack-note">Examples of brands we typically do not purchase include ' + rules.ackExamples.replace(/\u2019/g, '&rsquo;') + ', and similar mass-market furniture brands.</p>');
     p('  </div>');
     p('');
   }
@@ -283,4 +291,25 @@ function renderSellForm(opts) {
   return out.join('\n');
 }
 
-module.exports = { renderSellForm };
+// Thank-you message shown in place of the form after a successful send.
+// Stamped onto every form page by build.js (anchored on the
+// #sell-form-success div, which must stay flat). It states a goal, not a
+// promise, and does not imply an offer is coming (most submissions are
+// declined).
+function renderSellSuccess(indent) {
+  var i = indent || '      ';
+  return [
+    i + '<div id="sell-form-success" class="sell-form-success" hidden>',
+    i + '  <p><strong>Thanks, your details are in.</strong></p>',
+    i + '  <p>We&rsquo;ll review your photos and aim to reply the same day. If you haven&rsquo;t heard from us by tomorrow, check your spam folder or text us at <a href="sms:7809651477">780-965-1477</a>.</p>',
+    i + '</div>',
+  ].join('\n');
+}
+
+// Mobile sticky "Get an Offer" bar. Injected after </main> on every page that
+// carries the form; js/sell-form.js decides when it shows.
+function renderSellSticky() {
+  return '  <div class="sell-sticky-cta" aria-hidden="true"><a href="#sell-details" tabindex="-1">Get an Offer</a></div>';
+}
+
+module.exports = { renderSellForm, renderSellSuccess, renderSellSticky };
