@@ -4,7 +4,7 @@
  *
  *   buyer   — homepage, sold archive, about, guides, privacy, 404 (default)
  *   seller  — sell hub + every /sell/[slug]/ landing page
- *   partner — /partners/ (seller strip minus the offer range)
+ *   partner — /partners/ (same strip as seller; kept as its own variant name)
  *   listing — every active listing page (delivery-oriented messaging)
  *
  * Per-page marker form:
@@ -13,6 +13,9 @@
 const site = require('../config/site');
 
 function renderCredibility(variant) {
+  // The seller strip carried a "Most Offers $500–$2,500" range until 2026-09-27.
+  // Removed: a range topping out at $2,500 read as a lowball to exactly the
+  // premium sellers the business wants most (§10.23). Do not re-add it.
   if (variant === 'seller') {
     return [
       '  <div class="credibility-strip">',
@@ -21,14 +24,10 @@ function renderCredibility(variant) {
       `    <span>&#9733; ${site.rating} Rating</span>`,
       '    <span class="credibility-sep">|</span>',
       `    <span>Proudly <a href="/about/">${site.cityName} Owned &amp; Operated</a></span>`,
-      '    <span class="credibility-sep">|</span>',
-      `    <span>${site.offerRange}</span>`,
       '  </div>',
     ].join('\n');
   }
   if (variant === 'partner') {
-    // seller strip without the offer range — the partner hand-off page speaks
-    // to B2B partners, not sellers anchoring on a purchase figure.
     return [
       '  <div class="credibility-strip">',
       `    <span>${site.piecesBought} Pieces Bought</span>`,

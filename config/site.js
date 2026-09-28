@@ -37,7 +37,6 @@ module.exports = {
   // it from js/reviews-data.js, the same figure every schema publishes, and
   // assigns site.rating before rendering (§8.4). Do not re-add a rating or
   // ratingCount field — both were hand-set copies that drifted (§10.17).
-  offerRange: 'Most Offers $500–$2,500',
 
   // brandList — canonical ordered brand list for entity/AI surfaces (§2.1:
   // top-tier names lead; La-Z-Boy near the end, never first). Rendered between
