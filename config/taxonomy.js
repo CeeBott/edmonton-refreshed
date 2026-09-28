@@ -41,6 +41,8 @@ const brands = [
   { name: 'Crate & Barrel',       slug: 'crate-and-barrel', displayName: 'Crate &amp; Barrel' },
   { name: 'Rove Concepts',        slug: 'rove-concepts' },
   { name: 'West Elm',             slug: 'west-elm' },
+  { name: 'American Leather',     slug: 'american-leather' },
+  { name: 'Pottery Barn',         slug: 'pottery-barn' },
 ];
 
 module.exports = {

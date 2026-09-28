@@ -534,6 +534,32 @@ function injectSellCluster(html, filepath) {
     }
   }
 
+  // Share image: the page's lead hero photo instead of the generic brand card,
+  // so a link shared in Messenger, Facebook, or a text shows a real piece.
+  if (html.indexOf('HERO_MOSAIC_START') !== -1) {
+    var lead = pickMosaic(meta, SELL_PAGES['sell/index.html']).chosen[0];
+    if (lead) {
+      var rel2 = lead.rel.replace(/^(?:\.\.\/)+/, '').replace(/^\/+/, '');
+      var dims = imageSize(path.join(ROOT, rel2));
+      var url = BASE_URL + encodeURI(rel2);
+      var alt = escapeHtml('Pre-owned ' + lead.alt + ' bought by Edmonton Refreshed');
+      var ogm = html.match(/([ \t]*)<meta property="og:image" content="[^"]*">/);
+      if (ogm) {
+        var ind = ogm[1];
+        html = html.replace(/\n[ \t]*<meta property="og:image:(?:type|width|height|alt)" content="[^"]*">/g, '');
+        html = html.replace(/([ \t]*)<meta property="og:image" content="[^"]*">/, function () {
+          return ind + '<meta property="og:image" content="' + url + '">\n' +
+            ind + '<meta property="og:image:type" content="' + (dims.type || 'image/jpeg') + '">\n' +
+            (dims.w ? ind + '<meta property="og:image:width" content="' + dims.w + '">\n' : '') +
+            (dims.h ? ind + '<meta property="og:image:height" content="' + dims.h + '">\n' : '') +
+            ind + '<meta property="og:image:alt" content="' + alt + '">';
+        });
+        html = html.replace(/(<meta name="twitter:image" content=")[^"]*(">)/, '$1' + url + '$2');
+        html = html.replace(/(<meta name="twitter:image:alt" content=")[^"]*(">)/, '$1' + alt + '$2');
+      }
+    }
+  }
+
   if (hasForm) {
     html = html.replace(/([ \t]*)<div id="sell-form-success"[\s\S]*?<\/div>/, function (_m, indent) {
       return renderSellSuccess(indent);
@@ -871,7 +897,7 @@ function mosaicPicture(rel, sizes, alt, first) {
     (first ? ' fetchpriority="high"' : ' loading="lazy"') + '></picture>';
 }
 
-function generateHeroMosaic(meta, hubMeta) {
+function pickMosaic(meta, hubMeta) {
   var f = meta.showcase || {};
   var chosen = [];
   if (meta.mosaic && meta.mosaic.images) {
@@ -887,12 +913,18 @@ function generateHeroMosaic(meta, hubMeta) {
         if (chosen.length < 4 && i.images[n]) chosen.push({ rel: i.images[n], alt: label(i) });
       });
     }
-    if (!chosen.length && hubMeta && hubMeta.mosaic) return generateHeroMosaic(hubMeta);
+    if (!chosen.length && hubMeta && hubMeta.mosaic) return pickMosaic(hubMeta);
   }
-  if (!chosen.length) return '';
-  var sizes = ['(max-width: 900px) 60vw, 330px', '(max-width: 900px) 25vw, 160px', '(max-width: 900px) 25vw, 160px', '(max-width: 900px) 45vw, 160px'];
   var caption = (meta.mosaic && meta.mosaic.caption) ||
     (f.brand ? escapeHtml(f.brand) + ' pieces we&rsquo;ve bought' : 'Pieces we&rsquo;ve bought in Edmonton');
+  return { chosen: chosen.slice(0, 4), caption: caption };
+}
+
+function generateHeroMosaic(meta, hubMeta) {
+  var pick = pickMosaic(meta, hubMeta);
+  var chosen = pick.chosen, caption = pick.caption;
+  if (!chosen.length) return '';
+  var sizes = ['(max-width: 900px) 60vw, 330px', '(max-width: 900px) 25vw, 160px', '(max-width: 900px) 25vw, 160px', '(max-width: 900px) 45vw, 160px'];
   return [
     '        <figure class="sell-intro-mosaic">',
     chosen.slice(0, 4).map(function (c, k) { return '          ' + mosaicPicture(c.rel, sizes[k], c.alt, k === 0); }).join('\n'),
@@ -923,21 +955,21 @@ function pieceMatches(item, f) {
 
 function generateRecentSoldHTML(attrs) {
   var count = parseInt(attrs.count, 10) || 6;
-  var picks = soldItems.filter(function (item) { return pieceMatches(item, attrs); }).slice(0, count);
-  var others = false;
-  if (!picks.length) {
-    // Nothing of this brand sold yet: show recent buys from other brands,
-    // labelled as exactly that, rather than an empty section (Collin,
-    // 2026-09-27). The section gets a different class so the brand-named
-    // ItemList schema is not generated from pieces of other brands.
-    picks = soldItems.filter(function (item) {
-      return pieceMatches(item, { match: attrs.match, leather: attrs.leather });
-    }).slice(0, count);
-    others = true;
-  }
+  // Pieces matching the page (its brand, or its piece type) always lead,
+  // newest first; the rest of the strip is filled with the newest other
+  // sales so it is never short (Collin, 2026-09-27: brands with one sale
+  // still get a full strip, their own piece first). Fill-ins carry
+  // data-sold-fill so the page's brand-named ItemList schema lists only the
+  // matching pieces.
+  var matched = soldItems.filter(function (item) { return pieceMatches(item, attrs); }).slice(0, count);
+  var fill = soldItems.filter(function (item) {
+    return matched.indexOf(item) === -1 && pieceMatches(item, {});
+  }).slice(0, count - matched.length);
+  var picks = matched.concat(fill);
   if (!picks.length) return '';
   var sizes = '(max-width: 768px) 62vw, 180px';
-  var cards = picks.map(function (item) {
+  var cards = picks.map(function (item, idx) {
+    var isFill = idx >= matched.length;
     var rel = item.images[0].replace(/^(?:\.\.\/)+/, '').replace(/^\/+/, '');
     var title = (item.title || '').split(' \u2014 ')[0];
     var label = escapeHtml(item.brand + ' ' + title);
@@ -947,7 +979,7 @@ function generateRecentSoldHTML(attrs) {
     }).join('');
     var jpegSet = soldVariantSrcset(rel, 'jpeg');
     return [
-      '          <a class="card sold" href="/sold/" aria-label="' + label + ' (sold)">',
+      '          <a class="card sold" href="/sold/"' + (isFill ? ' data-sold-fill' : '') + ' aria-label="' + label + ' (sold)">',
       '            <div class="card-image-placeholder"><picture>' + sources +
         '<img src="/' + encodeURI(rel) + '"' + (jpegSet ? ' srcset="' + jpegSet + '" sizes="' + sizes + '"' : '') +
         ' alt="' + label + '" loading="lazy"></picture></div>',
@@ -958,17 +990,12 @@ function generateRecentSoldHTML(attrs) {
       '          </a>',
     ].join('\n');
   });
-  var note = others && attrs.brand
-    ? '        <p class="sell-muted sell-sold-note">We haven&rsquo;t had ' + escapeHtml(attrs.brand) +
-      ' through yet. Here are recent buys from other brands we purchase.</p>'
-    : '';
   return [
-    '      <section class="sell-landing-sold' + (others ? ' sell-landing-sold--others' : '') + '">',
+    '      <section class="sell-landing-sold">',
     '        <div class="sell-section-head">',
     '          <h2 class="sell-h2">Recently sold</h2>',
     '          <a href="/sold/" class="sell-link">Full archive &rarr;</a>',
     '        </div>',
-    note,
     '        <div class="sell-landing-sold-grid sell-sold-strip">',
     cards.join('\n'),
     '        </div>',
@@ -1706,7 +1733,9 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions, rev
     'EQ3':                  { href: '/sell/eq3/',                  anchor: 'sell your EQ3 piece' },
     'Crate & Barrel':       { href: '/sell/crate-and-barrel/',     anchor: 'sell your Crate &amp; Barrel piece' },
     'Restoration Hardware': { href: '/sell/restoration-hardware/', anchor: 'sell your Restoration Hardware piece' },
-    'West Elm':             { href: '/sell/west-elm/',             anchor: 'sell your West Elm piece' }
+    'West Elm':             { href: '/sell/west-elm/',             anchor: 'sell your West Elm piece' },
+    'American Leather':     { href: '/sell/american-leather/',     anchor: 'sell your American Leather piece' },
+    'Pottery Barn':         { href: '/sell/pottery-barn/',         anchor: 'sell your Pottery Barn piece' }
   };
   var sellLineTarget;
   if (brandSellMap[item.brand]) {
@@ -2399,6 +2428,9 @@ function parseSellLandingSoldCards(html) {
   var m;
   while ((m = cardRe.exec(sectionHtml)) !== null) {
     var cardHtml = m[0];
+    // Fill-in cards from other brands or types (generateRecentSoldHTML) are
+    // shown for context but are not what the page's ItemList describes.
+    if (/^<a\b[^>]*\bdata-sold-fill\b/.test(cardHtml)) continue;
     var bm = cardHtml.match(/<div class="card-brand">([^<]+)<\/div>/);
     var tm = cardHtml.match(/<div class="card-title">([^<]+)<\/div>/);
     var im = cardHtml.match(/<img\s+src="([^"]+)"/);

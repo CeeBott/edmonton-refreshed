@@ -133,10 +133,6 @@ module.exports = {
       basis: "model, fabric or leather, age, and condition",
     },
   },
-  'sell/american-leather-edmonton/index.html': {
-    type: "legacy",
-    brand: "American Leather",
-  },
   'sell/bb-italia-edmonton/index.html': {
     type: "legacy",
     brand: "B&amp;B Italia",
@@ -298,6 +294,45 @@ module.exports = {
     soldSchema: {
       name: "Pieces Recently Bought Through Edmonton Refreshed",
       description: "Photos of pre-owned premium sofas and sectionals purchased directly from Edmonton homes and resold by Edmonton Refreshed.",
+    },
+  },
+  'sell/american-leather/index.html': {
+    type: 'brand',
+    brand: 'American Leather',
+    showcase: { brand: 'American Leather' },
+    // Pinned: the Carson (AL-049) is reserved, so the automatic pick would
+    // skip it and repeat one older Tuscany four times.
+    mosaic: {
+      caption: 'American Leather pieces we&rsquo;ve bought',
+      images: [
+        ['images/AL-049/american-leather-07.jpeg', 'American Leather Carson sectional in Haven Heritage leather'],
+        ['images/AL-049/american-leather-01.jpeg', 'American Leather Carson L-shaped sectional'],
+        ['images/Sold Inventory/AL-032/american-leather-01.jpeg', 'American Leather Tuscany leather sofa'],
+        ['images/AL-049/american-leather-19.jpeg', 'American Leather star medallion set into the leather'],
+      ],
+    },
+    soldSchema: {
+      name: "Recently Purchased American Leather Pieces in Edmonton",
+      description: "Photos of pre-owned American Leather sofas and sectionals purchased and resold by Edmonton Refreshed.",
+    },
+    howTo: {
+      heading: "How selling your American Leather piece works",
+      name: "How to Sell an American Leather Sofa or Sectional in Edmonton",
+      basis: "model, leather grade, age, and condition, plus the mechanism on sleepers and recliners",
+    },
+  },
+  'sell/pottery-barn/index.html': {
+    type: 'brand',
+    brand: 'Pottery Barn',
+    showcase: { brand: 'Pottery Barn' },
+    soldSchema: {
+      name: "Recently Purchased Pottery Barn Pieces in Edmonton",
+      description: "Photos of pre-owned Pottery Barn sofas and sectionals purchased and resold by Edmonton Refreshed.",
+    },
+    howTo: {
+      heading: "How selling your Pottery Barn piece works",
+      name: "How to Sell a Pottery Barn Sofa or Sectional in Edmonton",
+      basis: "collection, upholstery, age, and condition",
     },
   },
 };
