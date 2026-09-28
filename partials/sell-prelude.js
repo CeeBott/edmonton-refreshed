@@ -4,7 +4,10 @@
  *
  * Two stacked panels, one canonical source:
  *
- *   1. .sell-form-prelude    — the mandatory verbatim fit statement (§5.13).
+ *   1. .sell-form-prelude    — Collin's photo, the reply-time goal, and the
+ *                              fit statement (§5.13). No "send photos anyway"
+ *                              invitation: removed 2026-09-27 to make the ask
+ *                              feel selective rather than open to anything.
  *   2. .sell-form-offer      — how offers are calculated: we buy to resell,
  *                              so transport / cleaning / storage / remarketing
  *                              costs are priced in, the offer lands below
@@ -19,8 +22,9 @@
  *
  * Injected by build.js as an anchored, unmarked rewrite (same class as the
  * aggregateRating sync — §4.3) so the copy exists in exactly one place
- * instead of being hand-copied across 22 pages (§9.3). Both panels are flat
- * — no nested <div> — because the anchor matches to the first </div>.
+ * instead of being hand-copied across 22 pages (§9.3). The prelude div is flat
+ * (no nested <div>) because the anchor matches to its first </div>; the offer
+ * panel is a <details>, collapsed by default.
  *
  * Per §5.13 pricing restraint: no figures, ranges, or multipliers here.
  */
@@ -28,12 +32,19 @@
 function renderSellPrelude(indent) {
   var i = indent || '      ';
   return [
-    i + '<div class="sell-form-prelude">We primarily purchase higher-quality sofas and sectionals from design-oriented and premium retailers. If you&rsquo;re unsure whether your piece is a fit, send photos anyway &mdash; we&rsquo;re happy to take a look.</div>',
-    '',
-    i + '<div class="sell-form-offer">',
-    i + '  <p class="sell-form-offer-label">How our offers work</p>',
-    i + '  <p class="sell-form-offer-body">We buy to resell, so every offer factors in what it costs us to transport, clean, store, and remarket a piece. That means our offer will come in below what a private sale would net you &mdash; if maximizing price is the priority, a private sale is the better option. What we offer instead is certainty: a firm number today, paid before the piece leaves your home, with no listing, no messaging, and no no-shows. If that trade is worth it to you, we&rsquo;re a good option.</p>',
+    // Flat on purpose: the build's anchor matches this div up to its first
+    // </div>, so it must never contain a nested <div>.
+    i + '<div class="sell-form-prelude">',
+    i + '  <img class="sell-form-host-photo" src="/images/about/collin-bottrell-400w.jpeg" alt="Collin Bottrell" width="56" height="56" loading="lazy">',
+    i + '  <p class="sell-form-host"><strong>Collin reviews every submission himself</strong> and aims to reply the same day.</p>',
+    i + '  <p class="sell-form-fit">We primarily purchase higher-quality sofas and sectionals from premium retailers, chosen for their construction, materials, and comfort.</p>',
     i + '</div>',
+    // Collapsed by default: the copy is unchanged in force (§5.13), it just no
+    // longer sits between the seller and the first field.
+    i + '<details class="sell-form-offer">',
+    i + '  <summary class="sell-form-offer-label">How our offers work</summary>',
+    i + '  <p class="sell-form-offer-body">We buy to resell, so every offer factors in what it costs us to transport, clean, store, and remarket a piece. That means our offer will come in below what a private sale would net you. If maximizing price is the priority, a private sale is the better option. What we offer instead is certainty: a firm number, paid before the piece leaves your home, with no listing, no messaging, and no no-shows. If that trade is worth it to you, we&rsquo;re a good option.</p>',
+    i + '</details>',
   ].join('\n');
 }
 

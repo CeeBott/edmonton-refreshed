@@ -435,10 +435,12 @@ function injectReviewSchema(html, reviews) {
 // never drift the way 22 hand-copied blocks would (§9.3). The optional
 // trailing .sell-form-offer group is swallowed by the match, which makes the
 // rewrite idempotent and self-healing if a page's copy is edited by hand.
-// Both panels are flat (no nested <div>) so the lazy </div> anchors hold.
+// The prelude div is flat (no nested <div>) so the lazy </div> anchor holds.
+// The offer panel is matched in either its old <div> form or its current
+// <details> form, so the rewrite migrates old pages and stays idempotent.
 function injectSellPrelude(html) {
   return html.replace(
-    /([ \t]*)<div class="sell-form-prelude">[\s\S]*?<\/div>(?:\s*<div class="sell-form-offer">[\s\S]*?<\/div>)?/g,
+    /([ \t]*)<div class="sell-form-prelude">[\s\S]*?<\/div>(?:\s*<div class="sell-form-offer">[\s\S]*?<\/div>|\s*<details class="sell-form-offer">[\s\S]*?<\/details>)?/g,
     function (_m, indent) { return renderSellPrelude(indent); }
   );
 }
@@ -664,13 +666,19 @@ function generateSoldHTML(items) {
 //  answers becomes an <a> in visible markup and is flattened to
 //  plain text in the schema.
 
-function renderFaqVisible(items, indent) {
+function renderFaqVisible(items, indent, accordion) {
   indent = indent || '          ';
   return items.map(function(qa) {
     var answerHtml = escapeHtml(qa.answer).replace(
       /\[([^\]]+)\]\(([^)]+)\)/g,
       function(_, label, href) { return '<a href="' + href + '">' + label + '</a>'; }
     );
+    if (accordion) {
+      return indent + '<details class="faq-item">\n' +
+             indent + '  <summary><h3 class="faq-question">' + escapeHtml(qa.question) + '</h3></summary>\n' +
+             indent + '  <p class="faq-answer">' + answerHtml + '</p>\n' +
+             indent + '</details>';
+    }
     return indent + '<div class="faq-item">\n' +
            indent + '  <h3 class="faq-question">' + escapeHtml(qa.question) + '</h3>\n' +
            indent + '  <p class="faq-answer">' + answerHtml + '</p>\n' +
@@ -703,13 +711,17 @@ function injectFaqs(html, id) {
   if (!items || items.length === 0) return html;
 
   // Visible block
-  var visibleStart = '<!-- FAQ_VISIBLE_START id="' + id + '" -->';
+  // The start marker may carry accordion="true" (the sell hub), which renders
+  // each Q&A as a <details> disclosure instead of an always-open block. The
+  // text is identical either way and stays in the HTML for crawlers.
   var visibleEnd   = '<!-- FAQ_VISIBLE_END -->';
-  var vs = html.indexOf(visibleStart);
-  var ve = html.indexOf(visibleEnd, vs);
+  var startRe = new RegExp('<!-- FAQ_VISIBLE_START id="' + id + '"( accordion="true")? -->');
+  var sm = html.match(startRe);
+  var vs = sm ? sm.index : -1;
+  var ve = vs === -1 ? -1 : html.indexOf(visibleEnd, vs);
   if (vs !== -1 && ve !== -1) {
-    html = html.substring(0, vs + visibleStart.length) +
-           '\n' + renderFaqVisible(items) + '\n          ' +
+    html = html.substring(0, vs + sm[0].length) +
+           '\n' + renderFaqVisible(items, null, !!sm[1]) + '\n          ' +
            html.substring(ve);
   }
 
@@ -796,6 +808,74 @@ function reviewCardLines(review, pad) {
 // when no seller reviews exist, so the section appears and disappears
 // with the data — adding a seller review to js/reviews-data.js threads
 // it onto every sell landing page on the next build (§8.4).
+// "Recently sold" strip for sell pages (§5.13). Generated from js/sold-data.js,
+// which is newest first, so the strip updates itself every time a piece is
+// marked sold (§8.3). It used to be six hand-picked cards, some over a year
+// old. Output keeps the markup the rest of the build reads: the
+// <section class="sell-landing-sold"> wrapper and the "card sold" / card-brand
+// / card-title / <img src> shape that parseSellLandingSoldCards (the ItemList
+// schema) and relinkSoldCards (deep links to sold stubs) both depend on.
+//
+// Marker: <!-- RECENT_SOLD_START count="6" brand="Natuzzi" -->. `brand` is
+// optional and matches the brand family by first word, like
+// AVAILABLE_FROM_BRAND. Ottomans are skipped: a footstool is not what a sell
+// page should lead with.
+function soldVariantSrcset(rel, ext) {
+  var base = rel.replace(/\.jpe?g$/i, '');
+  var parts = [];
+  [['-400w', '400w'], ['-800w', '800w'], ['', '1200w']].forEach(function (v) {
+    if (fs.existsSync(path.join(ROOT, base + v[0] + '.' + ext))) {
+      parts.push('/' + encodeURI(base + v[0] + '.' + ext) + ' ' + v[1]);
+    }
+  });
+  return parts.join(', ');
+}
+
+function generateRecentSoldHTML(attrs) {
+  var count = parseInt(attrs.count, 10) || 6;
+  var family = (attrs.brand || '').split(' ')[0].toLowerCase();
+  var picks = soldItems.filter(function (item) {
+    if (!item.images || !item.images.length) return false;
+    if (/ottoman/i.test(item.title || '')) return false;
+    if (family && (item.brand || '').toLowerCase().indexOf(family) !== 0) return false;
+    return true;
+  }).slice(0, count);
+  if (!picks.length) return '';
+  var sizes = '(max-width: 768px) 62vw, 180px';
+  var cards = picks.map(function (item) {
+    var rel = item.images[0].replace(/^(?:\.\.\/)+/, '').replace(/^\/+/, '');
+    var title = (item.title || '').split(' \u2014 ')[0];
+    var label = escapeHtml(item.brand + ' ' + title);
+    var sources = ['avif', 'webp'].map(function (ext) {
+      var set = soldVariantSrcset(rel, ext);
+      return set ? '<source type="image/' + ext + '" srcset="' + set + '" sizes="' + sizes + '">' : '';
+    }).join('');
+    var jpegSet = soldVariantSrcset(rel, 'jpeg');
+    return [
+      '          <a class="card sold" href="/sold/" aria-label="' + label + ' (sold)">',
+      '            <div class="card-image-placeholder"><picture>' + sources +
+        '<img src="/' + encodeURI(rel) + '"' + (jpegSet ? ' srcset="' + jpegSet + '" sizes="' + sizes + '"' : '') +
+        ' alt="' + label + '" loading="lazy"></picture></div>',
+      '            <div class="card-body">',
+      '              <div class="card-brand">' + escapeHtml(item.brand) + '</div>',
+      '              <div class="card-title">' + escapeHtml(title) + '</div>',
+      '            </div>',
+      '          </a>',
+    ].join('\n');
+  });
+  return [
+    '      <section class="sell-landing-sold">',
+    '        <div class="sell-section-head">',
+    '          <h2 class="sell-h2">Recently sold</h2>',
+    '          <a href="/sold/" class="sell-link">Full archive &rarr;</a>',
+    '        </div>',
+    '        <div class="sell-landing-sold-grid sell-sold-strip">',
+    cards.join('\n'),
+    '        </div>',
+    '      </section>',
+  ].join('\n');
+}
+
 function generateSellerReviewsHTML(reviews) {
   var sellers = reviews.filter(function (r) { return r.type === 'seller'; });
   if (!sellers.length) return '';
@@ -1992,6 +2072,8 @@ function injectAllPartials(html) {
   // the "Send us your details" heading — the last thing read before the
   // ask. Empty when no seller reviews exist.
   html = injectPartial(html, 'SELLER_REVIEWS', function () { return generateSellerReviewsHTML(reviews); });
+  // Sell pages: the newest sold pieces, straight from js/sold-data.js.
+  html = injectPartial(html, 'RECENT_SOLD', function (attrs) { return generateRecentSoldHTML(attrs); });
   // Sell-form prelude + "how our offers work" expectation block (§5.13).
   html = injectSellPrelude(html);
   // Config-driven inline fragments (homepage sr-only entity block, sold-page

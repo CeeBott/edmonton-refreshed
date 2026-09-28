@@ -1709,8 +1709,6 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   .sell-hero p { font-size: 0.95rem; }
   .sell-checklist { padding: 22px 22px; }
   .sell-form { gap: 22px; }
-  .sell-form-prelude { margin-bottom: 22px; }
-  .sell-form-offer { margin-bottom: 26px; }
   .sell-landing-hero { padding-bottom: 8px; }
   .sell-landing-sold-sub { margin-bottom: 24px; }
   .sell-landing-cluster-sub { margin-bottom: 20px; }
@@ -4081,52 +4079,69 @@ footer a:focus-visible {
 }
 .sell-landing-sourcing strong { color: var(--color-text); font-weight: 600; }
 
-/* Form qualification banner — appears immediately above embedded form */
+/* Form prelude — Collin's photo, the reply-time goal, and the fit statement,
+   directly above every embedded sell form. Build-injected from
+   partials/sell-prelude.js. The div must stay flat (no nested <div>). */
 .sell-form-prelude {
   max-width: var(--col-narrow);
-  margin: 0 auto 18px;
-  padding: 16px 22px;
-  background: #f5f4f1;
-  border-left: 3px solid #bdb8b0;
-  border-radius: var(--radius);
-  font-size: 0.92rem;
-  color: var(--color-text);
-  line-height: 1.65;
+  margin: 0 auto 14px;
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  column-gap: 14px;
+  row-gap: 12px;
+  align-items: center;
 }
-/* Offer-expectation panel — sits directly beneath .sell-form-prelude and
-   above the form. Deliberately a shade more assertive than the prelude
-   (solid card, dark accent rule, small tracked label) because it has to be
-   read before the "What are you hoping to get?" field, but it stays a quiet
-   panel rather than a warning box. Copy is build-injected from
-   partials/sell-prelude.js. */
+.sell-form-host-photo {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.sell-form-host {
+  margin: 0;
+  font-size: 0.93rem;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+.sell-form-host strong { color: var(--color-text); font-weight: 600; }
+.sell-form-fit {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+}
+/* Offer-expectation panel — a <details>, collapsed by default (§5.13). The
+   copy is unchanged in force; it just no longer sits between the seller and
+   the first field. */
 .sell-form-offer {
   max-width: var(--col-narrow);
   margin: 0 auto 22px;
-  padding: 18px 22px;
+  padding: 12px 18px;
   background: #fff;
-  border: 1px solid #e4e1db;
   border-left: 3px solid var(--color-accent);
-  border-radius: var(--radius);
+  border-radius: 0 6px 6px 0;
 }
 .sell-form-offer-label {
-  margin: 0 0 6px;
-  font-size: 0.72rem;
+  cursor: pointer;
+  font-size: 0.9rem;
   font-weight: 600;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
   color: var(--color-text);
+  min-height: 28px;
+  display: flex;
+  align-items: center;
 }
 .sell-form-offer-body {
-  margin: 0;
-  font-size: 0.92rem;
+  margin: 8px 0 4px;
+  font-size: 0.9rem;
   line-height: 1.65;
   color: var(--color-text-secondary);
 }
 
+/* The offer card lines up with the form card below it, which is inset on
+   phones; the prelude is plain text and stays on the page's text column. */
 @media (max-width: 640px) {
-  .sell-form-prelude { margin-left: var(--page-x); margin-right: var(--page-x); padding: 16px 18px; font-size: 0.88rem; }
-  .sell-form-offer { margin-left: var(--page-x); margin-right: var(--page-x); padding: 16px 18px; }
-  .sell-form-offer-body { font-size: 0.88rem; }
+  .sell-form-offer { margin-left: var(--page-x); margin-right: var(--page-x); }
 }
 
 /* Landing-page mid-CTA back to /sell/.
@@ -4558,4 +4573,431 @@ footer a:focus-visible {
      the only thing that says what the bar means. */
   .condition-step-label { font-size: 0.5rem; letter-spacing: 0; }
   .condition-bar { margin-bottom: 10px; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Sell form — grouped layout (all 22 form pages)
+   Three numbered groups (Your piece / Photos / How to reach you), yes/no and
+   pets as tap buttons, paired fields on wider screens, and a soft
+   mass-market brand warning under Brand. Markup: partials/sell-form.js.
+   ═══════════════════════════════════════════════════════════ */
+.sell-form { gap: 0; padding-top: 8px; }
+.sell-form-group {
+  border: 0;
+  margin: 0;
+  padding: 20px 0 6px;
+  min-width: 0;
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.sell-form-group-title {
+  float: left;
+  width: 100%;
+  padding: 0;
+  margin-bottom: 2px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+}
+.sell-form-group-title + * { clear: both; }
+.sell-form-group-num {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #f1efe9;
+  font-size: 0.78rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.sell-form-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 14px;
+}
+.sell-form-choice > legend { margin-bottom: 8px; }
+.sell-form-seg {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.sell-form-seg-3 { grid-template-columns: repeat(3, 1fr); }
+.sell-form-seg label { position: relative; }
+.sell-form-seg input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  margin: 0;
+  cursor: pointer;
+}
+.sell-form-seg span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 6px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--color-text);
+  background: #fff;
+  border: 1px solid #d9d9d6;
+  border-radius: 6px;
+  transition: background 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+.sell-form-seg input:checked + span {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #fff;
+}
+.sell-form-seg input:focus-visible + span {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+.sell-form-choice .sell-form-hint { margin: 8px 0 0; }
+.sell-form-hint-lead { margin: 0; }
+.sell-form-brand-warn {
+  margin: 4px 0 0;
+  padding: 9px 12px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: #7a4a00;
+  background: #fbf5ea;
+  border-left: 3px solid #c98a2b;
+  border-radius: 0 5px 5px 0;
+}
+.sell-form-brand-warn[hidden] { display: none; }
+.sell-photo-examples summary {
+  width: max-content;
+  cursor: pointer;
+  font-size: 0.85rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  color: var(--color-text);
+}
+.sell-photo-examples ul {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 64px);
+  gap: 10px;
+}
+.sell-photo-examples img {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 5px;
+  display: block;
+}
+.sell-photo-examples span {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.72rem;
+  text-align: center;
+  color: var(--color-text-secondary);
+}
+.sell-photo-add {
+  align-self: stretch;
+  padding: 16px 22px;
+  border-width: 1.5px;
+  border-color: #c9c9c4;
+  background: #fbfbfa;
+}
+.sell-form-ack { margin-top: 18px; }
+.sell-form-submit { margin-top: 18px; width: 100%; }
+.sell-form-disclaimer { margin-top: 12px; }
+@media (max-width: 640px) {
+  .sell-form-pair { grid-template-columns: 1fr; }
+  .sell-form-seg-3 span { font-size: 0.82rem; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Sell hub layout (.sell-v2) — /sell/, and the template for the cluster.
+   One section rhythm: every direct child of .page is separated by
+   --sell-gap and carries no vertical padding or margin of its own, so the
+   spacing between sections is identical top to bottom.
+   ═══════════════════════════════════════════════════════════ */
+.sell-v2 { --sell-gap: 88px; }
+@media (max-width: 768px) { .sell-v2 { --sell-gap: 64px; } }
+.sell-v2 > * { margin-top: 0; margin-bottom: 0; padding-top: 0; padding-bottom: 0; }
+.sell-v2 > * + * { margin-top: var(--sell-gap); }
+.sell-v2 > :last-child { margin-bottom: var(--sell-gap); }
+.sell-v2 .seller-reviews .reviews-inner { padding-top: 0; padding-bottom: 0; }
+.sell-v2 .sell-form,
+.sell-v2 .sell-form-prelude,
+.sell-v2 .sell-form-offer,
+.sell-v2 .sell-form-success { margin-left: auto; margin-right: auto; }
+
+.sell-h2 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 1.6rem;
+  line-height: 1.25;
+  margin: 0 0 var(--space-2);
+}
+.sell-h2-sm { font-size: 1.2rem; margin-top: var(--space-5); }
+.sell-muted { color: var(--color-text-secondary); font-size: 0.95rem; line-height: 1.6; }
+.sell-eyebrow {
+  margin: 0 0 12px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+.sell-link {
+  color: var(--color-text);
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.sell-section-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.sell-v2 .sell-muted a,
+.sell-v2 .sell-reasons a,
+.sell-v2 .sell-acc a,
+.sell-v2 .sell-bypiece a,
+.sell-v2 .sell-tags a { color: var(--color-text); text-decoration: underline; text-underline-offset: 3px; }
+.sell-v2 .sell-reasons h3 a { text-decoration: none; }
+
+/* Intro */
+.sell-intro {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: var(--space-5);
+  align-items: center;
+}
+.sell-v2 > .sell-intro { padding-top: var(--space-6); }
+.sell-intro h1 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 2.35rem;
+  line-height: 1.18;
+  margin: 0 0 var(--space-2);
+}
+.sell-intro-promise { font-size: 1.15rem; font-weight: 500; margin: 0 0 10px; }
+.sell-intro-answer { color: var(--color-text-secondary); line-height: 1.65; margin: 0 0 var(--space-3); }
+.sell-v2 .sell-hero-cta { margin: 0; }
+.sell-intro-mosaic {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 4 / 3;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: repeat(3, 1fr);
+  gap: 8px;
+}
+.sell-intro-mosaic picture, .sell-intro-mosaic img { display: block; width: 100%; height: 100%; min-height: 0; }
+.sell-intro-mosaic img { object-fit: cover; border-radius: 6px; }
+.sell-intro-mosaic picture:first-child { grid-row: 1 / 4; }
+.sell-intro-mosaic figcaption {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  padding: 5px 10px;
+  border-radius: 4px;
+  background: rgba(26,26,26,0.78);
+  color: #fff;
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+}
+
+/* Fit check */
+.sell-v2 > .sell-fitcheck {
+  margin-top: var(--space-5);
+  padding-top: 24px;
+  padding-bottom: 24px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+}
+.sell-fitcheck-cols { display: grid; grid-template-columns: 1.25fr 1fr; gap: 12px 40px; }
+.sell-fitcheck-label { font-weight: 600; font-size: 0.95rem; margin: 0 0 10px; }
+.sell-yes, .sell-no, .sell-xlist { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.sell-yes li, .sell-no li, .sell-xlist li { position: relative; padding-left: 22px; font-size: 0.92rem; line-height: 1.45; }
+.sell-yes li span, .sell-no li span { color: var(--color-text-secondary); }
+.sell-yes li::before { content: "\2713"; position: absolute; left: 0; color: var(--color-success); font-weight: 600; }
+.sell-no li::before, .sell-xlist li::before { content: "\00d7"; position: absolute; left: 2px; top: -2px; color: var(--color-sold-badge); font-weight: 600; font-size: 1.05rem; }
+.sell-fitcheck-foot { font-size: 0.88rem; margin: 16px 0 0; }
+.sell-fitcheck-foot a { color: var(--color-text); }
+
+/* How it works */
+.sell-howto-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.sell-howto-steps li { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius); padding: 22px; }
+.sell-howto-num {
+  width: 30px;
+  height: 30px;
+  margin-bottom: 12px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.sell-howto-steps strong { display: block; font-weight: 600; margin-bottom: 6px; }
+.sell-howto-steps p { margin: 0; color: var(--color-text-secondary); font-size: 0.92rem; line-height: 1.6; }
+
+/* Recently sold strip (generated — RECENT_SOLD markers) */
+.sell-sold-strip { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+.sell-sold-strip .card {
+  background: none;
+  border: 0;
+  box-shadow: none;
+  border-radius: 0;
+  overflow: visible;
+  text-decoration: none;
+  color: var(--color-text);
+}
+.sell-sold-strip .card:hover { transform: none; box-shadow: none; }
+.sell-sold-strip .card-image-placeholder { aspect-ratio: 4 / 3; border-radius: 6px; overflow: hidden; background: #eee; margin-bottom: 8px; }
+.sell-sold-strip .card-image-placeholder img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.sell-sold-strip .card-body { padding: 0; }
+.sell-sold-strip .card-brand { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-text-secondary); }
+.sell-sold-strip .card-title {
+  font-family: var(--font-serif);
+  font-size: 0.92rem;
+  line-height: 1.3;
+  margin-top: 2px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Form section */
+.sell-apply { max-width: 640px; scroll-margin-top: calc(var(--nav-height) + 16px); }
+.sell-v2 .sell-send-heading { margin-top: 0; }
+
+/* Is my piece a fit? */
+.sell-bypiece { margin: -4px 0 18px; font-size: 0.88rem; color: var(--color-text-secondary); }
+.sell-fitfull { display: grid; grid-template-columns: 1.3fr 1fr; gap: 16px; }
+.sell-fitfull-col { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius); padding: 22px; }
+.sell-fitfull-col h3 { font-size: 1rem; font-weight: 600; margin: 0 0 4px; }
+.sell-fitfull-col .sell-muted { font-size: 0.85rem; margin: 0 0 14px; }
+.sell-xlist li { font-size: 0.88rem; }
+.sell-tags { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.sell-tags li { background: #f4f3ef; border-radius: 999px; padding: 5px 12px; font-size: 0.84rem; }
+.sell-tags small { color: var(--color-text-secondary); }
+.sell-tags-quiet li { background: transparent; border: 1px solid var(--color-border); }
+.sell-center { text-align: center; margin: var(--space-3) 0 0; }
+
+/* Why sellers contact us */
+.sell-reasons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.sell-reasons > div { border-top: 2px solid var(--color-accent); padding-top: 14px; }
+.sell-reasons h3 { font-size: 0.97rem; font-weight: 600; margin: 0 0 6px; line-height: 1.35; }
+.sell-reasons p { margin: 0; font-size: 0.88rem; color: var(--color-text-secondary); line-height: 1.55; }
+
+/* Collapsible detail sections + FAQ accordion */
+.sell-accordions, .sell-v2 .sell-faq { max-width: 760px; }
+.sell-acc, .sell-v2 .sell-faq details.faq-item { border-bottom: 1px solid var(--color-border); padding: 0; }
+.sell-acc:first-child { border-top: 1px solid var(--color-border); }
+.sell-acc summary, .sell-v2 .sell-faq details.faq-item summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  min-height: 44px;
+  padding: 18px 0;
+}
+.sell-acc summary::-webkit-details-marker,
+.sell-v2 .sell-faq summary::-webkit-details-marker { display: none; }
+.sell-acc summary::after, .sell-v2 .sell-faq details.faq-item summary::after { content: "+"; flex: none; font-size: 1.4rem; font-weight: 300; line-height: 1; }
+.sell-acc[open] summary::after, .sell-v2 .sell-faq details.faq-item[open] summary::after { content: "\2212"; }
+.sell-acc summary h2 { margin: 0; font-family: var(--font-serif); font-weight: 400; font-size: 1.25rem; }
+.sell-acc p, .sell-acc ul { margin: 0; padding-bottom: 18px; color: var(--color-text-secondary); font-size: 0.95rem; line-height: 1.65; }
+.sell-acc ul { padding-left: 18px; display: grid; gap: 8px; }
+.sell-acc strong { color: var(--color-text); }
+.sell-v2 .sell-faq .faq-question { margin: 0; font-size: 1rem; font-weight: 500; }
+.sell-v2 .sell-faq details.faq-item .faq-answer { margin: 0; padding-bottom: 18px; }
+
+/* Sticky "Get an Offer" bar — mobile only; js/sell-form.js toggles
+   .is-visible so it appears only while the form is out of reach. */
+.sell-sticky-cta { display: none; }
+@media (max-width: 768px) {
+  .sell-sticky-cta {
+    display: block;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 500;
+    padding: 10px var(--page-x) calc(10px + env(safe-area-inset-bottom, 0px));
+    background: #fff;
+    border-top: 1px solid rgba(0,0,0,0.12);
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+    transform: translateY(110%);
+    transition: transform 200ms ease;
+  }
+  .sell-sticky-cta.is-visible { transform: none; }
+  .sell-sticky-cta a {
+    display: block;
+    padding: 14px 12px;
+    border-radius: 6px;
+    background: var(--color-accent);
+    color: #fff;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+  }
+  body:has(.sell-sticky-cta) footer { padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px)); }
+}
+@media (prefers-reduced-motion: reduce) { .sell-sticky-cta { transition: none; } }
+
+@media (max-width: 900px) {
+  .sell-intro { grid-template-columns: 1fr; gap: var(--space-3); }
+  .sell-intro-mosaic { aspect-ratio: 16 / 9; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 1fr 1fr; }
+  .sell-intro-mosaic picture:first-child { grid-row: 1 / 3; }
+  .sell-intro-mosaic picture:nth-child(4) { grid-column: 2 / 4; }
+  .sell-reasons { grid-template-columns: 1fr 1fr; }
+  .sell-fitfull { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  .sell-v2 > .sell-intro { padding-top: var(--space-4); }
+  .sell-h2 { font-size: 1.4rem; }
+  .sell-intro h1 { font-size: 1.65rem; }
+  .sell-intro-promise { font-size: 1.02rem; }
+  .sell-intro-answer { font-size: 0.95rem; }
+  .sell-v2 .sell-hero-cta { display: block; text-align: center; }
+  .sell-v2 > .sell-fitcheck { margin-left: var(--page-x); margin-right: var(--page-x); padding-left: 18px; padding-right: 18px; }
+  .sell-fitcheck-cols { grid-template-columns: 1fr; gap: 20px; }
+  .sell-howto-steps { grid-template-columns: 1fr; gap: 0; }
+  .sell-howto-steps li {
+    display: grid;
+    grid-template-columns: 30px 1fr;
+    column-gap: 14px;
+    padding: 12px 0;
+    border: 0;
+    border-bottom: 1px solid var(--color-border);
+    border-radius: 0;
+    background: none;
+  }
+  .sell-howto-steps li:last-child { border-bottom: 0; padding-bottom: 0; }
+  .sell-howto-num { grid-row: 1 / 3; margin: 0; }
+  .sell-v2 > .sell-landing-sold { padding-left: 0; padding-right: 0; }
+  .sell-v2 > .sell-landing-sold .sell-section-head { padding: 0 var(--page-x); }
+  .sell-sold-strip {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--page-x);
+    padding: 0 var(--page-x);
+    scrollbar-width: none;
+  }
+  .sell-sold-strip::-webkit-scrollbar { display: none; }
+  .sell-sold-strip .card { flex: 0 0 62%; scroll-snap-align: start; }
+  .sell-v2 .sell-form { margin-left: -8px; margin-right: -8px; padding: 4px 16px 20px; }
+  .sell-reasons { grid-template-columns: 1fr; gap: 20px; }
+  .sell-reasons > div { border-top: 0; padding-top: 0; }
 }

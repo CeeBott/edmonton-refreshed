@@ -41,6 +41,76 @@
   var success = document.getElementById('sell-form-success');
   if (!form) return;
 
+  // ── Mass-market brand warning ──
+  // Mass-market brands were 42% of all passed leads (Leads tab, Apr to Sep
+  // 2026). A soft note under the Brand field, shown while the seller types,
+  // puts that at the moment they decide to submit. It never blocks: the list
+  // is matched loosely and a seller can still send. Names come from the
+  // brands actually passed on in the ledger, plus the ones the site already
+  // names (IKEA, Ashley, Leon's, The Brick).
+  var MASS_MARKET = [
+    ['IKEA', /\bikea\b/i],
+    ['Ashley', /\bashley\b/i],
+    ["Leon\u2019s", /\bleon'?\u2019?s\b/i],
+    ['The Brick', /\b(the )?brick\b/i],
+    ['Structube', /\bstructube\b/i],
+    ['Wayfair', /\bwayfair\b/i],
+    ['Wayfair', /\bwilla arlo\b/i],
+    ['Walmart', /\bwal-?mart\b/i],
+    ['Costco', /\bcostco\b/i],
+    ['Kort & Co.', /\bkort\b/i]
+  ];
+  var brandInput = document.getElementById('sf-brand');
+  var brandWarn = document.getElementById('sf-brand-warn');
+  if (brandInput && brandWarn) {
+    var checkBrand = function () {
+      var hit = null;
+      for (var b = 0; b < MASS_MARKET.length; b++) {
+        if (MASS_MARKET[b][1].test(brandInput.value)) { hit = MASS_MARKET[b][0]; break; }
+      }
+      if (hit) {
+        brandWarn.textContent = 'We typically don\u2019t purchase ' + hit + ' furniture, so we\u2019re unlikely to make an offer on this piece.';
+        brandWarn.hidden = false;
+      } else {
+        brandWarn.hidden = true;
+        brandWarn.textContent = '';
+      }
+    };
+    brandInput.addEventListener('input', checkBrand);
+    brandInput.addEventListener('blur', checkBrand);
+    checkBrand();
+  }
+
+  // ── Sticky "Get an Offer" bar (mobile) ──
+  // Shown once the hero button has scrolled away, hidden again whenever the
+  // form itself is on screen, so it only ever appears when the form is out of
+  // reach. Pages without the bar markup are unaffected.
+  var sticky = document.querySelector('.sell-sticky-cta');
+  var heroCta = document.querySelector('.sell-hero-cta');
+  var formSection = document.getElementById('sell-details');
+  if (sticky && heroCta && formSection && 'IntersectionObserver' in window) {
+    var heroVisible = true;
+    var formVisible = false;
+    var formSent = false;
+    var updateSticky = function () {
+      var show = !heroVisible && !formVisible && !formSent;
+      sticky.classList.toggle('is-visible', show);
+      sticky.setAttribute('aria-hidden', show ? 'false' : 'true');
+      var link = sticky.querySelector('a');
+      if (link) link.tabIndex = show ? 0 : -1;
+    };
+    new IntersectionObserver(function (entries) {
+      heroVisible = entries[0].isIntersecting;
+      updateSticky();
+    }).observe(heroCta);
+    new IntersectionObserver(function (entries) {
+      formVisible = entries[0].isIntersecting;
+      updateSticky();
+    }, { rootMargin: '0px 0px -30% 0px' }).observe(formSection);
+    form.addEventListener('sell-form-sent', function () { formSent = true; updateSticky(); });
+    updateSticky();
+  }
+
   // Original purchase price (optional) — format the value as CAD dollars as
   // the seller types, so "400" displays as "$400". Digits only; no cents.
   var msrpInput = document.getElementById('sf-msrp');
@@ -339,6 +409,7 @@
       if (!res.ok || !data.ok) {
         throw new Error(data.error || 'Send failed.');
       }
+      form.dispatchEvent(new Event('sell-form-sent'));
       if (success) {
         success.hidden = false;
         form.hidden = true;

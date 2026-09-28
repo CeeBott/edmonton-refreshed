@@ -40,7 +40,7 @@ const home = [
     question: 'How do I sell my sofa or sectional?',
     schemaQuestion: 'How do I sell my sofa or sectional to Edmonton Refreshed?',
     answer:
-      'Head to the [Sell Your Furniture](/sell/) page. Send photos, the brand, and approximate age — we come back with an offer today and handle all pickup. No listings, no back-and-forth.',
+      'Head to the [Sell Your Furniture](/sell/) page. Send photos, the brand, and approximate age. We aim to reply the same day, and if we buy it, we handle all pickup. No listings, no back-and-forth.',
     schemaAnswer:
       'Head to the Sell Your Furniture page. Send photos, the brand, age, and your asking price — we get you a fair offer today and handle all pickup.',
   },
@@ -55,7 +55,7 @@ const sell = [
   {
     question: 'What happens if my piece isn’t a fit?',
     answer:
-      'We’ll tell you straight, usually the same day. No runaround. If we can’t buy it, we’ll sometimes point you toward a channel that makes more sense — consignment, marketplace, or donation.',
+      'We’ll tell you straight, and we aim to do it the same day. No runaround. If we can’t buy it, we’ll sometimes point you toward a channel that makes more sense: consignment, marketplace, or donation.',
   },
   {
     question: 'How fast can you pick up?',
@@ -66,12 +66,12 @@ const sell = [
     question: 'Do you take trade-ins or buy back furniture?',
     schemaQuestion: 'Is there a furniture trade-in or buy-back option in Edmonton?',
     answer:
-      'What we offer is the direct-sale version of a trade-in or buy-back: we buy your sofa or sectional outright — no store credit, nothing to list. If a replacement is on the way, we can usually time pickup around the new delivery so the old piece is gone first.',
+      'What we offer is the direct-sale version of a trade-in or buy-back: we buy your sofa or sectional outright. No store credit, nothing to list. If a replacement is on the way, we can usually time pickup around the new delivery so the old piece is gone first.',
   },
   {
     question: 'Do you pay cash or e-transfer?',
     answer:
-      'Both. Cash or e-transfer on the spot — your choice, paid before the piece leaves your home.',
+      'Both, whichever you prefer, paid on the spot before the piece leaves your home.',
   },
   {
     question: 'What if my brand isn’t listed?',
@@ -81,7 +81,7 @@ const sell = [
   {
     question: 'Do you buy anything besides sofas and sectionals?',
     answer:
-      'Generally no. We specialize in sofas and sectionals — that’s where our resale channels and pricing are dialed in. Chairs sold as part of a matching set with a sofa are in; standalone chairs, dining sets, and bedroom furniture are out.',
+      'Generally no. We specialize in sofas and sectionals, because that’s where our resale channels and pricing are dialed in. Chairs sold as a matching set with a sofa are in, and we make exceptions for exceptional standalone chairs. Dining sets and bedroom furniture are out.',
   },
 ];
 
@@ -112,7 +112,7 @@ const about = [
     question: 'How do I sell my sofa or sectional?',
     schemaQuestion: 'How do I sell my sofa or sectional to Edmonton Refreshed?',
     answer:
-      'Text or email photos along with the brand, approximate age, and any condition notes. We get you an offer today. If we proceed, we handle pickup at your convenience and pay cash or e-transfer on the spot. See the [Sell Your Furniture](/sell/) page for details.',
+      'Text or email photos along with the brand, approximate age, and any condition notes. We aim to reply the same day. If we proceed, we handle pickup at your convenience and pay cash or e-transfer on the spot. See the [Sell Your Furniture](/sell/) page for details.',
     schemaAnswer:
       'Text or email clear photos along with the brand, approximate age, and any condition notes. We get you a fair offer today. If we proceed, we handle all pickup at your convenience and pay cash or e-transfer on the spot.',
   },

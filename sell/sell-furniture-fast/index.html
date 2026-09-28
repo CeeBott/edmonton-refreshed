@@ -74,7 +74,7 @@
     "name": "Fast Premium Furniture Buyout in Edmonton",
     "description": "We buy premium and designer sofas and sectionals fast in Edmonton. Offer today, pickup typically inside 72 hours, paid at the door.",
     "url": "https://edmontonrefreshed.com/sell/sell-furniture-fast/",
-    "dateModified": "2026-08-20",
+    "dateModified": "2026-09-27",
     "provider": {
       "@type": "FurnitureStore",
       "@id": "https://edmontonrefreshed.com/#business",
@@ -402,7 +402,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="../../css/styles.min.css?v=e2d08de5">
+  <link rel="stylesheet" href="../../css/styles.min.css?v=c38c024e">
   <meta name="theme-color" content="#2c2c2c">
 </head>
 <body>
@@ -493,7 +493,7 @@
       </section>
 
       <div class="sell-qualification">
-        <div class="sell-qualification-inner">We focus on premium and designer sofas and sectionals from recognized brands &mdash; most offers between $500 and $2,500. If your piece is in our category and the photos are clear, you'll typically have a number the same day.</div>
+        <div class="sell-qualification-inner">We focus on premium and designer sofas and sectionals from recognized brands. If your piece is in our category and the photos are clear, you'll typically have a number the same day.</div>
       </div>
 
       <section class="sell-seller-reasons">
@@ -576,12 +576,15 @@
       <h2 class="section-label sell-send-heading" id="sell-details">Send us your details</h2>
       <p class="sell-send-lead">Fill out the form below &mdash; we get you an offer today. The more detail you give, the faster and more accurate the offer.</p>
 
-      <div class="sell-form-prelude">We primarily purchase higher-quality sofas and sectionals from design-oriented and premium retailers. If you&rsquo;re unsure whether your piece is a fit, send photos anyway &mdash; we&rsquo;re happy to take a look.</div>
-
-      <div class="sell-form-offer">
-        <p class="sell-form-offer-label">How our offers work</p>
-        <p class="sell-form-offer-body">We buy to resell, so every offer factors in what it costs us to transport, clean, store, and remarket a piece. That means our offer will come in below what a private sale would net you &mdash; if maximizing price is the priority, a private sale is the better option. What we offer instead is certainty: a firm number today, paid before the piece leaves your home, with no listing, no messaging, and no no-shows. If that trade is worth it to you, we&rsquo;re a good option.</p>
+      <div class="sell-form-prelude">
+        <img class="sell-form-host-photo" src="/images/about/collin-bottrell-400w.jpeg" alt="Collin Bottrell" width="56" height="56" loading="lazy">
+        <p class="sell-form-host"><strong>Collin reviews every submission himself</strong> and aims to reply the same day.</p>
+        <p class="sell-form-fit">We primarily purchase higher-quality sofas and sectionals from premium retailers, chosen for their construction, materials, and comfort.</p>
       </div>
+      <details class="sell-form-offer">
+        <summary class="sell-form-offer-label">How our offers work</summary>
+        <p class="sell-form-offer-body">We buy to resell, so every offer factors in what it costs us to transport, clean, store, and remarket a piece. That means our offer will come in below what a private sale would net you. If maximizing price is the priority, a private sale is the better option. What we offer instead is certainty: a firm number, paid before the piece leaves your home, with no listing, no messaging, and no no-shows. If that trade is worth it to you, we&rsquo;re a good option.</p>
+      </details>
 
       <div id="sell-form-success" class="sell-form-success" hidden>
         <p><strong>Thanks &mdash; your details are in.</strong></p>
@@ -591,94 +594,116 @@
       <form class="sell-form" id="sell-form" method="POST" enctype="multipart/form-data" novalidate>
         <input type="checkbox" name="_honey" class="sell-form-honey" tabindex="-1" autocomplete="off" aria-hidden="true">
 
-        <div class="sell-form-row">
-          <label for="sf-brand">Brand <span class="sell-form-req" aria-hidden="true">*</span></label>
-          <input type="text" id="sf-brand" name="Brand" placeholder="e.g. Natuzzi, EQ3, Rove Concepts (or &lsquo;unsure&rsquo;)" autocomplete="off" value="" required>
-        </div>
+        <fieldset class="sell-form-group">
+          <legend class="sell-form-group-title"><span class="sell-form-group-num" aria-hidden="true">1</span> Your piece</legend>
 
-        <fieldset class="sell-form-row sell-form-choice">
-          <legend>Do you have the original receipt? <span class="sell-form-req" aria-hidden="true">*</span></legend>
-          <p class="sell-form-hint">Having original documentation showing purchase dates and prices helps us make a stronger, more confident offer. It isn&rsquo;t required &mdash; we make offers either way.</p>
-          <label class="sell-form-choice-option"><input type="radio" name="Has receipt" value="Yes" required> <span>Yes</span></label>
-          <label class="sell-form-choice-option"><input type="radio" name="Has receipt" value="No"> <span>No</span></label>
+          <div class="sell-form-row">
+            <label for="sf-brand">Brand <span class="sell-form-req" aria-hidden="true">*</span></label>
+            <input type="text" id="sf-brand" name="Brand" placeholder="e.g. Natuzzi, EQ3, Rove Concepts (or &lsquo;unsure&rsquo;)" autocomplete="off" value="" required aria-describedby="sf-brand-warn">
+            <p class="sell-form-brand-warn" id="sf-brand-warn" role="status" hidden></p>
+          </div>
+
+          <fieldset class="sell-form-row sell-form-choice">
+            <legend>Do you have the original receipt? <span class="sell-form-req" aria-hidden="true">*</span></legend>
+            <div class="sell-form-seg">
+              <label><input type="radio" name="Has receipt" value="Yes" required> <span>Yes</span></label>
+              <label><input type="radio" name="Has receipt" value="No"> <span>No</span></label>
+            </div>
+            <p class="sell-form-hint">It helps us make a stronger offer. It isn&rsquo;t required. We make offers with or without one.</p>
+          </fieldset>
+
+          <div class="sell-form-pair">
+            <div class="sell-form-row">
+              <label for="sf-year">Year purchased <span class="sell-form-req" aria-hidden="true">*</span></label>
+              <select id="sf-year" name="Year of purchase" required>
+                <option value="">Select a year</option>
+                <option>2026</option>
+                <option>2025</option>
+                <option>2024</option>
+                <option>2023</option>
+                <option>2022</option>
+                <option>2021</option>
+                <option>2020</option>
+                <option>2019</option>
+                <option>2018</option>
+                <option>2017</option>
+                <option>2016</option>
+                <option>2015</option>
+                <option>2014</option>
+                <option>2013</option>
+                <option>2012</option>
+                <option>2011</option>
+                <option>2010</option>
+                <option>Older than 2010</option>
+                <option>Not sure</option>
+              </select>
+            </div>
+            <div class="sell-form-row">
+              <label for="sf-msrp">Original price <span class="sell-form-req" aria-hidden="true">*</span></label>
+              <input type="text" id="sf-msrp" name="Original purchase price" inputmode="numeric" autocomplete="off" placeholder="$ (approximate is fine)" required>
+            </div>
+          </div>
+
+          <div class="sell-form-row">
+            <label for="sf-condition">Condition <span class="sell-form-req" aria-hidden="true">*</span></label>
+            <select id="sf-condition" name="Condition" required>
+              <option value="">Select a condition</option>
+              <option value="Excellent / Like New">Excellent / Like New: Virtually no signs of use</option>
+              <option value="Very Good">Very Good: Minimal signs of use, apparent on close inspection</option>
+              <option value="Good">Good: Signs of use expected with normal use</option>
+              <option value="Fair">Fair: Obvious cosmetic wear, structurally sound</option>
+            </select>
+          </div>
+
+          <fieldset class="sell-form-row sell-form-choice">
+            <legend>Pets in the home <span class="sell-form-req" aria-hidden="true">*</span></legend>
+            <div class="sell-form-seg sell-form-seg-3">
+              <label><input type="radio" name="Pets in home" value="Non-hypoallergenic cat or dog" required> <span>Cat or dog</span></label>
+              <label><input type="radio" name="Pets in home" value="Hypoallergenic cat or dog"> <span>Hypoallergenic</span></label>
+              <label><input type="radio" name="Pets in home" value="None"> <span>No pets</span></label>
+            </div>
+            <p class="sell-form-hint">Only tells us what cleaning it needs. It never disqualifies a piece.</p>
+          </fieldset>
         </fieldset>
 
-        <div class="sell-form-row">
-          <label for="sf-year">Year purchased or manufactured <span class="sell-form-req" aria-hidden="true">*</span></label>
-          <select id="sf-year" name="Year of purchase" required>
-            <option value="">Select a year</option>
-            <option>2026</option>
-            <option>2025</option>
-            <option>2024</option>
-            <option>2023</option>
-            <option>2022</option>
-            <option>2021</option>
-            <option>2020</option>
-            <option>2019</option>
-            <option>2018</option>
-            <option>2017</option>
-            <option>2016</option>
-            <option>2015</option>
-            <option>2014</option>
-            <option>2013</option>
-            <option>2012</option>
-            <option>2011 or earlier</option>
-            <option>Not sure</option>
-          </select>
-          <p class="sell-form-hint">Enter approx. year of purchase if no invoice is available</p>
-        </div>
-
-        <div class="sell-form-row">
-          <label for="sf-condition">Condition <span class="sell-form-req" aria-hidden="true">*</span></label>
-          <select id="sf-condition" name="Condition" required>
-            <option value="">Select a condition</option>
-            <option value="Excellent / Like New">Excellent / Like New &mdash; Virtually no signs of use</option>
-            <option value="Very Good">Very Good &mdash; Minimal signs of use, apparent on close inspection</option>
-            <option value="Good">Good &mdash; Signs of use expected with normal use</option>
-            <option value="Fair">Fair &mdash; Obvious cosmetic wear, structurally sound</option>
-          </select>
-        </div>
-
-        <div class="sell-form-row">
-          <label for="sf-msrp">Original purchase price <span class="sell-form-req" aria-hidden="true">*</span></label>
-          <input type="text" id="sf-msrp" name="Original purchase price" inputmode="numeric" autocomplete="off" placeholder="$" required>
-          <p class="sell-form-hint">Enter the price pre-tax and any shipping fees. Enter the approximate price if the invoice is unavailable</p>
-        </div>
-
-        <fieldset class="sell-form-row sell-form-choice">
-          <legend>Pets in the home <span class="sell-form-req" aria-hidden="true">*</span></legend>
-          <p class="sell-form-hint">This tells us what cleaning the piece will need. It does not disqualify anything.</p>
-          <label class="sell-form-choice-option"><input type="radio" name="Pets in home" value="Non-hypoallergenic cat or dog" required> <span>Cat or dog</span></label>
-          <label class="sell-form-choice-option"><input type="radio" name="Pets in home" value="Hypoallergenic cat or dog"> <span>Hypoallergenic cat or dog</span></label>
-          <label class="sell-form-choice-option"><input type="radio" name="Pets in home" value="None"> <span>No pets</span></label>
-        </fieldset>
-
-        <div class="sell-form-row">
-          <label id="sf-photos-label">Photos and receipt <span class="sell-form-req" aria-hidden="true">*</span> <span class="sell-form-req-note">(at least 1 photo &mdash; up to 6 files)</span></label>
+        <fieldset class="sell-form-group">
+          <legend class="sell-form-group-title" id="sf-photos-label"><span class="sell-form-group-num" aria-hidden="true">2</span> Photos <span class="sell-form-req" aria-hidden="true">*</span> <span class="sell-form-req-note">(at least 1, up to 6 files)</span></legend>
+          <p class="sell-form-hint sell-form-hint-lead">Best shots: the front, the side profile, a close-up of the fabric or leather, and any tags or labels. Add your receipt too if you have it.</p>
+          <details class="sell-photo-examples">
+            <summary>See example shots</summary>
+            <ul>
+              <li><img src="/images/CB-050/crate-and-barrel-02-400w.jpeg" alt="Example: the front of a sofa" width="64" height="64" loading="lazy"><span>Front</span></li>
+              <li><img src="/images/CB-050/crate-and-barrel-03-400w.jpeg" alt="Example: the side profile of a sofa" width="64" height="64" loading="lazy"><span>Side</span></li>
+              <li><img src="/images/AL-049/american-leather-19-400w.jpeg" alt="Example: a close-up of the leather" width="64" height="64" loading="lazy"><span>Close-up</span></li>
+              <li><img src="/images/CB-050/crate-and-barrel-06-400w.jpeg" alt="Example: a manufacturer label" width="64" height="64" loading="lazy"><span>Tags</span></li>
+            </ul>
+          </details>
           <div class="sell-photo-picker">
             <input type="file" id="sf-photos" name="photos" accept="image/*,application/pdf" multiple class="sell-photo-input" aria-labelledby="sf-photos-label">
             <button type="button" class="sell-photo-add" id="sf-photos-add" aria-describedby="sf-photos-label">+ Add photos</button>
             <ul class="sell-photo-list" id="sf-photos-list" hidden aria-live="polite"></ul>
             <p class="sell-photo-count" id="sf-photos-count" hidden></p>
           </div>
-          <p class="sell-form-hint">Include photos of your item, including any relevant wear, as well as your original purchase receipt/invoice if it&rsquo;s available.</p>
           <p class="sell-form-error" id="sf-photos-error" hidden></p>
-        </div>
+        </fieldset>
 
-        <div class="sell-form-row">
-          <label for="sf-name">Your name <span class="sell-form-req" aria-hidden="true">*</span></label>
-          <input type="text" id="sf-name" name="Name" autocomplete="name" required>
-        </div>
-
-        <div class="sell-form-row">
-          <label for="sf-contact">Best contact (phone or email) <span class="sell-form-req" aria-hidden="true">*</span></label>
-          <input type="text" id="sf-contact" name="Best contact" placeholder="Phone number or email" required>
-        </div>
-
-        <div class="sell-form-row">
-          <label for="sf-notes">Anything we should know? (Timeline, building access, etc.) <span class="sell-form-req-note">(optional)</span></label>
-          <textarea id="sf-notes" name="Notes" rows="4" placeholder="When does the piece need to be gone? Any access notes?"></textarea>
-        </div>
+        <fieldset class="sell-form-group">
+          <legend class="sell-form-group-title"><span class="sell-form-group-num" aria-hidden="true">3</span> How to reach you</legend>
+          <div class="sell-form-pair">
+            <div class="sell-form-row">
+              <label for="sf-name">Your name <span class="sell-form-req" aria-hidden="true">*</span></label>
+              <input type="text" id="sf-name" name="Name" autocomplete="name" required>
+            </div>
+            <div class="sell-form-row">
+              <label for="sf-contact">Phone or email <span class="sell-form-req" aria-hidden="true">*</span></label>
+              <input type="text" id="sf-contact" name="Best contact" required>
+            </div>
+          </div>
+          <div class="sell-form-row">
+            <label for="sf-notes">Anything we should know? (Timeline, building access, etc.) <span class="sell-form-req-note">(optional)</span></label>
+            <textarea id="sf-notes" name="Notes" rows="3" placeholder="When does the piece need to be gone? Any access notes?"></textarea>
+          </div>
+        </fieldset>
 
         <div class="sell-form-ack">
           <label class="sell-form-ack-label">
@@ -689,7 +714,7 @@
         </div>
 
         <button type="submit" class="sell-form-submit">Get My Offer</button>
-        <p class="sell-form-disclaimer">We'll get you an offer today. Your details are only used to evaluate your piece &mdash; never shared.</p>
+        <p class="sell-form-disclaimer">Your details are only used to evaluate your piece and are never shared.</p>
       </form>
 
       <p class="sell-form-secondary">Prefer to text? <a href="sms:7809651477">780-965-1477</a></p>
@@ -991,7 +1016,7 @@
   <!-- FOOTER_END -->
 
   <script src="../../js/shared.min.js?v=d1f81259"></script>
-  <script src="../../js/sell-form.min.js?v=35ec5dc6"></script>
+  <script src="../../js/sell-form.min.js?v=151ef08d"></script>
 
 </body>
 </html>
