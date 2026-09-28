@@ -856,7 +856,7 @@ function soldVariantSrcset(rel, ext) {
 // filter: live inventory first, then sold pieces older than the ones the
 // Recently sold strip already shows, then those, then extra photos of the same
 // pieces. A brand with nothing to show falls back to the hub's set.
-function mosaicPicture(rel, sizes, alt) {
+function mosaicPicture(rel, sizes, alt, first) {
   rel = rel.replace(/^(?:\.\.\/)+/, '').replace(/^\/+/, '');
   var sources = ['avif', 'webp'].map(function (ext) {
     var set = soldVariantSrcset(rel, ext);
@@ -865,7 +865,10 @@ function mosaicPicture(rel, sizes, alt) {
   var jpegSet = soldVariantSrcset(rel, 'jpeg');
   return '<picture>' + sources + '<img src="/' + encodeURI(rel) + '"' +
     (jpegSet ? ' srcset="' + jpegSet + '" sizes="' + sizes + '"' : '') +
-    ' alt="' + escapeHtml(alt) + '" loading="lazy"></picture>';
+    ' alt="' + escapeHtml(alt) + '"' +
+    // The large first photo is above the fold on desktop, so it is the
+    // likely LCP element: load it eagerly and at high priority.
+    (first ? ' fetchpriority="high"' : ' loading="lazy"') + '></picture>';
 }
 
 function generateHeroMosaic(meta, hubMeta) {
@@ -892,7 +895,7 @@ function generateHeroMosaic(meta, hubMeta) {
     (f.brand ? escapeHtml(f.brand) + ' pieces we&rsquo;ve bought' : 'Pieces we&rsquo;ve bought in Edmonton');
   return [
     '        <figure class="sell-intro-mosaic">',
-    chosen.slice(0, 4).map(function (c, k) { return '          ' + mosaicPicture(c.rel, sizes[k], c.alt); }).join('\n'),
+    chosen.slice(0, 4).map(function (c, k) { return '          ' + mosaicPicture(c.rel, sizes[k], c.alt, k === 0); }).join('\n'),
     '          <figcaption>' + caption + '</figcaption>',
     '        </figure>',
   ].join('\n');
@@ -921,20 +924,18 @@ function pieceMatches(item, f) {
 function generateRecentSoldHTML(attrs) {
   var count = parseInt(attrs.count, 10) || 6;
   var picks = soldItems.filter(function (item) { return pieceMatches(item, attrs); }).slice(0, count);
+  var others = false;
   if (!picks.length) {
-    // Nothing sold yet for this brand or type: say so plainly rather than
-    // show unrelated pieces. Disappears on its own once one sells.
-    var what = attrs.brand ? escapeHtml(attrs.brand) + ' pieces' : 'pieces like this';
-    return [
-      '      <section class="sell-landing-sold">',
-      '        <div class="sell-section-head">',
-      '          <h2 class="sell-h2">Recently sold</h2>',
-      '          <a href="/sold/" class="sell-link">Full archive &rarr;</a>',
-      '        </div>',
-      '        <p class="sell-muted">We don&rsquo;t have ' + what + ' in our sold archive yet. If you have one, we&rsquo;re actively looking.</p>',
-      '      </section>',
-    ].join('\n');
+    // Nothing of this brand sold yet: show recent buys from other brands,
+    // labelled as exactly that, rather than an empty section (Collin,
+    // 2026-09-27). The section gets a different class so the brand-named
+    // ItemList schema is not generated from pieces of other brands.
+    picks = soldItems.filter(function (item) {
+      return pieceMatches(item, { match: attrs.match, leather: attrs.leather });
+    }).slice(0, count);
+    others = true;
   }
+  if (!picks.length) return '';
   var sizes = '(max-width: 768px) 62vw, 180px';
   var cards = picks.map(function (item) {
     var rel = item.images[0].replace(/^(?:\.\.\/)+/, '').replace(/^\/+/, '');
@@ -957,12 +958,17 @@ function generateRecentSoldHTML(attrs) {
       '          </a>',
     ].join('\n');
   });
+  var note = others && attrs.brand
+    ? '        <p class="sell-muted sell-sold-note">We haven&rsquo;t had ' + escapeHtml(attrs.brand) +
+      ' through yet. Here are recent buys from other brands we purchase.</p>'
+    : '';
   return [
-    '      <section class="sell-landing-sold">',
+    '      <section class="sell-landing-sold' + (others ? ' sell-landing-sold--others' : '') + '">',
     '        <div class="sell-section-head">',
     '          <h2 class="sell-h2">Recently sold</h2>',
     '          <a href="/sold/" class="sell-link">Full archive &rarr;</a>',
     '        </div>',
+    note,
     '        <div class="sell-landing-sold-grid sell-sold-strip">',
     cards.join('\n'),
     '        </div>',

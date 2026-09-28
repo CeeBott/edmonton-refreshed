@@ -5022,3 +5022,4 @@ footer a:focus-visible {
 }
 .sell-intro .sell-updated { text-align: left; }
 .sell-v2 > .sell-howto { max-width: var(--max-width); }
+.sell-sold-note { margin: -4px 0 14px; font-size: 0.9rem; }
