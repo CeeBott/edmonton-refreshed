@@ -30,9 +30,26 @@ module.exports = {
   phoneDigits: '7809651477',
   email: 'info@edmontonrefreshed.com',
 
-  // Business stats — update sitewide by editing here
+  // Business stats — update sitewide by editing here. piecesSold renders only
+  // into the SOLD_COUNT markers (homepage sr-only block, sold-page intro);
+  // it is deliberately NOT on the credibility strip (see below).
   piecesSold: '40+',
-  piecesBought: '41+',
+
+  // Credibility strip copy (§5.9), rendered by partials/credibility.js. Each
+  // three-part strip is "<lead> | ★ <rating> Rating | <city> Owned & Operated";
+  // only the lead is set per variant. No counts: "40+ Pieces Sold" / "41+
+  // Pieces Bought" invited a volume comparison the curated positioning does
+  // not want (removed 2026-09-29), and the seller strip's "Most Offers
+  // $500–$2,500" read as a lowball to premium sellers (§10.23). Leads name a
+  // service differentiator instead. Never a timing promise (§5.13).
+  credibility: {
+    lead: {
+      buyer: 'Every Piece Inspected &amp; Cleaned',
+      seller: 'We Handle Pickup',
+      partner: 'We Handle Pickup',
+    },
+    listing: 'We Deliver Anywhere in {city} and the Surrounding Area',
+  },
   // The ★ rating in the credibility strip is NOT set here: build.js calculates
   // it from js/reviews-data.js, the same figure every schema publishes, and
   // assigns site.rating before rendering (§8.4). Do not re-add a rating or

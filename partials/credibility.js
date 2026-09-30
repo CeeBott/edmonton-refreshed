@@ -1,54 +1,40 @@
 /**
  * Credibility strip — small trust band above the main content. Four
- * intentional variants, picked by the marker attribute on each page:
+ * variants, picked by the marker attribute on each page:
  *
- *   buyer   — homepage, sold archive, about, guides, privacy, 404 (default)
+ *   buyer   — homepage, sold archive, about, guides, privacy, returns
  *   seller  — sell hub + every /sell/[slug]/ landing page
- *   partner — /partners/ (same strip as seller; kept as its own variant name)
- *   listing — every active listing page (delivery-oriented messaging)
+ *   partner — /partners/ (kept as its own variant name so it can diverge)
+ *   listing — every active listing page and sold stub (delivery line only)
  *
  * Per-page marker form:
  *   <!-- CREDIBILITY_START variant="seller" -->...<!-- CREDIBILITY_END -->
+ *
+ * The copy lives in config/site.js#credibility. Every three-part variant is
+ * built from ONE template here: only the lead differs, so the rating and the
+ * city line cannot drift between variants (they once did — "Proudly" survived
+ * on the seller strip after the buyer strip dropped it). An unknown variant
+ * throws, so a typo in a marker fails the build instead of silently
+ * rendering the buyer strip.
  */
 const site = require('../config/site');
 
 function renderCredibility(variant) {
-  // The seller strip carried a "Most Offers $500–$2,500" range until 2026-09-27.
-  // Removed: a range topping out at $2,500 read as a lowball to exactly the
-  // premium sellers the business wants most (§10.23). Do not re-add it.
-  if (variant === 'seller') {
-    return [
-      '  <div class="credibility-strip">',
-      `    <span>${site.piecesBought} Pieces Bought</span>`,
-      '    <span class="credibility-sep">|</span>',
-      `    <span>&#9733; ${site.rating} Rating</span>`,
-      '    <span class="credibility-sep">|</span>',
-      `    <span>Proudly <a href="/about/">${site.cityName} Owned &amp; Operated</a></span>`,
-      '  </div>',
-    ].join('\n');
-  }
-  if (variant === 'partner') {
-    return [
-      '  <div class="credibility-strip">',
-      `    <span>${site.piecesBought} Pieces Bought</span>`,
-      '    <span class="credibility-sep">|</span>',
-      `    <span>&#9733; ${site.rating} Rating</span>`,
-      '    <span class="credibility-sep">|</span>',
-      `    <span>Proudly <a href="/about/">${site.cityName} Owned &amp; Operated</a></span>`,
-      '  </div>',
-    ].join('\n');
-  }
+  const copy = site.credibility;
   if (variant === 'listing') {
     return [
       '  <div class="credibility-strip">',
-      `    <span>We Deliver Anywhere in ${site.cityName} and the Surrounding Area</span>`,
+      `    <span>${copy.listing.replace('{city}', site.cityName)}</span>`,
       '  </div>',
     ].join('\n');
   }
-  // buyer (default)
+  const lead = copy.lead[variant];
+  if (!lead) {
+    throw new Error('Unknown credibility variant "' + variant + '" — expected one of: listing, ' + Object.keys(copy.lead).join(', '));
+  }
   return [
     '  <div class="credibility-strip">',
-    '    <span>Designer Brands</span>',
+    `    <span>${lead}</span>`,
     '    <span class="credibility-sep">|</span>',
     `    <span>&#9733; ${site.rating} Rating</span>`,
     '    <span class="credibility-sep">|</span>',
