@@ -202,6 +202,26 @@ module.exports = {
       note: "No commission, no markdown schedule.",
     },
   },
+  // Framed as the alternative to a store trade-in, like the consignment page:
+  // none of the brands we buy runs a trade-in or buy-back program (checked on
+  // each maker's site, 2026-09-29). Collin hasn't decided whether to offer
+  // trade-ins toward our own pieces; if he does, the page leads with that.
+  'sell/sofa-trade-in/index.html': {
+    type: "situation",
+    notesLabel: "Anything we should know? (When your new furniture arrives, building access)",
+    notesPlaceholder: "Delivery date for the new piece, building access, anything else",
+    soldSchema: {
+      name: "Recently Purchased Sofas and Sectionals in Edmonton",
+      description: "Photos of pre-owned sofas and sectionals purchased outright in Edmonton by Edmonton Refreshed, an alternative to a store trade-in.",
+    },
+    showcase: { match: 'sofa|sectional|loveseat' },
+    howTo: {
+      heading: "How selling instead of trading in works",
+      name: "How to Sell Your Sofa in Edmonton Instead of Trading It In",
+      basis: "brand, age, and condition",
+      note: "Tell us when your new piece arrives and we’ll aim to schedule pickup around it.",
+    },
+  },
   'sell/selling-furniture-before-moving/index.html': {
     type: "situation",
     notesLabel: "Anything we should know? (Move date, building access, etc.)",

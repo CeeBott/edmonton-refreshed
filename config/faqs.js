@@ -66,7 +66,7 @@ const sell = [
     question: 'Do you take trade-ins or buy back furniture?',
     schemaQuestion: 'Is there a furniture trade-in or buy-back option in Edmonton?',
     answer:
-      'What we offer is the direct-sale version of a trade-in or buy-back: we buy your sofa or sectional outright. No store credit, nothing to list. If a replacement is on the way, we can usually time pickup around the new delivery so the old piece is gone first.',
+      'What we offer is the direct-sale version of a [trade-in or buy-back](/sell/sofa-trade-in/): we buy your sofa or sectional outright. No store credit, nothing to list. If a replacement is on the way, we can usually time pickup around the new delivery so the old piece is gone first.',
   },
   {
     question: 'Do you pay cash or e-transfer?',
