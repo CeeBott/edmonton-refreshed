@@ -3136,6 +3136,20 @@ function rebuildLlmsRatingLine() {
 }
 var llmsRatingSynced = rebuildLlmsRatingLine();
 
+// ── llms.txt: the business-facts sold-count line ─────────────────────────
+// "- Pieces sold to date: N+" follows config/site.js#piecesSold, the same
+// value the SOLD_COUNT markers render, so a bump is one config edit.
+function rebuildLlmsSoldCountLine() {
+  var llmsPath = path.join(ROOT, 'llms.txt');
+  if (!fs.existsSync(llmsPath)) return false;
+  var txt = fs.readFileSync(llmsPath, 'utf8');
+  if (!/^- Pieces sold to date: /m.test(txt)) return false;
+  var out = txt.replace(/^- Pieces sold to date: .*$/m, '- Pieces sold to date: ' + site.piecesSold);
+  if (out !== txt) fs.writeFileSync(llmsPath, out, 'utf8');
+  return true;
+}
+var llmsSoldCountSynced = rebuildLlmsSoldCountLine();
+
 var COLLIN_ID = 'https://edmontonrefreshed.com/about/#collin';
 
 function extractJsonLd(html) {
@@ -3462,6 +3476,7 @@ var badRatings = reviews.map(function (r) { return r.rating; }).concat(ratingsOn
 console.log('  aggregate       — ' + reviewAggregate.ratingValue.toFixed(1) + ' / ' + reviewAggregate.totalCount + ' ratings (' + reviews.length + ' written + ' + ratingsOnly.length + ' star-only) synced across all schemas (' + aggregateSynced + ' file(s) rewritten)');
 if (badRatings.length) console.log('  aggregate WARN  — ' + badRatings.length + ' rating(s) not a whole number 1–5: ' + badRatings.join(', '));
 if (!llmsRatingSynced) console.log('  aggregate WARN  — llms.txt has no "- Rating:" line to sync');
+if (!llmsSoldCountSynced) console.log('  llms.txt WARN  — no "- Pieces sold to date:" line to sync from config/site.js#piecesSold');
 
 // Entity-integrity report.
 if (ownerDangling) {

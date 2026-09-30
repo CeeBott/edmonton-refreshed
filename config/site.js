@@ -31,9 +31,10 @@ module.exports = {
   email: 'info@edmontonrefreshed.com',
 
   // Business stats — update sitewide by editing here. piecesSold renders only
-  // into the SOLD_COUNT markers (homepage sr-only block, sold-page intro);
+  // into the SOLD_COUNT marker (sold-page intro) and the llms.txt
+  // "Pieces sold to date" line;
   // it is deliberately NOT on the credibility strip (see below).
-  piecesSold: '40+',
+  piecesSold: '48+',
 
   // Credibility strip copy (§5.9), rendered by partials/credibility.js. Each
   // three-part strip is "<lead> | ★ <rating> Rating | <city> Owned & Operated";
