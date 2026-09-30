@@ -204,8 +204,7 @@ module.exports = {
   },
   // Framed as the alternative to a store trade-in, like the consignment page:
   // none of the brands we buy runs a trade-in or buy-back program (checked on
-  // each maker's site, 2026-09-29). Collin hasn't decided whether to offer
-  // trade-ins toward our own pieces; if he does, the page leads with that.
+  // each maker's site, 2026-09-29).
   'sell/sofa-trade-in/index.html': {
     type: "situation",
     notesLabel: "Anything we should know? (When your new furniture arrives, building access)",
@@ -215,6 +214,17 @@ module.exports = {
       description: "Photos of pre-owned sofas and sectionals purchased outright in Edmonton by Edmonton Refreshed, an alternative to a store trade-in.",
     },
     showcase: { match: 'sofa|sectional|loveseat' },
+    // Pinned (Collin, 2026-09-29): the automatic pick was all white and grey,
+    // so the Aris in Thrive Ink replaces the Charles.
+    mosaic: {
+      caption: 'Pieces we&rsquo;ve bought in Edmonton',
+      images: [
+        ['images/CB-050/crate-and-barrel-01.jpeg', 'Crate & Barrel Gather 89-Inch Wood Base Bench Sofa'],
+        ['images/CB-048/crate-and-barrel-01.jpeg', 'Crate & Barrel Aris 2-Piece Bench Sectional with Right-Arm Chaise'],
+        ['images/Sold Inventory/LB-041/la-z-boy-07.jpeg', 'La-Z-Boy Emric 2-Piece Sectional with Right-Facing Chaise'],
+        ['images/Sold Inventory/NE-040/natuzzi-editions-07.jpeg', 'Natuzzi Editions Vigore Top-Grain Leather Sectional'],
+      ],
+    },
     howTo: {
       heading: "How selling instead of trading in works",
       name: "How to Sell Your Sofa in Edmonton Instead of Trading It In",
