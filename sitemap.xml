@@ -3,13 +3,13 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://edmontonrefreshed.com/</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/sold/</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -147,13 +147,13 @@
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/sell/</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/sell/what-we-buy/</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -165,55 +165,55 @@
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/sell/restoration-hardware/</loc>
-    <lastmod>2026-09-28</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/sell/eq3/</loc>
-    <lastmod>2026-09-28</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/sell/crate-and-barrel/</loc>
-    <lastmod>2026-09-28</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/sell/rove-concepts/</loc>
-    <lastmod>2026-09-28</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/sell/west-elm/</loc>
-    <lastmod>2026-09-28</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/sell/american-leather/</loc>
-    <lastmod>2026-09-28</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/sell/pottery-barn/</loc>
-    <lastmod>2026-09-28</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/sell/sectional/</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/sell/leather-sectional/</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -231,37 +231,37 @@
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/sell/furniture-consignment/</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/sell/selling-furniture-before-moving/</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/sell/downsizing-furniture/</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/sell/estate-furniture/</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/sell/sell-furniture-fast/</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/sell/sell-designer-furniture/</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -467,10 +467,58 @@
     </image:image>
   </url>
   <url>
-    <loc>https://edmontonrefreshed.com/listings/american-leather-carson-sectional-edmonton/</loc>
+    <loc>https://edmontonrefreshed.com/listings/b-b-italia-charles-sectional-edmonton/</loc>
     <lastmod>2026-09-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/BB-030/bb-italia-14.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/BB-030/bb-italia-03.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/BB-030/bb-italia-12.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/BB-030/bb-italia-07.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/BB-030/bb-italia-01.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/BB-030/bb-italia-02.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/BB-030/bb-italia-04.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/BB-030/bb-italia-05.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/BB-030/bb-italia-06.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/BB-030/bb-italia-08.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/BB-030/bb-italia-09.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/BB-030/bb-italia-10.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/BB-030/bb-italia-11.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/BB-030/bb-italia-13.jpeg</image:loc>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://edmontonrefreshed.com/listings/american-leather-carson-sectional-edmonton/</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
     <image:image>
       <image:loc>https://edmontonrefreshed.com/images/AL-049/american-leather-07.jpeg</image:loc>
     </image:image>
@@ -530,54 +578,6 @@
     </image:image>
     <image:image>
       <image:loc>https://edmontonrefreshed.com/images/AL-049/american-leather-20.jpeg</image:loc>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://edmontonrefreshed.com/listings/b-b-italia-charles-sectional-edmonton/</loc>
-    <lastmod>2026-09-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-    <image:image>
-      <image:loc>https://edmontonrefreshed.com/images/BB-030/bb-italia-14.jpeg</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://edmontonrefreshed.com/images/BB-030/bb-italia-03.jpeg</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://edmontonrefreshed.com/images/BB-030/bb-italia-12.jpeg</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://edmontonrefreshed.com/images/BB-030/bb-italia-07.jpeg</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://edmontonrefreshed.com/images/BB-030/bb-italia-01.jpeg</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://edmontonrefreshed.com/images/BB-030/bb-italia-02.jpeg</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://edmontonrefreshed.com/images/BB-030/bb-italia-04.jpeg</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://edmontonrefreshed.com/images/BB-030/bb-italia-05.jpeg</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://edmontonrefreshed.com/images/BB-030/bb-italia-06.jpeg</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://edmontonrefreshed.com/images/BB-030/bb-italia-08.jpeg</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://edmontonrefreshed.com/images/BB-030/bb-italia-09.jpeg</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://edmontonrefreshed.com/images/BB-030/bb-italia-10.jpeg</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://edmontonrefreshed.com/images/BB-030/bb-italia-11.jpeg</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://edmontonrefreshed.com/images/BB-030/bb-italia-13.jpeg</image:loc>
     </image:image>
   </url>
   <url>

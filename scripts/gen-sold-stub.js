@@ -34,6 +34,23 @@ var TEMPLATE = path.join(ROOT, 'listings', 'la-z-boy-emric-right-facing-sectiona
 // availability: "SoldOut" (recommended) — accurate for one-of-one pieces and
 // matches the visible "This piece has sold." overlay (see CLAUDE.md §6.3, §10.1).
 var MANIFEST = {
+  'american-leather-carson-sectional-edmonton': {
+    sku: 'AL-049',
+    availability: 'SoldOut',
+    brand: 'American Leather',
+    brandShort: 'American Leather',
+    h1: 'Carson L-Shaped Sectional — Haven Heritage Champagne Aniline Leather',
+    model: 'Carson',
+    configuration: 'sectional',
+    sellHref: '/sell/american-leather/',
+    altBase: 'American Leather Carson L-Shaped Sectional',
+    metaDescription: 'This American Leather Carson L-shaped sectional in Haven Heritage Champagne leather has sold. Browse current available inventory at Edmonton Refreshed: curated pre-owned sofas and sectionals in Edmonton.',
+    twitterDescription: 'This American Leather Carson leather sectional has sold. Browse current available inventory at Edmonton Refreshed.',
+    productDescription: 'American Leather Carson three-module L-shaped sectional in Haven Heritage Champagne, a full-aniline top-grain leather with a pebbled grain, in three modules (a left-arm sofa, an armless chair, and a right-arm corner sofa) measuring 137 by 91 inches, with square track arms, espresso wood legs, and high-resiliency foam cushions encased in down. Built in Dallas, Texas in July 2015, acquired from the Greenwood Estates area of Sherwood Park, and sold in good condition. This piece has sold; browse current available inventory at Edmonton Refreshed.',
+    introHTML: 'The Carson is American Leather&rsquo;s track-arm sectional: square, low arms, a tailored base on espresso wood legs, and loose seat and back cushions of high-resiliency foam encased in down. This one is a three-module L (a left-arm sofa, an armless chair, and a right-arm corner sofa) measuring 137 by 91 inches, upholstered in Haven Heritage Champagne, a full-aniline top-grain leather whose pebbled grain and natural markings stay visible because the hide carries no pigment coat. We acquired this one from the Greenwood Estates area of Sherwood Park; built in Dallas, Texas in July 2015, it came to us in good condition, the leather soft and even in colour with the relaxed creasing a full-aniline hide takes on with use.',
+    newsletterHeading: 'Looking for a leather sectional like the American Leather Carson? Enter your email and we&rsquo;ll let you know when similar pieces come in.',
+  },
+
   'crate-and-barrel-aris-bench-sectional-edmonton': {
     sku: 'CB-048',
     availability: 'SoldOut',
