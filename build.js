@@ -209,9 +209,9 @@ function todayPlusDays(n) {
 
 // Reserved (§5.10): sold to a buyer but not yet delivered and paid for. The
 // piece stays live — listing page, price, sitemap — but stops being offered:
-// Product availability → Reserved, feed → out_of_stock, dropped from
-// related links and brand-guide availability lines, and the viewing form
-// becomes a backup-buyer form. `reserved` holds the ISO date it was reserved
+// Product availability → OutOfStock (Google rejects schema.org/Reserved),
+// feed → out_of_stock, dropped from related links and brand-guide
+// availability lines, and the viewing form becomes a backup-buyer form. `reserved` holds the ISO date it was reserved
 // so a stale reservation can be flagged (see RESERVED_STALE_DAYS).
 function isReserved(item) {
   return !!(item && item.reserved);
@@ -1109,7 +1109,7 @@ function generateProductSchemas(items) {
         "priceCurrency": "CAD",
         "price": item.price,
         "priceValidUntil": priceValidUntil,
-        "availability": isReserved(item) ? "https://schema.org/Reserved" : "https://schema.org/InStock",
+        "availability": isReserved(item) ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
         "url": listingUrl,
         "eligibleRegion": { "@type": "Country", "name": "CA" },
         "areaServed": { "@type": "Country", "name": "CA" },
@@ -1418,7 +1418,7 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions, rev
     "priceCurrency": "CAD",
     "price": item.price,
     "priceValidUntil": priceValidUntil,
-    "availability": isReserved(item) ? "https://schema.org/Reserved" : "https://schema.org/InStock",
+    "availability": isReserved(item) ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
     "url": listingUrl,
     "eligibleRegion": { "@type": "Country", "name": "CA" },
     "areaServed": { "@type": "Country", "name": "CA" },

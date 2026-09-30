@@ -14,7 +14,8 @@
 //    inspect <url…> Search Console URL Inspection (index status per URL)
 //    sitemaps       Search Console submitted-sitemap status
 //    ga4 <preset>   GA4 Data API. Presets: landing (organic landing pages),
-//                   channels, events, pages. Flags: --days N (84) --limit N
+//                   channels, events, pages, referrers (internal → /sell/).
+//                   Flags: --days N (84) --limit N
 //    psi <url>      PageSpeed Insights (Lighthouse lab + CrUX field).
 //                   Flags: --strategy mobile|desktop (mobile)
 //    crux <target>  Chrome UX Report field CWV. Flags: --origin (treat
@@ -85,9 +86,13 @@ function config() {
   return _config;
 }
 
+// Dates are Edmonton-local, never UTC: toISOString() rolls to tomorrow after
+// ~18:00 local, shifting windows and bundle stamps a day (CLAUDE.md §9.5).
+const BUSINESS_TZ = 'America/Edmonton';
+const isoDate = (d) => d.toLocaleDateString('en-CA', { timeZone: BUSINESS_TZ });
+
 function isoDaysAgo(n) {
-  const d = new Date(Date.now() - n * 86400000);
-  return d.toISOString().slice(0, 10);
+  return isoDate(new Date(Date.now() - n * 86400000));
 }
 
 // ── Google service-account auth (JWT bearer, RS256 via node:crypto) ──
@@ -210,6 +215,20 @@ const GA4_PRESETS = {
     dimensions: ['pagePath'],
     metrics: ['screenPageViews', 'totalUsers', 'engagementRate'],
   },
+  // Internal paths into the sell cluster: which page each /sell/ page view
+  // came from (e.g. brand guide → brand sell page).
+  referrers: {
+    dimensions: ['pagePath', 'pageReferrer'],
+    metrics: ['screenPageViews'],
+    dimensionFilter: {
+      andGroup: {
+        expressions: [
+          { filter: { fieldName: 'pagePath', stringFilter: { matchType: 'BEGINS_WITH', value: '/sell/' } } },
+          { filter: { fieldName: 'pageReferrer', stringFilter: { matchType: 'CONTAINS', value: 'edmontonrefreshed.com' } } },
+        ],
+      },
+    },
+  },
 };
 
 async function ga4(preset, days, limit) {
@@ -288,7 +307,7 @@ async function cf(days) {
 // ── standard audit bundle ───────────────────────────────────
 async function all() {
   const days = Number(flag('days', 84));
-  const stamp = new Date().toISOString().slice(0, 10);
+  const stamp = isoDate(new Date());
   const dir = path.join(ROOT, 'docs', 'seo-audit', 'data', stamp);
   mkdirSync(dir, { recursive: true });
   const tasks = [
