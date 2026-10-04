@@ -35,6 +35,7 @@ var renderNav         = require('./partials/nav').renderNav;
 var renderFooter      = require('./partials/footer').renderFooter;
 var renderCredibility = require('./partials/credibility').renderCredibility;
 var renderSellPrelude = require('./partials/sell-prelude').renderSellPrelude;
+var renderNewsletterNote = require('./partials/newsletter').renderNewsletterNote;
 var renderSellForm = require('./partials/sell-form').renderSellForm;
 var renderSellSuccess = require('./partials/sell-form').renderSellSuccess;
 var renderSellSticky = require('./partials/sell-form').renderSellSticky;
@@ -451,6 +452,18 @@ function injectSellPrelude(html) {
   return html.replace(
     /([ \t]*)<div class="sell-form-prelude">[\s\S]*?<\/div>(?:\s*<div class="sell-form-offer">[\s\S]*?<\/div>|\s*<details class="sell-form-offer">[\s\S]*?<\/details>)?/g,
     function (_m, indent) { return renderSellPrelude(indent); }
+  );
+}
+
+// Newsletter consent + success lines (§5.21). Anchored, unmarked rewrite —
+// same class as injectSellPrelude above: the copy lives once in
+// partials/newsletter.js and replaces the success <p> (plus any previous
+// consent <p>) under every Kit sign-up form, so it is idempotent and a
+// hand-edited page self-heals.
+function injectNewsletterNote(html) {
+  return html.replace(
+    /([ \t]*)(?:<p class="newsletter-consent">[\s\S]*?<\/p>\s*)?<p class="newsletter-success">[\s\S]*?<\/p>/g,
+    function (_m, indent) { return renderNewsletterNote(indent); }
   );
 }
 
@@ -2022,7 +2035,7 @@ relatedHTML +
 '          <input type="email" id="newsletter-email" name="email_address" placeholder="Your email address" autocomplete="email" required>\n' +
 '          <button type="submit">Subscribe</button>\n' +
 '        </form>\n' +
-'        <p class="newsletter-success">Thanks! Check your junk folder for your confirmation email.</p>\n' +
+renderNewsletterNote('        ') + '\n' +
 '      </div>\n' +
 '\n' +
 '    </div>\n' +
@@ -2207,6 +2220,8 @@ function injectAllPartials(html) {
   // so they are injected in injectSellCluster, which knows the file.
   // Sell-form prelude + "how our offers work" expectation block (§5.13).
   html = injectSellPrelude(html);
+  // Newsletter consent + success lines under every sign-up form (§5.21).
+  html = injectNewsletterNote(html);
   // Config-driven inline fragments (homepage sr-only entity block, sold-page
   // tagline): the canonical §2.1-ordered brand list and the sold count render
   // from config/site.js so the pages can never drift from it.

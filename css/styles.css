@@ -568,6 +568,20 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   background: var(--color-accent-hover);
 }
 
+/* CASL consent statement under every sign-up form (§5.21): who is asking,
+   how to reach them, and that the reader can unsubscribe. Quiet but legible. */
+.newsletter-consent {
+  max-width: 480px;
+  margin: 10px auto 0;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+
+.newsletter-consent-optout {
+  display: block;
+}
+
 .newsletter-success {
   display: none;
   font-size: 0.95rem;

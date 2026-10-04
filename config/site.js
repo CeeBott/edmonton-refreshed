@@ -29,6 +29,19 @@ module.exports = {
   phone: '780-965-1477',
   phoneDigits: '7809651477',
   email: 'info@edmontonrefreshed.com',
+  // Business mailing address (street, PO box, rural route, or general
+  // delivery). Blank until Collin has one to publish. CASL requires it in
+  // every newsletter consent request and every newsletter email (§5.21);
+  // partials/newsletter.js renders it under each sign-up form once set.
+  mailingAddress: '',
+
+  // Newsletter (Kit form 9233085). doubleOptIn must match the form's "Send
+  // confirmation email" setting in Kit: it picks the success message under
+  // every sign-up form. Turn both off together, and only once mailingAddress
+  // is set (§5.21).
+  newsletter: {
+    doubleOptIn: true,
+  },
 
   // Business stats — update sitewide by editing here. piecesSold renders only
   // into the SOLD_COUNT marker (sold-page intro) and the llms.txt
