@@ -4774,6 +4774,7 @@ footer a:focus-visible {
 }
 .sell-section-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
 .sell-v2 .sell-muted a,
+.sell-v2 .sell-body a,
 .sell-v2 .sell-reasons a,
 .sell-v2 .sell-acc a,
 .sell-v2 .sell-bypiece a,

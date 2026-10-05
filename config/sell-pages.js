@@ -232,6 +232,37 @@ module.exports = {
       note: "Tell us when your new piece arrives and we’ll aim to schedule pickup around it.",
     },
   },
+  // Selling a piece bought at an Edmonton store (Scandia, McElheran's, F2,
+  // Cottswood, Signature Lane, LightForm, CosaFina). Store facts come only from
+  // each store's own site (checked 2026-10-04); where a site says nothing about
+  // trade-ins or old furniture, the page makes no claim (Collin, 2026-10-04).
+  // Konto is left out by choice. Hero pinned to brands those stores carry:
+  // American Leather, Natuzzi Italia, EQ3, Natuzzi Editions.
+  'sell/furniture-from-edmonton-stores/index.html': {
+    type: "situation",
+    notesLabel: "Anything we should know? (Where you bought it, delivery date for a new piece)",
+    notesPlaceholder: "Store you bought it from, when your new piece arrives, building access",
+    soldSchema: {
+      name: "Recently Purchased Premium Sofas and Sectionals in Edmonton",
+      description: "Photos of pre-owned sofas and sectionals from premium brands sold by Edmonton retailers, purchased outright and resold by Edmonton Refreshed.",
+    },
+    showcase: { match: 'sofa|sectional|loveseat' },
+    mosaic: {
+      caption: 'Pieces we&rsquo;ve bought in Edmonton',
+      images: [
+        ['images/AL-049/american-leather-07.jpeg', 'American Leather Carson L-Shaped Sectional'],
+        ['images/Sold Inventory/NI-006/natuzzi-italia-01.jpeg', 'Natuzzi Italia Full-Grain Aniline Leather Loveseat Set'],
+        ['images/Sold Inventory/EQ-013/eq3-01.jpeg', 'EQ3 Replay 99 inch Sofa'],
+        ['images/Sold Inventory/NE-034/natuzzi-editions-01.jpeg', 'Natuzzi Editions Saggezza Grey Top-Grain Leather Sectional'],
+      ],
+    },
+    howTo: {
+      heading: "How selling a store-bought piece works",
+      name: "How to Sell Furniture You Bought at an Edmonton Store",
+      basis: "maker or store, age, and condition",
+      note: "If you’re replacing it, tell us when the new piece arrives and we’ll aim to schedule pickup around it.",
+    },
+  },
   'sell/selling-furniture-before-moving/index.html': {
     type: "situation",
     notesLabel: "Anything we should know? (Move date, building access, etc.)",

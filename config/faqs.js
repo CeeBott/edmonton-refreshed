@@ -76,7 +76,7 @@ const sell = [
   {
     question: 'What if my brand isn’t listed?',
     answer:
-      'The list isn’t exhaustive. If it’s a recognized maker or came from a premium retailer like Signature Lane or Cottswood Interiors, it’s worth sending in. If you’re not sure, send photos and we’ll tell you.',
+      'The list isn’t exhaustive. If it’s a recognized maker or came from a [premium retailer](/sell/furniture-from-edmonton-stores/) like Signature Lane or Cottswood Interiors, it’s worth sending in. If you’re not sure, send photos and we’ll tell you.',
   },
   {
     question: 'Do you buy anything besides sofas and sectionals?',
