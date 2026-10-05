@@ -10,9 +10,9 @@
  *      "Send confirmation email" setting in Kit.
  *
  * Injected by build.js as an anchored, unmarked rewrite (same class as the
- * sell-form prelude, §4.3) so the copy lives here once instead of in 83
- * hand-copied blocks (§9.3). Headings stay per page: they state each page's
- * purpose for signing up, which is legitimately page-specific.
+ * sell-form prelude, §4.3) so the copy lives here once instead of in a
+ * hand-copied block on every page (§9.3). Headings stay per page so sold
+ * stubs can name the piece; every heading promises new arrivals (§5.21).
  *
  * The email is plain text, not a mailto: link — shared.js counts mailto
  * clicks as the email_click key event, and a footnote must not inflate it.
