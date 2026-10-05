@@ -61,6 +61,7 @@ function renderFitLists(indent) {
     `${i}    <h3>Brands we buy</h3>`,
     `${i}    <p class="sell-muted">Sofas and sectionals, including <a href="/sell/sell-designer-furniture/">designer furniture</a>, ideally within ${rules.maxAgeYears} years old, in Good condition or better.</p>`,
     `${i}    <ul class="sell-tags">${tags}</ul>`,
+    `${i}    <p class="sell-muted">This list isn&rsquo;t exhaustive. We&rsquo;re always open to high-quality pieces from other makers, so if yours isn&rsquo;t here, send photos and we&rsquo;ll take a look.</p>`,
     `${i}  </div>`,
     `${i}  <div class="sell-fitfull-col">`,
     `${i}    <h3>Not a fit</h3>`,

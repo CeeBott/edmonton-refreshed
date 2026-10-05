@@ -49,8 +49,8 @@ module.exports = {
     ['Rove Concepts', ''], ['EQ3', ''], ['West Elm', ''], ['Crate & Barrel', ''],
     ['Pottery Barn', ''], ['American Leather', ''], ['Room & Board', ''],
     ['Natuzzi Editions', ''], ['Younger', ''], ['VanGogh', ''],
-    ['Brentwood Classics', ''], ['Palliser', ''], ['Decor-Rest', ''],
-    ['La-Z-Boy', 'leather & premium'], ['Urban Barn, Sunpan, CB2, Article', 'select'],
+    ['Brentwood Classics', ''],
+    ['La-Z-Boy', 'leather & premium'], ['Urban Barn, CB2, Article', 'select'],
     ['Signature Lane & Cottswood Interiors', ''],
   ],
 

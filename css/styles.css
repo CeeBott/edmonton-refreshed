@@ -4898,6 +4898,7 @@ footer a:focus-visible {
 .sell-fitfull-col { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius); padding: 22px; }
 .sell-fitfull-col h3 { font-size: 1rem; font-weight: 600; margin: 0 0 4px; }
 .sell-fitfull-col .sell-muted { font-size: 0.85rem; margin: 0 0 14px; }
+.sell-fitfull-col .sell-tags + .sell-muted { margin: 14px 0 0; }
 .sell-xlist li { font-size: 0.88rem; }
 .sell-tags { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
 .sell-tags li { background: #f4f3ef; border-radius: 999px; padding: 5px 12px; font-size: 0.84rem; }
