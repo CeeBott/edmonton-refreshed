@@ -7,7 +7,7 @@ assuming.
 
 ## Stack
 - Static site, hand-authored vanilla HTML/CSS/JS. No framework, no bundler.
-- One build step: `node build.js` (Node built-ins only). Hosted on GitHub Pages.
+- One build step: `node build.js` (Node built-ins only). Hosted on Cloudflare Pages.
 
 ## Golden rule: never hand-edit generated files
 `build.js` regenerates these — edit the SOURCE and rerun the build, never the output:
