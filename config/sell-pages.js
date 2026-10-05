@@ -238,7 +238,7 @@ module.exports = {
   // trade-ins or old furniture, the page makes no claim (Collin, 2026-10-04).
   // Konto is left out by choice. Hero pinned to brands those stores carry:
   // American Leather, Natuzzi Italia, EQ3, Natuzzi Editions.
-  'sell/furniture-from-edmonton-stores/index.html': {
+  'sell/premium-retailer-furniture/index.html': {
     type: "situation",
     notesLabel: "Anything we should know? (Where you bought it, delivery date for a new piece)",
     notesPlaceholder: "Store you bought it from, when your new piece arrives, building access",

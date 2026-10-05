@@ -55,7 +55,7 @@ const PAGES = [
   { path: '/sell/sell-furniture-fast/', name: 'sell-situation-fast', mobile: true },
   { path: '/sell/estate-furniture/', name: 'sell-situation-estate' },
   { path: '/sell/sofa-trade-in/', name: 'sell-situation-trade-in', mobile: true },
-  { path: '/sell/furniture-from-edmonton-stores/', name: 'sell-situation-edmonton-stores', mobile: true },
+  { path: '/sell/premium-retailer-furniture/', name: 'sell-situation-premium-retailer', mobile: true },
   { path: '/sell/what-we-buy/', name: 'sell-what-we-buy', mobile: true },
   { path: '/partners/', name: 'partners' },
   { path: '/about/', name: 'about', mobile: true },

@@ -25,7 +25,7 @@ const furnitureTypes = [
 const situations = [
   { name: 'Furniture Consignment',   nav: 'Consignment',   slug: 'furniture-consignment' },
   { name: 'Sofa Trade-In',           nav: 'Trade-in',      slug: 'sofa-trade-in' },
-  { name: 'Furniture From Edmonton Stores', nav: 'Edmonton stores', slug: 'furniture-from-edmonton-stores' },
+  { name: 'Furniture From Edmonton Stores', nav: 'Edmonton stores', slug: 'premium-retailer-furniture' },
   { name: 'Selling Before Moving',   nav: 'Before a move', slug: 'selling-furniture-before-moving' },
   { name: 'Downsizing Furniture',    nav: 'Downsizing',    slug: 'downsizing-furniture' },
   { name: 'Estate Furniture',        nav: 'Estate',        slug: 'estate-furniture' },
