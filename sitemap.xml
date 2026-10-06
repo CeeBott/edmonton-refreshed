@@ -303,7 +303,7 @@
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/guides/</loc>
-    <lastmod>2026-10-04</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -333,13 +333,19 @@
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/guides/eq3-sofa-review-edmonton/</loc>
-    <lastmod>2026-10-04</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/guides/facebook-marketplace-sofa-vs-curated-reseller/</loc>
     <lastmod>2026-10-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://edmontonrefreshed.com/guides/high-end-furniture-stores-edmonton/</loc>
+    <lastmod>2026-10-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -369,7 +375,7 @@
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/guides/natuzzi-sofa-review-edmonton/</loc>
-    <lastmod>2026-10-04</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
