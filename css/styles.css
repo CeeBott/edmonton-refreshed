@@ -2913,100 +2913,6 @@ footer a:focus-visible {
   text-decoration: none;
 }
 
-/* Fit Grid — What we buy / Not a fit */
-.sell-fit-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  max-width: 860px;
-  margin-inline: auto;
-  margin-top: 30px;
-  margin-bottom: 8px;
-}
-.sell-fit-col {
-  background: var(--color-surface);
-  border-radius: var(--radius);
-  padding: 28px;
-  box-shadow: var(--shadow-sm);
-}
-.sell-fit-col h2 {
-  font-family: var(--font-serif);
-  font-size: 1.15rem;
-  font-weight: 500;
-  margin-bottom: 6px;
-  color: var(--color-text);
-}
-.sell-fit-col .sell-fit-subhead {
-  font-size: 0.85rem;
-  color: var(--color-text-secondary);
-  line-height: 1.6;
-  margin-bottom: 18px;
-}
-.sell-fit-col ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.sell-fit-col ul li {
-  position: relative;
-  padding-left: 22px;
-  font-size: 0.92rem;
-  color: var(--color-text);
-  line-height: 1.9;
-}
-.sell-fit-buy ul li::before {
-  content: '\2713';
-  position: absolute;
-  left: 0;
-  top: 0;
-  color: var(--color-success);
-  font-weight: 600;
-  font-size: 0.95rem;
-}
-.sell-fit-skip ul li::before {
-  content: '\00D7';
-  position: absolute;
-  left: 0;
-  top: -1px;
-  color: var(--color-sold-badge);
-  font-weight: 600;
-  font-size: 1.15rem;
-  line-height: 1.5;
-}
-.sell-fit-note {
-  max-width: 860px;
-  margin: 22px auto 0;
-  text-align: center;
-  font-size: 0.95rem;
-  color: var(--color-text-secondary);
-  line-height: 1.7;
-}
-@media (max-width: 640px) {
-  .sell-fit-grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
-    margin-top: 28px;
-  }
-  .sell-fit-col { padding: 24px; }
-}
-
-/* Qualification banner */
-.sell-qualification {
-  margin-bottom: 4px;
-}
-.sell-qualification-inner {
-  background: #f5f4f1;
-  border-left: 3px solid #bdb8b0;
-  border-radius: var(--radius);
-  padding: 13px 24px;
-  font-size: 0.9rem;
-  color: var(--color-text);
-  line-height: 1.6;
-}
-@media (max-width: 640px) {
-  .sell-qualification-inner { padding: 14px 18px; }
-}
-
 /* Method + comparison callout.
 
    .sell-method is the centered column on `/sell/` that holds the intro,
@@ -4797,11 +4703,12 @@ footer a:focus-visible {
 }
 .sell-section-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
 .sell-v2 .sell-muted a,
+.sell-fitfull .sell-muted a,
 .sell-v2 .sell-body a,
 .sell-v2 .sell-reasons a,
 .sell-v2 .sell-acc a,
 .sell-v2 .sell-bypiece a,
-.sell-v2 .sell-tags a { color: var(--color-text); text-decoration: underline; text-underline-offset: 3px; }
+.sell-tags a { color: var(--color-text); text-decoration: underline; text-underline-offset: 3px; }
 .sell-v2 .sell-reasons h3 a { text-decoration: none; }
 
 /* Intro */
@@ -4846,8 +4753,8 @@ footer a:focus-visible {
   letter-spacing: 0.02em;
 }
 
-/* Fit check */
-.sell-v2 > .sell-fitcheck {
+/* Fit check. .page, not .sell-v2: /partners/ carries it on the older layout. */
+.page > .sell-fitcheck {
   margin-top: var(--space-5);
   padding-top: 24px;
   padding-bottom: 24px;
@@ -4922,6 +4829,10 @@ footer a:focus-visible {
 .sell-fitfull-col h3 { font-size: 1rem; font-weight: 600; margin: 0 0 4px; }
 .sell-fitfull-col .sell-muted { font-size: 0.85rem; margin: 0 0 14px; }
 .sell-fitfull-col .sell-tags + .sell-muted { margin: 14px 0 0; }
+/* A page's own note under the shared lists (hand-written, outside the markers). */
+.sell-fitfull-note { color: var(--color-text-secondary); font-size: 0.92rem; line-height: 1.6; max-width: 760px; margin: 16px 0 0; }
+/* /partners/ is not on .sell-v2, so its sections space themselves. */
+.sell-landing-fit { margin-top: 48px; }
 .sell-xlist li { font-size: 0.88rem; }
 .sell-tags { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
 .sell-tags li { background: #f4f3ef; border-radius: 999px; padding: 5px 12px; font-size: 0.84rem; }
@@ -5009,7 +4920,7 @@ footer a:focus-visible {
   .sell-intro-promise { font-size: 1.02rem; }
   .sell-intro-answer { font-size: 0.95rem; }
   .sell-v2 .sell-hero-cta { display: block; text-align: center; }
-  .sell-v2 > .sell-fitcheck { margin-left: var(--page-x); margin-right: var(--page-x); padding-left: 18px; padding-right: 18px; }
+  .page > .sell-fitcheck { margin-left: var(--page-x); margin-right: var(--page-x); padding-left: 18px; padding-right: 18px; }
   .sell-fitcheck-cols { grid-template-columns: 1fr; gap: 20px; }
   .sell-howto-steps { grid-template-columns: 1fr; gap: 0; }
   .sell-howto-steps li {
@@ -5024,8 +4935,8 @@ footer a:focus-visible {
   }
   .sell-howto-steps li:last-child { border-bottom: 0; padding-bottom: 0; }
   .sell-howto-num { grid-row: 1 / 3; margin: 0; }
-  .sell-v2 > .sell-landing-sold { padding-left: 0; padding-right: 0; }
-  .sell-v2 > .sell-landing-sold .sell-section-head { padding: 0 var(--page-x); }
+  .page > .sell-landing-sold { padding-left: 0; padding-right: 0; }
+  .page > .sell-landing-sold .sell-section-head { padding: 0 var(--page-x); }
   .sell-sold-strip {
     display: flex;
     overflow-x: auto;

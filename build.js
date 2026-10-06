@@ -520,6 +520,10 @@ function injectSellCluster(html, filepath) {
     sellClusterWarnings.push(rel + ' carries FIT_CHECK, but brand pages never show the fit check');
   }
   var hasLists = html.indexOf('FIT_LISTS_START') !== -1;
+  if (isBrand && hasLists) {
+    sellClusterWarnings.push(rel + ' carries FIT_LISTS, but brand pages carry no "Not a fit" list');
+  }
+  var selfUrl = '/' + rel.replace(/index\.html$/, '');
   html = injectPartial(html, 'RECENT_SOLD', function (attrs) {
     return generateRecentSoldHTML(Object.assign({}, meta.showcase || {}, attrs));
   });
@@ -527,7 +531,7 @@ function injectSellCluster(html, filepath) {
     return generateHeroMosaic(meta, SELL_PAGES['sell/index.html']);
   });
   html = injectPartial(html, 'FIT_CHECK', function () { return isBrand ? '' : renderFitCheck('      ', hasLists); });
-  html = injectPartial(html, 'FIT_LISTS', function () { return renderFitLists('        '); });
+  html = injectPartial(html, 'FIT_LISTS', function () { return isBrand ? '' : renderFitLists('        ', selfUrl); });
 
   if (meta.howTo) {
     var howRe = /([ \t]*)<section class="sell-howto">[\s\S]*?<\/section>/;

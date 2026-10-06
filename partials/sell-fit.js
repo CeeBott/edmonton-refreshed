@@ -7,7 +7,14 @@
  *   renderFitLists()  — "Brands we buy" tags + "Not a fit" list (FIT_LISTS
  *                       markers). Brand tags link to their sell page when
  *                       config/taxonomy.js has one, so a new brand page is
- *                       linked from here as soon as it exists.
+ *                       linked from here as soon as it exists. Identical on
+ *                       every non-brand sell page: the hub, the piece-type and
+ *                       situational pages, /sell/what-we-buy/, and /partners/.
+ *                       Never on brand pages (no exclusion language, §5.13).
+ *
+ * A page's own nuance (where to take a piece we pass on, leather grades)
+ * goes in a hand-written note after the FIT_LISTS_END marker, never in the
+ * lists: a rule that differs per page is the drift this block exists to stop.
  */
 const rules = require('../config/buy-criteria');
 const tax = require('../config/taxonomy');
@@ -45,13 +52,16 @@ function renderFitCheck(indent, hasLists) {
   ].join('\n').replace(/^( *)          <li>/gm, '$1<li>').replace(/\n(\s*)(<li>)/g, (m, sp, li) => '\n' + i + '        ' + li);
 }
 
-function renderFitLists(indent) {
+// self = the page's own URL ('/sell/sell-designer-furniture/'), so the block
+// never links a page to itself.
+function renderFitLists(indent, self) {
   const i = indent || '      ';
   const linked = new Set();
+  const link = (href, label) => (href === self ? label : `<a href="${href}">${label}</a>`);
   const tags = rules.brandsWeBuy.map(([name, q]) => {
     const page = tax.brands.find((b) => name.toLowerCase().startsWith(b.name.toLowerCase()) && !linked.has(b.slug));
     let label = esc(name);
-    if (page) { linked.add(page.slug); label = `<a href="/sell/${page.slug}/">${label}</a>`; }
+    if (page) { linked.add(page.slug); label = link(`/sell/${page.slug}/`, label); }
     return `<li>${label}${q ? ` <small>(${esc(q)})</small>` : ''}</li>`;
   }).join('');
   const nf = rules.notAFit.map((t) => `${i}      <li>${esc(t)}</li>`).join('\n');
@@ -59,13 +69,13 @@ function renderFitLists(indent) {
     `${i}<div class="sell-fitfull">`,
     `${i}  <div class="sell-fitfull-col">`,
     `${i}    <h3>Brands we buy</h3>`,
-    `${i}    <p class="sell-muted">Sofas and sectionals, including <a href="/sell/sell-designer-furniture/">designer furniture</a>, ideally within ${rules.maxAgeYears} years old, in Good condition or better.</p>`,
+    `${i}    <p class="sell-muted">Sofas and sectionals, including ${link('/sell/sell-designer-furniture/', 'designer furniture')}, ideally within ${rules.maxAgeYears} years old, in Good condition or better. Matching chairs and ottomans sold with them are welcome too.</p>`,
     `${i}    <ul class="sell-tags">${tags}</ul>`,
     `${i}    <p class="sell-muted">This list isn&rsquo;t exhaustive. We&rsquo;re always open to high-quality pieces from other makers, so if yours isn&rsquo;t here, send photos and we&rsquo;ll take a look.</p>`,
     `${i}  </div>`,
     `${i}  <div class="sell-fitfull-col">`,
     `${i}    <h3>Not a fit</h3>`,
-    `${i}    <p class="sell-muted">These don&rsquo;t clear our quality and resale filters. Classifieds remain an excellent option for them.</p>`,
+    `${i}    <p class="sell-muted">These don&rsquo;t clear our quality and resale filters. Classifieds and donation remain good options for them.</p>`,
     `${i}    <ul class="sell-xlist">`,
     nf,
     `${i}    </ul>`,

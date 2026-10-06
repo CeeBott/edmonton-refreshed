@@ -8,8 +8,9 @@
  *     under Brand (partials/sell-form.js → js/sell-form.js)
  *
  * Change a threshold or a brand here once and rebuild; never edit the
- * rendered blocks on a page. /sell/what-we-buy/ and the FAQs are
- * hand-written and must be checked by hand when these rules change.
+ * rendered blocks on a page. The lists render identically on every non-brand
+ * sell page, /sell/what-we-buy/ and /partners/ included. Page prose and the
+ * FAQs are hand-written and must be checked by hand when these rules change.
  *
  * Brand pages never show the fit check: sellers there arrive with the brand
  * they searched for (Collin, 2026-09-27). The build warns if one does.
@@ -61,7 +62,7 @@ module.exports = {
     'Microfiber recliners',
     'White or light fabric on mid-tier brands',
     'Unbranded, without premium-retailer provenance',
-    'Major damage, pet damage, or staining',
+    'Major damage, pet damage, staining, or smoke saturation',
     'Tables, desks, storage, and bedroom furniture',
     'Standalone chairs, unless exceptional',
     'Hide-a-beds or recliners with mechanical issues',
