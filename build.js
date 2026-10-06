@@ -2188,6 +2188,68 @@ function injectInline(html, name, render) {
   });
 }
 
+// Photo grid for guides: <!-- PHOTO_GRID_START images="a.jpeg, b.jpeg" caption="…" -->.
+// Paths are repo-relative image files. Each photo's alt text and link come
+// from the piece that owns it in js/available-data.js or js/sold-data.js (its
+// listing page, or its sold stub when it has one), so a grid can't describe a
+// piece wrongly. Four photos render as the sell-page mosaic (one large, three
+// small); two or three render as an even row. A photo of a detail rather than
+// the whole piece takes a subject in brackets, `images/X/y.jpeg [badge]`, and
+// its alt reads "Natuzzi Editions badge on the Sollievo …". Own regex rather
+// than injectPartial, whose attribute grammar can't hold the hyphens in file
+// names.
+function photoOwner(rel) {
+  var norm = function (p) { return String(p || '').replace(/^(?:\.\.\/)+/, '').replace(/^\/+/, ''); };
+  var live = availableItems.find(function (i) { return (i.images || []).some(function (p) { return norm(p) === rel; }); });
+  if (live) return { item: live, href: '/listings/' + (live.slug || slugify(live.brand + '-' + live.title)) + '/' };
+  var sold = soldItems.find(function (i) { return (i.images || []).some(function (p) { return norm(p) === rel; }); });
+  if (sold) return { item: sold, href: sold.href || '/sold/' };
+  return null;
+}
+
+function generatePhotoGrid(attrs) {
+  var entries = (attrs.images || '').split(',').map(function (s) {
+    var m = s.trim().match(/^(.*?)\s*(?:\[([^\]]+)\])?$/);
+    return { rel: m[1].replace(/^\/+/, ''), subject: m[2] || '' };
+  }).filter(function (e) { return e.rel; });
+  if (!entries.length) return '';
+  var n = Math.min(entries.length, 4);
+  var sizesFor = function (k) {
+    if (n === 4) return '(max-width: 768px) 50vw, ' + (k === 0 ? '520px' : '260px');
+    return '(max-width: 768px) ' + Math.round(100 / n) + 'vw, ' + Math.round(850 / n) + 'px';
+  };
+  var tiles = entries.slice(0, 4).map(function (e, k) {
+    var rel = e.rel;
+    var owner = photoOwner(rel);
+    if (!owner) console.warn('  photo-grid WARN — no inventory entry owns ' + rel);
+    var piece = owner ? (owner.item.title || '').split(' — ')[0] : '';
+    var alt = !owner ? '' : e.subject
+      ? owner.item.brand + ' ' + e.subject + ' on the ' + piece
+      : owner.item.brand + ' ' + piece;
+    var pic = mosaicPicture(rel, sizesFor(k), alt, false);
+    return '            ' + (owner ? '<a href="' + owner.href + '">' + pic + '</a>' : pic);
+  });
+  return [
+    '          <figure class="guide-photos guide-photos--' + n + '">',
+    '            <div class="guide-photos-grid">',
+    tiles.join('\n'),
+    '            </div>',
+    attrs.caption ? '            <figcaption>' + attrs.caption + '</figcaption>' : '',
+    '          </figure>',
+  ].filter(Boolean).join('\n');
+}
+
+function injectPhotoGrids(html) {
+  var re = /(<!--\s*PHOTO_GRID_START\b([\s\S]*?)-->)[\s\S]*?(<!--\s*PHOTO_GRID_END\s*-->)/g;
+  return html.replace(re, function (_m, openTag, attrs, closeTag) {
+    var attrMap = {};
+    var attrRe = /(\w+)\s*=\s*"([^"]*)"/g;
+    var m;
+    while ((m = attrRe.exec(attrs)) !== null) attrMap[m[1]] = m[2];
+    return openTag + '\n' + generatePhotoGrid(attrMap) + '\n          ' + closeTag;
+  });
+}
+
 function injectAllPartials(html) {
   html = injectPartial(html, 'NAV',         function ()      { return renderNav(); });
   html = injectPartial(html, 'CREDIBILITY', function (attrs) { return renderCredibility(attrs.variant || 'buyer'); });
@@ -2211,6 +2273,9 @@ function injectAllPartials(html) {
     }).join('; ');
     return '          <p><strong>Available from ' + escapeHtml(attrs.brand) + ' in Edmonton right now:</strong> ' + links + '.</p>';
   });
+  // Guide photo grids (PHOTO_GRID markers): real photos of pieces we've bought,
+  // in the sell-page mosaic style (§5.12).
+  html = injectPhotoGrids(html);
   // Sell-landing seller reviews: every review typed "seller" in
   // js/reviews-data.js renders in the homepage card format directly above
   // the "Send us your details" heading — the last thing read before the

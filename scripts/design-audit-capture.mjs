@@ -63,6 +63,7 @@ const PAGES = [
   { path: '/guides/how-to-buy-used-sofa-edmonton/', name: 'guide-buyer' },
   { path: '/guides/who-buys-used-couches-edmonton/', name: 'guide-seller', mobile: true },
   { path: '/guides/natuzzi-sofa-review-edmonton/', name: 'guide-brand-natuzzi' },
+  { path: '/guides/high-end-furniture-stores-edmonton/', name: 'guide-stores', mobile: true },
   { path: '/listings/b-b-italia-charles-sectional-edmonton/', name: 'listing-bb-italia', mobile: true },
   { path: '/listings/west-elm-jodie-wing-leather-chairs-edmonton/', name: 'listing-west-elm', mobile: true },
   { path: '/listings/bracci-como-maxi-apartment-sofa-edmonton/', name: 'listing-bracci' },
