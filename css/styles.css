@@ -1724,7 +1724,6 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   .sell-checklist { padding: 22px 22px; }
   .sell-form { gap: 22px; }
   .sell-landing-hero { padding-bottom: 8px; }
-  .sell-landing-sold-sub { margin-bottom: 24px; }
   .sell-landing-cluster-sub { margin-bottom: 20px; }
   .sell-landing-cluster-grid { gap: 14px; }
   .listing-trust { margin: 28px 0 20px; padding: 16px 18px; }
@@ -2899,10 +2898,6 @@ footer a:focus-visible {
   line-height: 1.6;
   letter-spacing: 0.01em;
 }
-.sell-mid-cta-wrap {
-  text-align: center;
-  margin: 28px 0;
-}
 /* The mid-page CTA can sit inside .sell-landing-body, whose `a` rule
    (dark text + underline) would otherwise override the filled-button
    styling and leave dark text on the dark button. Restore the standard
@@ -3809,28 +3804,6 @@ footer a:focus-visible {
 }
 .sell-updated a:hover { color: var(--color-text); }
 
-/* Quotable answer block — a direct, declarative answer to the page's implicit
-   question, sitting between the byline and the hero subhead. Written so AI
-   answer engines (ChatGPT, Perplexity, Claude) can lift it verbatim and so a
-   human gets the bottom line immediately. Left accent border + left-aligned
-   text break the centered hero rhythm so it reads as "the answer." */
-.sell-answer {
-  max-width: 620px;
-  margin: 0 auto 22px;
-  padding: 16px 20px;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-left: 3px solid var(--color-accent);
-  border-radius: 2px;
-  text-align: left;
-}
-.sell-answer p {
-  margin: 0;
-  font-size: 1.02rem;
-  line-height: 1.6;
-  color: var(--color-text);
-}
-
 .sell-howto {
   max-width: var(--col-mid);
   margin: 28px auto 12px;
@@ -3920,22 +3893,6 @@ footer a:focus-visible {
 .sell-landing-sold {
   margin-top: 48px;
   margin-bottom: 8px;
-}
-.sell-landing-sold-heading {
-  font-family: var(--font-serif);
-  font-size: 1.3rem;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  margin-bottom: 4px;
-  text-align: center;
-}
-.sell-landing-sold-sub {
-  text-align: center;
-  font-size: 0.9rem;
-  color: var(--color-text-secondary);
-  line-height: 1.6;
-  max-width: 560px;
-  margin: 0 auto 28px;
 }
 .sell-landing-sold-grid {
   display: grid;
@@ -4703,12 +4660,11 @@ footer a:focus-visible {
 }
 .sell-section-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
 .sell-v2 .sell-muted a,
-.sell-fitfull .sell-muted a,
 .sell-v2 .sell-body a,
 .sell-v2 .sell-reasons a,
 .sell-v2 .sell-acc a,
 .sell-v2 .sell-bypiece a,
-.sell-tags a { color: var(--color-text); text-decoration: underline; text-underline-offset: 3px; }
+.sell-v2 .sell-tags a { color: var(--color-text); text-decoration: underline; text-underline-offset: 3px; }
 .sell-v2 .sell-reasons h3 a { text-decoration: none; }
 
 /* Intro */
@@ -4753,8 +4709,8 @@ footer a:focus-visible {
   letter-spacing: 0.02em;
 }
 
-/* Fit check. .page, not .sell-v2: /partners/ carries it on the older layout. */
-.page > .sell-fitcheck {
+/* Fit check */
+.sell-v2 > .sell-fitcheck {
   margin-top: var(--space-5);
   padding-top: 24px;
   padding-bottom: 24px;
@@ -4774,6 +4730,8 @@ footer a:focus-visible {
 
 /* How it works */
 .sell-howto-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+@media (min-width: 901px) { .sell-howto-steps-4 { grid-template-columns: repeat(4, 1fr); } }
+@media (min-width: 769px) and (max-width: 900px) { .sell-howto-steps-4 { grid-template-columns: repeat(2, 1fr); } }
 .sell-howto-steps li { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius); padding: 22px; }
 .sell-howto-num {
   width: 30px;
@@ -4820,6 +4778,10 @@ footer a:focus-visible {
 
 /* Form section */
 .sell-apply { max-width: 640px; scroll-margin-top: calc(var(--nav-height) + 16px); }
+/* /partners/ puts a text/call/email ask in the form's slot (no form, §5.13). */
+.sell-partner-ask { text-align: center; }
+.sell-partner-ask > p:first-of-type { margin: 0 0 var(--space-3); line-height: 1.7; }
+.sell-partner-ask .sell-form-secondary { margin: var(--space-3) auto 0; }
 .sell-v2 .sell-send-heading { margin-top: 0; }
 
 /* Is my piece a fit? */
@@ -4831,8 +4793,6 @@ footer a:focus-visible {
 .sell-fitfull-col .sell-tags + .sell-muted { margin: 14px 0 0; }
 /* A page's own note under the shared lists (hand-written, outside the markers). */
 .sell-fitfull-note { color: var(--color-text-secondary); font-size: 0.92rem; line-height: 1.6; max-width: 760px; margin: 16px 0 0; }
-/* /partners/ is not on .sell-v2, so its sections space themselves. */
-.sell-landing-fit { margin-top: 48px; }
 .sell-xlist li { font-size: 0.88rem; }
 .sell-tags { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
 .sell-tags li { background: #f4f3ef; border-radius: 999px; padding: 5px 12px; font-size: 0.84rem; }
@@ -4920,7 +4880,7 @@ footer a:focus-visible {
   .sell-intro-promise { font-size: 1.02rem; }
   .sell-intro-answer { font-size: 0.95rem; }
   .sell-v2 .sell-hero-cta { display: block; text-align: center; }
-  .page > .sell-fitcheck { margin-left: var(--page-x); margin-right: var(--page-x); padding-left: 18px; padding-right: 18px; }
+  .sell-v2 > .sell-fitcheck { margin-left: var(--page-x); margin-right: var(--page-x); padding-left: 18px; padding-right: 18px; }
   .sell-fitcheck-cols { grid-template-columns: 1fr; gap: 20px; }
   .sell-howto-steps { grid-template-columns: 1fr; gap: 0; }
   .sell-howto-steps li {
@@ -4935,8 +4895,8 @@ footer a:focus-visible {
   }
   .sell-howto-steps li:last-child { border-bottom: 0; padding-bottom: 0; }
   .sell-howto-num { grid-row: 1 / 3; margin: 0; }
-  .page > .sell-landing-sold { padding-left: 0; padding-right: 0; }
-  .page > .sell-landing-sold .sell-section-head { padding: 0 var(--page-x); }
+  .sell-v2 > .sell-landing-sold { padding-left: 0; padding-right: 0; }
+  .sell-v2 > .sell-landing-sold .sell-section-head { padding: 0 var(--page-x); }
   .sell-sold-strip {
     display: flex;
     overflow-x: auto;

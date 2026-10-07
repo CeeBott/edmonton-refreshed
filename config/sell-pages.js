@@ -24,6 +24,9 @@
  *               heading = the visible h2; name = the HowTo schema name;
  *               basis = what an offer is based on (default "brand, age, and
  *               condition"); note = one optional page-specific sentence.
+ *               steps = [[name, text], ...] replaces the default steps and
+ *               description the schema's, for a page whose process differs
+ *               (/partners/ only).
  *
  * Adding a sell page: add its entry here (the /add-sell-page skill does it).
  */
@@ -355,6 +358,20 @@ module.exports = {
     soldSchema: {
       name: "Pieces Recently Bought Through Edmonton Refreshed",
       description: "Photos of pre-owned premium sofas and sectionals purchased directly from Edmonton homes and resold by Edmonton Refreshed.",
+    },
+    // Partner-specific steps (no form here, and the partner or the client
+    // sends the photos). The visible block and the HowTo schema both render
+    // from them, so they cannot disagree.
+    howTo: {
+      heading: "How the hand-off works",
+      name: "How the Furniture Hand-Off Works for Edmonton Partners",
+      description: "Four steps to hand off a client's pre-owned sofa or sectional to Edmonton Refreshed: send photos, get an offer, schedule the pickup, and get paid while we handle the removal.",
+      steps: [
+        ["Send a few photos", "You or your client text or email a few photos with the brand, rough age, and condition."],
+        ["Get a fair offer the same day", "We reply the same day with a straightforward number based on brand, age, and condition \u2014 and we explain the reasoning, no black box."],
+        ["We schedule the pickup", "Around your project timeline or your client\u2019s move date, anywhere in the greater Edmonton area."],
+        ["Paid on the spot, hauled out", "Cash or e-transfer before the piece leaves, and our crew handles the full removal. Your client doesn\u2019t lift a thing."],
+      ],
     },
   },
   'sell/american-leather/index.html': {

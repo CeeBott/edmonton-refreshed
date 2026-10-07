@@ -4,12 +4,17 @@
  * wording changes in one place. Per-page heading, schema name, offer basis,
  * and an optional note come from config/sell-pages.js (howTo).
  *
+ * howTo.steps replaces the default steps outright, for a page whose process
+ * genuinely differs: /partners/ has no form, and a partner or their client
+ * sends the photos. The visible block and the schema still share them.
+ *
  * Step 2 states a goal, not a promise, and never implies every submission
  * gets an offer: most are declined (§5.13). No em dashes (house style).
  */
 const DEFAULT_BASIS = 'brand, age, and condition';
 
 function steps(meta, formBelow) {
+  if (meta.steps) return meta.steps;
   const basis = meta.basis || DEFAULT_BASIS;
   return [
     ['Send details and photos',
@@ -31,7 +36,8 @@ function renderHowTo(meta, opts) {
   const o = opts || {};
   const i = o.indent || '      ';
   const h2class = o.v2 ? 'sell-h2' : 'sell-section-heading';
-  const items = steps(meta, o.formBelow).map(([t, p], n) => [
+  const list = steps(meta, o.formBelow);
+  const items = list.map(([t, p], n) => [
     `${i}    <li>`,
     `${i}      <span class="sell-howto-num">${n + 1}</span>`,
     `${i}      <strong>${html(t)}</strong>`,
@@ -41,7 +47,7 @@ function renderHowTo(meta, opts) {
   return [
     `${i}<section class="sell-howto">`,
     `${i}  <h2 class="${h2class}">${html(meta.heading || 'How it works')}</h2>`,
-    `${i}  <ol class="sell-howto-steps">`,
+    `${i}  <ol class="sell-howto-steps${list.length === 4 ? ' sell-howto-steps-4' : ''}">`,
     items,
     `${i}  </ol>`,
     `${i}</section>`,
@@ -54,7 +60,7 @@ function renderHowToSchema(meta, opts) {
     '@context': 'https://schema.org',
     '@type': 'HowTo',
     name: meta.name || 'How to Sell Your Sofa or Sectional in Edmonton',
-    description: 'How selling to Edmonton Refreshed works: send details and photos, get an offer if your piece is a fit, and we handle pickup and payment.',
+    description: meta.description || 'How selling to Edmonton Refreshed works: send details and photos, get an offer if your piece is a fit, and we handle pickup and payment.',
     step: steps(meta, o.formBelow).map(([t, p], n) => ({ '@type': 'HowToStep', position: n + 1, name: t, text: p })),
   };
   return '<script type="application/ld+json">\n  ' + JSON.stringify(schema, null, 2).replace(/\n/g, '\n  ') + '\n  </script>';
