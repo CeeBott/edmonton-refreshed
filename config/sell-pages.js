@@ -232,7 +232,6 @@ module.exports = {
       heading: "How selling instead of trading in works",
       name: "How to Sell Your Sofa in Edmonton Instead of Trading It In",
       basis: "brand, age, and condition",
-      note: "Tell us when your new piece arrives and we’ll aim to schedule pickup around it.",
     },
   },
   // Selling a piece bought at an Edmonton store (Scandia, McElheran's, F2,
@@ -263,7 +262,6 @@ module.exports = {
       heading: "How selling a store-bought piece works",
       name: "How to Sell Furniture You Bought at an Edmonton Store",
       basis: "maker or store, age, and condition",
-      note: "If you’re replacing it, tell us when the new piece arrives and we’ll aim to schedule pickup around it.",
     },
   },
   'sell/selling-furniture-before-moving/index.html': {
@@ -305,7 +303,6 @@ module.exports = {
       heading: "How selling fast works",
       name: "How to Sell Premium Furniture Fast in Edmonton",
       basis: "brand, age, condition, and the local resale market",
-      note: "Firm number, no escalation.",
     },
   },
   'sell/estate-furniture/index.html': {
@@ -320,7 +317,6 @@ module.exports = {
       heading: "How selling estate furniture works",
       name: "How to Sell Estate Furniture in Edmonton",
       basis: "brand, age, and condition",
-      note: "We're patient with timeline questions and probate considerations. We'll agree on an offer-validity period and pickup timeline.",
     },
   },
   'sell/sell-designer-furniture/index.html': {
@@ -350,7 +346,6 @@ module.exports = {
       heading: "How selling to us works",
       name: "How to Sell Your Sofa or Sectional to Edmonton Refreshed",
       basis: "brand, age, and condition",
-      note: "If your piece isn’t a fit, we tell you that quickly and point you to a better channel.",
     },
   },
   'partners/index.html': {
@@ -368,8 +363,8 @@ module.exports = {
       description: "Four steps to hand off a client's pre-owned sofa or sectional to Edmonton Refreshed: send photos, get an offer, schedule the pickup, and get paid while we handle the removal.",
       steps: [
         ["Send a few photos", "You or your client text or email a few photos with the brand, rough age, and condition."],
-        ["Get a fair offer the same day", "We reply the same day with a straightforward number based on brand, age, and condition \u2014 and we explain the reasoning, no black box."],
-        ["We schedule the pickup", "Around your project timeline or your client\u2019s move date, anywhere in the greater Edmonton area."],
+        ["Get an offer", "We aim to reply the same day. If the piece is a fit, we offer a straightforward number based on brand, age, and condition, and we explain the reasoning."],
+        ["We schedule the pickup", "With you or your client, anywhere in the greater Edmonton area."],
         ["Paid on the spot, hauled out", "Cash or e-transfer before the piece leaves, and our crew handles the full removal. Your client doesn\u2019t lift a thing."],
       ],
     },

@@ -12,7 +12,7 @@
  *                              so transport / cleaning / storage / remarketing
  *                              costs are priced in, the offer lands below
  *                              what a private sale would net, and the trade
- *                              on offer is certainty rather than top dollar.
+ *                              on offer is convenience rather than top dollar.
  *                              Added because inbound leads carried wildly
  *                              optimistic asking prices. The field that
  *                              collected those numbers has since been removed
@@ -43,7 +43,7 @@ function renderSellPrelude(indent) {
     // longer sits between the seller and the first field.
     i + '<details class="sell-form-offer">',
     i + '  <summary class="sell-form-offer-label">How our offers work</summary>',
-    i + '  <p class="sell-form-offer-body">We buy to resell, so every offer factors in what it costs us to transport, clean, store, and remarket a piece. That means our offer will come in below what a private sale would net you. If maximizing price is the priority, a private sale is the better option. What we offer instead is certainty: a firm number, paid before the piece leaves your home, with no listing, no messaging, and no no-shows. If that trade is worth it to you, we&rsquo;re a good option.</p>',
+    i + '  <p class="sell-form-offer-body">We buy to resell, so every offer factors in what it costs us to transport, clean, store, and remarket a piece. That means our offer will come in below what a private sale would net you. If maximizing price is the priority, a private sale is the better option. What we offer instead is convenience: no listing, no messaging, no no-shows, and payment before the piece leaves your home. If that trade is worth it to you, we&rsquo;re a good option.</p>',
     i + '</details>',
   ].join('\n');
 }
