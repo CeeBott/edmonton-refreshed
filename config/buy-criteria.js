@@ -29,14 +29,15 @@ module.exports = {
   weBuy: [
     ['A sofa or sectional', 'exceptional chairs considered'],
     ['From a recognized brand or premium retailer', '$' + minRetail.toLocaleString('en-CA') + '+ new'],
-    ['Roughly ' + maxAgeYears + ' years old or newer', ''],
+    ['Roughly ' + maxAgeYears + ' years old or newer', 'older premium and designer pieces considered based on condition'],
     ['In good condition', 'no major damage, staining, or pet damage'],
   ],
 
-  // Fit check, right column.
+  // Fit check, right column. A string, or [text, aside] like weBuy.
   noOffers: [
     'IKEA, Ashley, Leon\u2019s, The Brick, or similar',
-    'Bonded or faux leather, or microfiber',
+    'Bonded or faux leather',
+    ['Microfiber', 'premium brands judged case by case'],
     'Tables, desks, storage, or bedroom furniture',
   ],
 
@@ -59,12 +60,11 @@ module.exports = {
   notAFit: [
     'Ashley, IKEA, Leon\u2019s, The Brick',
     'Bonded or faux leather',
-    'Microfiber recliners',
+    'Microfiber, apart from premium brands judged case by case',
     'White or light fabric on mid-tier brands',
     'Unbranded, without premium-retailer provenance',
     'Major damage, pet damage, staining, or smoke saturation',
     'Tables, desks, storage, and bedroom furniture',
-    'Standalone chairs, unless exceptional',
     'Hide-a-beds or recliners with mechanical issues',
   ],
 

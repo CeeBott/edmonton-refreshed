@@ -27,7 +27,10 @@ function renderFitCheck(indent, hasLists) {
   const i = indent || '      ';
   const yes = rules.weBuy.map(([t, aside]) =>
     `${i}          <li>${esc(t)}${aside ? ` <span>(${esc(aside)})</span>` : ''}</li>`).join('\n');
-  const no = rules.noOffers.map((t) => `${i}          <li>${esc(t)}</li>`).join('\n');
+  const no = rules.noOffers.map((x) => {
+    const [t, aside] = Array.isArray(x) ? x : [x, ''];
+    return `${i}          <li>${esc(t)}${aside ? ` <span>(${esc(aside)})</span>` : ''}</li>`;
+  }).join('\n');
   return [
     `${i}<section class="sell-fitcheck" aria-labelledby="fitcheck-title">`,
     `${i}  <p class="sell-eyebrow" id="fitcheck-title">Before you send photos</p>`,
@@ -69,7 +72,7 @@ function renderFitLists(indent, self) {
     `${i}<div class="sell-fitfull">`,
     `${i}  <div class="sell-fitfull-col">`,
     `${i}    <h3>Brands we buy</h3>`,
-    `${i}    <p class="sell-muted">Sofas and sectionals, including ${link('/sell/sell-designer-furniture/', 'designer furniture')}, ideally within ${rules.maxAgeYears} years old, in Good condition or better. Matching chairs and ottomans sold with them are welcome too.</p>`,
+    `${i}    <p class="sell-muted">Sofas and sectionals, including ${link('/sell/sell-designer-furniture/', 'designer furniture')}, ideally within ${rules.maxAgeYears} years old, in Good condition or better. Matching chairs and ottomans sold with them are welcome too. Standalone chairs considered selectively for exceptional quality and condition.</p>`,
     `${i}    <ul class="sell-tags">${tags}</ul>`,
     `${i}    <p class="sell-muted">This list isn&rsquo;t exhaustive. We&rsquo;re always open to high-quality pieces from other makers, so if yours isn&rsquo;t here, send photos and we&rsquo;ll take a look.</p>`,
     `${i}  </div>`,

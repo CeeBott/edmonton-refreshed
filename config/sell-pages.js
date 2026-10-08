@@ -163,7 +163,7 @@ module.exports = {
     howTo: {
       heading: "How selling your leather sofa works",
       name: "How to Sell a Leather Sofa in Edmonton",
-      basis: "brand, leather grade (aniline, semi-aniline, or top-grain), age, and condition",
+      basis: "brand, the leather and its finish, age, and condition",
     },
   },
   'sell/sectional/index.html': {
@@ -189,7 +189,7 @@ module.exports = {
     howTo: {
       heading: "How selling your leather sectional works",
       name: "How to Sell a Leather Sectional in Edmonton",
-      basis: "brand, leather grade (aniline, semi-aniline, or top-grain), age, and condition",
+      basis: "brand, the leather and its finish, age, and condition",
     },
   },
   'sell/furniture-consignment/index.html': {
@@ -320,7 +320,7 @@ module.exports = {
       heading: "How selling estate furniture works",
       name: "How to Sell Estate Furniture in Edmonton",
       basis: "brand, age, and condition",
-      note: "We're patient with timeline questions and probate considerations. The offer holds while the family or executor coordinates a decision.",
+      note: "We're patient with timeline questions and probate considerations. We'll agree on an offer-validity period and pickup timeline.",
     },
   },
   'sell/sell-designer-furniture/index.html': {
