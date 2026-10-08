@@ -62,7 +62,7 @@ var availableItems = [
     ],
     retailEstimate: 5529,
     retailVerified: true,
-    price: 2300,
+    price: 2100,
     specs: ["Crate & Barrel", "89 × 38 × 36 in", "Tribute Gravel Performance Fabric", "Bleached Rubberwood Base", "Good Condition"],
     images: [
       "images/CB-050/crate-and-barrel-01.jpeg",
