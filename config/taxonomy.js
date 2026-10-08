@@ -23,7 +23,7 @@ const furnitureTypes = [
 
 // Selling situations — the "Sell By Situation" footer column.
 const situations = [
-  { name: 'Furniture Consignment',   nav: 'Consignment',   slug: 'furniture-consignment' },
+  { name: 'Consignment Alternative', nav: 'Consignment alternative', slug: 'furniture-consignment' },
   { name: 'Sofa Trade-In',           nav: 'Trade-in',      slug: 'sofa-trade-in' },
   { name: 'Furniture From Edmonton Stores', nav: 'Edmonton stores', slug: 'premium-retailer-furniture' },
   { name: 'Selling Before Moving',   nav: 'Before a move', slug: 'selling-furniture-before-moving' },
