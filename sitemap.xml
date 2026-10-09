@@ -3,7 +3,7 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://edmontonrefreshed.com/</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -153,7 +153,7 @@
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/sell/what-we-buy/</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -177,7 +177,7 @@
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/sell/crate-and-barrel/</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -207,7 +207,7 @@
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/sell/sectional/</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -231,7 +231,7 @@
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/sell/furniture-consignment/</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -249,31 +249,31 @@
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/sell/selling-furniture-before-moving/</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/sell/downsizing-furniture/</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/sell/estate-furniture/</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/sell/sell-furniture-fast/</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/sell/sell-designer-furniture/</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -285,7 +285,7 @@
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/partners/</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -321,7 +321,7 @@
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/guides/crate-and-barrel-sofa-review-edmonton/</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -345,7 +345,7 @@
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/guides/high-end-furniture-stores-edmonton/</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -458,8 +458,83 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://edmontonrefreshed.com/listings/crate-and-barrel-lounge-power-reclining-sectional-edmonton/</loc>
+    <lastmod>2026-10-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/CB-051/crate-and-barrel-01.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/CB-051/crate-and-barrel-02.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/CB-051/crate-and-barrel-03.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/CB-051/crate-and-barrel-04.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/CB-051/crate-and-barrel-05.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/CB-051/crate-and-barrel-06.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/CB-051/crate-and-barrel-07.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/CB-051/crate-and-barrel-08.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/CB-051/crate-and-barrel-09.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/CB-051/crate-and-barrel-10.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/CB-051/crate-and-barrel-11.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/CB-051/crate-and-barrel-12.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/CB-051/crate-and-barrel-13.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/CB-051/crate-and-barrel-14.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/CB-051/crate-and-barrel-15.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/CB-051/crate-and-barrel-16.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/CB-051/crate-and-barrel-17.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/CB-051/crate-and-barrel-18.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/CB-051/crate-and-barrel-19.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/CB-051/crate-and-barrel-20.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/CB-051/crate-and-barrel-21.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/CB-051/crate-and-barrel-22.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/CB-051/crate-and-barrel-23.jpeg</image:loc>
+    </image:image>
+  </url>
+  <url>
     <loc>https://edmontonrefreshed.com/listings/crate-and-barrel-gather-89-bench-sofa-edmonton/</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -486,7 +561,7 @@
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/listings/b-b-italia-charles-sectional-edmonton/</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image>
