@@ -2252,8 +2252,11 @@ function generatePhotoGrid(attrs) {
     var owner = photoOwner(rel);
     if (!owner) console.warn('  photo-grid WARN — no inventory entry owns ' + rel);
     var piece = owner ? (owner.item.title || '').split(' — ')[0] : '';
+    // A subject ending in "from" or "of" ("[chaise from]") supplies its own
+    // connector, for a photo of one module rather than a detail on the piece.
+    var sub = e.subject.match(/^(.*?)\s+(from|of)$/);
     var alt = !owner ? '' : e.subject
-      ? owner.item.brand + ' ' + e.subject + ' on the ' + piece
+      ? owner.item.brand + ' ' + (sub ? sub[1] + ' ' + sub[2] : e.subject + ' on') + ' the ' + piece
       : owner.item.brand + ' ' + piece;
     var pic = mosaicPicture(rel, sizesFor(k), alt, false);
     return '            ' + (owner ? '<a href="' + owner.href + '">' + pic + '</a>' : pic);
