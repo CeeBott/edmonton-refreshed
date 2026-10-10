@@ -636,6 +636,29 @@ function extractObject(src, varName) { return extractVar(src, varName, '{', '}')
 
 // ── HTML generators ──────────────────────────────────────
 
+// Homepage card copy (§5.10). Cards carry a short name, two facts (overall
+// size and condition grade), and the two figures; the listing page carries the
+// full specification. The long `title` stays in alt text, schema, and the
+// listing H1. Mirrored in js/available-data.js for the browser render.
+function cardTitle(item) {
+  return item.cardTitle || String(item.title).split(' \u2014 ')[0];
+}
+function cardSpecs(item) {
+  var d = item.dimensions || {};
+  var out = [];
+  if (d.width && d.depth && d.height) out.push(d.width + ' \u00d7 ' + d.depth + ' \u00d7 ' + d.height + ' in');
+  if (item.conditionGrade) out.push(item.conditionGrade + ' Condition');
+  if (out.length) return out;
+  return (item.specs || []).filter(function(s) { return s !== item.brand; });
+}
+// Card retail anchor: same verified/approx rules as retailLabel(), without the
+// "plus tax & delivery" suffix, which stays on the listing page's value pill.
+function cardRetailLabel(item) {
+  if (!item.retailEstimate) return '';
+  return (item.retailVerified ? 'Retail ' : 'Est. retail ') +
+    formatPrice(item.retailEstimate) + (item.retailEstimateApprox ? '+' : '') + ' CAD';
+}
+
 function generateAvailableHTML(items) {
   if (items.length === 0) return '';
 
@@ -647,7 +670,7 @@ function generateAvailableHTML(items) {
     var imgSrc     = (item.images && item.images.length > 0) ? item.images[0] : '';
     var alt        = escapeHtml(item.brand + ' ' + item.title);
     var loading    = idx === 0 ? 'eager' : 'lazy';
-    var specs      = item.specs.map(function(s) {
+    var specs      = cardSpecs(item).map(function(s) {
       return '<span class="spec-tag">' + escapeHtml(s) + '</span>';
     }).join('');
 
@@ -663,8 +686,8 @@ function generateAvailableHTML(items) {
         : '            <div class="card-brand">' + escapeHtml(item.brand) + '</div>';
 
     var titleLine = item.comingSoon
-      ? '            <div class="card-title">' + escapeHtml(item.title) + '</div>'
-      : '            <div class="card-title"><a class="card-title-link" href="' + listingUrl + '">' + escapeHtml(item.title) + '</a></div>';
+      ? '            <div class="card-title">' + escapeHtml(cardTitle(item)) + '</div>'
+      : '            <div class="card-title"><a class="card-title-link" href="' + listingUrl + '">' + escapeHtml(cardTitle(item)) + '</a></div>';
 
     var priceCta = item.comingSoon
       ? '            <div class="card-price card-price--muted">Listing coming soon</div>'
@@ -674,7 +697,7 @@ function generateAvailableHTML(items) {
     // value is legible on the grid rather than one click away (§5.10).
     var retailAnchor = (item.comingSoon || !item.retailEstimate)
       ? ''
-      : '            <div class="card-retail">' + retailLabel(item) + '</div>';
+      : '            <div class="card-retail">' + cardRetailLabel(item) + '</div>';
 
     lines.push(
       '        <div class="card">',

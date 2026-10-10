@@ -18,6 +18,7 @@ var availableItems = [
   {
     brand: "Crate & Barrel",
     title: "Lounge 6-Piece L-Shaped Power Dual-Reclining Sectional — Mossa Chenille",
+    cardTitle: "Lounge Power Reclining Sectional",
     slug: "crate-and-barrel-lounge-power-reclining-sectional-edmonton",
     metaTitle: "Pre-Owned Crate & Barrel Lounge Power Reclining Sectional for Sale in Edmonton",
     metaDescription: "Pre-owned Crate & Barrel Lounge 6-piece L-shaped power dual-reclining sectional in Mossa chenille, built 2026. Delivery across Alberta. {price}.",
@@ -59,6 +60,7 @@ var availableItems = [
       { question: "Do you deliver?", answer: "Yes. We deliver throughout Edmonton and surrounding areas, and we arrange delivery across Alberta on request. Delivery is offered for an additional fee that depends on distance and access." },
     ],
     retailEstimate: 13144,
+    retailVerified: true,
     price: 7800,
     specs: ["Crate & Barrel", "142 × 109 × 37 in", "Mossa Chenille", "Power Dual-Reclining", "Excellent Condition"],
     images: [
@@ -86,6 +88,7 @@ var availableItems = [
   {
     brand: "Crate & Barrel",
     title: "Gather 89-Inch Wood Base Bench Sofa — Tribute Gravel",
+    cardTitle: "Gather Bench Sofa",
     slug: "crate-and-barrel-gather-89-bench-sofa-edmonton",
     metaTitle: "Pre-Owned Crate & Barrel Gather Bench Sofa for Sale in Edmonton",
     metaDescription: "Pre-owned Crate & Barrel Gather 89-inch bench sofa on a bleached rubberwood base, Tribute Gravel fabric. Delivery across Alberta. {price}.",
@@ -145,6 +148,7 @@ var availableItems = [
   {
     brand: "B&B Italia",
     title: "Charles Left-Facing Sectional — Off-White Rattier Fabric",
+    cardTitle: "Charles Sectional",
     slug: "b-b-italia-charles-sectional-edmonton",
     metaTitle: "Pre-Owned B&B Italia Charles Sectional Sofa for Sale in Edmonton",
     metaDescription: "Pre-owned B&B Italia Charles sectional sofa in Edmonton. Professionally inspected and cleaned. Delivery available across Alberta. {price}.",
@@ -222,6 +226,26 @@ function retailLabel(item) {
     ' CAD' + _RETAIL_SUFFIX;
 }
 
+// Homepage card copy — mirror of cardTitle() / cardSpecs() / cardRetailLabel()
+// in build.js (§5.10). Cards carry a short name, two facts, and two figures;
+// the listing page carries the full specification.
+function cardTitle(item) {
+  return item.cardTitle || String(item.title).split(' \u2014 ')[0];
+}
+function cardSpecs(item) {
+  var d = item.dimensions || {};
+  var out = [];
+  if (d.width && d.depth && d.height) out.push(d.width + ' \u00d7 ' + d.depth + ' \u00d7 ' + d.height + ' in');
+  if (item.conditionGrade) out.push(item.conditionGrade + ' Condition');
+  if (out.length) return out;
+  return (item.specs || []).filter(function(s) { return s !== item.brand; });
+}
+function cardRetailLabel(item) {
+  if (!item.retailEstimate) return '';
+  return (item.retailVerified ? 'Retail ' : 'Est. retail ') +
+    formatPrice(item.retailEstimate) + (item.retailEstimateApprox ? '+' : '') + ' CAD';
+}
+
 function renderAvailable() {
   var grid = document.getElementById('available-grid');
   if (availableItems.length === 0) {
@@ -245,8 +269,8 @@ function renderAvailable() {
         : '<div class="card-brand">' + item.brand + '</div>';
 
     var titleEl = item.comingSoon
-      ? '<div class="card-title">' + item.title + '</div>'
-      : '<div class="card-title"><a class="card-title-link" href="' + listingUrl + '">' + item.title + '</a></div>';
+      ? '<div class="card-title">' + cardTitle(item) + '</div>'
+      : '<div class="card-title"><a class="card-title-link" href="' + listingUrl + '">' + cardTitle(item) + '</a></div>';
 
     var priceCta = item.comingSoon
       ? '<div class="card-price card-price--muted">Listing coming soon</div>'
@@ -255,7 +279,7 @@ function renderAvailable() {
     // Retail anchor — same comparison the listing page carries (§5.10).
     var retailAnchor = (item.comingSoon || !item.retailEstimate)
       ? ''
-      : '<div class="card-retail">' + retailLabel(item) + '</div>';
+      : '<div class="card-retail">' + cardRetailLabel(item) + '</div>';
 
     return '<div class="card">' +
       (item.images && item.images.length > 0
@@ -266,7 +290,7 @@ function renderAvailable() {
         brandLine +
         titleEl +
         '<div class="card-specs">' +
-          item.specs.map(function(s) { return '<span class="spec-tag">' + s + '</span>'; }).join('') +
+          cardSpecs(item).map(function(s) { return '<span class="spec-tag">' + s + '</span>'; }).join('') +
         '</div>' +
         retailAnchor +
         priceCta +
