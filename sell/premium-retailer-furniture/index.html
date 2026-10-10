@@ -74,7 +74,7 @@
     "name": "Furniture Buyout for Pieces From Edmonton’s Premium Stores",
     "description": "Edmonton Refreshed buys sofas and sectionals bought at Edmonton’s premium furniture stores, and from the brands those stores carry, outright: paid by cash or e-transfer at pickup. An alternative to a store trade-in for people replacing a piece.",
     "url": "https://edmontonrefreshed.com/sell/premium-retailer-furniture/",
-    "dateModified": "2026-10-08",
+    "dateModified": "2026-10-09",
     "provider": {
       "@type": "FurnitureStore",
       "@id": "https://edmontonrefreshed.com/#business",
@@ -195,7 +195,7 @@
         "name": "I know where I bought my sofa but not who made it. Can I still sell it?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes. Put the store’s name in the Brand field, and add a photo of any label you find under the seat cushions or on the underside. The receipt helps if you still have it, but it isn’t required."
+          "text": "Yes. Put the store’s name in the “Brand or original store” field, and add a photo of any label you find under the seat cushions or on the underside. The receipt helps if you still have it, but it isn’t required."
         }
       },
       {
@@ -399,7 +399,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="../../css/styles.min.css?v=40cb68af">
+  <link rel="stylesheet" href="../../css/styles.min.css?v=a723cb64">
   <meta name="theme-color" content="#2c2c2c">
 </head>
 <body>
@@ -639,8 +639,8 @@
             <legend class="sell-form-group-title"><span class="sell-form-group-num" aria-hidden="true">1</span> Your piece</legend>
 
             <div class="sell-form-row">
-              <label for="sf-brand">Brand <span class="sell-form-req" aria-hidden="true">*</span></label>
-              <input type="text" id="sf-brand" name="Brand" placeholder="e.g. Natuzzi, EQ3, Rove Concepts (or &lsquo;unsure&rsquo;)" autocomplete="off" value="" required aria-describedby="sf-brand-warn">
+              <label for="sf-brand">Brand or original store <span class="sell-form-req" aria-hidden="true">*</span></label>
+              <input type="text" id="sf-brand" name="Brand" placeholder="e.g. Natuzzi, American Leather, or the store: Scandia, McElheran&rsquo;s, F2" autocomplete="off" value="" required aria-describedby="sf-brand-warn">
               <p class="sell-form-brand-warn" id="sf-brand-warn" role="status" data-brands="[[&quot;IKEA&quot;,&quot;\\bikea\\b&quot;],[&quot;Ashley&quot;,&quot;\\bashley\\b&quot;],[&quot;Leon’s&quot;,&quot;\\bleon[’']?s\\b&quot;],[&quot;The Brick&quot;,&quot;\\b(the )?brick\\b&quot;],[&quot;Structube&quot;,&quot;\\bstructube\\b&quot;],[&quot;Wayfair&quot;,&quot;\\bwayfair\\b&quot;],[&quot;Wayfair&quot;,&quot;\\bwilla arlo\\b&quot;],[&quot;Walmart&quot;,&quot;\\bwal-?mart\\b&quot;],[&quot;Costco&quot;,&quot;\\bcostco\\b&quot;],[&quot;Kort &amp; Co.&quot;,&quot;\\bkort\\b&quot;]]" hidden></p>
             </div>
 
@@ -682,6 +682,7 @@
               <div class="sell-form-row">
                 <label for="sf-msrp">Original price <span class="sell-form-req" aria-hidden="true">*</span></label>
                 <input type="text" id="sf-msrp" name="Original purchase price" inputmode="numeric" autocomplete="off" placeholder="$ (approximate is fine)" required>
+                <label class="sell-form-unsure"><input type="checkbox" id="sf-msrp-unsure" name="Original purchase price" value="Not sure"> Not sure</label>
               </div>
             </div>
 
@@ -741,8 +742,8 @@
               </div>
             </div>
             <div class="sell-form-row">
-              <label for="sf-notes">Anything we should know? (Where you bought it, delivery date for a new piece) <span class="sell-form-req-note">(optional)</span></label>
-              <textarea id="sf-notes" name="Notes" rows="3" placeholder="Store you bought it from, when your new piece arrives, building access"></textarea>
+              <label for="sf-notes">Anything we should know? (When your new piece arrives, building access) <span class="sell-form-req-note">(optional)</span></label>
+              <textarea id="sf-notes" name="Notes" rows="3" placeholder="e.g. Bought at Cottswood around 2019. New sofa arrives Nov 14. Condo, elevator needs booking."></textarea>
             </div>
           </fieldset>
 
@@ -765,7 +766,7 @@
         <ul>
         <li><strong>Scandia Furniture.</strong> Scandia sells <a href="/sell/natuzzi/">Natuzzi Italia</a> alongside other contemporary European furniture. We buy Natuzzi Italia sofas and sectionals.</li>
         <li><strong>McElheran&rsquo;s Furniture + Design.</strong> Its brands page lists <a href="/sell/american-leather/">American Leather</a>, along with makers like Bernhardt, Century, and Hancock &amp; Moore. We buy American Leather, and sofas and sectionals from recognized makers like these fit what we look for.</li>
-        <li><strong>F2 Furnishings.</strong> F2&rsquo;s brands page lists <a href="/sell/eq3/">EQ3</a> and Natuzzi Editions, both brands we buy. If you&rsquo;re replacing a piece, one line in F2&rsquo;s FAQ is worth knowing: &ldquo;Please note that we do not remove and dispose of existing furniture.&rdquo; If your new piece is coming from F2, the old one needs its own way out, and we&rsquo;ll aim to pick it up before your delivery.</li>
+        <li><strong>F2 Furnishings.</strong> F2&rsquo;s brands page lists <a href="/sell/eq3/">EQ3</a> and Natuzzi Editions, both brands we buy. If you&rsquo;re replacing a piece, one line in F2&rsquo;s FAQ is worth knowing: &ldquo;Please note that we do not remove and dispose of existing furniture.&rdquo; If your new piece is coming from F2, the old one needs its own way out. Tell us your delivery date and we&rsquo;ll let you know whether we can pick it up before then.</li>
         <li><strong>Cottswood Interiors.</strong> Its brands page lists American Leather, a brand we buy, along with makers like Bernhardt, Lee Industries, CR Laine, and Vanguard.</li>
         <li><strong>Signature Lane.</strong> Signature Lane&rsquo;s website lists Van Gogh Designs, a brand we buy, and Signature Lane itself is named in our buying criteria.</li>
         <li><strong>LightForm and Dwell Modern.</strong> LightForm&rsquo;s furniture page lists Cassina, Ligne Roset, and Knoll. We buy Knoll, and seating from makers like Cassina and Ligne Roset is worth sending in.</li>
@@ -809,10 +810,9 @@
       <section>
         <h2 class="sell-h2">Why people replacing store-bought furniture sell to us</h2>
         <div class="sell-reasons">
-          <div><h3>You know the store, not the maker</h3><p>That&rsquo;s fine. Name the store on the form and add a photo of any label you find. The store tells us a lot about the piece.</p></div>
+          <div><h3>You know the store, not the maker</h3><p>That&rsquo;s fine. Put the store in the &ldquo;Brand or original store&rdquo; field and add a photo of any label you find. The store tells us a lot about the piece.</p></div>
           <div><h3>The new piece has a delivery date</h3><p>Selling the old piece outright means no listing to run while you wait for the new one.</p></div>
           <div><h3>Cash, not store credit</h3><p>We pay cash or e-transfer before the piece leaves, so the money can go toward the new one or anywhere else.</p></div>
-          <div><h3>No listing, no viewings</h3><p>Marketplace can pay more if you have time to list, answer messages, and host strangers. If you&rsquo;d rather settle it in one conversation, that&rsquo;s what we do.</p></div>
         </div>
       </section>
 
@@ -842,10 +842,10 @@
         <details class="sell-acc">
           <summary><h2>Selling privately or selling to us</h2></summary>
           <div class="sell-acc-body">
-            <p>The honest version: a private sale usually pays more if you have the time, and our offer comes in below it. What you get from us is pickup handled for you and payment before the piece leaves.</p>
+            <p>A private sale can pay more if you have the time. Our offer is based on your specific piece and accounts for what it costs us to inspect, clean, photograph, list, and deliver it to its next owner.</p>
             <ul>
             <li><strong>Private sale:</strong> often the highest price, with time and the right buyer. You handle the listing, messages, viewings, and getting it out of the house.</li>
-            <li><strong>Selling to us:</strong> an offer below a private sale, paid by cash or e-transfer before the piece leaves. You send photos, and we handle the rest.</li>
+            <li><strong>Selling to us:</strong> paid by cash or e-transfer before the piece leaves. You send photos, and we handle the rest.</li>
             </ul>
           </div>
         </details>
@@ -868,7 +868,7 @@
           </details>
           <details class="faq-item">
             <summary><h3 class="faq-question">I know where I bought my sofa but not who made it. Can I still sell it?</h3></summary>
-            <p class="faq-answer">Yes. Put the store&rsquo;s name in the Brand field, and add a photo of any label you find under the seat cushions or on the underside. The receipt helps if you still have it, but it isn&rsquo;t required.</p>
+            <p class="faq-answer">Yes. Put the store&rsquo;s name in the &ldquo;Brand or original store&rdquo; field, and add a photo of any label you find under the seat cushions or on the underside. The receipt helps if you still have it, but it isn&rsquo;t required.</p>
           </details>
           <details class="faq-item">
             <summary><h3 class="faq-question">Can you pick up my old piece before my new one is delivered?</h3></summary>
@@ -968,7 +968,7 @@
   <!-- FOOTER_END -->
 
   <script src="../../js/shared.min.js?v=d1f81259"></script>
-  <script src="../../js/sell-form.min.js?v=771c37f6"></script>
+  <script src="../../js/sell-form.min.js?v=9a02af92"></script>
 
 </body>
 </html>

@@ -89,7 +89,7 @@
     "name": "Sell Your Sofa in Edmonton",
     "description": "Sell your quality sofa in Edmonton — Natuzzi, EQ3, Rove Concepts, Crate & Barrel, and more. We aim to reply the same day, and pickup is included.",
     "url": "https://edmontonrefreshed.com/sell/sofa/",
-    "dateModified": "2026-10-08",
+    "dateModified": "2026-10-09",
     "provider": {
       "@type": "FurnitureStore",
       "@id": "https://edmontonrefreshed.com/#business",
@@ -186,18 +186,18 @@
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "I don’t know what brand my sofa is — can you still evaluate it?",
+        "name": "I don’t know what brand my sofa is. Can you still evaluate it?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes. Send photos of the overall piece, if you're able to find any tags, include those. Unbranded pieces from quality local retailers like Cottswood Interiors, F2 Furnishings, or Signature Lane are eligible."
+          "text": "Yes. Send photos of the whole piece, and include any tags you can find. Unbranded pieces from quality local retailers like Cottswood Interiors, F2 Furnishings, or Signature Lane are eligible."
         }
       },
       {
         "@type": "Question",
-        "name": "My cat has scratched the fabric — does that disqualify my sofa?",
+        "name": "My cat has scratched the fabric. Does that disqualify my sofa?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "It depends on the severity. Light surface marks on leather are often workable and factor into the offer rather than ruling the piece out. Fabric pieces with visible animal damage are harder — pulls, snags, and claw marks in upholstery are difficult to reverse, and we pass on fabric sofas with significant animal damage more often than not. Send photos and we'll give you an honest read either way."
+          "text": "It depends on how much damage there is. Light surface marks on leather often just factor into the offer. Pulls, snags, and claw marks in fabric are hard to reverse, and we pass on fabric sofas with significant animal damage more often than not. Send photos and we’ll give you a straight answer."
         }
       },
       {
@@ -205,7 +205,7 @@
         "name": "Will you buy my matching loveseat or chair separately?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Generally we prefer them as a bundle with the sofa. Standalone loveseats from premium brands can occasionally work — mention what you have and we'll let you know."
+          "text": "We generally prefer them together with the sofa. Standalone loveseats from premium brands can work, so mention what you have and we’ll let you know."
         }
       },
       {
@@ -213,7 +213,7 @@
         "name": "How fast can pickup happen after an accepted offer?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Pickup is scheduled with you once you accept an offer."
+          "text": "Pickup is scheduled with you once you accept an offer. If you have a deadline, tell us in the form."
         }
       },
       {
@@ -221,7 +221,7 @@
         "name": "Where can I sell my sofa in Edmonton?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Edmonton Refreshed buys quality sofas directly from sellers across Edmonton, St. Albert, Sherwood Park, Spruce Grove, Leduc, and Fort Saskatchewan — recognized brands in good condition or better. Submit photos through the form on this page and we aim to reply the same day. Facebook Marketplace and Kijiji are the other direct-sale options, with the trade-off of managing the listing process yourself."
+          "text": "Edmonton Refreshed buys quality sofas from recognized brands directly from sellers across Edmonton, St. Albert, Sherwood Park, Spruce Grove, Leduc, and Fort Saskatchewan. Submit photos through the form on this page and we aim to reply the same day. Facebook Marketplace and Kijiji are the other direct-sale options, if you’d rather run the listing yourself."
         }
       },
       {
@@ -229,15 +229,7 @@
         "name": "Who buys used sofas in Edmonton?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Edmonton Refreshed focuses specifically on sofas and sectionals from recognized brands — Natuzzi, B&B Italia, Rove Concepts, EQ3, Crate & Barrel, West Elm, American Leather, Restoration Hardware, Brentwood Classics, Pottery Barn, Urban Barn, and similar. Consignment shops, online classifieds, and donation channels handle other categories; we're focused on the seating segment."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Will I get more for my sofa on Marketplace?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Possibly — sofas are one of the more active Marketplace categories, and a strong listing on a recognizable piece can produce a higher final number than our offer. What you give up for the price difference is the time investment (photos, listing copy, messages, viewings) and the uncertainty of whether the right buyer turns up before the timeline you actually have."
+          "text": "Edmonton Refreshed focuses on sofas and sectionals from recognized brands: Natuzzi, B&B Italia, Rove Concepts, EQ3, Crate & Barrel, West Elm, American Leather, Restoration Hardware, Brentwood Classics, Pottery Barn, Urban Barn, and similar. Consignment shops, online classifieds, and donation channels handle other categories."
         }
       }
     ]
@@ -248,7 +240,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="../../css/styles.min.css?v=40cb68af">
+  <link rel="stylesheet" href="../../css/styles.min.css?v=a723cb64">
   <meta name="theme-color" content="#2c2c2c">
   <!-- LANDING_SOLD_SCHEMA_START -->
   <script type="application/ld+json">
@@ -706,6 +698,7 @@
               <div class="sell-form-row">
                 <label for="sf-msrp">Original price <span class="sell-form-req" aria-hidden="true">*</span></label>
                 <input type="text" id="sf-msrp" name="Original purchase price" inputmode="numeric" autocomplete="off" placeholder="$ (approximate is fine)" required>
+                <label class="sell-form-unsure"><input type="checkbox" id="sf-msrp-unsure" name="Original purchase price" value="Not sure"> Not sure</label>
               </div>
             </div>
 
@@ -789,7 +782,6 @@
 
         <p>The list isn’t exhaustive. If your sofa came from a <a href="/sell/premium-retailer-furniture/">recognized Edmonton specialty retailer</a> like <strong>Signature Lane</strong> or <strong>Cottswood Interiors</strong>, even unbranded pieces with those provenances are typically worth sending in. The combination of retailer and visible quality tells us most of what we need to know.</p>
 
-        <p>What we generally pass on: mass-market brands (Ashley, IKEA, Leon's, The Brick), bonded or faux leather, and pieces with major structural damage.</p>
       </section>
 
       <section id="is-it-a-fit">
@@ -826,37 +818,19 @@
           <summary><h2>What affects the offer</h2></summary>
           <div class="sell-acc-body">
             <ul>
-            <li><strong>Brand and retail tier:</strong> the foundation of our offer range</li>
-            <li><strong>Upholstery:</strong> leather, performance fabric, and quality wool blends lead resale; light linens and statement velvets are more sensitive to wear</li>
-            <li><strong>Age and condition:</strong> 0–6 years and excellent condition leads our offer; well-maintained older pieces still considered if the frame is solid and quiet</li>
-            <li><strong>Frame and springs:</strong> solid hardwood frames with intact suspension outperform engineered-wood frames</li>
-            <li><strong>Cushion shape:</strong> compressed or permanently deflated cushions reduce offers</li>
+            <li><strong>Brand and original retailer:</strong> the starting point for every offer</li>
+            <li><strong>Upholstery:</strong> leather or fabric, its colour, and how it has worn</li>
+            <li><strong>Age and condition:</strong> newer pieces in excellent condition receive the strongest offers, and well-kept older pieces are considered when the frame is solid</li>
+            <li><strong>Frame and springs:</strong> how the frame and suspension have held up</li>
+            <li><strong>Cushion shape:</strong> flattened or deflated cushions reduce the offer</li>
             </ul>
           </div>
         </details>
         <details class="sell-acc">
           <summary><h2>Selling a sofa to us vs. listing on Marketplace</h2></summary>
           <div class="sell-acc-body">
-            <p>Sofas are the most common Marketplace category, which cuts both ways. There are more potential buyers searching for sofas than for sectionals, loveseats, or chairs, which means a quality sofa from a recognized brand can move quickly with a strong listing. It also means the noise is louder &mdash; more lowball offers, more no-shows, more competition from worn-out mass-market pieces priced as if they were premium. Sellers who are <a href="/sell/selling-furniture-before-moving/">selling before a move</a> or who need to <a href="/sell/sell-furniture-fast/">sell fast</a> feel that open-ended timeline most. Here's the honest trade.</p>
-            <div class="sell-compare-wrap">
-            <table class="sell-compare">
-            <thead>
-            <tr>
-            <th scope="col"></th>
-            <th scope="col">Facebook Marketplace</th>
-            <th scope="col">Edmonton Refreshed</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr><td>Potential price</td><td>Highest ceiling</td><td>Below the Marketplace ceiling.</td></tr>
-            <tr><td>Time to resolution</td><td>2&ndash;6 weeks typical for quality sofas; longer in slower seasons</td><td>We aim to reply the same day; pickup is scheduled with you</td></tr>
-            <tr><td>Buyer screening</td><td>You triage lowballs, no-shows, and tire-kickers yourself</td><td>One contact</td></tr>
-            <tr><td>Moving the piece</td><td>You stage and host viewings; the buyer arranges transport</td><td>We come to your home, load it ourselves, and pay before we leave</td></tr>
-            <tr><td>Best fit</td><td>You have time, can stage and photograph well, and want to chase the top of the market</td><td>You'd rather have it gone, for a fair number</td></tr>
-            </tbody>
-            </table>
-            </div>
-            <p>If you're able and willing to absorb the friction and frustration of a marketplace listing, in exchange for a maximum payout, it's a real option. If you'd rather skip the process, that's what we're built for. Our offer might surprise you. There's no cost to reach out.</p>
+            <p>A quality sofa from a recognized brand can sell well privately, especially for sellers with time on their side; it&rsquo;s harder when you&rsquo;re <a href="/sell/selling-furniture-before-moving/">selling before a move</a> or need to <a href="/sell/sell-furniture-fast/">sell fast</a>. For the right piece, Marketplace can pay more than our offer, if you have time to run the listing, answer messages, and host showings, and a buyer follows through.</p>
+            <p>Our offer is based on your specific piece and accounts for what it costs us to inspect, clean, photograph, list, and deliver it to its next owner. In exchange, it&rsquo;s one conversation, pickup by our crew, and payment before the piece leaves. If the highest possible price matters most and you have the time, Marketplace may suit you better.</p>
           </div>
         </details>
       </section>
@@ -865,32 +839,28 @@
         <h2 class="section-label">Frequently Asked Questions</h2>
         <div class="faq-list">
           <details class="faq-item">
-            <summary><h3 class="faq-question">I don’t know what brand my sofa is &mdash; can you still evaluate it?</h3></summary>
-            <p class="faq-answer">Yes. Send photos of the overall piece, if you're able to find any tags, include those. Unbranded pieces from quality local retailers like Cottswood Interiors, F2 Furnishings, or Signature Lane are eligible.</p>
+            <summary><h3 class="faq-question">I don&rsquo;t know what brand my sofa is. Can you still evaluate it?</h3></summary>
+            <p class="faq-answer">Yes. Send photos of the whole piece, and include any tags you can find. Unbranded pieces from quality local retailers like Cottswood Interiors, F2 Furnishings, or Signature Lane are eligible.</p>
           </details>
           <details class="faq-item">
-            <summary><h3 class="faq-question">My cat has scratched the fabric — does that disqualify my sofa?</h3></summary>
-            <p class="faq-answer">It depends on the severity. Light surface marks on leather are often workable and factor into the offer rather than ruling the piece out. Fabric pieces with visible animal damage are harder — pulls, snags, and claw marks in upholstery are difficult to reverse, and we pass on fabric sofas with significant animal damage more often than not. Send photos and we'll give you an honest read either way.</p>
+            <summary><h3 class="faq-question">My cat has scratched the fabric. Does that disqualify my sofa?</h3></summary>
+            <p class="faq-answer">It depends on how much damage there is. Light surface marks on leather often just factor into the offer. Pulls, snags, and claw marks in fabric are hard to reverse, and we pass on fabric sofas with significant animal damage more often than not. Send photos and we&rsquo;ll give you a straight answer.</p>
           </details>
           <details class="faq-item">
             <summary><h3 class="faq-question">Will you buy my matching loveseat or chair separately?</h3></summary>
-            <p class="faq-answer">Generally we prefer them as a bundle with the sofa. Standalone loveseats from premium brands can occasionally work — mention what you have and we'll let you know.</p>
+            <p class="faq-answer">We generally prefer them together with the sofa. Standalone loveseats from premium brands can work, so mention what you have and we&rsquo;ll let you know.</p>
           </details>
           <details class="faq-item">
             <summary><h3 class="faq-question">How fast can pickup happen after an accepted offer?</h3></summary>
-            <p class="faq-answer">Pickup is scheduled with you once you accept an offer.</p>
+            <p class="faq-answer">Pickup is scheduled with you once you accept an offer. If you have a deadline, tell us in the form.</p>
           </details>
           <details class="faq-item">
             <summary><h3 class="faq-question">Where can I sell my sofa in Edmonton?</h3></summary>
-            <p class="faq-answer">Edmonton Refreshed buys quality sofas directly from sellers across Edmonton, St. Albert, Sherwood Park, Spruce Grove, Leduc, and Fort Saskatchewan &mdash; recognized brands in good condition or better. Submit photos through the form on this page and we aim to reply the same day. Facebook Marketplace and Kijiji are the other direct-sale options, with the trade-off of managing the listing process yourself.</p>
+            <p class="faq-answer">Edmonton Refreshed buys quality sofas from recognized brands directly from sellers across Edmonton, St. Albert, Sherwood Park, Spruce Grove, Leduc, and Fort Saskatchewan. Submit photos through the form on this page and we aim to reply the same day. Facebook Marketplace and Kijiji are the other direct-sale options, if you&rsquo;d rather run the listing yourself.</p>
           </details>
           <details class="faq-item">
             <summary><h3 class="faq-question">Who buys used sofas in Edmonton?</h3></summary>
-            <p class="faq-answer">Edmonton Refreshed focuses specifically on sofas and sectionals from recognized brands &mdash; Natuzzi, B&amp;B Italia, Rove Concepts, EQ3, Crate &amp; Barrel, West Elm, American Leather, Restoration Hardware, Brentwood Classics, Pottery Barn, Urban Barn, and similar. Consignment shops, online classifieds, and donation channels handle other categories; we're focused on the seating segment.</p>
-          </details>
-          <details class="faq-item">
-            <summary><h3 class="faq-question">Will I get more for my sofa on Marketplace?</h3></summary>
-            <p class="faq-answer">Possibly &mdash; sofas are one of the more active Marketplace categories, and a strong listing on a recognizable piece can produce a higher final number than our offer. What you give up for the price difference is the time investment (photos, listing copy, messages, viewings) and the uncertainty of whether the right buyer turns up before the timeline you actually have.</p>
+            <p class="faq-answer">Edmonton Refreshed focuses on sofas and sectionals from recognized brands: Natuzzi, B&amp;B Italia, Rove Concepts, EQ3, Crate &amp; Barrel, West Elm, American Leather, Restoration Hardware, Brentwood Classics, Pottery Barn, Urban Barn, and similar. Consignment shops, online classifieds, and donation channels handle other categories.</p>
           </details>
         </div>
       </div>
@@ -982,7 +952,7 @@
   <!-- FOOTER_END -->
 
   <script src="../../js/shared.min.js?v=d1f81259"></script>
-  <script src="../../js/sell-form.min.js?v=771c37f6"></script>
+  <script src="../../js/sell-form.min.js?v=9a02af92"></script>
 
 </body>
 </html>

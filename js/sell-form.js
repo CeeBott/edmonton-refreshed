@@ -115,6 +115,22 @@
     };
     msrpInput.addEventListener('input', formatMoney);
     msrpInput.addEventListener('blur', formatMoney);
+
+    // "Not sure" (inherited pieces, no receipt). The checkbox carries the same
+    // field name with the value "Not sure"; disabling the text input keeps it
+    // out of both validation and the FormData, so exactly one value is sent
+    // and no placeholder number is ever invented.
+    var msrpUnsure = document.getElementById('sf-msrp-unsure');
+    if (msrpUnsure) {
+      var syncUnsure = function () {
+        msrpInput.disabled = msrpUnsure.checked;
+        msrpInput.required = !msrpUnsure.checked;
+        if (msrpUnsure.checked) msrpInput.value = '';
+      };
+      msrpUnsure.addEventListener('change', syncUnsure);
+      form.addEventListener('reset', function () { setTimeout(syncUnsure, 0); });
+      syncUnsure();
+    }
   }
 
   var photosInput = document.getElementById('sf-photos');

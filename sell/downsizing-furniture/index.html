@@ -74,7 +74,7 @@
     "name": "Downsizing Furniture Buyout in Edmonton",
     "description": "We buy quality sofas and sectionals from sellers downsizing in Edmonton. Pickup handled fully, paid at the door, one piece or several.",
     "url": "https://edmontonrefreshed.com/sell/downsizing-furniture/",
-    "dateModified": "2026-10-08",
+    "dateModified": "2026-10-09",
     "provider": {
       "@type": "FurnitureStore",
       "@id": "https://edmontonrefreshed.com/#business",
@@ -168,18 +168,18 @@
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "I have multiple pieces — do you take them all in one visit?",
+        "name": "I have multiple pieces. Do you take them all in one visit?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "We focus on sofas and sectionals, so if you have several seating pieces from a single household — a sofa, a loveseat, a matching chair set, a second sectional in a finished basement — those can be submitted together. Standalone chairs are considered selectively for exceptional quality and condition. Dining sets and bedroom furniture are outside what we buy."
+          "text": "We focus on sofas and sectionals, so if you have several seating pieces from one household (a sofa, a loveseat, a matching chair set, a second sectional in the basement), submit them together. Standalone chairs are considered selectively for exceptional quality and condition. Dining sets and bedroom furniture are outside what we buy."
         }
       },
       {
         "@type": "Question",
-        "name": "How does the offer work if I'm selling more than one piece?",
+        "name": "How does the offer work if I’m selling more than one piece?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "We evaluate each piece individually based on brand, age, and condition, then bundle the offer into a single number for the visit. You'll see the per-piece logic — there's no black box."
+          "text": "We look at each piece on its own, based on brand, age, and condition, and explain how we got to each number."
         }
       },
       {
@@ -187,15 +187,15 @@
         "name": "Are older pieces still considered?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Condition matters significantly more than age. A well-maintained 12-year-old leather sofa from a recognized brand is often a stronger piece than a 3-year-old mass-market sectional. Send photos and we'll give you a straight read."
+          "text": "Yes. Condition matters more than age. A well-maintained 12-year-old leather sofa from a recognized brand is often a stronger piece than a 3-year-old mass-market sectional. Send photos and we’ll give you a straight answer."
         }
       },
       {
         "@type": "Question",
-        "name": "What if some of my pieces aren't a fit?",
+        "name": "What if some of my pieces aren’t a fit?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "We aim to reply the same day and tell you which pieces qualify. For pieces outside our buy zone, Marketplace, donation through Find Edmonton Furniture Bank or the Bissell Centre, or a removal service for items at end of life is usually the better path."
+          "text": "We aim to reply the same day and tell you which pieces are a fit. For the others, Marketplace, donation through Find Edmonton Furniture Bank or the Bissell Centre, or a removal service for items at end of life is usually the better path."
         }
       },
       {
@@ -203,7 +203,7 @@
         "name": "Do I need to have everything cleared and ready before pickup?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "No. We bring blankets, straps, and the truck, and we handle disassembly and load-out. Cushions can stay in place; we don't expect the piece to be packed or staged."
+          "text": "No. We bring blankets, straps, and the truck, and we handle disassembly and load-out. Cushions can stay in place; nothing needs to be packed or staged."
         }
       },
       {
@@ -216,10 +216,10 @@
       },
       {
         "@type": "Question",
-        "name": "Can you handle pickup if I'm downsizing from a house to a condo?",
+        "name": "Can you handle pickup if I’m downsizing from a house to a condo?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes. We pick up from houses, condos, townhouses, and apartments. We bring the truck, blankets, straps, and crew — modular sectionals get disassembled at the door. Mention tight stairwells or elevators when you submit."
+          "text": "Yes. We pick up from houses, condos, townhouses, and apartments, and bring the truck, blankets, straps, and crew. Mention tight stairwells or elevator bookings when you submit."
         }
       },
       {
@@ -227,7 +227,7 @@
         "name": "Do you help families downsizing on behalf of an elderly parent?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes. You can submit photos and arrange pickup on a parent's behalf. There's no obligation to accept an offer."
+          "text": "Yes. You can submit photos and arrange pickup on a parent’s behalf. There’s no obligation to accept an offer."
         }
       }
     ]
@@ -415,7 +415,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="../../css/styles.min.css?v=40cb68af">
+  <link rel="stylesheet" href="../../css/styles.min.css?v=a723cb64">
   <meta name="theme-color" content="#2c2c2c">
 </head>
 <body>
@@ -698,6 +698,7 @@
               <div class="sell-form-row">
                 <label for="sf-msrp">Original price <span class="sell-form-req" aria-hidden="true">*</span></label>
                 <input type="text" id="sf-msrp" name="Original purchase price" inputmode="numeric" autocomplete="off" placeholder="$ (approximate is fine)" required>
+                <label class="sell-form-unsure"><input type="checkbox" id="sf-msrp-unsure" name="Original purchase price" value="Not sure"> Not sure</label>
               </div>
             </div>
 
@@ -757,8 +758,8 @@
               </div>
             </div>
             <div class="sell-form-row">
-              <label for="sf-notes">Anything we should know? (Multiple pieces, building access, timing) <span class="sell-form-req-note">(optional)</span></label>
-              <textarea id="sf-notes" name="Notes" rows="3" placeholder="Number of pieces, building access, timing, anything else"></textarea>
+              <label for="sf-notes">Anything we should know? (Other pieces, timing, building access) <span class="sell-form-req-note">(optional)</span></label>
+              <textarea id="sf-notes" name="Notes" rows="3" placeholder="e.g. Sofa and matching loveseat. Moving to a condo in January. Pieces are in the basement."></textarea>
             </div>
           </fieldset>
 
@@ -781,8 +782,8 @@
         <ul>
         <li><strong>Brand and original retail.</strong> Pieces that started life at a recognized brand (Natuzzi, EQ3, Crate &amp; Barrel, Urban Barn, and up) typically hold enough resale value to be worth submitting. Items that originally came from Ashley, IKEA, Leon's, or The Brick rarely clear our threshold.</li>
         <li><strong>Condition over age.</strong> A well-maintained 10-year-old leather sofa from a recognized brand usually outranks a 3-year-old mass-market sectional. Send photos either way &mdash; age alone isn't a disqualifier.</li>
-        <li><strong>Sets and matching pieces.</strong> A sofa-plus-chair set or a complete living-room group from one household is often more valuable as a coordinated lot than the same pieces sold separately on Marketplace.</li>
-        <li><strong>Pieces that won't fit the new place.</strong> Even if a piece is great, if it physically won't fit through the new doorway or down to the new family room, the answer to "should I sell it" is usually yes &mdash; moving cost plus storage rarely beats resale value.</li>
+        <li><strong>Sets and matching pieces.</strong> A sofa with its matching chair or loveseat is easiest to resell together, so include every piece in your photos.</li>
+        <li><strong>Pieces that won&rsquo;t fit the new place.</strong> If a piece won&rsquo;t fit through the new doorway or into the new room, selling it is usually the answer: moving and storing it rarely makes sense.</li>
         </ul>
         <p>When in doubt, photograph it. We aim to reply the same day, and there's no commitment in asking.</p>
       </section>
@@ -831,60 +832,16 @@
         <details class="sell-acc">
           <summary><h2>Why downsizing furniture is a different problem</h2></summary>
           <div class="sell-acc-body">
-            <p>The pieces we see from downsizing households tend to be in better shape than average. They've often lived in formal living rooms, second sitting areas, or finished basements that didn't see daily use. The leather is supple, the cushions hold shape, and there's nothing structurally wrong with them. They just don't fit the next chapter.</p>
-
-            <p>What makes the project hard isn't condition &mdash; it's logistics. A house being scaled down to a condo or a smaller bungalow often involves a sofa, a loveseat, sometimes a sectional, plus the supporting cast: chairs, ottomans, side pieces. Coordinating that on Marketplace means listing each separately, fielding messages on each, and somehow convincing buyers to bring help and a truck on a Saturday. For a single piece that might be reasonable. For five, it stops being reasonable quickly.</p>
-
-            <p>The other pressure point is timing. Downsizing usually has a date attached &mdash; possession of the new place, the closing on the current home, the move-in window for an assisted living transition. The closer that date gets, the less leverage there is to wait on a Marketplace buyer who said they'd be there at noon and didn't show.</p>
+            <p>Pieces from a downsizing household have often lived in formal living rooms, second sitting areas, or finished basements that didn&rsquo;t see daily use. They&rsquo;re frequently in good shape; they just don&rsquo;t fit the next home.</p>
+            <p>The harder part is usually logistics. Scaling a house down to a condo can mean a sofa, a loveseat, maybe a sectional, plus chairs and ottomans, all needing to go around the same date. Selling them privately means a listing, messages, and showings for each piece. Downsizing also tends to come with a date attached: possession of the new place, the closing on the current home, or a move-in window at an assisted living residence.</p>
           </div>
         </details>
         <details class="sell-acc">
-          <summary><h2>Where private sale still works</h2></summary>
+          <summary><h2>Private sale, consignment, or selling to us</h2></summary>
           <div class="sell-acc-body">
-            <p>If you have time and only one or two pieces, Marketplace and Kijiji can still be productive. A neutral-fabric sectional from a recognized brand listed eight to ten weeks before move-out, priced sensibly, will often clear at a higher final number than a direct buyout. The trade is the time investment &mdash; messaging, scheduling, and walking strangers through the home &mdash; and the uncertainty.</p>
-
-            <p>Consignment is another option, particularly for genuinely high-end pieces in neutral upholstery. The months-long timelines and the store keeping about half of the sale price are real, but for the right piece on the right shop's floor, the math can work. We've covered the comparison in more detail on the <a href="/sell/furniture-consignment/">consignment page</a>.</p>
-          </div>
-        </details>
-        <details class="sell-acc">
-          <summary><h2>Where direct purchase fits</h2></summary>
-          <div class="sell-acc-body">
-            <p>For most downsizing sellers, what we offer is essentially logistics relief in exchange for some price flexibility. Specifically:</p>
-            <ul>
-            <li>One conversation, not five separate Marketplace threads</li>
-            <li>A reply we aim to send the same day, for one piece or several</li>
-            <li>A single coordinated pickup, with the truck and team handling load-out</li>
-            <li>Cash or e-transfer at the door &mdash; no waiting on consignment payouts</li>
-            <li>Honest answers about which pieces qualify and which don't</li>
-            </ul>
-
-            <p>This isn't the right path if your only goal is to extract the absolute maximum number from each piece. It's the right path if you'd rather move on to the rest of the project &mdash; the new place, the family, the transition itself &mdash; and not spend weekends on furniture logistics.</p>
-          </div>
-        </details>
-        <details class="sell-acc">
-          <summary><h2>Selling to us vs. listing on Marketplace while downsizing</h2></summary>
-          <div class="sell-acc-body">
-            <p>The honest version: piece by piece, Marketplace can pay more for the right item with the right buyer and enough time. What we offer is a different trade &mdash; one conversation potentially across multiple pieces, scheduled pickup, paid before we leave, and weekends back. For some sellers chasing the top of the market is worth the friction; for others the friction is the cost.</p>
-            <div class="sell-compare-wrap">
-            <table class="sell-compare">
-            <thead>
-            <tr>
-            <th scope="col"></th>
-            <th scope="col">Facebook Marketplace</th>
-            <th scope="col">Edmonton Refreshed</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr><td>Potential price per piece</td><td>Higher ceiling on individual pieces, if buyers show up</td><td>Below the per-piece ceiling.</td></tr>
-            <tr><td>Your time</td><td>Photos, listings, messages, viewings &mdash; for each item</td><td>Send a few photos. That's it.</td></tr>
-            <tr><td>Time to resolution</td><td>Days to weeks per piece; downsizing windows can stretch for months</td><td>We aim to reply the same day; pickup is scheduled with you</td></tr>
-            <tr><td>Strangers in the home</td><td>Multiple buyers walking through the place you're trying to clear</td><td>One pickup visit, scheduled with you</td></tr>
-            <tr><td>Payment</td><td>Cash or e-transfer per pickup &mdash; if the buyer arrives</td><td>Paid by your preferred method before we leave with the pieces</td></tr>
-            <tr><td>Best fit</td><td>You have time, energy, and want to chase the per-piece top of market</td><td>You'd rather have the lot gone, for a fair number</td></tr>
-            </tbody>
-            </table>
-            </div>
-            <p>If you have the bandwidth to run multiple listings during a life transition, Marketplace is a real option. If you'd rather have it handled in one pass, that's what we're built for.</p>
+            <p>If you have time and only one or two pieces, Marketplace and Kijiji can work well. A neutral-fabric sectional from a recognized brand, listed eight to ten weeks before move-out and priced sensibly, can sell for more than a direct offer. The trade is the time it takes: messaging, scheduling, and showing the piece in your home.</p>
+            <p>Consignment is another option, particularly for high-end pieces in neutral upholstery. Expect a wait of months, and the store keeps a share of the sale, but for the right piece in the right shop the numbers can work. We&rsquo;ve covered the comparison on the <a href="/sell/furniture-consignment/">consignment page</a>.</p>
+            <p>Our offer is based on your specific piece and accounts for what it costs us to inspect, clean, photograph, list, and deliver it to its next owner. In exchange, the pieces we buy go in one conversation and one pickup, and you&rsquo;re paid by cash or e-transfer before they leave. If getting the highest price for each piece matters most and you have the time, a private sale may suit you better.</p>
           </div>
         </details>
       </section>
@@ -893,36 +850,36 @@
         <h2 class="section-label">Frequently Asked Questions</h2>
         <div class="faq-list">
           <details class="faq-item">
-            <summary><h3 class="faq-question">I have multiple pieces &mdash; do you take them all in one visit?</h3></summary>
-            <p class="faq-answer">We focus on sofas and sectionals, so if you have several seating pieces from a single household &mdash; a sofa, a loveseat, a matching chair set, a second sectional in a finished basement &mdash; those can be submitted together. Standalone chairs are considered selectively for exceptional quality and condition. Dining sets and bedroom furniture are outside what we buy.</p>
+            <summary><h3 class="faq-question">I have multiple pieces. Do you take them all in one visit?</h3></summary>
+            <p class="faq-answer">We focus on sofas and sectionals, so if you have several seating pieces from one household (a sofa, a loveseat, a matching chair set, a second sectional in the basement), submit them together. Standalone chairs are considered selectively for exceptional quality and condition. Dining sets and bedroom furniture are outside what we buy.</p>
           </details>
           <details class="faq-item">
-            <summary><h3 class="faq-question">How does the offer work if I'm selling more than one piece?</h3></summary>
-            <p class="faq-answer">We evaluate each piece individually based on brand, age, and condition, then bundle the offer into a single number for the visit. You'll see the per-piece logic &mdash; there's no black box.</p>
+            <summary><h3 class="faq-question">How does the offer work if I&rsquo;m selling more than one piece?</h3></summary>
+            <p class="faq-answer">We look at each piece on its own, based on brand, age, and condition, and explain how we got to each number.</p>
           </details>
           <details class="faq-item">
             <summary><h3 class="faq-question">Are older pieces still considered?</h3></summary>
-            <p class="faq-answer">Condition matters significantly more than age. A well-maintained 12-year-old leather sofa from a recognized brand is often a stronger piece than a 3-year-old mass-market sectional. Send photos and we'll give you a straight read.</p>
+            <p class="faq-answer">Yes. Condition matters more than age. A well-maintained 12-year-old leather sofa from a recognized brand is often a stronger piece than a 3-year-old mass-market sectional. Send photos and we&rsquo;ll give you a straight answer.</p>
           </details>
           <details class="faq-item">
-            <summary><h3 class="faq-question">What if some of my pieces aren't a fit?</h3></summary>
-            <p class="faq-answer">We aim to reply the same day and tell you which pieces qualify. For pieces outside our buy zone, Marketplace, donation through Find Edmonton Furniture Bank or the Bissell Centre, or a removal service for items at end of life is usually the better path.</p>
+            <summary><h3 class="faq-question">What if some of my pieces aren&rsquo;t a fit?</h3></summary>
+            <p class="faq-answer">We aim to reply the same day and tell you which pieces are a fit. For the others, Marketplace, donation through Find Edmonton Furniture Bank or the Bissell Centre, or a removal service for items at end of life is usually the better path.</p>
           </details>
           <details class="faq-item">
             <summary><h3 class="faq-question">Do I need to have everything cleared and ready before pickup?</h3></summary>
-            <p class="faq-answer">No. We bring blankets, straps, and the truck, and we handle disassembly and load-out. Cushions can stay in place; we don't expect the piece to be packed or staged.</p>
+            <p class="faq-answer">No. We bring blankets, straps, and the truck, and we handle disassembly and load-out. Cushions can stay in place; nothing needs to be packed or staged.</p>
           </details>
           <details class="faq-item">
             <summary><h3 class="faq-question">Where can I sell furniture in Edmonton when downsizing?</h3></summary>
             <p class="faq-answer">Edmonton Refreshed buys sofas and sectionals directly from sellers downsizing across Edmonton, St. Albert, Sherwood Park, Spruce Grove, Leduc, and Fort Saskatchewan. Submit photos through the form on this page; we aim to reply the same day.</p>
           </details>
           <details class="faq-item">
-            <summary><h3 class="faq-question">Can you handle pickup if I'm downsizing from a house to a condo?</h3></summary>
-            <p class="faq-answer">Yes. We pick up from houses, condos, townhouses, and apartments. We bring the truck, blankets, straps, and crew &mdash; modular sectionals get disassembled at the door. Mention tight stairwells or elevators when you submit.</p>
+            <summary><h3 class="faq-question">Can you handle pickup if I&rsquo;m downsizing from a house to a condo?</h3></summary>
+            <p class="faq-answer">Yes. We pick up from houses, condos, townhouses, and apartments, and bring the truck, blankets, straps, and crew. Mention tight stairwells or elevator bookings when you submit.</p>
           </details>
           <details class="faq-item">
             <summary><h3 class="faq-question">Do you help families downsizing on behalf of an elderly parent?</h3></summary>
-            <p class="faq-answer">Yes. You can submit photos and arrange pickup on a parent's behalf. There's no obligation to accept an offer.</p>
+            <p class="faq-answer">Yes. You can submit photos and arrange pickup on a parent&rsquo;s behalf. There&rsquo;s no obligation to accept an offer.</p>
           </details>
         </div>
       </div>
@@ -1014,7 +971,7 @@
   <!-- FOOTER_END -->
 
   <script src="../../js/shared.min.js?v=d1f81259"></script>
-  <script src="../../js/sell-form.min.js?v=771c37f6"></script>
+  <script src="../../js/sell-form.min.js?v=9a02af92"></script>
 
 </body>
 </html>

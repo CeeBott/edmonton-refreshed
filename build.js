@@ -493,6 +493,8 @@ function injectSellForm(html, filepath) {
     return renderSellForm({
       indent:           indent,
       brand:            meta.brand,
+      brandLabel:       meta.brandLabel,
+      brandPlaceholder: meta.brandPlaceholder,
       notesLabel:       meta.notesLabel,
       notesPlaceholder: meta.notesPlaceholder,
       // Edmonton-local, via today() — never new Date().getFullYear(), which

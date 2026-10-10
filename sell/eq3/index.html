@@ -89,7 +89,7 @@
     "name": "Sell Your EQ3 Sofa or Sectional in Edmonton",
     "description": "Skip Marketplace. Send photos of your EQ3 sofa or sectional — Replay, Salema, Remi. We aim to reply the same day, pickup is included, and we pay at the door.",
     "url": "https://edmontonrefreshed.com/sell/eq3/",
-    "dateModified": "2026-10-08",
+    "dateModified": "2026-10-09",
     "provider": {
       "@type": "FurnitureStore",
       "@id": "https://edmontonrefreshed.com/#business",
@@ -189,15 +189,15 @@
         "name": "Does colour affect the offer on EQ3 pieces?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes. Neutral upholstery — grey, oatmeal, charcoal, natural linen — resells broadly. Strong statement colours narrow the buyer pool and affect the offer; worn or faded fabric does the same regardless of colour."
+          "text": "Yes. Colour is one of the things we factor in, along with how the fabric has worn. Neutral colours are generally easier to resell."
         }
       },
       {
         "@type": "Question",
-        "name": "My EQ3 sofa came with custom legs — does that matter?",
+        "name": "My EQ3 sofa came with custom legs. Does that matter?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Generally not negatively. Custom legs read as a feature, particularly walnut or oak over the standard leg options."
+          "text": "It doesn’t count against the piece. Include a photo of the legs so we can see what you have."
         }
       },
       {
@@ -205,7 +205,7 @@
         "name": "Do you buy other EQ3 furniture?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Our focus is sofas and sectionals. If you're selling EQ3 dining or storage pieces alongside a sofa, mention them in the form."
+          "text": "Our focus is sofas and sectionals. If you’re selling EQ3 dining or storage pieces alongside a sofa, mention them in the form."
         }
       },
       {
@@ -213,7 +213,7 @@
         "name": "Do you buy incomplete EQ3 sectionals?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Send it either way. Tell us the configuration and which pieces you have, and we'll price what's there."
+          "text": "Send it either way. Tell us the configuration and which pieces you have, and we’ll make an offer on what’s there."
         }
       },
       {
@@ -226,18 +226,10 @@
       },
       {
         "@type": "Question",
-        "name": "Will I get more for my EQ3 piece on Marketplace?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Possibly. EQ3 is a well-known name, which helps a Marketplace listing, and the line is consistent enough for buyers to evaluate from photos. The honest trade is that with time, a strong listing on a complete EQ3 piece can outperform our offer. Our offer trades some price for convenience, identification across the full EQ3 catalogue, and pickup handled including modular disassembly."
-        }
-      },
-      {
-        "@type": "Question",
         "name": "Do you buy EQ3 modular sectionals like the Replay?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes. Modular EQ3 sectionals like the Replay, Cello, and Salema are pieces we look for. The locking-hardware modularity is a real advantage in resale because it makes the piece adaptable to many room layouts. Photos of each module and the original configuration help us price quickly."
+          "text": "Yes. Modular EQ3 sectionals like the Replay, Cello, and Salema are pieces we look for. Photos of each module and the full layout help us make an offer."
         }
       },
       {
@@ -245,7 +237,7 @@
         "name": "Is there an EQ3 buy-back or trade-in program in Edmonton?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "No — EQ3 doesn’t offer a buy-back or trade-in program. But you can sell yours outright to Edmonton Refreshed — send photos for an offer, paid by cash or e-transfer with pickup handled."
+          "text": "No. EQ3 doesn’t offer a buy-back or trade-in program. You can sell yours outright to Edmonton Refreshed instead: send photos for an offer, and if you accept, you’re paid by cash or e-transfer with pickup handled."
         }
       }
     ]
@@ -325,7 +317,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="../../css/styles.min.css?v=40cb68af">
+  <link rel="stylesheet" href="../../css/styles.min.css?v=a723cb64">
   <meta name="theme-color" content="#2c2c2c">
 </head>
 <body>
@@ -404,7 +396,7 @@
           <h1>Sell Your EQ3 Sofa or Sectional in Edmonton</h1>
           <p class="sell-updated">Updated October 2026</p>
           <p class="sell-intro-answer">Edmonton Refreshed buys pre-owned EQ3 sofas and sectionals outright in Edmonton. Send photos for a no-obligation offer. We aim to reply the same day, and if you accept, we handle pickup and pay you at the door.</p>
-          <p class="sell-intro-more">EQ3 is designed and made in Winnipeg, with a minimalist, modern look. We&rsquo;ve bought and resold its Replay and Remi sofas, and we can price an offer confidently from photos alone.</p>
+          <p class="sell-intro-more">EQ3 is designed and made in Winnipeg, with a minimalist, modern look. We&rsquo;ve bought and resold its Replay and Remi sofas. Clear photos are usually enough for us to make an offer, and we confirm the details and condition in person at pickup.</p>
           <a href="#sell-details" class="sell-hero-cta">Get an Offer</a>
         </div>
         <!-- HERO_MOSAIC_START -->
@@ -581,6 +573,7 @@
               <div class="sell-form-row">
                 <label for="sf-msrp">Original price <span class="sell-form-req" aria-hidden="true">*</span></label>
                 <input type="text" id="sf-msrp" name="Original purchase price" inputmode="numeric" autocomplete="off" placeholder="$ (approximate is fine)" required>
+                <label class="sell-form-unsure"><input type="checkbox" id="sf-msrp-unsure" name="Original purchase price" value="Not sure"> Not sure</label>
               </div>
             </div>
 
@@ -652,12 +645,10 @@
 
       <section class="sell-body">
         <h2 class="sell-h2">How EQ3 fits into our buy mix</h2>
-        <p>EQ3 occupies a useful middle ground: more <a href="/sell/sell-designer-furniture/">design-driven</a> than mass-market, more accessible than Italian or American premium brands. The Replay and a leather Remi are the EQ3 pieces we&rsquo;ve bought and resold so far.</p>
-
-        <p>The brand also offers custom configurations through their fabric and build programmes. Custom pieces are evaluated the same as catalogue versions — we look at the upholstery, frame, and configuration. Bespoke fabrics and unusual colours are factored into the offer.</p>
-
-        <p>Fabric choice matters more here than with leather. Wool blends, performance fabrics, and leather all hold their value well. Performance velvets and lighter linens are more sensitive to wear — pilling, fading, and staining show up quickly and we price accordingly.</p>
-      </section>
+        <p>EQ3 sits between mass-market furniture and the Italian and American premium brands we buy: <a href="/sell/sell-designer-furniture/">design-driven</a>, and more accessible in price. The Replay and a leather Remi are the EQ3 pieces we&rsquo;ve bought and resold so far.</p>
+        <p>Many EQ3 pieces are ordered in a chosen fabric, configuration, and leg. Custom pieces are evaluated the same way as catalogue versions: we look at the upholstery, the frame, and the configuration, and the fabric and colour are part of the offer.</p>
+        <p>We also look at how the upholstery has worn. Pilling, fading, and marks all factor in, whatever the fabric.</p>
+        </section>
 
       <section class="sell-buys">
         <h2 class="sell-h2">Pieces we buy</h2>
@@ -679,10 +670,9 @@
       <section>
         <h2 class="sell-h2">Why Edmonton sellers contact us about an EQ3 piece</h2>
         <div class="sell-reasons">
-          <div><h3>Upgrading to a new EQ3 model or moving on from the brand</h3><p>New home, design refresh, or a shift in direction. The original piece is in good shape — the next space or aesthetic just calls for something different. And if an EQ3 trade-in or buy-back route is what you were looking for, a direct sale covers the same ground — we buy the outgoing piece outright so it's gone before the new one arrives.</p></div>
+          <div><h3>Upgrading to a new EQ3 model or moving on from the brand</h3><p>A new home, a design refresh, or a change of direction. The piece is in good shape; the next space just calls for something different. If you were looking for an EQ3 trade-in or buy-back, a direct sale covers the same ground: we buy the outgoing piece outright.</p></div>
           <div><h3>Moving to a space where the configuration won&rsquo;t fit</h3><p>EQ3 modular sectionals are room-specific. A Replay or Cello configuration that worked in the old layout may not suit the new one — and when you&rsquo;re <a href="/sell/downsizing-furniture/">downsizing to a condo or apartment</a>, reconfiguring the modules doesn&rsquo;t always solve it.</p></div>
           <div><h3>The room is being renovated or redesigned</h3><p>A new aesthetic direction, flooring change, or full room refresh. EQ3&rsquo;s clean lines work well in the right context — when that context changes, the piece often moves with it.</p></div>
-          <div><h3>Not worth the time to list and manage a Marketplace sale</h3><p>EQ3 modular pieces require hardware disassembly that buyers routinely underestimate. Some sellers with good pieces decide a single conversation and a scheduled pickup — with someone who knows how the modules come apart — is worth more than the Marketplace ceiling.</p></div>
         </div>
       </section>
 
@@ -691,53 +681,33 @@
           <summary><h2>What affects the offer</h2></summary>
           <div class="sell-acc-body">
             <ul>
-            <li><strong>Model:</strong> leather Remi and Replay lead our offer range</li>
-            <li><strong>Upholstery:</strong> leather and wool blends carry stronger resale value than performance velvets or light linens</li>
-            <li><strong>Frame:</strong> EQ3 frames hold up well, but we still check for cushion sag and leg stability before pricing</li>
-            <li><strong>Age:</strong> 0–6 years is the strongest band; well-maintained older pieces still considered if the frame is solid and quiet</li>
-            <li><strong>Cushion covers:</strong> some EQ3 models have removable covers; intact and clean covers help, missing ones don't disqualify a piece</li>
+            <li><strong>Model and configuration:</strong> including whether all the modules are there</li>
+            <li><strong>Upholstery:</strong> fabric or leather, its colour, and how it has worn</li>
+            <li><strong>Frame and cushions:</strong> we check for seat sag and leg stability</li>
+            <li><strong>Age and condition:</strong> condition counts for more than the year</li>
+            <li><strong>Cushion covers:</strong> some EQ3 models have removable covers; intact, clean covers help, and missing ones don&rsquo;t rule a piece out</li>
             </ul>
           </div>
         </details>
         <details class="sell-acc">
           <summary><h2>How to document your EQ3 piece for an accurate offer</h2></summary>
           <div class="sell-acc-body">
-            <p>EQ3&rsquo;s custom build programmes mean many pieces have specific fabric, leg, or finish combinations that affect resale value. A few things you can capture for a more accurate offer.</p>
+            <p>Many EQ3 pieces were ordered with a specific fabric, leg, and configuration. A few things worth capturing:</p>
             <ul>
-            <li><strong>Model name and configuration.</strong> Check under a seat cushion or stapled to the underside of the frame. The tag usually spells out the model (Replay, Remi, Salema, Cello, etc.) and the production date.</li>
-            <li><strong>Fabric or leather code.</strong> EQ3&rsquo;s order confirmations (and many product tags) include a fabric or leather code &mdash; e.g., &ldquo;Lazlo Linen&rdquo; or a leather identifier. This identifies the exact textile and affects the offer significantly.</li>
-            <li><strong>Leg style and finish.</strong> EQ3 ships with standard leg options and offers upgrades (walnut, oak, blackened steel). Walnut and oak typically lift the offer; standard powder-coated metal legs are baseline.</li>
-            <li><strong>Module count for sectionals.</strong> Modular EQ3 sectionals (Replay, Cello, Salema) lock together with hardware. Count the seat modules, back cushions, ottomans, and corner pieces &mdash; and confirm all original hardware is present.</li>
-            <li><strong>Original order documents.</strong> EQ3 emails the order confirmation with model name, fabric code, configuration, and leg choice. These confirm everything in one document.</li>
+            <li><strong>Model name and configuration.</strong> Check under a seat cushion or on the underside of the frame for a tag naming the model (Replay, Remi, Salema, Cello, and so on).</li>
+            <li><strong>Fabric or leather.</strong> Your order confirmation, and sometimes the tag, names the upholstery. Include it if you have it.</li>
+            <li><strong>Legs.</strong> Photograph the legs. Leg options vary by model, and they help us identify the piece.</li>
+            <li><strong>Modules.</strong> For a modular sectional, count the seat modules, back cushions, ottomans, and corner pieces, and check that any connecting hardware is still there.</li>
+            <li><strong>Order confirmation.</strong> It usually lists the model, fabric, configuration, and legs in one place.</li>
             </ul>
-            <p>If you can&rsquo;t tell from the tag, send photos of the side profile, the leg, the fabric or leather up close, and any visible label. We identify the model and configuration from photos in most cases.</p>
+            <p>If you can&rsquo;t find a tag, send photos of the side profile, the legs, the upholstery up close, and any label, and we&rsquo;ll work from those.</p>
           </div>
         </details>
         <details class="sell-acc">
           <summary><h2>Selling an EQ3 piece to us vs. listing on Marketplace</h2></summary>
           <div class="sell-acc-body">
-            <p>EQ3 is a well-known Canadian brand, which helps a Marketplace listing. The trade is what it always is: time and effort against convenience and pickup handled. Worth noting that EQ3 modular sectionals usually need to be disassembled for pickup, which buyers underestimate when arranging a Marketplace transport.</p>
-            <div class="sell-compare-wrap">
-            <table class="sell-compare">
-            <thead>
-            <tr>
-            <th scope="col"></th>
-            <th scope="col">Facebook Marketplace</th>
-            <th scope="col">Edmonton Refreshed</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr><td>Potential price</td><td>Higher ceiling on EQ3 with the right photos and a knowledgeable buyer</td><td>Below the Marketplace ceiling.</td></tr>
-            <tr><td>Time to resolution</td><td>2&ndash;6 weeks typical</td><td>We aim to reply the same day; pickup is scheduled with you</td></tr>
-            <tr><td>Fabric/leather identification</td><td>You explain it; EQ3 has many custom variants that buyers ask about</td><td>We know the EQ3 line and can price across fabric, leather, and configuration options confidently</td></tr>
-            <tr><td>Moving the piece</td><td>Buyer arranges transport; modular EQ3 sectionals require disassembly</td><td>We bring the truck, blankets, straps, and crew. We handle EQ3 modular disassembly.</td></tr>
-            <tr><td>Coordinating multiple pieces</td><td>Separate listings, separate buyers, separate pickup times</td><td>One conversation for a sofa-plus-loveseat or sectional-plus-chair set</td></tr>
-            <tr><td>Payment</td><td>When the buyer arrives &mdash; if they arrive</td><td>Paid by your preferred method before we leave with the piece</td></tr>
-            <tr><td>Best fit</td><td>You have time, the configuration is intact, and you can stage and photograph well</td><td>You'd rather have it gone, for a fair number</td></tr>
-            </tbody>
-            </table>
-            </div>
-            <p>For a complete, well-photographed EQ3 set in good condition, Marketplace is a real option. If the configuration is partial or the timeline matters, the trade tends to favour us.</p>
+            <p>EQ3 is a well-known Canadian brand, which helps a private listing. For the right piece, Marketplace can pay more than our offer, if you have time to run the listing, answer messages, and host showings, and a buyer follows through. Modular sectionals usually need to come apart to be moved, which is easy to underestimate when arranging a private sale; our crew handles it at pickup.</p>
+            <p>Our offer is based on your specific piece and accounts for what it costs us to inspect, clean, photograph, list, and deliver it to its next owner. In exchange, it&rsquo;s one conversation, pickup by our crew, and payment before the piece leaves. If the highest possible price matters most and you have the time, Marketplace may suit you better.</p>
           </div>
         </details>
       </section>
@@ -747,11 +717,11 @@
         <div class="faq-list">
           <details class="faq-item">
             <summary><h3 class="faq-question">Does colour affect the offer on EQ3 pieces?</h3></summary>
-            <p class="faq-answer">Yes. Neutral upholstery — grey, oatmeal, charcoal, natural linen — resells broadly. Strong statement colours narrow the buyer pool and affect the offer; worn or faded fabric does the same regardless of colour.</p>
+            <p class="faq-answer">Yes. Colour is one of the things we factor in, along with how the fabric has worn. Neutral colours are generally easier to resell.</p>
           </details>
           <details class="faq-item">
-            <summary><h3 class="faq-question">My EQ3 sofa came with custom legs &mdash; does that matter?</h3></summary>
-            <p class="faq-answer">Generally not negatively. Custom legs read as a feature, particularly walnut or oak over the standard leg options.</p>
+            <summary><h3 class="faq-question">My EQ3 sofa came with custom legs. Does that matter?</h3></summary>
+            <p class="faq-answer">It doesn&rsquo;t count against the piece. Include a photo of the legs so we can see what you have.</p>
           </details>
           <details class="faq-item">
             <summary><h3 class="faq-question">Do you buy other EQ3 furniture?</h3></summary>
@@ -759,23 +729,19 @@
           </details>
           <details class="faq-item">
             <summary><h3 class="faq-question">Do you buy incomplete EQ3 sectionals?</h3></summary>
-            <p class="faq-answer">Send it either way. Tell us the configuration and which pieces you have, and we&rsquo;ll price what&rsquo;s there.</p>
+            <p class="faq-answer">Send it either way. Tell us the configuration and which pieces you have, and we&rsquo;ll make an offer on what&rsquo;s there.</p>
           </details>
           <details class="faq-item">
             <summary><h3 class="faq-question">Where can I sell my EQ3 sofa in Edmonton?</h3></summary>
             <p class="faq-answer">Edmonton Refreshed buys EQ3 sofas and sectionals directly from sellers across Edmonton, St. Albert, Sherwood Park, Spruce Grove, Leduc, and Fort Saskatchewan, including the Replay, Salema, Remi, and Cello. Send photos through the form on this page. We aim to reply the same day.</p>
           </details>
           <details class="faq-item">
-            <summary><h3 class="faq-question">Will I get more for my EQ3 piece on Marketplace?</h3></summary>
-            <p class="faq-answer">Possibly. EQ3 is a well-known name, which helps a Marketplace listing, and the line is consistent enough for buyers to evaluate from photos. The honest trade is that with time, a strong listing on a complete EQ3 piece can outperform our offer. Our offer trades some price for convenience, identification across the full EQ3 catalogue, and pickup handled including modular disassembly.</p>
-          </details>
-          <details class="faq-item">
             <summary><h3 class="faq-question">Do you buy EQ3 modular sectionals like the Replay?</h3></summary>
-            <p class="faq-answer">Yes. Modular EQ3 sectionals like the Replay, Cello, and Salema are pieces we look for. The locking-hardware modularity is a real advantage in resale because it makes the piece adaptable to many room layouts. Photos of each module and the original configuration help us price quickly.</p>
+            <p class="faq-answer">Yes. Modular EQ3 sectionals like the Replay, Cello, and Salema are pieces we look for. Photos of each module and the full layout help us make an offer.</p>
           </details>
           <details class="faq-item">
             <summary><h3 class="faq-question">Is there an EQ3 buy-back or trade-in program in Edmonton?</h3></summary>
-            <p class="faq-answer">No &mdash; EQ3 doesn&rsquo;t offer a buy-back or trade-in program. But you can sell yours outright to Edmonton Refreshed &mdash; send photos for an offer, paid by cash or e-transfer with pickup handled.</p>
+            <p class="faq-answer">No. EQ3 doesn&rsquo;t offer a buy-back or trade-in program. You can sell yours outright to Edmonton Refreshed instead: send photos for an offer, and if you accept, you&rsquo;re paid by cash or e-transfer with pickup handled.</p>
           </details>
         </div>
       </div>
@@ -867,7 +833,7 @@
   <!-- FOOTER_END -->
 
   <script src="../../js/shared.min.js?v=d1f81259"></script>
-  <script src="../../js/sell-form.min.js?v=771c37f6"></script>
+  <script src="../../js/sell-form.min.js?v=9a02af92"></script>
 
 </body>
 </html>

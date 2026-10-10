@@ -3220,6 +3220,27 @@ footer a:focus-visible {
   flex-direction: column;
   gap: 6px;
 }
+/* "Not sure" escape hatch under Original price. */
+.sell-form-unsure {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+.sell-form-unsure input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--color-accent);
+}
+.sell-form input[type="text"]:disabled {
+  background: var(--color-bg-subtle, #f4f4f2);
+  color: var(--color-text-secondary);
+  cursor: not-allowed;
+}
 .sell-form-row > label {
   font-size: 0.85rem;
   font-weight: 500;

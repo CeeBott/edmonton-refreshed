@@ -17,7 +17,7 @@
  * hand-edited between builds is rewritten back to this source.
  *
  * ── Per-page variation ──────────────────────────────────────────────
- * Three things legitimately differ per page. Everything else is identical
+ * A few things legitimately differ per page. Everything else is identical
  * everywhere and lives here as a constant.
  *
  *   brand   — brand pages pre-fill sf-brand with their own brand (§5.11
@@ -28,6 +28,9 @@
  *             premium-brand page has already self-identified the brand, so
  *             the disclaimer is redundant there. Encoding the rule rather
  *             than a per-page boolean means the two can never disagree.
+ *   brandLabel / brandPlaceholder — the premium-retailer page asks for
+ *             "Brand or original store", because its sellers often remember
+ *             the store rather than the maker. The input keeps name="Brand".
  *   notes   — situational pages tailor the "Anything we should know?" label
  *             and placeholder to their circumstance (move date, executor
  *             details, building access). This is deliberate page-specific
@@ -83,6 +86,7 @@ var DEFAULTS = {
   // worker/index.js (1 and 6). The receipt uploads through this same field,
   // which is why the cap is 6 rather than 5 and the wording says "files".
   photosNote: '(at least 1, up to 6 files)',
+  brandLabel: 'Brand',
   notesLabel: 'Anything we should know?',
   notesPlaceholder: 'Anything we should know?',
   // Oldest discrete year offered before the catch-all bucket. A fixed year
@@ -153,6 +157,8 @@ function renderSellForm(opts) {
   var brand = o.brand || '';
   // §5.11: brand pages omit the mass-market acknowledgment.
   var ack = !brand;
+  var brandLabel = o.brandLabel || DEFAULTS.brandLabel;
+  var brandPlaceholder = o.brandPlaceholder || DEFAULTS.brandPlaceholder;
   var notesLabel = o.notesLabel || DEFAULTS.notesLabel;
   var notesPlaceholder = o.notesPlaceholder || DEFAULTS.notesPlaceholder;
   var years = yearOptions(o.currentYear);
@@ -168,8 +174,8 @@ function renderSellForm(opts) {
   p('    <legend class="sell-form-group-title"><span class="sell-form-group-num" aria-hidden="true">1</span> Your piece</legend>');
   p('');
   p('    <div class="sell-form-row">');
-  p('      <label for="sf-brand">Brand' + REQ + '</label>');
-  p('      <input type="text" id="sf-brand" name="Brand" placeholder="' + DEFAULTS.brandPlaceholder + '" autocomplete="off" value="' + brand + '" required aria-describedby="sf-brand-warn">');
+  p('      <label for="sf-brand">' + brandLabel + REQ + '</label>');
+  p('      <input type="text" id="sf-brand" name="Brand" placeholder="' + brandPlaceholder + '" autocomplete="off" value="' + brand + '" required aria-describedby="sf-brand-warn">');
   // Filled by js/sell-form.js when the brand typed is one we don't buy. A soft
   // warning, never a block: it lands at the moment the seller is deciding,
   // instead of in a fit list they may have scrolled past.
@@ -200,6 +206,11 @@ function renderSellForm(opts) {
   p('      <div class="sell-form-row">');
   p('        <label for="sf-msrp">Original price' + REQ + '</label>');
   p('        <input type="text" id="sf-msrp" name="Original purchase price" inputmode="numeric" autocomplete="off" placeholder="$ (approximate is fine)" required>');
+  // "Not sure" escape hatch (§5.11: every mandatory field needs one). It
+  // shares the price input's name, and js/sell-form.js disables the input
+  // while it is ticked, so the form sends exactly one value: the literal
+  // "Not sure", never a made-up number. The Worker prints it as-is.
+  p('        <label class="sell-form-unsure"><input type="checkbox" id="sf-msrp-unsure" name="Original purchase price" value="Not sure"> Not sure</label>');
   p('      </div>');
   p('    </div>');
   p('');

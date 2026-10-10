@@ -242,8 +242,12 @@ module.exports = {
   // American Leather, Natuzzi Italia, EQ3, Natuzzi Editions.
   'sell/premium-retailer-furniture/index.html': {
     type: "situation",
-    notesLabel: "Anything we should know? (Where you bought it, delivery date for a new piece)",
-    notesPlaceholder: "Store you bought it from, when your new piece arrives, building access",
+    // Sellers here often remember the store, not the maker, so the Brand
+    // field asks for either (the input is still name="Brand").
+    brandLabel: "Brand or original store",
+    brandPlaceholder: "e.g. Natuzzi, American Leather, or the store: Scandia, McElheran&rsquo;s, F2",
+    notesLabel: "Anything we should know? (When your new piece arrives, building access)",
+    notesPlaceholder: "e.g. Bought at Cottswood around 2019. New sofa arrives Nov 14. Condo, elevator needs booking.",
     soldSchema: {
       name: "Recently Purchased Premium Sofas and Sectionals in Edmonton",
       description: "Photos of pre-owned sofas and sectionals from premium brands sold by Edmonton retailers, purchased outright and resold by Edmonton Refreshed.",
@@ -266,8 +270,8 @@ module.exports = {
   },
   'sell/selling-furniture-before-moving/index.html': {
     type: "situation",
-    notesLabel: "Anything we should know? (Move date, building access, etc.)",
-    notesPlaceholder: "Move date, building access, anything else",
+    notesLabel: "Anything we should know? (Your move date, building access)",
+    notesPlaceholder: "e.g. Possession is Nov 30, so it needs to be out by Nov 28. Third-floor walk-up, no elevator.",
     soldSchema: {
       name: "Recently Purchased Pieces from Edmonton Sellers",
       description: "Photos of pre-owned sofas and sectionals recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.",
@@ -280,8 +284,8 @@ module.exports = {
   },
   'sell/downsizing-furniture/index.html': {
     type: "situation",
-    notesLabel: "Anything we should know? (Multiple pieces, building access, timing)",
-    notesPlaceholder: "Number of pieces, building access, timing, anything else",
+    notesLabel: "Anything we should know? (Other pieces, timing, building access)",
+    notesPlaceholder: "e.g. Sofa and matching loveseat. Moving to a condo in January. Pieces are in the basement.",
     soldSchema: {
       name: "Recently Purchased Pieces from Edmonton Households",
       description: "Photos of pre-owned sofas and sectionals recently purchased and resold by Edmonton Refreshed across Edmonton and surrounding communities.",
@@ -293,8 +297,8 @@ module.exports = {
   },
   'sell/sell-furniture-fast/index.html': {
     type: "situation",
-    notesLabel: "Anything we should know? (Timeline, building access, etc.)",
-    notesPlaceholder: "When does the piece need to be gone? Any access notes?",
+    notesLabel: "Anything we should know? (Your deadline, building access)",
+    notesPlaceholder: "e.g. Flooring crew starts Monday, so it needs to be out by Saturday. Main floor, no stairs.",
     soldSchema: {
       name: "Recently Purchased Pieces in Edmonton — Fast Buyouts",
       description: "Photos of pre-owned sofas and sectionals recently purchased on tight timelines by Edmonton Refreshed across Edmonton and surrounding communities.",
@@ -307,8 +311,8 @@ module.exports = {
   },
   'sell/estate-furniture/index.html': {
     type: "situation",
-    notesLabel: "Anything we should know? (Multiple pieces, timeline, executor details)",
-    notesPlaceholder: "Number of pieces, timeline, who the offer should be paid to",
+    notesLabel: "Anything we should know? (Other pieces, timing, who we'll be dealing with)",
+    notesPlaceholder: "e.g. Sofa and two chairs at my mother's house. I'm the executor. The house closes Dec 15.",
     soldSchema: {
       name: "Recently Purchased Pieces from Edmonton Estates and Family Homes",
       description: "Photos of pre-owned sofas and sectionals purchased from estates and family homes across Edmonton and surrounding communities.",
