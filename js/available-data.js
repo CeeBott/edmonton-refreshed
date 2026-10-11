@@ -153,6 +153,7 @@ var availableItems = [
     metaTitle: "Pre-Owned B&B Italia Charles Sectional Sofa for Sale in Edmonton",
     metaDescription: "Pre-owned B&B Italia Charles sectional sofa in Edmonton. Professionally inspected and cleaned. Delivery available across Alberta. {price}.",
     availabilityStarts: "2026-05-15",
+    reserved: "2026-10-11",
     model: "Charles",
     productionDate: "2007",
     material: "Esopo Rattier",
