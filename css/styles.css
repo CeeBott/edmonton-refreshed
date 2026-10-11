@@ -2540,6 +2540,7 @@ h3.faq-question,
 .guide-photos--2 .guide-photos-grid { grid-template-columns: repeat(2, 1fr); }
 .guide-photos--3 .guide-photos-grid img, .guide-photos--2 .guide-photos-grid img { aspect-ratio: 4 / 3; height: auto; }
 .guide-photos figcaption { font-size: 0.8rem; color: var(--color-text-secondary); margin-top: 8px; line-height: 1.5; }
+.guide-diagram { display: block; width: 100%; height: auto; max-width: 640px; margin: 0 auto; }
 @media (max-width: 768px) {
   /* An even 2x2 on phones: the mosaic's narrow tiles cropped the sides off
      close-ups like brand labels. Each photo keeps its 4:3 frame. */
