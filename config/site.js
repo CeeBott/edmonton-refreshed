@@ -78,13 +78,14 @@ module.exports = {
     'Natuzzi',
     'Rove Concepts',
     'Crate & Barrel',
+    'Pottery Barn',
     'EQ3',
     'West Elm',
     'American Leather',
     'Restoration Hardware',
-    'La-Z-Boy',
     'Urban Barn',
     'Brentwood Classics',
+    'La-Z-Boy',
   ],
 
   // sameAs — canonical external profile URLs for Knowledge Graph entity
