@@ -27,6 +27,10 @@ var fs   = require('fs');
 var path = require('path');
 // Same source as build.js (§5.21); the build walk also restamps it on every run.
 var renderNewsletterNote = require('../partials/newsletter').renderNewsletterNote;
+// Same sources build.js reads for the fact-stack listing (§5.19, §5.20), so a
+// sold page's grade definitions and brand blurb never diverge from the live ones.
+var conditions  = require('../config/conditions');
+var brandBlurbs = require('../config/brands').brandBlurbs;
 
 var ROOT     = path.join(__dirname, '..');
 var BASE_URL = 'https://edmontonrefreshed.com/';
@@ -943,13 +947,151 @@ function buildFaqVisible(faq) {
     '          </section>';
 }
 
+// ── Fact-stack blocks (mirror of build.js, §5.10) ───────────
+// A retained snapshot carrying `conditionGrade` came from a fact-stack listing,
+// so the stub renders the same sections the live page did: condition bar,
+// Description, labelled Details, labelled Measurements, Includes, About {Brand}.
+// Copies of the build.js helpers, because build.js runs on require and exports
+// nothing (same necessary duplication as imageSize, §5.5). Keep them in sync.
+// Left out on purpose: the Delivery block and the one-of-one line, which offer
+// the piece to a buyer, and the asking-price half of the value pill (§6.3).
+
+var RETAIL_SUFFIX = ' plus tax &amp; delivery';
+function retailLabel(r) {
+  return (r.retailVerified ? 'Retail: ' : 'Est. Retail: ') +
+    formatPrice(r.retailEstimate) + (r.retailEstimateApprox ? '+' : '') +
+    ' CAD' + RETAIL_SUFFIX;
+}
+
+function buildConditionBlock(r) {
+  var grades = conditions.conditionGrades;
+  var idx = -1;
+  for (var i = 0; i < grades.length; i++) {
+    if (grades[i].name.toLowerCase() === String(r.conditionGrade).toLowerCase()) idx = i;
+  }
+  if (idx === -1) throw new Error('Unknown conditionGrade "' + r.conditionGrade + '" in retained snapshot.');
+  var grade = grades[idx];
+  var steps = grades.map(function(g, n) {
+    return '<li class="condition-step' + (n === idx ? ' is-active' : '') + '">' +
+        '<span class="condition-step-seg"></span>' +
+        '<span class="condition-step-label">' + escapeHtml(g.name) + '</span>' +
+      '</li>';
+  }).join('');
+  var rubricRows = grades.slice().reverse().map(function(g) {
+    return '<div class="condition-rubric-row"><dt>' + escapeHtml(g.name) + '</dt><dd>' + escapeHtml(g.definition) + '</dd></div>';
+  }).join('');
+  return '<details class="listing-collapsible listing-condition" open>' +
+      '<summary class="listing-meta-label">Condition</summary>' +
+      '<div class="listing-condition-body">' +
+        '<ol class="condition-bar" role="img" aria-label="Condition: ' + escapeHtml(grade.name) +
+          ' — ' + (idx + 1) + ' out of ' + grades.length + '">' + steps + '</ol>' +
+        '<p class="condition-grade"><strong>' + escapeHtml(grade.name) + '</strong> &mdash; ' + escapeHtml(grade.definition) + '</p>' +
+        (r.condition ? '<p class="condition-note">' + escapeHtml(r.condition) + '</p>' : '') +
+        '<details class="condition-standards">' +
+          '<summary>How we grade condition</summary>' +
+          '<dl class="condition-rubric">' + rubricRows + '</dl>' +
+          '<p class="condition-rubric-note">' + escapeHtml(conditions.conditionScopeNote) + '</p>' +
+          '<p class="condition-rubric-link"><a href="' + conditions.conditionGuideHref + '">' +
+            escapeHtml(conditions.conditionGuideLabel) + ' &rarr;</a></p>' +
+        '</details>' +
+      '</div>' +
+    '</details>';
+}
+
+function buildDefinitionBlock(label, rows, extraHTML) {
+  var live = rows.filter(function(row) { return row && row.value; });
+  if (live.length === 0 && !extraHTML) return '';
+  return '<details class="listing-collapsible listing-detail-block">' +
+      '<summary class="listing-meta-label">' + escapeHtml(label) + '</summary>' +
+      (live.length ? '<dl class="listing-detail-list">' + live.map(function(row) {
+        return '<div class="listing-detail-row"><dt>' + escapeHtml(row.label) + '</dt><dd>' + escapeHtml(row.value) + '</dd></div>';
+      }).join('') + '</dl>' : '') +
+      (extraHTML || '') +
+    '</details>';
+}
+
+var MONTH_NAMES = ['January','February','March','April','May','June',
+                   'July','August','September','October','November','December'];
+function formatProductionDate(value) {
+  if (!value) return '';
+  var d = /^(\d{4})-(\d{2})(?:-\d{2})?$/.exec(String(value));
+  if (!d) return String(value);
+  var mi = parseInt(d[2], 10) - 1;
+  return (MONTH_NAMES[mi] ? MONTH_NAMES[mi] + ' ' : '') + d[1];
+}
+
+function buildDetailsBlock(brand, r) {
+  var featuresHTML = (r.features && r.features.length)
+    ? '<ul class="listing-features">' + r.features.map(function(f) { return '<li>' + escapeHtml(f) + '</li>'; }).join('') + '</ul>'
+    : '';
+  return buildDefinitionBlock('Details', [
+    { label: 'Brand',    value: brand },
+    { label: 'Model',    value: r.model },
+    { label: 'Year',     value: formatProductionDate(r.productionDate) },
+    { label: 'Material', value: r.material },
+    { label: 'Colour',   value: r.color },
+  ], featuresHTML);
+}
+
+function buildMeasurementsBlock(r) {
+  var d = r.dimensions;
+  if (!d) return '';
+  var rows = [
+    { label: 'Width',  value: d.width  ? d.width  + ' in' : '' },
+    { label: 'Depth',  value: d.depth  ? d.depth  + ' in' : '' },
+    { label: 'Height', value: d.height ? d.height + ' in' : '' },
+  ];
+  (d.extra || []).forEach(function(e) {
+    if (e && e.label && e.value) rows.push({ label: e.label, value: e.value });
+  });
+  return buildDefinitionBlock('Measurements', rows, '');
+}
+
+function buildBrandBlurbHTML(brand) {
+  var blurb = brandBlurbs[brand];
+  if (!blurb) return '';
+  return '<details class="listing-collapsible listing-brand-note">' +
+      '<summary class="listing-meta-label">About ' + escapeHtml(brand) + '</summary>' +
+      '<p class="listing-meta-text">' + escapeHtml(blurb) + '</p>' +
+    '</details>';
+}
+
+// Fact-stack retained block. Order mirrors the active listing (§5.10): retail
+// pill → Condition → Description → Details → Measurements → Includes →
+// About {Brand} → trust → FAQ. No spec pills: the fact-stack listing dropped
+// them because every fact carries a label below (§5.10).
+function buildRetainedFactStack(m) {
+  var r = m.retained;
+  var parts = [];
+  if (r.retailEstimate) {
+    parts.push('          <div class="listing-value-pill"><span class="pill-retail">' + retailLabel(r) + '</span></div>');
+  }
+  parts.push('          ' + buildConditionBlock(r));
+  if (r.description) {
+    parts.push('          <details class="listing-collapsible" open><summary class="listing-meta-label">Description</summary><p class="listing-description">' +
+      escapeHtml(r.description) + '</p>' + brandGuideHTML(m.brand) + '</details>');
+  }
+  [buildDetailsBlock(m.brand, r), buildMeasurementsBlock(r)].forEach(function(b) { if (b) parts.push('          ' + b); });
+  if (r.configuration) {
+    parts.push('          <details class="listing-collapsible"><summary class="listing-meta-label">Includes</summary><p class="listing-meta-text">' +
+      escapeHtml(r.configuration) + '</p></details>');
+  }
+  var blurb = buildBrandBlurbHTML(m.brand);
+  if (blurb) parts.push('          ' + blurb);
+  parts.push('          ' + TRUST_HTML);
+  if (r.faq && r.faq.length) parts.push(buildFaqVisible(r.faq));
+  return parts.join('\n') + '\n\n';
+}
+
 // The retained active-listing content block, rendered after the closing CTAs
 // and sell-line paragraph (current standard). Returns '' for legacy stubs.
-// Order mirrors the active listing: Est. Retail (asking price withheld) →
-// specs → Description → Features → Condition → Includes → trust → FAQ.
+// A snapshot from a fact-stack listing renders through buildRetainedFactStack;
+// an older one keeps the pre-fact-stack order: Est. Retail (asking price
+// withheld) → specs → Description → Features → Condition → Includes → trust → FAQ.
 function buildRetained(m) {
   var r = m.retained;
   if (!r) return '';
+  if (r.conditionGrade) return buildRetainedFactStack(m);
   var parts = [];
   if (r.retailEstimate) {
     var retailLabel = formatPrice(r.retailEstimate) + (r.retailEstimateApprox ? '+' : '');
