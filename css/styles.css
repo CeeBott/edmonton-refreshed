@@ -2525,6 +2525,17 @@ h3.faq-question,
   display: block;
   margin-top: -16%;
 }
+/* Two-photo opening image (e.g. a seller's photo beside ours): both photos
+   at the same height, each at its own width, so neither is cropped. The
+   column ratios are the photos' aspect ratios (1170x1093 and 1600x1200). */
+.guide-hero-pair-grid {
+  display: grid;
+  grid-template-columns: 1.0704fr 1.3333fr;
+  gap: 8px;
+}
+.guide-hero-pair img {
+  margin-top: 0;
+}
 /* Guide photo grids (PHOTO_GRID marker, build.js): the sell-page mosaic
    inside guide prose. Four photos: one large, three small. Two or three: an
    even row. Every tile links to the piece's own page. */
