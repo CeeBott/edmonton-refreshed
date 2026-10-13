@@ -2536,6 +2536,10 @@ h3.faq-question,
 .guide-hero-pair img {
   margin-top: 0;
 }
+/* Two photos with the same aspect ratio. */
+.guide-hero-pair-grid--even {
+  grid-template-columns: 1fr 1fr;
+}
 /* Guide photo grids (PHOTO_GRID marker, build.js): the sell-page mosaic
    inside guide prose. Four photos: one large, three small. Two or three: an
    even row. Every tile links to the piece's own page. */
