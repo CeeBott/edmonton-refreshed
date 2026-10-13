@@ -2292,15 +2292,24 @@ function injectAllPartials(html) {
   // (§8.9) and every reprice propagates on the next build. Family matching
   // is first-word prefix, same as related links ("Natuzzi" covers Natuzzi
   // Editions / Natuzzi Italia).
+  // Optional attributes: match="sectional" keeps only pieces whose title
+  // matches (case-insensitive), and price="false" omits the asking price and
+  // names the model only (the title before its em dash), for guides that must
+  // not carry our prices (§5.12).
   html = injectPartial(html, 'AVAILABLE_FROM_BRAND', function (attrs) {
     var family = (attrs.brand || '').split(' ')[0].toLowerCase();
     if (!family) return '';
+    var match = attrs.match ? new RegExp(attrs.match, 'i') : null;
     var live = availableItems.filter(function (i) {
-      return !i.comingSoon && !isReserved(i) && (i.brand || '').toLowerCase().indexOf(family) === 0;
+      return !i.comingSoon && !isReserved(i) && (i.brand || '').toLowerCase().indexOf(family) === 0 &&
+        (!match || match.test(i.title || ''));
     });
     if (!live.length) return '';
     var links = live.map(function (i) {
       var slug = i.slug || slugify(i.brand + '-' + i.title);
+      if (attrs.price === 'false') {
+        return '<a href="/listings/' + slug + '/">' + escapeHtml((i.title || '').split(' — ')[0]) + '</a>';
+      }
       return '<a href="/listings/' + slug + '/">' + escapeHtml(i.title) + '</a> (' + formatPriceCAD(i.price) + ')';
     }).join('; ');
     return '          <p><strong>Available from ' + escapeHtml(attrs.brand) + ' in Edmonton right now:</strong> ' + links + '.</p>';
