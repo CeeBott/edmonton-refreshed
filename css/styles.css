@@ -2705,8 +2705,12 @@ h3.faq-question,
   background: var(--color-surface);
 }
 .guide-table tbody td:first-child {
-  white-space: nowrap;
+  min-width: 7.5rem;
   color: var(--color-text-secondary);
+}
+.guide-table td strong {
+  font-weight: 600;
+  color: var(--color-text);
 }
 
 .guide-article .faq-section {
@@ -2777,12 +2781,13 @@ h3.faq-question,
   .guide-body h2 { font-size: 1.25rem; margin: 2.5rem 0 1rem; }
   .guide-body h3 { font-size: 1rem; margin: 2rem 0 0.6rem; }
   .guide-callout { padding: 1.1rem 1.25rem; margin: 2rem auto; }
+  .guide-table { font-size: 0.875rem; }
+  .guide-table th, .guide-table td { padding: 0.55rem 0.75rem; }
   .guide-cta { padding: 1.75rem; margin-top: 3rem; }
   .guides-section { padding: 0 var(--page-x); }
   .guides-section:last-of-type { padding-bottom: 64px; }
   .guides-section + .guides-section { margin-top: 44px; }
   .guides-section-heading { font-size: 1.25rem; }
-  .guide-table tbody td:first-child { white-space: normal; }
   .breadcrumb { padding: 16px var(--page-x) 0; }
   .about-hero { padding: 48px var(--page-x) 32px; }
   .guide-related { margin-top: 3rem; }
