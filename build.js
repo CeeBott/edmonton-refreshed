@@ -2292,27 +2292,34 @@ function injectAllPartials(html) {
   // (§8.9) and every reprice propagates on the next build. Family matching
   // is first-word prefix, same as related links ("Natuzzi" covers Natuzzi
   // Editions / Natuzzi Italia).
-  // Optional attributes: match="sectional" keeps only pieces whose title
-  // matches (case-insensitive), and price="false" omits the asking price and
-  // names the model only (the title before its em dash), for guides that must
-  // not carry our prices (§5.12).
+  // Optional attributes (§5.12):
+  //   brand="all"        every live piece, each named with its brand
+  //   match="sectional"  only pieces whose title matches (case-insensitive;
+  //                      "sofa|sectional" works)
+  //   price="false"      no asking price, model name only (seller-intent guides)
+  //   label="..."        replaces "Available from {brand} in Edmonton right now"
+  // Live asking prices are public and leave the page when the piece sells, so
+  // buyer-facing guides may show them; sold prices never appear.
   html = injectPartial(html, 'AVAILABLE_FROM_BRAND', function (attrs) {
+    var all = (attrs.brand || '').toLowerCase() === 'all';
     var family = (attrs.brand || '').split(' ')[0].toLowerCase();
     if (!family) return '';
     var match = attrs.match ? new RegExp(attrs.match, 'i') : null;
     var live = availableItems.filter(function (i) {
-      return !i.comingSoon && !isReserved(i) && (i.brand || '').toLowerCase().indexOf(family) === 0 &&
+      return !i.comingSoon && !isReserved(i) &&
+        (all || (i.brand || '').toLowerCase().indexOf(family) === 0) &&
         (!match || match.test(i.title || ''));
     });
     if (!live.length) return '';
     var links = live.map(function (i) {
       var slug = i.slug || slugify(i.brand + '-' + i.title);
-      if (attrs.price === 'false') {
-        return '<a href="/listings/' + slug + '/">' + escapeHtml((i.title || '').split(' — ')[0]) + '</a>';
-      }
-      return '<a href="/listings/' + slug + '/">' + escapeHtml(i.title) + '</a> (' + formatPriceCAD(i.price) + ')';
+      var name = attrs.price === 'false' ? (i.title || '').split(' \u2014 ')[0] : i.title;
+      if (all) name = i.brand + ' ' + name;
+      return '<a href="/listings/' + slug + '/">' + escapeHtml(name) + '</a>' +
+        (attrs.price === 'false' ? '' : ' (' + formatPriceCAD(i.price) + ')');
     }).join('; ');
-    return '          <p><strong>Available from ' + escapeHtml(attrs.brand) + ' in Edmonton right now:</strong> ' + links + '.</p>';
+    var label = attrs.label || ('Available from ' + attrs.brand + ' in Edmonton right now');
+    return '          <p><strong>' + escapeHtml(label) + ':</strong> ' + links + '.</p>';
   });
   // Guide photo grids (PHOTO_GRID markers): real photos of pieces we've bought,
   // in the sell-page mosaic style (§5.12).
