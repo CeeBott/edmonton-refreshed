@@ -521,3 +521,31 @@ document.querySelectorAll('.newsletter-form').forEach(function(form) {
     if (window.ResizeObserver) new ResizeObserver(update).observe(track);
   });
 })();
+
+// ── Guide tables: even rows (§5.12) ──────────────────────
+// Every guide table sets each body row to the height of its tallest row, so
+// comparable items (models, routes, grades) read as equal rows; on phones,
+// only tables of four or more columns. Heights depend on width and fonts, so
+// re-measure on load and resize.
+(function() {
+  var tables = document.querySelectorAll('.guide-table');
+  if (!tables.length) return;
+  function even() {
+    var phone = window.matchMedia('(max-width: 600px)').matches;
+    tables.forEach(function(table) {
+      var rows = Array.prototype.slice.call(table.tBodies[0].rows);
+      rows.forEach(function(r) { r.style.height = ''; });
+      // On phones only swipe tables (four or more columns) are evened; a
+      // narrow table's wrapped rows would leave large blank gaps.
+      if (phone && table.tHead && table.tHead.rows[0].cells.length < 4) return;
+      var tallest = 0;
+      rows.forEach(function(r) { tallest = Math.max(tallest, r.getBoundingClientRect().height); });
+      rows.forEach(function(r) { r.style.height = Math.ceil(tallest) + 'px'; });
+    });
+  }
+  var timer;
+  even();
+  window.addEventListener('load', even);
+  window.addEventListener('resize', function() { clearTimeout(timer); timer = setTimeout(even, 100); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(even);
+})();

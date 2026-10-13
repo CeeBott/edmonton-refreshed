@@ -1349,8 +1349,16 @@ var soldItems = [
 var SOLD_PAGE_SIZE = 9;
 var soldOffset = 0;
 
+// Stable anchor for a sold card, from its image folder (e.g. sold-rc-033), so
+// guides can link /sold/#sold-rc-033. build.js soldCardId() mirrors this.
+function soldCardId(item) {
+  var m = item.images && item.images[0] && item.images[0].match(/images\/(?:Sold Inventory\/)?([^\/]+)\//);
+  return m ? 'sold-' + m[1].toLowerCase() : '';
+}
+
 function buildSoldCard(item) {
-  return '<div class="card sold">' +
+  var id = soldCardId(item);
+  return '<div class="card sold"' + (id ? ' id="' + id + '"' : '') + '>' +
     (item.images && item.images.length > 0
       ? buildCarousel(item.images, item.brand + ' ' + item.title)
       : '<div class="card-image-placeholder">Photo</div>'
@@ -1393,6 +1401,7 @@ function renderSold() {
   grid.innerHTML = '';
   soldOffset = 0;
   renderSoldBatch();
+  showLinkedSoldCard();
 
   var btn = document.getElementById('sold-load-more');
   if (btn) {
@@ -1400,4 +1409,21 @@ function renderSold() {
   }
 }
 
+// A link to /sold/#sold-xx-nnn may point past the first batch: load batches
+// until that card exists, then bring it into view.
+function showLinkedSoldCard() {
+  var id = decodeURIComponent(location.hash.slice(1));
+  if (id.indexOf('sold-') !== 0) return;
+  while (!document.getElementById(id) && soldOffset < soldItems.length) renderSoldBatch();
+  var card = document.getElementById(id);
+  if (!card) return;
+  card.classList.add('is-linked');
+  // Jump now, and again once images have loaded in case the layout above it
+  // shifted. 'instant', because the page sets scroll-behavior: smooth (§9.10).
+  var scroll = function () { card.scrollIntoView({ block: 'center', behavior: 'instant' }); };
+  requestAnimationFrame(scroll);
+  if (document.readyState !== 'complete') window.addEventListener('load', scroll);
+}
+
 renderSold();
+window.addEventListener('hashchange', showLinkedSoldCard);

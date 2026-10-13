@@ -717,6 +717,12 @@ function generateAvailableHTML(items) {
   return lines.filter(Boolean).join('\n') + '\n      ';
 }
 
+// Stable anchor for a sold card (mirrors soldCardId in js/sold-data.js).
+function soldCardId(item) {
+  var m = item.images && item.images[0] && item.images[0].match(/images\/(?:Sold Inventory\/)?([^\/]+)\//);
+  return m ? 'sold-' + m[1].toLowerCase() : '';
+}
+
 function generateSoldHTML(items) {
   if (items.length === 0) return '';
 
@@ -733,7 +739,7 @@ function generateSoldHTML(items) {
       : '            <div class="card-title">' + escapeHtml(item.title) + '</div>';
 
     lines.push(
-      '        <div class="card sold">',
+      '        <div class="card sold"' + (soldCardId(item) ? ' id="' + soldCardId(item) + '"' : '') + '>',
       '          <div class="card-image-placeholder"><picture><source type="image/avif" srcset="' + avifSrcsetFor(imgSrc) + '" sizes="(max-width: 768px) 100vw, 530px"><source type="image/webp" srcset="' + webpSrcsetFor(imgSrc) + '" sizes="(max-width: 768px) 100vw, 530px"><img src="' + imgSrc + '" srcset="' + srcsetFor(imgSrc) + '" sizes="(max-width: 768px) 100vw, 530px" alt="' + alt + '" loading="lazy"></picture></div>',
       '          <div class="card-body">',
       '            <div class="card-meta"><div class="card-brand">' + escapeHtml(item.brand) + '</div><span class="sold-badge">Sold</span></div>',
@@ -2181,6 +2187,25 @@ function injectBetweenMarkers(html, startMarker, endMarker, newContent) {
 //   <!-- NAME_END -->
 //
 // Files without the markers are left untouched.
+// Sold-model links (SOLD_LINK markers, §5.12): <!-- SOLD_LINK_START
+// piece="CB-051" --><!-- SOLD_LINK_END --> renders a small "We've sold this
+// model" link to that piece's card in the sold archive (/sold/#sold-cb-051)
+// only once a js/sold-data.js entry owns photos in that folder, so a live piece
+// gets its link automatically when it is marked sold (§8.3). Own regex rather
+// than injectPartial, whose attribute grammar rejects the hyphen in folders.
+function injectSoldLinks(html) {
+  return html.replace(/(<!--\s*SOLD_LINK_START\s+piece="([^"]+)"\s*-->)[\s\S]*?(<!--\s*SOLD_LINK_END\s*-->)/g,
+    function (m, open, folder, close) {
+      var sold = soldItems.some(function (i) {
+        return (i.images || []).some(function (src) { return src.indexOf('/' + folder + '/') !== -1; });
+      });
+      var link = sold
+        ? '<span class="guide-table-note"><a href="/sold/#sold-' + folder.toLowerCase() + '">We&rsquo;ve sold this model</a></span>'
+        : '';
+      return open + link + close;
+    });
+}
+
 function injectPartial(html, name, render) {
   var re = new RegExp(
     '(<!--\\s*' + name + '_START(?:\\s+([^>-]*?))?\\s*-->)[\\s\\S]*?(<!--\\s*' + name + '_END\\s*-->)',
@@ -2324,6 +2349,7 @@ function injectAllPartials(html) {
   // Guide photo grids (PHOTO_GRID markers): real photos of pieces we've bought,
   // in the sell-page mosaic style (§5.12).
   html = injectPhotoGrids(html);
+  html = injectSoldLinks(html);
   // Sell-landing seller reviews: every review typed "seller" in
   // js/reviews-data.js renders in the homepage card format directly above
   // the "Send us your details" heading — the last thing read before the

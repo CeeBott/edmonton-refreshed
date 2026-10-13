@@ -2705,12 +2705,91 @@ h3.faq-question,
   background: var(--color-surface);
 }
 .guide-table tbody td:first-child {
-  min-width: 7.5rem;
   color: var(--color-text-secondary);
 }
 .guide-table td strong {
   font-weight: 600;
   color: var(--color-text);
+}
+
+/* Table standard (§5.12): on desktop, headers stay on one line, the first
+   column is wide enough for a two-word line, and every body row is as tall as
+   the tallest (js/shared.js). On phones that applies only to swipe tables
+   (four or more columns); narrower tables wrap naturally. Spec tables give
+   their labelled specs column room. */
+@media (min-width: 601px) {
+  .guide-table thead th {
+    white-space: nowrap;
+  }
+  .guide-table tbody td:first-child {
+    min-width: 9rem;
+  }
+  .guide-table--specs tbody td:nth-child(3) {
+    min-width: 16rem;
+  }
+}
+
+/* A secondary link (e.g. "We've sold this model") sits at the foot of its
+   cell, apart from the cell's main text. The cell reserves room for it. */
+.guide-table td:has(> .guide-table-note) {
+  position: relative;
+  padding-bottom: 2rem;
+}
+.guide-table-note {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.65rem;
+  text-align: center;
+  font-size: 0.68rem;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+/* Wide guide tables (four or more columns) swipe sideways on phones: the
+   first column stays pinned, the other columns keep a readable width, and a
+   hint above the table says it scrolls (§5.12). CSS only, via :has(). */
+@media (max-width: 600px) {
+  .guide-table-wrap:has(th:nth-child(4))::before {
+    content: "Swipe to see more \2192";
+    display: block;
+    position: sticky;
+    left: 0;
+    padding-bottom: 0.4rem;
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
+  }
+  .guide-table-wrap:has(th:nth-child(4)) .guide-table {
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+  .guide-table-wrap:has(th:nth-child(4)) th,
+  .guide-table-wrap:has(th:nth-child(4)) td {
+    min-width: 9.5rem;
+    border-width: 0 1px 1px 0;
+  }
+  .guide-table-wrap:has(th:nth-child(4)) thead th {
+    border-top-width: 1px;
+    white-space: nowrap;
+  }
+  .guide-table-wrap:has(th:nth-child(4)) th:first-child,
+  .guide-table-wrap:has(th:nth-child(4)) td:first-child {
+    border-left-width: 1px;
+  }
+  .guide-table-wrap:has(th:nth-child(4)) th:first-child,
+  .guide-table-wrap:has(th:nth-child(4)) td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    min-width: 8.5rem;
+    max-width: 8.5rem;
+    background: var(--color-bg);
+    box-shadow: 1px 0 0 var(--color-border), 4px 0 6px -4px rgba(0, 0, 0, 0.12);
+  }
+  .guide-table-wrap:has(th:nth-child(4)) thead th:first-child,
+  .guide-table-wrap:has(th:nth-child(4)) tbody tr:nth-child(even) td:first-child {
+    background: var(--color-surface);
+  }
 }
 
 .guide-article .faq-section {
@@ -2783,6 +2862,8 @@ h3.faq-question,
   .guide-callout { padding: 1.1rem 1.25rem; margin: 2rem auto; }
   .guide-table { font-size: 0.875rem; }
   .guide-table th, .guide-table td { padding: 0.55rem 0.75rem; }
+  .guide-table td:has(> .guide-table-note) { padding-bottom: 1.8rem; }
+  .guide-table-note { bottom: 0.55rem; }
   .guide-cta { padding: 1.75rem; margin-top: 3rem; }
   .guides-section { padding: 0 var(--page-x); }
   .guides-section:last-of-type { padding-bottom: 64px; }
@@ -4959,3 +5040,11 @@ footer a:focus-visible {
 }
 .sell-intro .sell-updated { text-align: left; }
 .sell-v2 > .sell-howto { max-width: var(--max-width); }
+
+/* A sold card a guide links to (/sold/#sold-xx-nnn) is outlined on arrival. */
+.card.sold:target,
+.card.sold.is-linked {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+  scroll-margin-top: calc(var(--nav-height) + 24px);
+}
