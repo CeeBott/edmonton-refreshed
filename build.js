@@ -660,14 +660,19 @@ function cardRetailLabel(item) {
 }
 
 function generateAvailableHTML(items) {
-  // Zero live pieces: say so and point at the newsletter directly below the
-  // grid, instead of leaving an empty section under "One of One". The browser
-  // render (js/available-data.js) leaves this block in place.
+  // Zero live pieces: say so, show the Recently sold strip the sell pages use
+  // (so a visitor sees the kind of piece the newsletter announces without
+  // leaving the page), and point at the newsletter directly below. Emitted
+  // only when availableItems is empty; the browser render
+  // (js/available-data.js) leaves this block in place.
   if (items.length === 0) {
     return [
       '        <div class="inventory-empty">',
-      '          <h3 class="inventory-empty-title">Between arrivals</h3>',
-      '          <p class="inventory-empty-text">Nothing is listed right now. Every piece is one of one, so inventory comes and goes. Join the list below to hear about the next arrival before it&rsquo;s posted, or see <a href="/sold/">the pieces we&rsquo;ve sold</a>.</p>',
+      '          <div class="inventory-empty-note">',
+      '            <h3 class="inventory-empty-title">Between arrivals</h3>',
+      '            <p class="inventory-empty-text">Nothing is listed right now. Every piece is one of one, so inventory comes and goes. Here are some of our recent sales. Join the list below them to hear about the next arrival before it&rsquo;s posted.</p>',
+      '          </div>',
+      generateRecentSoldHTML({ count: 6 }),
       '        </div>',
     ].join('\n');
   }

@@ -37,7 +37,10 @@
      surfaces with named columns. --col-page mirrors --max-width. */
   --col-narrow: 580px;  /* sell-content, sell-method, sell-form, sell-faq */
   --col-mid:    720px;  /* sell-landing-body, sell-landing-back-cta */
-  --col-prose:  850px;  /* guide-callout, guide-cta, guide-related, about-related */
+  --col-prose:  740px;  /* reading column (~90 characters a line): guide articles,
+                           about/privacy/returns, guides index, and the guide
+                           callout, CTA, table wrap, related, about-related */
+  --col-wide:   850px;  /* spec tables, which break out of the reading column */
   --col-page:   var(--max-width);
 }
 
@@ -612,11 +615,15 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   gap: 24px;
 }
 
-/* Zero-inventory state (build.js generateAvailableHTML): spans the whole grid
-   and points at the newsletter that sits directly below it. */
+/* Zero-inventory state (build.js generateAvailableHTML): one wrapper spanning
+   the whole grid (a single row, so grid-auto-rows can't stretch it), holding
+   the note and the Recently sold strip, with the newsletter directly below. */
 .inventory-empty {
   grid-column: 1 / -1;
-  width: 100%;
+  min-width: 0;
+}
+.inventory-empty .sell-landing-sold { margin-top: var(--space-5); }
+.inventory-empty-note {
   max-width: var(--col-narrow);
   margin: 0 auto;
   padding: var(--space-5) var(--space-4);
@@ -635,7 +642,6 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   color: var(--color-text-secondary);
   line-height: 1.7;
 }
-.inventory-empty-text a { color: var(--color-text); }
 
 .card {
   background: var(--color-surface);
@@ -2049,11 +2055,12 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
 .listing-collapsible .listing-meta-text {
   margin-bottom: 12px;
 }
-/* Keep long-form listing text at a readable measure; boxes stay full width */
+/* Keep long-form listing text at a readable measure; boxes stay full width.
+   FAQ answers carry the same cap sitewide (.faq-answer). */
 .listing-description,
 .listing-meta-text,
 .listing-features li,
-.listing-faq .faq-answer {
+.condition-note {
   max-width: 72ch;
 }
 .listing-meta-label {
@@ -2421,6 +2428,7 @@ h3.faq-question,
   font-size: 0.9rem;
   color: var(--color-text-secondary);
   line-height: 1.7;
+  max-width: 72ch;
 }
 .faq-answer a {
   color: var(--color-accent);
@@ -2456,6 +2464,16 @@ h3.faq-question,
 }
 .about-content {
   padding-bottom: 24px;
+}
+
+/* Long-form pages hold their text to the reading column, so desktop lines run
+   ~90 characters instead of ~130-150 at full page width. Each is a direct
+   child of .page, so the primitive's padding still applies (§7.1). */
+.guide-article,
+.about-content,
+.about-content ~ .faq-section,
+.guides-section {
+  max-width: calc(var(--col-prose) + 2 * var(--page-x));
 }
 .about-section {
   margin-bottom: 56px;
@@ -2810,6 +2828,17 @@ h3.faq-question,
     min-width: 16rem;
   }
 }
+/* Spec tables need more room than the 740px reading column allows, so on
+   desktop their wrapper widens to --col-wide, centred on the text. Without
+   :has() support they scroll sideways instead, as on phones. */
+@media (min-width: 901px) {
+  .guide-table-wrap:has(> .guide-table--specs) {
+    max-width: none;
+    width: var(--col-wide);
+    margin-left: calc((100% - var(--col-wide)) / 2);
+    margin-right: calc((100% - var(--col-wide)) / 2);
+  }
+}
 
 /* A secondary link (e.g. "We've sold this model") sits at the foot of its
    cell, apart from the cell's main text. The cell reserves room for it. */
@@ -2887,7 +2916,7 @@ h3.faq-question,
    Lives outside .guide-article so needs its own horizontal padding so cards
    never touch the viewport edge on mobile. */
 .guide-related {
-  max-width: var(--col-prose);
+  max-width: calc(var(--col-prose) + 2 * var(--page-x));
   margin: 3rem auto 0;
   padding: 0 var(--page-x);
 }
@@ -2928,7 +2957,7 @@ h3.faq-question,
 
 /* About page — Helpful guides strip */
 .about-related {
-  max-width: var(--col-prose);
+  max-width: calc(var(--col-prose) + 2 * var(--page-x));
   margin: 0 auto;
   padding: 48px var(--page-x) 16px;
 }
@@ -3207,6 +3236,13 @@ footer a:focus-visible {
 .reviews-carousel-btn:hover { background: #fff; box-shadow: var(--shadow-md); }
 .reviews-carousel-prev { left: -8px; }
 .reviews-carousel-next { right: -8px; }
+
+@media (max-width: 768px) {
+  /* Full-bleed swipe strip, as on the sell pages: cancel the page inset the
+     homepage grid sits in; the strip and its heading re-add it inside. */
+  .inventory-empty .sell-landing-sold { margin-left: calc(-1 * var(--page-x)); margin-right: calc(-1 * var(--page-x)); }
+  .inventory-empty .sell-section-head { padding: 0 var(--page-x); }
+}
 
 @media (max-width: 768px) {
   /* Match the sitewide mobile reviews carousel: full-bleed track with the

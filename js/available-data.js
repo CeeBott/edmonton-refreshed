@@ -250,8 +250,8 @@ function cardRetailLabel(item) {
 function renderAvailable() {
   var grid = document.getElementById('available-grid');
   if (availableItems.length === 0) {
-    // build.js already wrote the "Between arrivals" message into the grid as
-    // its static fallback; leave it in place rather than hiding the section.
+    // build.js already wrote its zero-inventory note into the grid as the
+    // static fallback; leave it in place rather than hiding the section.
     return;
   }
 
