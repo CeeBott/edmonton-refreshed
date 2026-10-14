@@ -329,14 +329,16 @@ if (navToggle && navLinks) {
 //  ACTIVE NAV LINK DETECTION
 // ═══════════════════════════════════════════════════════════
 
+// Matched on the first path segment, not a substring: "/sell" also matched
+// every /guides/selling-… guide, and pages outside the nav (partners, privacy,
+// returns, 404) fell through to "Available". They now highlight nothing.
 (function() {
-  var path = window.location.pathname;
-  var page = 'available';
-  if (path.indexOf('/sold') !== -1) page = 'sold';
-  else if (path.indexOf('/sell') !== -1) page = 'sell';
-  else if (path.indexOf('/about') !== -1) page = 'about';
-  else if (path.indexOf('/guides') !== -1) page = 'guides';
-  else if (path.indexOf('/listings') !== -1) page = 'available';
+  var segment = window.location.pathname.split('/')[1] || '';
+  var page = {
+    '': 'available', 'index.html': 'available', 'listings': 'available',
+    'sold': 'sold', 'sell': 'sell', 'about': 'about', 'guides': 'guides'
+  }[segment];
+  if (!page) return;
 
   document.querySelectorAll('.nav-links a').forEach(function(a) {
     if (a.dataset.page === page) {
@@ -429,8 +431,21 @@ document.querySelectorAll('.newsletter-form').forEach(function(form) {
   var sentinel = document.querySelector('.listing-sticky-sentinel');
   if (!bar || !sentinel || !('IntersectionObserver' in window)) return;
 
+  var link = bar.querySelector('a');
+  var overForm = false;
+
   function update(top) {
     bar.classList.toggle('parked', top <= window.innerHeight);
+    sync();
+  }
+
+  // Hidden from assistive tech and the tab order only while it is actually
+  // slid away: floating over the viewing form. Parked, it is always shown.
+  function sync() {
+    var hidden = overForm && !bar.classList.contains('parked');
+    bar.classList.toggle('over-form', overForm);
+    bar.setAttribute('aria-hidden', hidden ? 'true' : 'false');
+    if (link) link.tabIndex = hidden ? -1 : 0;
   }
 
   // IntersectionObserver fires on every crossing of the viewport edge and
@@ -444,6 +459,17 @@ document.querySelectorAll('.newsletter-form').forEach(function(form) {
   // Set the initial state (the observer's first callback also handles this,
   // but this guards against any timing edge on very short pages).
   update(sentinel.getBoundingClientRect().top);
+
+  // The viewing form sits above the FAQ, so the floating bar used to cover the
+  // bottom of the very form it links to (its submit button and error text).
+  // Slide it away while the form is on screen, as the sell pages' bar does.
+  var form = document.getElementById('request-viewing');
+  if (form) {
+    new IntersectionObserver(function(entries) {
+      overForm = entries[entries.length - 1].isIntersecting;
+      sync();
+    }, { rootMargin: '0px 0px -30% 0px' }).observe(form);
+  }
 })();
 
 

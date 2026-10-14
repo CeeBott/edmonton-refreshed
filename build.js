@@ -1808,7 +1808,9 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions, rev
       sellLineTarget = { href: '/sell/', anchor: 'sell your piece' };
     }
   }
-  var sellLineHTML = '<p class="listing-sell-line">Have one like this? We&rsquo;d buy yours back &mdash; <a href="' + sellLineTarget.href + '">' + sellLineTarget.anchor + ' &rarr;</a></p>';
+  // Conditional on fit, never a promise to buy (§5.12, §5.13); "buy back"
+  // also implied a buy-back program, which no brand we buy runs.
+  var sellLineHTML = '<p class="listing-sell-line">Have one like this to sell? Send photos and we&rsquo;ll tell you if it&rsquo;s a fit: <a href="' + sellLineTarget.href + '">' + sellLineTarget.anchor + ' &rarr;</a></p>';
 
   // Related Pieces — only renders when real related inventory exists.
   // Real inventory = other live pieces OR sold pieces in the same brand family.

@@ -245,7 +245,7 @@ module.exports = {
     // Sellers here often remember the store, not the maker, so the Brand
     // field asks for either (the input is still name="Brand").
     brandLabel: "Brand or original store",
-    brandPlaceholder: "e.g. Natuzzi, American Leather, or the store: Scandia, McElheran&rsquo;s, F2",
+    brandPlaceholder: "e.g. Natuzzi, Scandia (or &lsquo;unsure&rsquo;)",
     notesLabel: "Anything we should know? (When your new piece arrives, building access)",
     notesPlaceholder: "e.g. Bought at Cottswood around 2019. New sofa arrives Nov 14. Condo, elevator needs booking.",
     soldSchema: {

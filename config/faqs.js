@@ -28,7 +28,7 @@ const home = [
     question: 'What brands do you carry?',
     schemaQuestion: 'What premium furniture brands does Edmonton Refreshed carry?',
     answer:
-      'We work with well-built pieces from recognized makers: B&B Italia, Natuzzi, Rove Concepts, Crate & Barrel, EQ3, American Leather, Urban Barn, Brentwood Classics, and La-Z-Boy. If it’s a recognized brand in good condition, we’re interested.',
+      'We carry well-built pieces from recognized makers, including B&B Italia, Natuzzi, Rove Concepts, Crate & Barrel, Pottery Barn, EQ3, West Elm, American Leather, Urban Barn, Brentwood Classics, and La-Z-Boy. Every piece is one of one, so what’s available changes as pieces sell.',
   },
   {
     question: 'Do you deliver?',
@@ -96,9 +96,9 @@ const about = [
     question: 'What brands do you carry?',
     schemaQuestion: 'What premium furniture brands does Edmonton Refreshed carry?',
     answer:
-      'We focus on well-built pieces from recognized makers: B&B Italia, Natuzzi, Rove Concepts, Crate & Barrel, EQ3, American Leather, Urban Barn, Brentwood Classics, and La-Z-Boy. If it’s a well-built piece from a known manufacturer, we’re likely interested.',
+      'We carry well-built pieces from recognized makers, including B&B Italia, Natuzzi, Rove Concepts, Crate & Barrel, Pottery Barn, EQ3, West Elm, American Leather, Urban Barn, Brentwood Classics, and La-Z-Boy. Every piece is one of one, so what’s available changes as pieces sell.',
     schemaAnswer:
-      'Edmonton Refreshed works with well-built pieces from recognized makers including B&B Italia, Natuzzi, Rove Concepts, Crate & Barrel, EQ3, American Leather, Urban Barn, Brentwood Classics, and La-Z-Boy. The focus is on furniture that holds its quality and value.',
+      'Edmonton Refreshed carries well-built pre-owned pieces from recognized makers, including B&B Italia, Natuzzi, Rove Concepts, Crate & Barrel, Pottery Barn, EQ3, West Elm, American Leather, Urban Barn, Brentwood Classics, and La-Z-Boy. Every piece is one of one, so what’s available changes as pieces sell.',
   },
   {
     question: 'Do you deliver?',

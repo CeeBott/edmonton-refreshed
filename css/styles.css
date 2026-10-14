@@ -1661,8 +1661,11 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
     gap: 16px;
     padding: 0 var(--page-x);
     scrollbar-width: none;
-    -webkit-mask-image: linear-gradient(to right, transparent, var(--page-x), black calc(100% - var(--page-x)), transparent);
-    mask-image: linear-gradient(to right, transparent, var(--page-x), black calc(100% - var(--page-x)), transparent);
+    /* Fade only the page inset at each edge. Every length here must follow a
+       colour: a bare length between two colours is an interpolation hint, and
+       the old form faded the whole first card to roughly half opacity. */
+    -webkit-mask-image: linear-gradient(to right, transparent 0, black var(--page-x), black calc(100% - var(--page-x)), transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0, black var(--page-x), black calc(100% - var(--page-x)), transparent 100%);
   }
   .reviews-grid::-webkit-scrollbar { display: none; }
   .reviews-grid .review-card {
@@ -2207,7 +2210,10 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
     border-top: 1px solid rgba(0,0,0,0.12);
     box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
     padding-bottom: env(safe-area-inset-bottom, 0px);
+    transition: transform 200ms ease;
   }
+  /* Out of the way while the viewing form itself is on screen (shared.js). */
+  .listing-sticky-cta.over-form:not(.parked) { transform: translateY(110%); }
   .listing-sticky-cta .sticky-cta-primary {
     display: block;
     width: 100%;
@@ -3183,8 +3189,8 @@ footer a:focus-visible {
   .buyer-reviews .reviews-grid {
     gap: 16px;
     padding: 0 var(--page-x);
-    -webkit-mask-image: linear-gradient(to right, transparent, var(--page-x), black calc(100% - var(--page-x)), transparent);
-    mask-image: linear-gradient(to right, transparent, var(--page-x), black calc(100% - var(--page-x)), transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent 0, black var(--page-x), black calc(100% - var(--page-x)), transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0, black var(--page-x), black calc(100% - var(--page-x)), transparent 100%);
   }
   .buyer-reviews .reviews-grid .review-card {
     flex: 0 0 280px;

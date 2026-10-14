@@ -56,19 +56,26 @@ const PAGES = [
   { path: '/sell/estate-furniture/', name: 'sell-situation-estate' },
   { path: '/sell/sofa-trade-in/', name: 'sell-situation-trade-in', mobile: true },
   { path: '/sell/premium-retailer-furniture/', name: 'sell-situation-premium-retailer', mobile: true },
+  { path: '/sell/furniture-consignment/', name: 'sell-situation-consignment', mobile: true },
+  { path: '/sell/american-leather/', name: 'sell-brand-american-leather' },
   { path: '/sell/what-we-buy/', name: 'sell-what-we-buy', mobile: true },
-  { path: '/partners/', name: 'partners' },
+  { path: '/partners/', name: 'partners', mobile: true },
   { path: '/about/', name: 'about', mobile: true },
-  { path: '/guides/', name: 'guides-index' },
+  { path: '/guides/', name: 'guides-index', mobile: true },
   { path: '/guides/how-to-buy-used-sofa-edmonton/', name: 'guide-buyer' },
   { path: '/guides/who-buys-used-couches-edmonton/', name: 'guide-seller', mobile: true },
   { path: '/guides/natuzzi-sofa-review-edmonton/', name: 'guide-brand-natuzzi' },
+  { path: '/guides/crate-and-barrel-sofa-review-edmonton/', name: 'guide-brand-crate-and-barrel', mobile: true },
   { path: '/guides/high-end-furniture-stores-edmonton/', name: 'guide-stores', mobile: true },
-  { path: '/listings/b-b-italia-charles-sectional-edmonton/', name: 'listing-bb-italia', mobile: true },
-  { path: '/listings/west-elm-jodie-wing-leather-chairs-edmonton/', name: 'listing-west-elm', mobile: true },
-  { path: '/listings/bracci-como-maxi-apartment-sofa-edmonton/', name: 'listing-bracci' },
-  { path: '/listings/pottery-barn-turner-square-arm-sofa-edmonton/', name: 'sold-stub-pottery-barn' },
-  { path: '/listings/natuzzi-editions-vigore-leather-sectional/', name: 'sold-stub-vigore' },
+  { path: '/guides/how-to-measure-sectional-sofa-edmonton/', name: 'guide-measure', mobile: true },
+  { path: '/guides/sectional-sofa-cost-edmonton/', name: 'guide-cost', mobile: true },
+  // Active listings (js/available-data.js slugs); B&B Italia is reserved.
+  { path: '/listings/crate-and-barrel-lounge-power-reclining-sectional-edmonton/', name: 'listing-lounge-power', mobile: true },
+  { path: '/listings/crate-and-barrel-gather-89-bench-sofa-edmonton/', name: 'listing-gather', mobile: true },
+  { path: '/listings/b-b-italia-charles-sectional-edmonton/', name: 'listing-bb-italia-reserved', mobile: true },
+  // Sold stubs (js/sold-data.js hrefs): two fact-stack retained, one legacy.
+  { path: '/listings/american-leather-carson-sectional-edmonton/', name: 'sold-stub-carson', mobile: true },
+  { path: '/listings/west-elm-jodie-wing-leather-chairs-edmonton/', name: 'sold-stub-west-elm' },
   { path: '/listings/rove-concepts-milo-6-piece-modular-sectional/', name: 'sold-stub-milo', mobile: true },
   { path: '/privacy/', name: 'privacy' },
   { path: '/returns/', name: 'returns' },
@@ -84,6 +91,11 @@ const PAGES = [
       f.querySelector('button[type="submit"], .sell-form-submit')?.click();
       f.reportValidity && f.reportValidity(); })();`,
     viewportOnly: true,
+  },
+  {
+    path: '/listings/crate-and-barrel-gather-89-bench-sofa-edmonton/', name: 'state-viewing-validation',
+    mobile: true, scroll: '#request-viewing', viewportOnly: true,
+    pre: `document.querySelector('#request-viewing .viewing-submit')?.click();`,
   },
 ];
 
@@ -155,9 +167,15 @@ async function capture(page, def, vp, file) {
   });
   await sleep(400);
   if (!def.viewportOnly) {
-    // Force lazy images by walking the page, then return to top.
+    // Force lazy images: a fast scroll walk alone left below-fold guide photos
+    // blank in full-page shots, so flip them to eager and wait (capped) for
+    // every image to decode, then walk the page and return to top.
     await page.send('Runtime.evaluate', {
       expression: `(async () => {
+        document.querySelectorAll('img[loading="lazy"]').forEach(i => { i.loading = 'eager'; });
+        const pending = [...document.images].filter(i => !i.complete)
+          .map(i => new Promise(r => { i.addEventListener('load', r, { once: true }); i.addEventListener('error', r, { once: true }); }));
+        await Promise.race([Promise.all(pending), new Promise(r => setTimeout(r, 8000))]);
         const step = Math.max(400, innerHeight - 100);
         for (let y = 0; y < document.body.scrollHeight; y += step) {
           scrollTo(0, y); await new Promise(r => setTimeout(r, 60));

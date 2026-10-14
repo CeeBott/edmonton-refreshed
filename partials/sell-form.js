@@ -81,7 +81,10 @@ function attrJson(v) {
 }
 
 var DEFAULTS = {
-  brandPlaceholder: 'e.g. Natuzzi, EQ3, Rove Concepts (or &lsquo;unsure&rsquo;)',
+  // Short enough to show in full on a 375px phone: the "unsure" escape hatch
+  // is the field's only answer for a seller who doesn't know (§5.11), and the
+  // longer three-brand version clipped it off.
+  brandPlaceholder: 'e.g. Natuzzi, EQ3 (or &lsquo;unsure&rsquo;)',
   // Must agree with MIN_PHOTOS / MAX_PHOTOS in js/sell-form.js and
   // worker/index.js (1 and 6). The receipt uploads through this same field,
   // which is why the cap is 6 rather than 5 and the wording says "files".
