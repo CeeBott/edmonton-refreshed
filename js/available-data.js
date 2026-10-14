@@ -250,7 +250,8 @@ function cardRetailLabel(item) {
 function renderAvailable() {
   var grid = document.getElementById('available-grid');
   if (availableItems.length === 0) {
-    grid.style.display = 'none';
+    // build.js already wrote the "Between arrivals" message into the grid as
+    // its static fallback; leave it in place rather than hiding the section.
     return;
   }
 

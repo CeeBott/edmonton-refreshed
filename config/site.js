@@ -72,7 +72,9 @@ module.exports = {
   // brandList — canonical ordered brand list for entity/AI surfaces (§2.1:
   // top-tier names lead; La-Z-Boy near the end, never first). Rendered between
   // BRAND_LIST_START/_END markers (homepage sr-only block, sold-page intro)
-  // by build.js — edit here once, never per page.
+  // by build.js — edit here once, never per page. Those markers filter it to
+  // brands we have carried or sold (only="carried" / only="sold"), so a brand
+  // here that has never sold, like Restoration Hardware, is left out of them.
   brandList: [
     'B&B Italia',
     'Natuzzi',

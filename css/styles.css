@@ -612,6 +612,31 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   gap: 24px;
 }
 
+/* Zero-inventory state (build.js generateAvailableHTML): spans the whole grid
+   and points at the newsletter that sits directly below it. */
+.inventory-empty {
+  grid-column: 1 / -1;
+  width: 100%;
+  max-width: var(--col-narrow);
+  margin: 0 auto;
+  padding: var(--space-5) var(--space-4);
+  text-align: center;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+}
+.inventory-empty-title {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+.inventory-empty-text {
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+}
+.inventory-empty-text a { color: var(--color-text); }
+
 .card {
   background: var(--color-surface);
   border-radius: var(--radius);

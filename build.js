@@ -660,7 +660,17 @@ function cardRetailLabel(item) {
 }
 
 function generateAvailableHTML(items) {
-  if (items.length === 0) return '';
+  // Zero live pieces: say so and point at the newsletter directly below the
+  // grid, instead of leaving an empty section under "One of One". The browser
+  // render (js/available-data.js) leaves this block in place.
+  if (items.length === 0) {
+    return [
+      '        <div class="inventory-empty">',
+      '          <h3 class="inventory-empty-title">Between arrivals</h3>',
+      '          <p class="inventory-empty-text">Nothing is listed right now. Every piece is one of one, so inventory comes and goes. Join the list below to hear about the next arrival before it&rsquo;s posted, or see <a href="/sold/">the pieces we&rsquo;ve sold</a>.</p>',
+      '        </div>',
+    ].join('\n');
+  }
 
   var lines = ['        <!-- Static fallback for crawlers; JS replaces this on load -->'];
 
@@ -2366,8 +2376,17 @@ function injectAllPartials(html) {
   // Config-driven inline fragments (homepage sr-only entity block, sold-page
   // tagline): the canonical §2.1-ordered brand list and the sold count render
   // from config/site.js so the pages can never drift from it.
+  // only="sold" keeps brands with a piece in js/sold-data.js; only="carried"
+  // also counts live pieces. Matched by family (first word), so a "record of"
+  // or "we carry" sentence never names a brand we have only ever bought; a
+  // brand joins on its first listing or sale.
   html = injectInline(html, 'BRAND_LIST', function (attrs) {
-    var list = (site.brandList || []).map(escapeHtml);
+    var pool = attrs.only === 'sold' ? soldItems
+      : attrs.only === 'carried' ? soldItems.concat(availableItems) : null;
+    var families = (pool || []).map(function (i) { return String(i.brand).split(' ')[0].toLowerCase(); });
+    var list = (site.brandList || []).filter(function (b) {
+      return !pool || families.indexOf(b.split(' ')[0].toLowerCase()) !== -1;
+    }).map(escapeHtml);
     if (!list.length) return '';
     return attrs.and === 'true' && list.length > 1
       ? list.slice(0, -1).join(', ') + ', and ' + list[list.length - 1]
@@ -3073,6 +3092,13 @@ if (firstVisible && firstVisible.images && firstVisible.images.length > 0) {
     /<!-- LCP_PRELOAD_START -->.*?<!-- LCP_PRELOAD_END -->/,
     '<!-- LCP_PRELOAD_START --><link rel="preload" as="image" imagesrcset="' + lcpAvifSrcset + '" imagesizes="(max-width: 768px) 100vw, 530px" fetchpriority="high" type="image/avif"><!-- LCP_PRELOAD_END -->'
   );
+} else {
+  // No card to paint: drop the preload rather than keep fetching a sold
+  // piece's photo the page no longer shows.
+  indexContent = indexContent.replace(
+    /<!-- LCP_PRELOAD_START -->.*?<!-- LCP_PRELOAD_END -->/,
+    '<!-- LCP_PRELOAD_START --><!-- LCP_PRELOAD_END -->'
+  );
 }
 
 // Centralized FAQ markup + schema for the homepage
@@ -3271,6 +3297,9 @@ function rebuildLlmsAvailableSection() {
     var slug = i.slug || slugify(i.brand + '-' + i.title);
     return '- ' + label + ': ' + formatPriceCAD(i.price) + (isReserved(i) ? ' (reserved)' : '') + ' — ' + BASE_URL + 'listings/' + slug + '/';
   }).join('\n');
+  // Kept as a bullet so the next build with inventory replaces it rather than
+  // folding it into the hand-authored intro above the list.
+  if (!live.length) bullets = '- None listed right now. New arrivals are posted at ' + BASE_URL;
   var out = txt.slice(0, start) + intro + bullets + '\n\n' + txt.slice(end);
   if (out !== txt) fs.writeFileSync(llmsPath, out, 'utf8');
   return live.length;
