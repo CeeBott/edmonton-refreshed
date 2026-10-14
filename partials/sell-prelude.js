@@ -9,10 +9,14 @@
  *                              invitation: removed 2026-09-27 to make the ask
  *                              feel selective rather than open to anything.
  *   2. .sell-form-offer      — how offers are calculated: we buy to resell,
- *                              so transport / cleaning / storage / remarketing
- *                              costs are priced in, the offer lands below
- *                              what a private sale would net, and the trade
- *                              on offer is convenience rather than top dollar.
+ *                              so transport / cleaning / storage / resale
+ *                              costs are priced in and the offer lands below
+ *                              what a private sale would net (stated plainly
+ *                              on purpose; Collin, 2026-10-14). Then what the
+ *                              seller gets for that: we handle everything,
+ *                              listed so it scans. Pickup speed is "without
+ *                              waiting on a buyer", never a timing promise
+ *                              (§5.13).
  *                              Added because inbound leads carried wildly
  *                              optimistic asking prices. The field that
  *                              collected those numbers has since been removed
@@ -43,7 +47,13 @@ function renderSellPrelude(indent) {
     // longer sits between the seller and the first field.
     i + '<details class="sell-form-offer">',
     i + '  <summary class="sell-form-offer-label">How our offers work</summary>',
-    i + '  <p class="sell-form-offer-body">We buy to resell, so every offer factors in what it costs us to transport, clean, store, and remarket a piece. That means our offer will come in below what a private sale would net you. If maximizing price is the priority, a private sale is the better option. What we offer instead is convenience: no listing, no messaging, no no-shows, and payment before the piece leaves your home. If that trade is worth it to you, we&rsquo;re a good option.</p>',
+    i + '  <p class="sell-form-offer-body">We buy to resell, so every offer accounts for what it costs us to transport, clean, store, and resell a piece. That means our offer will come in below what a private sale would net you. In return, we handle all of it:</p>',
+    i + '  <ul class="sell-form-offer-list">',
+    i + '    <li>No listing, no messages, and no strangers from Marketplace coming to your home.</li>',
+    i + '    <li>Pickup is scheduled with you once you accept, and it&rsquo;s included in the offer.</li>',
+    i + '    <li>Our crew does all the lifting and carries it out, so you don&rsquo;t move a thing.</li>',
+    i + '    <li>It&rsquo;s out of your home without waiting on a buyer, and you&rsquo;re paid by cash or e-transfer before it leaves.</li>',
+    i + '  </ul>',
     i + '</details>',
   ].join('\n');
 }

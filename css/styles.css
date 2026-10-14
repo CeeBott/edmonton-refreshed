@@ -4257,12 +4257,15 @@ footer a:focus-visible {
   display: flex;
   align-items: center;
 }
-.sell-form-offer-body {
+.sell-form-offer-body,
+.sell-form-offer-list {
   margin: 8px 0 4px;
   font-size: 0.9rem;
   line-height: 1.65;
   color: var(--color-text-secondary);
 }
+.sell-form-offer-list { padding-left: 1.1rem; }
+.sell-form-offer-list li + li { margin-top: 4px; }
 
 /* The offer card lines up with the form card below it, which is inset on
    phones; the prelude is plain text and stays on the page's text column. */
