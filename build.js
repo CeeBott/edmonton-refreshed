@@ -3246,7 +3246,8 @@ function getBrandGuideMap() {
     'Rove Concepts': { slug: 'rove-concepts-sofa-review-edmonton', label: 'Read our full Rove Concepts buyer&rsquo;s guide for Edmonton' },
     'Pottery Barn': { slug: 'pottery-barn-sofa-review-edmonton', label: 'Read our full Pottery Barn buyer&rsquo;s guide for Edmonton' },
     'Crate & Barrel': { slug: 'crate-and-barrel-sofa-review-edmonton', label: 'Read our full Crate &amp; Barrel buyer&rsquo;s guide for Edmonton' },
-    'EQ3': { slug: 'eq3-sofa-review-edmonton', label: 'Read our full EQ3 buyer&rsquo;s guide for Edmonton' }
+    'EQ3': { slug: 'eq3-sofa-review-edmonton', label: 'Read our full EQ3 buyer&rsquo;s guide for Edmonton' },
+    'West Elm': { slug: 'west-elm-sofa-review-edmonton', label: 'Read our full West Elm buyer&rsquo;s guide for Edmonton' }
   };
 }
 
