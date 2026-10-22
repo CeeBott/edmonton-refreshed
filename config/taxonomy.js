@@ -45,6 +45,7 @@ const brands = [
   { name: 'West Elm',             slug: 'west-elm' },
   { name: 'American Leather',     slug: 'american-leather' },
   { name: 'Pottery Barn',         slug: 'pottery-barn' },
+  { name: 'Stressless',           slug: 'stressless' },
 ];
 
 module.exports = {

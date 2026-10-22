@@ -412,4 +412,18 @@ module.exports = {
       basis: "collection, upholstery, age, and condition",
     },
   },
+  'sell/stressless/index.html': {
+    type: 'brand',
+    brand: 'Stressless',
+    showcase: { brand: 'Stressless' },
+    soldSchema: {
+      name: "Recently Purchased Stressless Pieces in Edmonton",
+      description: "Photos of pre-owned Stressless recliners, sofas, and sectionals purchased and resold by Edmonton Refreshed.",
+    },
+    howTo: {
+      heading: "How selling your Stressless piece works",
+      name: "How to Sell a Stressless Recliner, Sofa, or Sectional in Edmonton",
+      basis: "model, base, leather or fabric, age, and condition, plus the mechanism on power and reclining pieces",
+    },
+  },
 };

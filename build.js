@@ -1798,7 +1798,8 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions, rev
     'Restoration Hardware': { href: '/sell/restoration-hardware/', anchor: 'sell your Restoration Hardware piece' },
     'West Elm':             { href: '/sell/west-elm/',             anchor: 'sell your West Elm piece' },
     'American Leather':     { href: '/sell/american-leather/',     anchor: 'sell your American Leather piece' },
-    'Pottery Barn':         { href: '/sell/pottery-barn/',         anchor: 'sell your Pottery Barn piece' }
+    'Pottery Barn':         { href: '/sell/pottery-barn/',         anchor: 'sell your Pottery Barn piece' },
+    'Stressless':           { href: '/sell/stressless/',           anchor: 'sell your Stressless piece' }
   };
   var sellLineTarget;
   if (brandSellMap[item.brand]) {

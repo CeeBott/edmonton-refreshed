@@ -46,6 +46,7 @@ list is regenerated on every build and always matches the homepage.
 - Sell a West Elm piece in Edmonton: https://edmontonrefreshed.com/sell/west-elm/
 - Sell an American Leather piece in Edmonton: https://edmontonrefreshed.com/sell/american-leather/
 - Sell a Pottery Barn piece in Edmonton: https://edmontonrefreshed.com/sell/pottery-barn/
+- Sell a Stressless recliner or sofa in Edmonton: https://edmontonrefreshed.com/sell/stressless/
 
 **By piece type**
 - Sell a sectional in Edmonton: https://edmontonrefreshed.com/sell/sectional/

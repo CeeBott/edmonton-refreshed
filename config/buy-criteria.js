@@ -49,7 +49,7 @@ module.exports = {
     ['B&B Italia', ''], ['Natuzzi Italia', ''], ['Herman Miller', ''], ['Knoll', ''],
     ['Roche Bobois', ''], ['Restoration Hardware', ''], ['Design Within Reach', ''],
     ['Rove Concepts', ''], ['EQ3', ''], ['West Elm', ''], ['Crate & Barrel', ''],
-    ['Pottery Barn', ''], ['American Leather', ''], ['Room & Board', ''],
+    ['Pottery Barn', ''], ['American Leather', ''], ['Stressless', ''], ['Room & Board', ''],
     ['Natuzzi Editions', ''], ['Younger', ''], ['VanGogh', ''],
     ['Brentwood Classics', ''],
     ['La-Z-Boy', 'leather & premium'], ['Urban Barn, CB2, Article', 'select'],
