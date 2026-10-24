@@ -771,6 +771,7 @@ var soldItems = [
       "../images/Sold Inventory/NE-031/natuzzi-editions-08.jpeg",
       "../images/Sold Inventory/NE-031/natuzzi-editions-03.jpeg",
       "../images/Sold Inventory/NE-031/natuzzi-editions-09.jpeg",
+      "../images/Sold Inventory/NE-031/natuzzi-editions-10.jpeg",
     ],
     retained: {
       metaTitle: "Natuzzi Editions Cesare Top-Grain Leather Sectional — Edmonton",
@@ -883,6 +884,7 @@ var soldItems = [
       "../images/Sold Inventory/NE-026/natuzzi-editions-04.jpeg",
       "../images/Sold Inventory/NE-026/natuzzi-editions-05.jpeg",
       "../images/Sold Inventory/NE-026/natuzzi-editions-06.jpeg",
+      "../images/Sold Inventory/NE-026/natuzzi-editions-07.jpeg",
     ],
     retained: {
       metaTitle: "Natuzzi Editions Sollievo Top-Grain Leather Sofa — Edmonton",
@@ -919,6 +921,7 @@ var soldItems = [
       "../images/Sold Inventory/NE-025/natuzzi-editions-04.jpeg",
       "../images/Sold Inventory/NE-025/natuzzi-editions-05.jpeg",
       "../images/Sold Inventory/NE-025/natuzzi-editions-06.jpeg",
+      "../images/Sold Inventory/NE-025/natuzzi-editions-07.jpeg",
     ],
     retained: {
       metaTitle: "Natuzzi Editions Indimenticabile Light Grey Top-Grain Leather Sofa — Edmonton",

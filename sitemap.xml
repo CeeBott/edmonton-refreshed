@@ -9,7 +9,7 @@
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/sold/</loc>
-    <lastmod>2026-10-21</lastmod>
+    <lastmod>2026-10-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -1116,7 +1116,7 @@
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/listings/natuzzi-editions-cesare-leather-sectional/</loc>
-    <lastmod>2026-10-21</lastmod>
+    <lastmod>2026-10-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <image:image>
@@ -1145,6 +1145,9 @@
     </image:image>
     <image:image>
       <image:loc>https://edmontonrefreshed.com/images/Sold%20Inventory/NE-031/natuzzi-editions-09.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/Sold%20Inventory/NE-031/natuzzi-editions-10.jpeg</image:loc>
     </image:image>
   </url>
   <url>
@@ -1203,7 +1206,7 @@
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/listings/natuzzi-editions-sollievo-leather-sofa/</loc>
-    <lastmod>2026-10-21</lastmod>
+    <lastmod>2026-10-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <image:image>
@@ -1221,10 +1224,13 @@
     <image:image>
       <image:loc>https://edmontonrefreshed.com/images/Sold%20Inventory/NE-026/natuzzi-editions-06.jpeg</image:loc>
     </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/Sold%20Inventory/NE-026/natuzzi-editions-07.jpeg</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://edmontonrefreshed.com/listings/natuzzi-editions-indimenticabile-light-grey-leather-sofa/</loc>
-    <lastmod>2026-10-21</lastmod>
+    <lastmod>2026-10-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <image:image>
@@ -1241,6 +1247,9 @@
     </image:image>
     <image:image>
       <image:loc>https://edmontonrefreshed.com/images/Sold%20Inventory/NE-025/natuzzi-editions-06.jpeg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://edmontonrefreshed.com/images/Sold%20Inventory/NE-025/natuzzi-editions-07.jpeg</image:loc>
     </image:image>
   </url>
   <url>
