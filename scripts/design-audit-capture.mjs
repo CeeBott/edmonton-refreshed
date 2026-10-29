@@ -35,12 +35,15 @@ const DEBUG_PORT = 9777;
 const DESKTOP = { width: 1280, height: 800, deviceScaleFactor: 1, mobile: false };
 const MOBILE = { width: 375, height: 812, deviceScaleFactor: 2, mobile: true };
 
-// Block analytics + tag manager so audit traffic never reaches GA4.
+// Block analytics + tag manager so audit traffic never reaches GA4, and
+// Clarity so audit runs never land in its session recordings.
 const BLOCKED = [
   '*googletagmanager.com*',
   '*google-analytics.com*',
   '*analytics.google.com*',
   '*doubleclick.net*',
+  '*clarity.ms*',
+  '*c.bing.com*',
 ];
 
 // path, shot name, viewports, optional pre-capture script run in the page

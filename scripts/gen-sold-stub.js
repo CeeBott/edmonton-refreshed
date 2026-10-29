@@ -685,7 +685,8 @@ function buildThumbnails(bases, altBase) {
   for (var i = 0; i < visible; i++) {
     thumbs.push(
       '              <button class="listing-thumb' + (i === 0 ? ' active' : '') + '" data-index="' + i + '">' +
-      '<img src="' + relUrl(bases[i], '-400w.jpeg') + '" alt="' + altBase + ' — thumbnail ' + (i + 1) + ' of ' + n + '" loading="lazy"></button>'
+      '<picture><source type="image/avif" srcset="' + relUrl(bases[i], '-400w.avif') + '"><source type="image/webp" srcset="' + relUrl(bases[i], '-400w.webp') + '">' +
+      '<img src="' + relUrl(bases[i], '-400w.jpeg') + '" alt="' + altBase + ' — thumbnail ' + (i + 1) + ' of ' + n + '" loading="lazy"></picture></button>'
     );
   }
   if (n > visible) {

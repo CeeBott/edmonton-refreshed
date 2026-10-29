@@ -1267,9 +1267,12 @@ function buildThumbnailStrip(images, alt, prefix) {
   if (!images || images.length <= 1) return '';
   var maxVisible = 7;
   var thumbs = images.slice(0, maxVisible).map(function(src, i) {
-    var absSrc = prefix + src.replace(/\.jpeg$/, '') + '-400w.jpeg';
+    // 400w variants in AVIF/WebP first: as plain JPEG the strip was the
+    // heaviest thing on a listing after the main photo.
+    var base = srcsetUrl(prefix + src.replace(/\.jpeg$/, '') + '-400w');
     return '<button class="listing-thumb' + (i === 0 ? ' active' : '') + '" data-index="' + i + '">' +
-      '<img src="' + absSrc + '" alt="' + escapeHtml(alt) + ' — thumbnail ' + (i + 1) + '" loading="lazy">' +
+      '<picture><source type="image/avif" srcset="' + base + '.avif"><source type="image/webp" srcset="' + base + '.webp">' +
+      '<img src="' + base + '.jpeg" alt="' + escapeHtml(alt) + ' — thumbnail ' + (i + 1) + '" loading="lazy"></picture>' +
     '</button>';
   }).join('');
   var overflow = '';
@@ -2410,6 +2413,60 @@ function injectAllPartials(html) {
   return html;
 }
 
+// srcset hygiene (§5.3). A literal space inside a srcset URL (the legacy
+// "images/Sold Inventory/" folder) splits the candidate, the browser drops the
+// whole list, and the full-size JPEG in src loads instead, silently. Encode
+// spaces in candidate URLs on every page, hand-authored ones included, so the
+// bug cannot come back from a new guide. Attributes with no such space are
+// returned untouched, so this is idempotent and never reformats clean markup.
+function encodeSrcsetSpaces(html) {
+  return html.replace(/(\s(?:data-)?(?:image)?srcset=")([^"]*)(")/g, function (m, pre, val, post) {
+    var cands = val.split(',');
+    var dirty = cands.some(function (c) { return /\S\s+\S+\s+\d+(?:\.\d+)?[wx]\s*$/.test(c.trim()) || (c.trim().split(/\s+/).length > 1 && !/\s\d+(?:\.\d+)?[wx]$/.test(c.trim())); });
+    if (!dirty) return m;
+    var fixed = cands.map(function (c) {
+      var t = c.trim();
+      var d = t.match(/\s(\d+(?:\.\d+)?[wx])$/);
+      var url = d ? t.slice(0, d.index) : t;
+      return url.trim().replace(/\s/g, '%20') + (d ? ' ' + d[1] : '');
+    }).join(', ');
+    return pre + fixed + post;
+  });
+}
+
+// Image lint (§5.3), read-only: every srcset candidate must exist on disk, and
+// no local <img> may load a full-size photo without responsive variants (no
+// srcset of its own and no <source srcset> in an enclosing <picture>). Both
+// fail silently in the browser: a missing variant or a bare full-size src
+// just makes the page heavier.
+function lintImages(html, filepath, out) {
+  var rel = path.relative(ROOT, filepath);
+  var resolveLocal = function (u) {
+    if (/^(https?:)?\/\//.test(u) || /^data:/.test(u)) return null;
+    if (/^https:\/\/edmontonrefreshed\.com\//.test(u)) u = u.replace('https://edmontonrefreshed.com', '');
+    var clean;
+    try { clean = decodeURIComponent(u.split(/[?#]/)[0]); } catch (e) { clean = u.split(/[?#]/)[0]; }
+    return clean.charAt(0) === '/' ? path.join(ROOT, clean) : path.resolve(path.dirname(filepath), clean);
+  };
+  html.replace(/\s(?:data-)?(?:image)?srcset="([^"]*)"/g, function (m, val) {
+    val.split(',').forEach(function (c) {
+      var url = c.trim().split(/\s+/)[0];
+      var abs = url && resolveLocal(url);
+      if (abs && !fs.existsSync(abs)) out.push(rel + ' — missing srcset file ' + url);
+    });
+    return m;
+  });
+  var re = /<img\b[^>]*>/g, mt;
+  while ((mt = re.exec(html))) {
+    var tag = mt[0];
+    var src = (tag.match(/\s(?:data-)?src="([^"]+)"/) || [])[1];
+    if (!src || /\s(?:data-)?srcset=/.test(tag) || !/images\/.+\.jpe?g$/i.test(src) || /-\d+w\.jpe?g$/i.test(src)) continue;
+    var open = html.lastIndexOf('<picture', mt.index), close = html.lastIndexOf('</picture>', mt.index);
+    if (open > close && /<source\b[^>]*srcset=/.test(html.slice(open, mt.index))) continue;
+    out.push(rel + ' — full-size photo with no responsive variants: ' + src);
+  }
+}
+
 // Recursively collect all HTML files under `dir`, skipping vendor/build dirs.
 function walkHtml(dir, files) {
   files = files || [];
@@ -3194,6 +3251,7 @@ function relinkSoldCards(html) {
 var partialFiles = walkHtml(ROOT);
 var partialUpdated = 0;
 var aggregateSynced = 0;
+var imageGaps = [];
 for (var pi = 0; pi < partialFiles.length; pi++) {
   var pPath = partialFiles[pi];
   var pOrig = fs.readFileSync(pPath, 'utf8');
@@ -3209,6 +3267,8 @@ for (var pi = 0; pi < partialFiles.length; pi++) {
   pNext = injectAssetVersions(pNext, assetVersions);
   pNext = injectFaviconVersions(pNext, assetVersions);
   pNext = injectManifestLink(pNext);
+  pNext = encodeSrcsetSpaces(pNext);
+  if (path.relative(ROOT, pPath).split(path.sep)[0] !== 'docs') lintImages(pNext, pPath, imageGaps);
   if (pNext !== pOrig) {
     fs.writeFileSync(pPath, pNext, 'utf8');
     partialUpdated++;
@@ -3745,6 +3805,13 @@ if (conditionScaleGaps.length) {
   conditionScaleGaps.forEach(function (g) { console.log('                      ' + g); });
 } else {
   console.log('  cond-scale      — tier definitions state degree of wear, no named defects');
+}
+if (imageGaps.length) {
+  console.log('  image WARN      — ' + imageGaps.length + ' image problem(s) (§5.3):');
+  imageGaps.slice(0, 25).forEach(function (g) { console.log('                      ' + g); });
+  if (imageGaps.length > 25) console.log('                      … and ' + (imageGaps.length - 25) + ' more');
+} else {
+  console.log('  images          — every srcset file exists; no full-size photo ships without responsive variants');
 }
 if (soldStubGaps.length) {
   console.log('  sold-stub FAIL  — ' + soldStubGaps.length + ' sold piece(s) still published as available (§6.3):');

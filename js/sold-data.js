@@ -1363,7 +1363,7 @@ function buildSoldCard(item) {
   var id = soldCardId(item);
   return '<div class="card sold"' + (id ? ' id="' + id + '"' : '') + '>' +
     (item.images && item.images.length > 0
-      ? buildCarousel(item.images, item.brand + ' ' + item.title)
+      ? buildCarousel(item.images, item.brand + ' ' + item.title, { deferSlides: true })
       : '<div class="card-image-placeholder">Photo</div>'
     ) +
     '<div class="card-body">' +

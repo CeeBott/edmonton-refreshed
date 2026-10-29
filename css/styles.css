@@ -1902,6 +1902,7 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   opacity: 1;
 }
 .listing-thumb:hover { opacity: 1; }
+.listing-thumb picture { display: block; width: 100%; height: 100%; }
 .listing-thumb img {
   width: 100%;
   height: 100%;

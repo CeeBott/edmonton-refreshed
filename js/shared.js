@@ -4,10 +4,15 @@
 
 var carouselId = 0;
 
-function buildCarousel(images, alt) {
+// opts.deferSlides: emit slides after the first with data-src/data-srcset
+// only, so they download when someone interacts with that carousel
+// (hydrateCarousel) instead of all at once. Lazy loading alone does not stop
+// them: off-screen slides sit inside the viewport's load margin. Used on /sold/.
+function buildCarousel(images, alt, opts) {
   var id = 'carousel-' + (carouselId++);
   var count = images.length;
   var singleClass = count <= 1 ? ' single' : '';
+  var defer = !!(opts && opts.deferSlides) && count > 1;
 
   var imgsHtml = images.map(function(src, i) {
     // Encode spaces: srcset splits on whitespace, so "Sold Inventory/" paths
@@ -19,14 +24,15 @@ function buildCarousel(images, alt) {
     var loadAttr = i === 0 ? 'eager' : 'lazy';
     var fetchPri = i === 0 ? ' fetchpriority="high"' : '';
     var dims = i === 0 ? ' width="800" height="600"' : '';
-    return '<picture><source type="image/avif" srcset="' + avifSrcset + '" sizes="(max-width: 768px) 100vw, 530px"><source type="image/webp" srcset="' + webpSrcset + '" sizes="(max-width: 768px) 100vw, 530px"><img src="' + src + '" srcset="' + srcset + '" sizes="(max-width: 768px) 100vw, 530px" alt="' + alt + ' — photo ' + (i+1) + '" loading="' + loadAttr + '"' + fetchPri + dims + ' draggable="false"></picture>';
+    var pre = defer && i > 0 ? 'data-' : '';
+    return '<picture><source type="image/avif" ' + pre + 'srcset="' + avifSrcset + '" sizes="(max-width: 768px) 100vw, 530px"><source type="image/webp" ' + pre + 'srcset="' + webpSrcset + '" sizes="(max-width: 768px) 100vw, 530px"><img ' + pre + 'src="' + src + '" ' + pre + 'srcset="' + srcset + '" sizes="(max-width: 768px) 100vw, 530px" alt="' + alt + ' — photo ' + (i+1) + '" loading="' + loadAttr + '"' + fetchPri + dims + ' draggable="false"></picture>';
   }).join('');
 
   var dotsHtml = images.map(function(_, i) {
     return '<button class="dot' + (i === 0 ? ' active' : '') + '" data-index="' + i + '" aria-label="Photo ' + (i+1) + '"></button>';
   }).join('');
 
-  return '<div class="carousel' + singleClass + '" id="' + id + '" data-index="0" data-count="' + count + '">' +
+  return '<div class="carousel' + singleClass + (defer ? ' carousel-deferred' : '') + '" id="' + id + '" data-index="0" data-count="' + count + '">' +
     '<div class="carousel-track">' + imgsHtml + '</div>' +
     '<button class="carousel-btn prev" aria-label="Previous photo">' +
       '<svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>' +
@@ -44,7 +50,32 @@ function buildCarousel(images, alt) {
 //  CAROUSEL INTERACTION
 // ═══════════════════════════════════════════════════════════
 
+// Swap a deferred carousel's data-src/data-srcset into place (once).
+function hydrateCarousel(carousel) {
+  if (!carousel || !carousel.classList.contains('carousel-deferred')) return;
+  carousel.classList.remove('carousel-deferred');
+  carousel.querySelectorAll('[data-srcset]').forEach(function(el) {
+    el.srcset = el.dataset.srcset;
+    el.removeAttribute('data-srcset');
+  });
+  carousel.querySelectorAll('img[data-src]').forEach(function(img) {
+    img.loading = 'eager';
+    img.src = img.dataset.src;
+    img.removeAttribute('data-src');
+  });
+}
+
+// Mouse over, touch, or keyboard focus on a carousel counts as interest:
+// load its other photos so the next slide is ready when it is shown.
+['pointerover', 'touchstart', 'focusin'].forEach(function(type) {
+  document.addEventListener(type, function(e) {
+    var c = e.target.closest && e.target.closest('.carousel-deferred');
+    if (c) hydrateCarousel(c);
+  }, { passive: true });
+});
+
 function goToSlide(carousel, index) {
+  hydrateCarousel(carousel);
   var count = parseInt(carousel.dataset.count);
   if (index < 0) index = count - 1;
   if (index >= count) index = 0;
@@ -98,7 +129,7 @@ document.addEventListener('click', function(e) {
       // Card without listing link (sold items) — open lightbox if available
     }
     var carousel = img.closest('.carousel');
-    var images = Array.from(carousel.querySelectorAll('.carousel-track img')).map(function(i) { return i.src; });
+    var images = Array.from(carousel.querySelectorAll('.carousel-track img')).map(function(i) { return i.src || i.dataset.src; });
     var index = parseInt(carousel.dataset.index);
     openLightbox(images, index);
   }
