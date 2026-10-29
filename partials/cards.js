@@ -101,16 +101,20 @@ function picture(src, sizes, attrs, park) {
 //             compete with the stylesheet the first paint is waiting for
 //             (/sold/: +0.17s first paint with three eager covers, 2026-10-29).
 //   priority  fetchpriority="high" on the cover (the LCP card only)
+//   parkCover park the cover too (with defer: 'after-load'). Homepage cards
+//             after the first: on a phone they sit below the screen but
+//             inside the lazy-load margin, so their covers downloaded
+//             alongside the LCP photo and held it at ~2.5s (live, 2026-10-29).
 function carousel(images, alt, opts) {
   var count = images.length;
-  var defer = count > 1 && opts.defer;
+  var defer = (count > 1 || opts.parkCover) && opts.defer;
   var slides = images.map(function (src, i) {
     var attrs = ' alt="' + escapeHtml(alt + ' — photo ' + (i + 1)) + '"' +
       ' loading="' + (i === 0 && opts.eager ? 'eager' : 'lazy') + '"' +
       (i === 0 && opts.priority ? ' fetchpriority="high"' : '') +
       (i === 0 ? ' width="800" height="600"' : '') +
       ' draggable="false"';
-    return picture(src, CARD_SIZES, attrs, defer && i > 0);
+    return picture(src, CARD_SIZES, attrs, defer && (i > 0 || !!opts.parkCover));
   }).join('');
   var dots = images.map(function (_, i) {
     return '<button class="dot' + (i === 0 ? ' active' : '') + '" data-index="' + i + '" aria-label="Photo ' + (i + 1) + '"></button>';
@@ -126,8 +130,9 @@ function carousel(images, alt, opts) {
     '</div>';
 }
 
-// opts.index: position in its grid. Only the first card's cover is eager: it
-// is the homepage LCP image (and the preloaded one).
+// opts.index: position in its grid. Only the first card's cover loads with the
+// page: it is the homepage LCP image (and the preloaded one). The other
+// covers wait for the load event like every other slide.
 function availableCard(item, opts) {
   var slug = item.slug || h.slugify(item.brand + '-' + item.title);
   var badge = item.comingSoon ? '<span class="coming-soon-badge">Coming Soon</span>'
@@ -140,7 +145,8 @@ function availableCard(item, opts) {
       // Every photo's canonical page is its listing (§5.15); after-load keeps
       // them visible to Googlebot, which never interacts.
       ? carousel(item.images, item.brand + ' ' + item.title, {
-          id: 'carousel-' + slug, defer: 'after-load', eager: opts.index === 0, priority: opts.index === 0 })
+          id: 'carousel-' + slug, defer: 'after-load', eager: opts.index === 0, priority: opts.index === 0,
+          parkCover: opts.index > 0 })
       : '<div class="card-image-placeholder">Photos coming soon</div>',
     '<div class="card-body">',
     badge ? '<div class="card-meta">' + brand + badge + '</div>' : brand,
