@@ -1,60 +1,5 @@
-// ═══════════════════════════════════════════════════════════
-//  CAROUSEL BUILDER
-// ═══════════════════════════════════════════════════════════
-
-var carouselId = 0;
-
-// Card photo width, for srcset selection: one column to 768px, two to the
-// 1100px page width, then three ~345px columns (.cards-grid). Mirrored as
-// CARD_SIZES in build.js, whose homepage LCP preload must match it exactly or
-// the browser fetches the cover twice.
-var CARD_SIZES = '(max-width: 768px) calc(100vw - 48px), (max-width: 1100px) 50vw, 350px';
-
-// opts.deferSlides parks slides after the first as data-src/data-srcset
-// (hydrateImages). Lazy loading alone does not hold them: off-screen slides
-// sit inside the viewport's load margin.
-//   true          load on first interaction only (/sold/ pieces with a stub).
-//   'after-load'  load once the page has loaded, so the cover gets the
-//                 connection to itself (homepage).
-function buildCarousel(images, alt, opts) {
-  var id = 'carousel-' + (carouselId++);
-  var count = images.length;
-  var singleClass = count <= 1 ? ' single' : '';
-  var mode = opts && opts.deferSlides;
-  var defer = !!mode && count > 1;
-
-  var imgsHtml = images.map(function(src, i) {
-    // Encode spaces: srcset splits on whitespace, so "Sold Inventory/" paths
-    // otherwise void every candidate and the full-size JPEG loads instead.
-    var base = src.replace(/\.jpeg$/, '').replace(/ /g, '%20');
-    var srcset = base + '-400w.jpeg 400w, ' + base + '-800w.jpeg 800w, ' + base + '.jpeg 1200w';
-    var webpSrcset = base + '-400w.webp 400w, ' + base + '-800w.webp 800w, ' + base + '.webp 1200w';
-    var avifSrcset = base + '-400w.avif 400w, ' + base + '-800w.avif 800w, ' + base + '.avif 1200w';
-    var loadAttr = i === 0 ? 'eager' : 'lazy';
-    var fetchPri = i === 0 ? ' fetchpriority="high"' : '';
-    var dims = i === 0 ? ' width="800" height="600"' : '';
-    var pre = defer && i > 0 ? 'data-' : '';
-    return '<picture><source type="image/avif" ' + pre + 'srcset="' + avifSrcset + '" sizes="' + CARD_SIZES + '"><source type="image/webp" ' + pre + 'srcset="' + webpSrcset + '" sizes="' + CARD_SIZES + '"><img ' + pre + 'src="' + src + '" ' + pre + 'srcset="' + srcset + '" sizes="' + CARD_SIZES + '" alt="' + alt + ' — photo ' + (i+1) + '" loading="' + loadAttr + '"' + fetchPri + dims + ' draggable="false"></picture>';
-  }).join('');
-
-  var dotsHtml = images.map(function(_, i) {
-    return '<button class="dot' + (i === 0 ? ' active' : '') + '" data-index="' + i + '" aria-label="Photo ' + (i+1) + '"></button>';
-  }).join('');
-
-  return '<div class="carousel' + singleClass + (defer && mode !== 'after-load' ? ' carousel-deferred' : '') + '"' +
-    (defer && mode === 'after-load' ? ' data-defer="after-load"' : '') + ' id="' + id + '" data-index="0" data-count="' + count + '">' +
-    '<div class="carousel-track">' + imgsHtml + '</div>' +
-    '<button class="carousel-btn prev" aria-label="Previous photo">' +
-      '<svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>' +
-    '</button>' +
-    '<button class="carousel-btn next" aria-label="Next photo">' +
-      '<svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>' +
-    '</button>' +
-    '<div class="carousel-counter">1 / ' + count + '</div>' +
-    '<div class="carousel-dots">' + dotsHtml + '</div>' +
-  '</div>';
-}
-
+// Cards and carousels are written into each page by build.js
+// (partials/cards.js); this file only wires them up.
 
 // ═══════════════════════════════════════════════════════════
 //  CAROUSEL INTERACTION
@@ -63,8 +8,9 @@ function buildCarousel(images, alt, opts) {
 // Two kinds of parked photos (data-src/data-srcset):
 //  .carousel-deferred      /sold/ cards — load on first interaction only.
 //  [data-defer="after-load"] listing galleries (build.js queueGalleryImages)
-//                           — load at the page's load event, after the main
-//                           photo, or sooner on interaction.
+//                           and homepage cards — load at the page's load
+//                           event, after the main photo, or sooner on
+//                           interaction.
 function deferredRoot(el) {
   return el && el.closest ? el.closest('.carousel-deferred, [data-defer]') : null;
 }
@@ -95,16 +41,55 @@ function hydrateImages(root) {
 });
 
 // Swap every [data-defer="after-load"] block in at the load event, or now if
-// the page has already loaded (the homepage renders its cards when idle,
-// which can be after load; it calls this again once they exist).
-function hydrateAfterLoad() {
+// the page has already loaded.
+(function hydrateAfterLoad() {
   function run() {
     document.querySelectorAll('[data-defer="after-load"]').forEach(hydrateImages);
   }
   if (document.readyState === 'complete') run();
   else window.addEventListener('load', run, { once: true });
-}
-hydrateAfterLoad();
+})();
+
+// /sold/ archive. Every sold card is in the HTML; cards past the first batch
+// carry `hidden` and data-batch="n". "Load more" reveals the next batch, and a
+// /sold/#sold-xx-nnn link (guides' SOLD_LINK markers, §5.12) reveals batches
+// until its card shows, then scrolls to it.
+(function soldArchive() {
+  var grid = document.getElementById('sold-grid');
+  if (!grid) return;
+  var btn = document.getElementById('sold-load-more');
+  var wrap = document.getElementById('sold-load-more-wrap');
+
+  function revealNext() {
+    var next = grid.querySelector('.card[hidden]');
+    if (next) {
+      var batch = next.getAttribute('data-batch');
+      grid.querySelectorAll('.card[hidden][data-batch="' + batch + '"]').forEach(function(c) {
+        c.hidden = false;
+      });
+    }
+    if (!grid.querySelector('.card[hidden]') && wrap) wrap.style.display = 'none';
+  }
+
+  function showLinked() {
+    var id = decodeURIComponent(location.hash.slice(1));
+    if (id.indexOf('sold-') !== 0) return;
+    var card = document.getElementById(id);
+    if (!card || !grid.contains(card)) return;
+    while (card.hidden) revealNext();
+    card.classList.add('is-linked');
+    // Jump now, and again once images have loaded in case the layout above it
+    // shifted. 'instant', because the page sets scroll-behavior: smooth (§9.10).
+    var scroll = function() { card.scrollIntoView({ block: 'center', behavior: 'instant' }); };
+    requestAnimationFrame(scroll);
+    if (document.readyState !== 'complete') window.addEventListener('load', scroll, { once: true });
+  }
+
+  if (btn) btn.addEventListener('click', revealNext);
+  if (!grid.querySelector('.card[hidden]') && wrap) wrap.style.display = 'none';
+  showLinked();
+  window.addEventListener('hashchange', showLinked);
+})();
 
 function goToSlide(carousel, index) {
   hydrateImages(deferredRoot(carousel));

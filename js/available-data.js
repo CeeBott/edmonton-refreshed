@@ -8,6 +8,9 @@
 //  To add a new piece: copy one block, change the values.
 //  To remove a photo: delete that line from the array.
 //  To reorder: move lines up/down — first = cover image.
+//
+//  Data only: build.js reads this file, and partials/cards.js renders the
+//  homepage cards from it. No page loads it.
 // ═══════════════════════════════════════════════════════════
 
 // Prices are stored as PURE NUMBERS (e.g. price: 7500). Visible "$X,XXX CAD"
@@ -201,111 +204,3 @@ var availableItems = [
     ]
   },
 ];
-
-
-// ═══════════════════════════════════════════════════════════
-//  RENDER
-// ═══════════════════════════════════════════════════════════
-
-function slugify(str) {
-  return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-}
-
-// 7500 → "$7,500". Mirror of the Node-side helper in build.js. Trivial enough
-// that having both is simpler than wiring shared module loading.
-var _AVAILABLE_PRICE_FMT = new Intl.NumberFormat('en-CA', { maximumFractionDigits: 0 });
-function formatPrice(n) { return '$' + _AVAILABLE_PRICE_FMT.format(n); }
-
-// Retail anchor label — mirror of retailLabel() in build.js, which feeds the
-// crawler fallback and the listing-page value pill. Keep the two in sync: a
-// visitor sees this copy, a crawler sees the Node one. See CLAUDE.md §5.10.
-var _RETAIL_SUFFIX = ' plus tax &amp; delivery';
-function retailLabel(item) {
-  if (!item.retailEstimate) return '';
-  return (item.retailVerified ? 'Retail: ' : 'Est. Retail: ') +
-    formatPrice(item.retailEstimate) + (item.retailEstimateApprox ? '+' : '') +
-    ' CAD' + _RETAIL_SUFFIX;
-}
-
-// Homepage card copy — mirror of cardTitle() / cardSpecs() / cardRetailLabel()
-// in build.js (§5.10). Cards carry a short name, two facts, and two figures;
-// the listing page carries the full specification.
-function cardTitle(item) {
-  return item.cardTitle || String(item.title).split(' \u2014 ')[0];
-}
-function cardSpecs(item) {
-  var d = item.dimensions || {};
-  var out = [];
-  if (d.width && d.depth && d.height) out.push(d.width + ' \u00d7 ' + d.depth + ' \u00d7 ' + d.height + ' in');
-  if (item.conditionGrade) out.push(item.conditionGrade + ' Condition');
-  if (out.length) return out;
-  return (item.specs || []).filter(function(s) { return s !== item.brand; });
-}
-function cardRetailLabel(item) {
-  if (!item.retailEstimate) return '';
-  return (item.retailVerified ? 'Retail ' : 'Est. retail ') +
-    formatPrice(item.retailEstimate) + (item.retailEstimateApprox ? '+' : '') + ' CAD';
-}
-
-function renderAvailable() {
-  var grid = document.getElementById('available-grid');
-  if (availableItems.length === 0) {
-    // build.js already wrote its zero-inventory note into the grid as the
-    // static fallback; leave it in place rather than hiding the section.
-    return;
-  }
-
-  // Reserved pieces render last — mirror of displayOrder() in build.js, so the
-  // crawler fallback and the JS grid agree on order (§5.10).
-  var ordered = availableItems.filter(function(i) { return !i.reserved; })
-    .concat(availableItems.filter(function(i) { return !!i.reserved; }));
-
-  grid.innerHTML = ordered.map(function(item) {
-    var slug = item.slug || slugify(item.brand + '-' + item.title);
-    var listingUrl = '/listings/' + slug + '/';
-
-    var brandLine = item.comingSoon
-      ? '<div class="card-meta"><div class="card-brand">' + item.brand + '</div><span class="coming-soon-badge">Coming Soon</span></div>'
-      : item.reserved
-        ? '<div class="card-meta"><div class="card-brand">' + item.brand + '</div><span class="coming-soon-badge reserved-badge">Reserved</span></div>'
-        : '<div class="card-brand">' + item.brand + '</div>';
-
-    var titleEl = item.comingSoon
-      ? '<div class="card-title">' + cardTitle(item) + '</div>'
-      : '<div class="card-title"><a class="card-title-link" href="' + listingUrl + '">' + cardTitle(item) + '</a></div>';
-
-    var priceCta = item.comingSoon
-      ? '<div class="card-price card-price--muted">Listing coming soon</div>'
-      : '<div class="card-price">' + formatPrice(item.price) + ' <span class="card-price-currency">CAD</span></div>';
-
-    // Retail anchor — same comparison the listing page carries (§5.10).
-    var retailAnchor = (item.comingSoon || !item.retailEstimate)
-      ? ''
-      : '<div class="card-retail">' + cardRetailLabel(item) + '</div>';
-
-    return '<div class="card">' +
-      (item.images && item.images.length > 0
-        ? buildCarousel(item.images, item.brand + ' ' + item.title, { deferSlides: 'after-load' })
-        : '<div class="card-image-placeholder">Photos coming soon</div>'
-      ) +
-      '<div class="card-body">' +
-        brandLine +
-        titleEl +
-        '<div class="card-specs">' +
-          cardSpecs(item).map(function(s) { return '<span class="spec-tag">' + s + '</span>'; }).join('') +
-        '</div>' +
-        retailAnchor +
-        priceCta +
-      '</div>' +
-    '</div>';
-  }).join('');
-  if (typeof hydrateAfterLoad === 'function') hydrateAfterLoad();
-}
-
-// Defer rendering so the static fallback paints as LCP first
-if ('requestIdleCallback' in window) { requestIdleCallback(renderAvailable); }
-else { setTimeout(renderAvailable, 0); }
-
-
-// Product schema is injected as static <script> tags in index.html <head>
-// by the build script (build.js). No runtime DOM injection needed.

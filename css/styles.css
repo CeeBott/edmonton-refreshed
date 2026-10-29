@@ -3026,6 +3026,9 @@ h3.faq-question,
 
 /* Card needs relative positioning for the stretched link */
 .card { position: relative; }
+/* /sold/ cards past the first batch (revealed by "Load more", js/shared.js).
+   .card sets display: flex, which would otherwise override [hidden]. */
+.cards-grid > .card[hidden] { display: none; }
 
 /* Lift entire carousel stacking context above the stretched card link */
 .card .carousel { z-index: 2; }

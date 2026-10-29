@@ -1,6 +1,8 @@
 // ═══════════════════════════════════════════════════════════
 //  SOLD INVENTORY DATA
 //  Reverse chronological — most recent first
+//  Data only: build.js reads this file and partials/cards.js renders every
+//  sold card into /sold/ and the sell pages. No page loads it.
 // ═══════════════════════════════════════════════════════════
 
 var soldItems = [
@@ -1343,93 +1345,3 @@ var soldItems = [
     ]
   },
 ];
-
-
-// ═══════════════════════════════════════════════════════════
-//  RENDER
-// ═══════════════════════════════════════════════════════════
-
-var SOLD_PAGE_SIZE = 9;
-var soldOffset = 0;
-
-// Stable anchor for a sold card, from its image folder (e.g. sold-rc-033), so
-// guides can link /sold/#sold-rc-033. build.js soldCardId() mirrors this.
-function soldCardId(item) {
-  var m = item.images && item.images[0] && item.images[0].match(/images\/(?:Sold Inventory\/)?([^\/]+)\//);
-  return m ? 'sold-' + m[1].toLowerCase() : '';
-}
-
-function buildSoldCard(item) {
-  var id = soldCardId(item);
-  // Defer slides only for pieces with a sold stub: the stub is their photos'
-  // canonical page (§5.15), so Googlebot, which never interacts, loses nothing
-  // here. A piece without one keeps every photo on /sold/.
-  return '<div class="card sold"' + (id ? ' id="' + id + '"' : '') + '>' +
-    (item.images && item.images.length > 0
-      ? buildCarousel(item.images, item.brand + ' ' + item.title, { deferSlides: !!item.href })
-      : '<div class="card-image-placeholder">Photo</div>'
-    ) +
-    '<div class="card-body">' +
-      '<div class="card-meta">' +
-        '<div class="card-brand">' + item.brand + '</div>' +
-        '<span class="sold-badge">Sold</span>' +
-      '</div>' +
-      (item.href
-        ? '<div class="card-title"><a class="card-title-link" href="' + item.href + '">' + item.title + '</a></div>'
-        : '<div class="card-title">' + item.title + '</div>'
-      ) +
-      (item.description ? '<div class="card-description">' + item.description + '</div>' : '') +
-    '</div>' +
-  '</div>';
-}
-
-function renderSoldBatch() {
-  var grid = document.getElementById('sold-grid');
-  var wrap = document.getElementById('sold-load-more-wrap');
-  var batch = soldItems.slice(soldOffset, soldOffset + SOLD_PAGE_SIZE);
-  soldOffset += batch.length;
-  grid.insertAdjacentHTML('beforeend', batch.map(buildSoldCard).join(''));
-  if (soldOffset >= soldItems.length && wrap) {
-    wrap.style.display = 'none';
-  }
-}
-
-function renderSold() {
-  var grid = document.getElementById('sold-grid');
-
-  if (soldItems.length === 0) {
-    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;">' +
-      '<p>Sold items will appear here.</p>' +
-    '</div>';
-    return;
-  }
-
-  grid.innerHTML = '';
-  soldOffset = 0;
-  renderSoldBatch();
-  showLinkedSoldCard();
-
-  var btn = document.getElementById('sold-load-more');
-  if (btn) {
-    btn.addEventListener('click', renderSoldBatch);
-  }
-}
-
-// A link to /sold/#sold-xx-nnn may point past the first batch: load batches
-// until that card exists, then bring it into view.
-function showLinkedSoldCard() {
-  var id = decodeURIComponent(location.hash.slice(1));
-  if (id.indexOf('sold-') !== 0) return;
-  while (!document.getElementById(id) && soldOffset < soldItems.length) renderSoldBatch();
-  var card = document.getElementById(id);
-  if (!card) return;
-  card.classList.add('is-linked');
-  // Jump now, and again once images have loaded in case the layout above it
-  // shifted. 'instant', because the page sets scroll-behavior: smooth (§9.10).
-  var scroll = function () { card.scrollIntoView({ block: 'center', behavior: 'instant' }); };
-  requestAnimationFrame(scroll);
-  if (document.readyState !== 'complete') window.addEventListener('load', scroll);
-}
-
-renderSold();
-window.addEventListener('hashchange', showLinkedSoldCard);

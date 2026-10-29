@@ -43,6 +43,14 @@ var renderFitCheck = require('./partials/sell-fit').renderFitCheck;
 var renderFitLists = require('./partials/sell-fit').renderFitLists;
 var renderHowTo = require('./partials/sell-howto').renderHowTo;
 var renderHowToSchema = require('./partials/sell-howto').renderHowToSchema;
+var html = require('./partials/html');
+var escapeHtml = html.escapeHtml, formatPrice = html.formatPrice, slugify = html.slugify;
+var srcsetUrl = html.srcsetUrl, srcsetFor = html.srcsetFor;
+var webpSrcsetFor = html.webpSrcsetFor, avifSrcsetFor = html.avifSrcsetFor;
+var cardRenderer = require('./partials/cards');
+var renderCard = cardRenderer.renderCard, CARD_SIZES = cardRenderer.CARD_SIZES;
+var cardTitle = cardRenderer.cardTitle, cardSpecs = cardRenderer.cardSpecs, cardRetailLabel = cardRenderer.cardRetailLabel;
+var soldCardId = cardRenderer.soldCardId, isReserved = cardRenderer.isReserved;
 // Per-page settings for every sell-cluster page (§5.13): form pre-fill and
 // notes copy, Recently sold schema name, How it works heading and basis.
 var SELL_PAGES = require('./config/sell-pages');
@@ -64,32 +72,13 @@ var brandBlurbs        = require('./config/brands').brandBlurbs;
 
 
 // ── Utilities ────────────────────────────────────────────
-
-function escapeHtml(str) {
-  return str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/\u2014/g, '&mdash;')
-    .replace(/\u2013/g, '&ndash;')
-    .replace(/\u201C/g, '&ldquo;')
-    .replace(/\u201D/g, '&rdquo;')
-    .replace(/\u2018/g, '&lsquo;')
-    .replace(/\u2019/g, '&rsquo;');
-}
+//  escapeHtml, formatPrice, slugify, and the srcset helpers live in
+//  partials/html.js, shared with partials/cards.js.
 
 // \u2500\u2500 Price formatting \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
 //  Canonical data stores prices as pure numbers (e.g. 7500). All visible
 //  text and schema output derives from these helpers so the CAD invariant
-//  (\u00A75.2) lives in exactly one place. The parallel client-side helper
-//  in js/shared.js is a one-line mirror \u2014 too trivial to drift.
-
-var PRICE_FMT = new Intl.NumberFormat('en-CA', { maximumFractionDigits: 0 });
-
-function formatPrice(n) {
-  return '$' + PRICE_FMT.format(n);
-}
+//  (\u00A75.2) lives in exactly one place.
 
 function formatPriceCAD(n) {
   return formatPrice(n) + ' CAD';
@@ -100,7 +89,6 @@ function formatPriceCAD(n) {
 // "Est." hedge (§5.10). Returns '' when the item carries no retailEstimate.
 // One helper feeds both surfaces that show the comparison — the listing-page
 // value pill and the homepage card anchor — so they can never disagree.
-// Mirrored client-side in js/available-data.js for the JS render path.
 var RETAIL_SUFFIX = ' plus tax &amp; delivery';
 
 function retailLabel(item) {
@@ -165,38 +153,6 @@ function imageSize(absPath) {
   return {};
 }
 
-// srcset candidates are whitespace-separated, so a literal space in a path
-// (legacy "images/Sold Inventory/") splits the URL and the browser drops every
-// candidate, falling back to the full-size JPEG in src. Encode spaces.
-function srcsetUrl(u) { return u.replace(/ /g, '%20'); }
-
-// Card photo width for srcset selection (homepage + /sold/ cards); mirrors
-// CARD_SIZES in js/shared.js. The homepage LCP preload uses it too, and must:
-// a preload whose imagesizes differs from the img's sizes fetches twice.
-var CARD_SIZES = '(max-width: 768px) calc(100vw - 48px), (max-width: 1100px) 50vw, 350px';
-
-function srcsetFor(imgPath, prefix) {
-  prefix = prefix || '';
-  var base = srcsetUrl(prefix + imgPath.replace(/\.jpeg$/, ''));
-  return base + '-400w.jpeg 400w, ' + base + '-800w.jpeg 800w, ' + base + '.jpeg 1200w';
-}
-
-function webpSrcsetFor(imgPath, prefix) {
-  prefix = prefix || '';
-  var base = srcsetUrl(prefix + imgPath.replace(/\.jpeg$/, ''));
-  return base + '-400w.webp 400w, ' + base + '-800w.webp 800w, ' + base + '.webp 1200w';
-}
-
-function avifSrcsetFor(imgPath, prefix) {
-  prefix = prefix || '';
-  var base = srcsetUrl(prefix + imgPath.replace(/\.jpeg$/, ''));
-  return base + '-400w.avif 400w, ' + base + '-800w.avif 800w, ' + base + '.avif 1200w';
-}
-
-function slugify(str) {
-  return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-}
-
 // Business timezone. Freshness dates (dateModified, sitemap <lastmod>,
 // priceValidUntil) are stamped in Edmonton local time, NOT UTC: between
 // ~18:00 and midnight MDT (UTC-6) the UTC ISO date is already tomorrow, which
@@ -223,14 +179,11 @@ function todayPlusDays(n) {
 // Product availability → OutOfStock (Google rejects schema.org/Reserved),
 // feed → out_of_stock, dropped from related links and brand-guide
 // availability lines, and the viewing form becomes a backup-buyer form. `reserved` holds the ISO date it was reserved
-// so a stale reservation can be flagged (see RESERVED_STALE_DAYS).
-function isReserved(item) {
-  return !!(item && item.reserved);
-}
+// so a stale reservation can be flagged (see RESERVED_STALE_DAYS). isReserved()
+// lives in partials/cards.js, which badges reserved cards.
 
 // Homepage grid order: reserved pieces move to the end so the grid leads with
 // what can actually be bought. Stable — everything else keeps data order.
-// Mirrored in js/available-data.js (renderAvailable).
 function displayOrder(items) {
   return items.filter(function (i) { return !isReserved(i); })
     .concat(items.filter(isReserved));
@@ -322,7 +275,9 @@ function buildAssets() {
   fs.writeFileSync(cssMinPath, cssMin, 'utf8');
   versions['css/styles.min.css'] = shortHash(cssMin);
 
-  var jsFiles = ['shared.js', 'available-data.js', 'sold-data.js', 'reviews-data.js', 'sell-form.js', 'viewing-form.js'];
+  // available-data.js and sold-data.js are data only (read by this script);
+  // no page loads them, since the build writes every card (partials/cards.js).
+  var jsFiles = ['shared.js', 'reviews-data.js', 'sell-form.js', 'viewing-form.js'];
   jsFiles.forEach(function(file) {
     var srcPath = path.join(ROOT, 'js', file);
     if (!fs.existsSync(srcPath)) return;
@@ -646,35 +601,13 @@ function extractObject(src, varName) { return extractVar(src, varName, '{', '}')
 
 // ── HTML generators ──────────────────────────────────────
 
-// Homepage card copy (§5.10). Cards carry a short name, two facts (overall
-// size and condition grade), and the two figures; the listing page carries the
-// full specification. The long `title` stays in alt text, schema, and the
-// listing H1. Mirrored in js/available-data.js for the browser render.
-function cardTitle(item) {
-  return item.cardTitle || String(item.title).split(' \u2014 ')[0];
-}
-function cardSpecs(item) {
-  var d = item.dimensions || {};
-  var out = [];
-  if (d.width && d.depth && d.height) out.push(d.width + ' \u00d7 ' + d.depth + ' \u00d7 ' + d.height + ' in');
-  if (item.conditionGrade) out.push(item.conditionGrade + ' Condition');
-  if (out.length) return out;
-  return (item.specs || []).filter(function(s) { return s !== item.brand; });
-}
-// Card retail anchor: same verified/approx rules as retailLabel(), without the
-// "plus tax & delivery" suffix, which stays on the listing page's value pill.
-function cardRetailLabel(item) {
-  if (!item.retailEstimate) return '';
-  return (item.retailVerified ? 'Retail ' : 'Est. retail ') +
-    formatPrice(item.retailEstimate) + (item.retailEstimateApprox ? '+' : '') + ' CAD';
-}
-
+// Homepage and /sold/ grids: finished cards from partials/cards.js (§7.6). The
+// browser renders no cards; js/shared.js only wires them up.
 function generateAvailableHTML(items) {
   // Zero live pieces: say so, show the Recently sold strip the sell pages use
   // (so a visitor sees the kind of piece the newsletter announces without
   // leaving the page), and point at the newsletter directly below. Emitted
-  // only when availableItems is empty; the browser render
-  // (js/available-data.js) leaves this block in place.
+  // only when availableItems is empty.
   if (items.length === 0) {
     return [
       '        <div class="inventory-empty">',
@@ -687,94 +620,21 @@ function generateAvailableHTML(items) {
     ].join('\n');
   }
 
-  var lines = ['        <!-- Static fallback for crawlers; JS replaces this on load -->'];
-
-  items.forEach(function(item, idx) {
-    var slug       = item.slug || slugify(item.brand + '-' + item.title);
-    var listingUrl = '/listings/' + slug + '/';
-    var imgSrc     = (item.images && item.images.length > 0) ? item.images[0] : '';
-    var alt        = escapeHtml(item.brand + ' ' + item.title);
-    var loading    = idx === 0 ? 'eager' : 'lazy';
-    var specs      = cardSpecs(item).map(function(s) {
-      return '<span class="spec-tag">' + escapeHtml(s) + '</span>';
-    }).join('');
-
-    var fetchPri = idx === 0 ? ' fetchpriority="high" width="800" height="600"' : '';
-    var imgHtml = imgSrc
-      ? '          <div class="card-image-placeholder"><picture><source type="image/avif" srcset="' + avifSrcsetFor(imgSrc) + '" sizes="' + CARD_SIZES + '"><source type="image/webp" srcset="' + webpSrcsetFor(imgSrc) + '" sizes="' + CARD_SIZES + '"><img src="' + imgSrc + '" srcset="' + srcsetFor(imgSrc) + '" sizes="' + CARD_SIZES + '" alt="' + alt + '" loading="' + loading + '"' + fetchPri + '></picture></div>'
-      : '          <div class="card-image-placeholder">Photos coming soon</div>';
-
-    var brandLine = item.comingSoon
-      ? '            <div class="card-meta"><div class="card-brand">' + escapeHtml(item.brand) + '</div><span class="coming-soon-badge">Coming Soon</span></div>'
-      : isReserved(item)
-        ? '            <div class="card-meta"><div class="card-brand">' + escapeHtml(item.brand) + '</div><span class="coming-soon-badge reserved-badge">Reserved</span></div>'
-        : '            <div class="card-brand">' + escapeHtml(item.brand) + '</div>';
-
-    var titleLine = item.comingSoon
-      ? '            <div class="card-title">' + escapeHtml(cardTitle(item)) + '</div>'
-      : '            <div class="card-title"><a class="card-title-link" href="' + listingUrl + '">' + escapeHtml(cardTitle(item)) + '</a></div>';
-
-    var priceCta = item.comingSoon
-      ? '            <div class="card-price card-price--muted">Listing coming soon</div>'
-      : '            <div class="card-price">' + formatPrice(item.price) + ' <span class="card-price-currency">CAD</span></div>';
-
-    // Retail anchor — the same comparison the listing page carries, so the
-    // value is legible on the grid rather than one click away (§5.10).
-    var retailAnchor = (item.comingSoon || !item.retailEstimate)
-      ? ''
-      : '            <div class="card-retail">' + cardRetailLabel(item) + '</div>';
-
-    lines.push(
-      '        <div class="card">',
-      imgHtml,
-      '          <div class="card-body">',
-      brandLine,
-      titleLine,
-      '            <div class="card-specs">' + specs + '</div>',
-      retailAnchor,
-      priceCta,
-      '          </div>',
-      '        </div>'
-    );
-  });
-
-  // filter(Boolean) drops the retail anchor's empty slot on items without one.
-  return lines.filter(Boolean).join('\n') + '\n      ';
+  return items.map(function (item, idx) {
+    return renderCard(item, 'available', { index: idx, indent: '        ' });
+  }).join('\n') + '\n      ';
 }
 
-// Stable anchor for a sold card (mirrors soldCardId in js/sold-data.js).
-function soldCardId(item) {
-  var m = item.images && item.images[0] && item.images[0].match(/images\/(?:Sold Inventory\/)?([^\/]+)\//);
-  return m ? 'sold-' + m[1].toLowerCase() : '';
-}
+// Every sold card is in the HTML. The first SOLD_BATCH show; the rest carry
+// `hidden` and data-batch="n", and js/shared.js reveals one batch per "Load
+// more" (and enough batches to reach a /sold/#sold-xx-nnn link).
+var SOLD_BATCH = 9;
 
 function generateSoldHTML(items) {
   if (items.length === 0) return '';
-
-  var lines = ['        <!-- Static fallback for crawlers; JS replaces this on load -->'];
-
-  items.forEach(function(item) {
-    var imgSrc   = (item.images && item.images.length > 0) ? item.images[0] : '';
-    var alt      = escapeHtml(item.brand + ' ' + item.title);
-    var descLine = item.description
-      ? '\n            <div class="card-description">' + escapeHtml(item.description) + '</div>'
-      : '';
-    var titleLine = item.href
-      ? '            <div class="card-title"><a class="card-title-link" href="' + item.href + '">' + escapeHtml(item.title) + '</a></div>'
-      : '            <div class="card-title">' + escapeHtml(item.title) + '</div>';
-
-    lines.push(
-      '        <div class="card sold"' + (soldCardId(item) ? ' id="' + soldCardId(item) + '"' : '') + '>',
-      '          <div class="card-image-placeholder"><picture><source type="image/avif" srcset="' + avifSrcsetFor(imgSrc) + '" sizes="' + CARD_SIZES + '"><source type="image/webp" srcset="' + webpSrcsetFor(imgSrc) + '" sizes="' + CARD_SIZES + '"><img src="' + imgSrc + '" srcset="' + srcsetFor(imgSrc) + '" sizes="' + CARD_SIZES + '" alt="' + alt + '" loading="lazy"></picture></div>',
-      '          <div class="card-body">',
-      '            <div class="card-meta"><div class="card-brand">' + escapeHtml(item.brand) + '</div><span class="sold-badge">Sold</span></div>',
-      titleLine + descLine,
-      '          </div>',
-      '        </div>'
-    );
-  });
-
-  return lines.join('\n') + '\n      ';
+  return items.map(function (item, idx) {
+    return renderCard(item, 'sold', { index: idx, batch: Math.floor(idx / SOLD_BATCH), indent: '        ' });
+  }).join('\n') + '\n      ';
 }
 
 // ── FAQ generation (single source of truth) ──────────────
@@ -1040,28 +900,8 @@ function generateRecentSoldHTML(attrs) {
   }).slice(0, count - matched.length);
   var picks = matched.concat(fill);
   if (!picks.length) return '';
-  var sizes = '(max-width: 768px) 62vw, 180px';
-  var cards = picks.map(function (item, idx) {
-    var isFill = idx >= matched.length;
-    var rel = item.images[0].replace(/^(?:\.\.\/)+/, '').replace(/^\/+/, '');
-    var title = (item.title || '').split(' \u2014 ')[0];
-    var label = escapeHtml(item.brand + ' ' + title);
-    var sources = ['avif', 'webp'].map(function (ext) {
-      var set = soldVariantSrcset(rel, ext);
-      return set ? '<source type="image/' + ext + '" srcset="' + set + '" sizes="' + sizes + '">' : '';
-    }).join('');
-    var jpegSet = soldVariantSrcset(rel, 'jpeg');
-    return [
-      '          <a class="card sold" href="/sold/"' + (isFill ? ' data-sold-fill' : '') + ' aria-label="' + label + ' (sold)">',
-      '            <div class="card-image-placeholder"><picture>' + sources +
-        '<img src="/' + encodeURI(rel) + '"' + (jpegSet ? ' srcset="' + jpegSet + '" sizes="' + sizes + '"' : '') +
-        ' alt="' + label + '" loading="lazy"></picture></div>',
-      '            <div class="card-body">',
-      '              <div class="card-brand">' + escapeHtml(item.brand) + '</div>',
-      '              <div class="card-title">' + escapeHtml(title) + '</div>',
-      '            </div>',
-      '          </a>',
-    ].join('\n');
+  var cardHtml = picks.map(function (item, idx) {
+    return renderCard(item, 'compact', { fill: idx >= matched.length, indent: '          ' });
   });
   return [
     '      <section class="sell-landing-sold">',
@@ -1070,7 +910,7 @@ function generateRecentSoldHTML(attrs) {
     '          <a href="/sold/" class="sell-link">Full archive &rarr;</a>',
     '        </div>',
     '        <div class="sell-landing-sold-grid sell-sold-strip">',
-    cards.join('\n'),
+    cardHtml.join('\n'),
     '        </div>',
     '      </section>',
   ].join('\n');
@@ -3197,7 +3037,7 @@ indexContent = injectBetweenMarkers(
 // Update LCP preload to always match the first available (non-coming-soon) item
 var firstVisible = displayOrder(availableItems).filter(function(i) { return !i.comingSoon; })[0];
 if (firstVisible && firstVisible.images && firstVisible.images.length > 0) {
-  var lcpAvifSrcset = avifSrcsetFor(firstVisible.images[0]);
+  var lcpAvifSrcset = cardRenderer.coverAvifSrcset(firstVisible);
   indexContent = indexContent.replace(
     /<!-- LCP_PRELOAD_START -->.*?<!-- LCP_PRELOAD_END -->/,
     '<!-- LCP_PRELOAD_START --><link rel="preload" as="image" imagesrcset="' + lcpAvifSrcset + '" imagesizes="' + CARD_SIZES + '" fetchpriority="high" type="image/avif"><!-- LCP_PRELOAD_END -->'
