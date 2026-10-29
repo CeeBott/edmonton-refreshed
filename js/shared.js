@@ -6,7 +6,7 @@ var carouselId = 0;
 
 // opts.deferSlides: emit slides after the first with data-src/data-srcset
 // only, so they download when someone interacts with that carousel
-// (hydrateCarousel) instead of all at once. Lazy loading alone does not stop
+// (hydrateImages) instead of all at once. Lazy loading alone does not stop
 // them: off-screen slides sit inside the viewport's load margin. Used on /sold/.
 function buildCarousel(images, alt, opts) {
   var id = 'carousel-' + (carouselId++);
@@ -50,16 +50,27 @@ function buildCarousel(images, alt, opts) {
 //  CAROUSEL INTERACTION
 // ═══════════════════════════════════════════════════════════
 
-// Swap a deferred carousel's data-src/data-srcset into place (once).
-function hydrateCarousel(carousel) {
-  if (!carousel || !carousel.classList.contains('carousel-deferred')) return;
-  carousel.classList.remove('carousel-deferred');
-  carousel.querySelectorAll('[data-srcset]').forEach(function(el) {
+// Two kinds of parked photos (data-src/data-srcset):
+//  .carousel-deferred      /sold/ cards — load on first interaction only.
+//  [data-defer="after-load"] listing galleries (build.js queueGalleryImages)
+//                           — load at the page's load event, after the main
+//                           photo, or sooner on interaction.
+function deferredRoot(el) {
+  return el && el.closest ? el.closest('.carousel-deferred, [data-defer]') : null;
+}
+
+// Swap a parked block's data-src/data-srcset into place (once).
+function hydrateImages(root) {
+  if (!root) return;
+  root.classList.remove('carousel-deferred');
+  root.removeAttribute('data-defer');
+  root.querySelectorAll('[data-srcset]').forEach(function(el) {
     el.srcset = el.dataset.srcset;
     el.removeAttribute('data-srcset');
   });
-  carousel.querySelectorAll('img[data-src]').forEach(function(img) {
-    img.loading = 'eager';
+  // Slides keep loading="lazy": the browser still fetches only the ones near
+  // the visible slide, as before parking; parking only changes when.
+  root.querySelectorAll('img[data-src]').forEach(function(img) {
     img.src = img.dataset.src;
     img.removeAttribute('data-src');
   });
@@ -69,13 +80,20 @@ function hydrateCarousel(carousel) {
 // load its other photos so the next slide is ready when it is shown.
 ['pointerover', 'touchstart', 'focusin'].forEach(function(type) {
   document.addEventListener(type, function(e) {
-    var c = e.target.closest && e.target.closest('.carousel-deferred');
-    if (c) hydrateCarousel(c);
+    hydrateImages(deferredRoot(e.target));
   }, { passive: true });
 });
 
+(function queueAfterLoad() {
+  function run() {
+    document.querySelectorAll('[data-defer="after-load"]').forEach(hydrateImages);
+  }
+  if (document.readyState === 'complete') run();
+  else window.addEventListener('load', run);
+})();
+
 function goToSlide(carousel, index) {
-  hydrateCarousel(carousel);
+  hydrateImages(deferredRoot(carousel));
   var count = parseInt(carousel.dataset.count);
   if (index < 0) index = count - 1;
   if (index >= count) index = 0;

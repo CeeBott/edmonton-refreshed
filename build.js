@@ -2434,6 +2434,38 @@ function encodeSrcsetSpaces(html) {
   });
 }
 
+// Listing galleries (§5.10), active listings and sold stubs alike: every
+// photo except the main one is parked as data-src/data-srcset and the block is
+// marked data-defer="after-load"; js/shared.js swaps them in at the page's
+// load event (or on first touch of the gallery). On a slow phone the other
+// slides and the thumbnail strip were splitting the connection with the main
+// photo: LCP 3.9s against ~1s alone (2026-10-29). Unlike /sold/'s
+// load-on-interaction carousels, these still load without interaction, so
+// Googlebot, which never clicks, sees every <img src>. Anchored on
+// <div class="listing-carousel">; idempotent (a parked image has no " src=").
+function queueGalleryImages(html) {
+  var open = '<div class="listing-carousel"';
+  var at = html.indexOf(open);
+  if (at === -1) return html;
+  var depth = 0, re = /<div\b|<\/div>/g, end = -1, m;
+  re.lastIndex = at;
+  while ((m = re.exec(html))) {
+    depth += m[0] === '</div>' ? -1 : 1;
+    if (depth === 0) { end = m.index + 6; break; }
+  }
+  if (end === -1) return html;
+  var block = html.slice(at, end);
+  var firstPicEnd = block.indexOf('</picture>');
+  if (firstPicEnd === -1) return html;
+  firstPicEnd += '</picture>'.length;
+  var head = block.slice(0, firstPicEnd);
+  var rest = block.slice(firstPicEnd).replace(/(<(?:img|source)\b[^>]*?\s)(srcset|src)="/g, '$1data-$2="');
+  // A second pass catches the img's other attribute (src and srcset share a tag).
+  rest = rest.replace(/(<(?:img|source)\b[^>]*?\s)(srcset|src)="/g, '$1data-$2="');
+  if (!/data-defer=/.test(head)) head = head.replace(open, open + ' data-defer="after-load"');
+  return html.slice(0, at) + head + rest + html.slice(end);
+}
+
 // Image lint (§5.3), read-only: every srcset candidate must exist on disk, and
 // no local <img> may load a full-size photo without responsive variants (no
 // srcset of its own and no <source srcset> in an enclosing <picture>). Both
@@ -3268,6 +3300,7 @@ for (var pi = 0; pi < partialFiles.length; pi++) {
   pNext = injectFaviconVersions(pNext, assetVersions);
   pNext = injectManifestLink(pNext);
   pNext = encodeSrcsetSpaces(pNext);
+  pNext = queueGalleryImages(pNext);
   if (path.relative(ROOT, pPath).split(path.sep)[0] !== 'docs') lintImages(pNext, pPath, imageGaps);
   if (pNext !== pOrig) {
     fs.writeFileSync(pPath, pNext, 'utf8');
