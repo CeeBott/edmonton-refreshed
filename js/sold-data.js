@@ -1361,9 +1361,12 @@ function soldCardId(item) {
 
 function buildSoldCard(item) {
   var id = soldCardId(item);
+  // Defer slides only for pieces with a sold stub: the stub is their photos'
+  // canonical page (§5.15), so Googlebot, which never interacts, loses nothing
+  // here. A piece without one keeps every photo on /sold/.
   return '<div class="card sold"' + (id ? ' id="' + id + '"' : '') + '>' +
     (item.images && item.images.length > 0
-      ? buildCarousel(item.images, item.brand + ' ' + item.title, { deferSlides: true })
+      ? buildCarousel(item.images, item.brand + ' ' + item.title, { deferSlides: !!item.href })
       : '<div class="card-image-placeholder">Photo</div>'
     ) +
     '<div class="card-body">' +

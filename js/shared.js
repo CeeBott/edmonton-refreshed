@@ -4,15 +4,24 @@
 
 var carouselId = 0;
 
-// opts.deferSlides: emit slides after the first with data-src/data-srcset
-// only, so they download when someone interacts with that carousel
-// (hydrateImages) instead of all at once. Lazy loading alone does not stop
-// them: off-screen slides sit inside the viewport's load margin. Used on /sold/.
+// Card photo width, for srcset selection: one column to 768px, two to the
+// 1100px page width, then three ~345px columns (.cards-grid). Mirrored as
+// CARD_SIZES in build.js, whose homepage LCP preload must match it exactly or
+// the browser fetches the cover twice.
+var CARD_SIZES = '(max-width: 768px) calc(100vw - 48px), (max-width: 1100px) 50vw, 350px';
+
+// opts.deferSlides parks slides after the first as data-src/data-srcset
+// (hydrateImages). Lazy loading alone does not hold them: off-screen slides
+// sit inside the viewport's load margin.
+//   true          load on first interaction only (/sold/ pieces with a stub).
+//   'after-load'  load once the page has loaded, so the cover gets the
+//                 connection to itself (homepage).
 function buildCarousel(images, alt, opts) {
   var id = 'carousel-' + (carouselId++);
   var count = images.length;
   var singleClass = count <= 1 ? ' single' : '';
-  var defer = !!(opts && opts.deferSlides) && count > 1;
+  var mode = opts && opts.deferSlides;
+  var defer = !!mode && count > 1;
 
   var imgsHtml = images.map(function(src, i) {
     // Encode spaces: srcset splits on whitespace, so "Sold Inventory/" paths
@@ -25,14 +34,15 @@ function buildCarousel(images, alt, opts) {
     var fetchPri = i === 0 ? ' fetchpriority="high"' : '';
     var dims = i === 0 ? ' width="800" height="600"' : '';
     var pre = defer && i > 0 ? 'data-' : '';
-    return '<picture><source type="image/avif" ' + pre + 'srcset="' + avifSrcset + '" sizes="(max-width: 768px) 100vw, 530px"><source type="image/webp" ' + pre + 'srcset="' + webpSrcset + '" sizes="(max-width: 768px) 100vw, 530px"><img ' + pre + 'src="' + src + '" ' + pre + 'srcset="' + srcset + '" sizes="(max-width: 768px) 100vw, 530px" alt="' + alt + ' — photo ' + (i+1) + '" loading="' + loadAttr + '"' + fetchPri + dims + ' draggable="false"></picture>';
+    return '<picture><source type="image/avif" ' + pre + 'srcset="' + avifSrcset + '" sizes="' + CARD_SIZES + '"><source type="image/webp" ' + pre + 'srcset="' + webpSrcset + '" sizes="' + CARD_SIZES + '"><img ' + pre + 'src="' + src + '" ' + pre + 'srcset="' + srcset + '" sizes="' + CARD_SIZES + '" alt="' + alt + ' — photo ' + (i+1) + '" loading="' + loadAttr + '"' + fetchPri + dims + ' draggable="false"></picture>';
   }).join('');
 
   var dotsHtml = images.map(function(_, i) {
     return '<button class="dot' + (i === 0 ? ' active' : '') + '" data-index="' + i + '" aria-label="Photo ' + (i+1) + '"></button>';
   }).join('');
 
-  return '<div class="carousel' + singleClass + (defer ? ' carousel-deferred' : '') + '" id="' + id + '" data-index="0" data-count="' + count + '">' +
+  return '<div class="carousel' + singleClass + (defer && mode !== 'after-load' ? ' carousel-deferred' : '') + '"' +
+    (defer && mode === 'after-load' ? ' data-defer="after-load"' : '') + ' id="' + id + '" data-index="0" data-count="' + count + '">' +
     '<div class="carousel-track">' + imgsHtml + '</div>' +
     '<button class="carousel-btn prev" aria-label="Previous photo">' +
       '<svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>' +
@@ -84,13 +94,17 @@ function hydrateImages(root) {
   }, { passive: true });
 });
 
-(function queueAfterLoad() {
+// Swap every [data-defer="after-load"] block in at the load event, or now if
+// the page has already loaded (the homepage renders its cards when idle,
+// which can be after load; it calls this again once they exist).
+function hydrateAfterLoad() {
   function run() {
     document.querySelectorAll('[data-defer="after-load"]').forEach(hydrateImages);
   }
   if (document.readyState === 'complete') run();
-  else window.addEventListener('load', run);
-})();
+  else window.addEventListener('load', run, { once: true });
+}
+hydrateAfterLoad();
 
 function goToSlide(carousel, index) {
   hydrateImages(deferredRoot(carousel));

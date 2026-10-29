@@ -170,6 +170,11 @@ function imageSize(absPath) {
 // candidate, falling back to the full-size JPEG in src. Encode spaces.
 function srcsetUrl(u) { return u.replace(/ /g, '%20'); }
 
+// Card photo width for srcset selection (homepage + /sold/ cards); mirrors
+// CARD_SIZES in js/shared.js. The homepage LCP preload uses it too, and must:
+// a preload whose imagesizes differs from the img's sizes fetches twice.
+var CARD_SIZES = '(max-width: 768px) calc(100vw - 48px), (max-width: 1100px) 50vw, 350px';
+
 function srcsetFor(imgPath, prefix) {
   prefix = prefix || '';
   var base = srcsetUrl(prefix + imgPath.replace(/\.jpeg$/, ''));
@@ -696,7 +701,7 @@ function generateAvailableHTML(items) {
 
     var fetchPri = idx === 0 ? ' fetchpriority="high" width="800" height="600"' : '';
     var imgHtml = imgSrc
-      ? '          <div class="card-image-placeholder"><picture><source type="image/avif" srcset="' + avifSrcsetFor(imgSrc) + '" sizes="(max-width: 768px) 100vw, 530px"><source type="image/webp" srcset="' + webpSrcsetFor(imgSrc) + '" sizes="(max-width: 768px) 100vw, 530px"><img src="' + imgSrc + '" srcset="' + srcsetFor(imgSrc) + '" sizes="(max-width: 768px) 100vw, 530px" alt="' + alt + '" loading="' + loading + '"' + fetchPri + '></picture></div>'
+      ? '          <div class="card-image-placeholder"><picture><source type="image/avif" srcset="' + avifSrcsetFor(imgSrc) + '" sizes="' + CARD_SIZES + '"><source type="image/webp" srcset="' + webpSrcsetFor(imgSrc) + '" sizes="' + CARD_SIZES + '"><img src="' + imgSrc + '" srcset="' + srcsetFor(imgSrc) + '" sizes="' + CARD_SIZES + '" alt="' + alt + '" loading="' + loading + '"' + fetchPri + '></picture></div>'
       : '          <div class="card-image-placeholder">Photos coming soon</div>';
 
     var brandLine = item.comingSoon
@@ -760,7 +765,7 @@ function generateSoldHTML(items) {
 
     lines.push(
       '        <div class="card sold"' + (soldCardId(item) ? ' id="' + soldCardId(item) + '"' : '') + '>',
-      '          <div class="card-image-placeholder"><picture><source type="image/avif" srcset="' + avifSrcsetFor(imgSrc) + '" sizes="(max-width: 768px) 100vw, 530px"><source type="image/webp" srcset="' + webpSrcsetFor(imgSrc) + '" sizes="(max-width: 768px) 100vw, 530px"><img src="' + imgSrc + '" srcset="' + srcsetFor(imgSrc) + '" sizes="(max-width: 768px) 100vw, 530px" alt="' + alt + '" loading="lazy"></picture></div>',
+      '          <div class="card-image-placeholder"><picture><source type="image/avif" srcset="' + avifSrcsetFor(imgSrc) + '" sizes="' + CARD_SIZES + '"><source type="image/webp" srcset="' + webpSrcsetFor(imgSrc) + '" sizes="' + CARD_SIZES + '"><img src="' + imgSrc + '" srcset="' + srcsetFor(imgSrc) + '" sizes="' + CARD_SIZES + '" alt="' + alt + '" loading="lazy"></picture></div>',
       '          <div class="card-body">',
       '            <div class="card-meta"><div class="card-brand">' + escapeHtml(item.brand) + '</div><span class="sold-badge">Sold</span></div>',
       titleLine + descLine,
@@ -1539,7 +1544,12 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions, rev
     "name": item.brand + ' ' + item.title,
     "description": item.description,
     "brand": { "@type": "Brand", "name": item.brand },
-    "image": imageUrl,
+    // Every photo, cover first: Google recommends multiple product images,
+    // and it keeps each photo's URL in the raw HTML now that the gallery
+    // parks all but the main one until load (queueGalleryImages, §4.3).
+    "image": (item.images && item.images.length > 1)
+      ? item.images.map(function (src) { return BASE_URL + srcsetUrl(src); })
+      : imageUrl,
     "itemCondition": "https://schema.org/UsedCondition",
     "dateModified": today(),
     "offers": offers
@@ -3190,7 +3200,7 @@ if (firstVisible && firstVisible.images && firstVisible.images.length > 0) {
   var lcpAvifSrcset = avifSrcsetFor(firstVisible.images[0]);
   indexContent = indexContent.replace(
     /<!-- LCP_PRELOAD_START -->.*?<!-- LCP_PRELOAD_END -->/,
-    '<!-- LCP_PRELOAD_START --><link rel="preload" as="image" imagesrcset="' + lcpAvifSrcset + '" imagesizes="(max-width: 768px) 100vw, 530px" fetchpriority="high" type="image/avif"><!-- LCP_PRELOAD_END -->'
+    '<!-- LCP_PRELOAD_START --><link rel="preload" as="image" imagesrcset="' + lcpAvifSrcset + '" imagesizes="' + CARD_SIZES + '" fetchpriority="high" type="image/avif"><!-- LCP_PRELOAD_END -->'
   );
 } else {
   // No card to paint: drop the preload rather than keep fetching a sold

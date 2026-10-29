@@ -285,7 +285,7 @@ function renderAvailable() {
 
     return '<div class="card">' +
       (item.images && item.images.length > 0
-        ? buildCarousel(item.images, item.brand + ' ' + item.title)
+        ? buildCarousel(item.images, item.brand + ' ' + item.title, { deferSlides: 'after-load' })
         : '<div class="card-image-placeholder">Photos coming soon</div>'
       ) +
       '<div class="card-body">' +
@@ -299,6 +299,7 @@ function renderAvailable() {
       '</div>' +
     '</div>';
   }).join('');
+  if (typeof hydrateAfterLoad === 'function') hydrateAfterLoad();
 }
 
 // Defer rendering so the static fallback paints as LCP first

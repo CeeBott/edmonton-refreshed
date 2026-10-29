@@ -1,0 +1,16 @@
+# Cloudflare Pages response headers (CLAUDE.md §4.6). Not served as a file.
+#
+# Minified CSS/JS are referenced only with a content-hash ?v= that build.js
+# rewrites whenever the file changes (§5.7), so a changed file is a new URL:
+# safe to cache for a year without revalidating.
+/css/*
+  Cache-Control: public, max-age=31536000, immutable
+/js/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Photos and brand images keep their file names when edited (a re-rotated
+# photo overwrites in place), so they get a week, not forever.
+/images/*
+  Cache-Control: public, max-age=604800
+/brand/*
+  Cache-Control: public, max-age=604800
