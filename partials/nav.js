@@ -20,7 +20,7 @@ function renderNav() {
   return [
     '  <nav class="nav">',
     '    <div class="nav-inner">',
-    `      <a href="/" class="nav-logo"><img src="/brand/er-logo-horizontal-light.png" alt="${site.brandName}" width="900" height="240"></a>`,
+    `      <a href="/" class="nav-logo"><img src="/brand/er-logo-horizontal-light.png" srcset="/brand/er-logo-horizontal-light-400w.png 400w, /brand/er-logo-horizontal-light.png 900w" sizes="188px" alt="${site.brandName}" width="900" height="240"></a>`,
     '      <ul class="nav-links" id="navLinks">',
     '        <li><a href="/" data-page="available">Available</a></li>',
     '        <li><a href="/sold/" data-page="sold">Sold</a></li>',

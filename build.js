@@ -165,22 +165,27 @@ function imageSize(absPath) {
   return {};
 }
 
+// srcset candidates are whitespace-separated, so a literal space in a path
+// (legacy "images/Sold Inventory/") splits the URL and the browser drops every
+// candidate, falling back to the full-size JPEG in src. Encode spaces.
+function srcsetUrl(u) { return u.replace(/ /g, '%20'); }
+
 function srcsetFor(imgPath, prefix) {
   prefix = prefix || '';
-  var base = imgPath.replace(/\.jpeg$/, '');
-  return prefix + base + '-400w.jpeg 400w, ' + prefix + base + '-800w.jpeg 800w, ' + prefix + imgPath + ' 1200w';
+  var base = srcsetUrl(prefix + imgPath.replace(/\.jpeg$/, ''));
+  return base + '-400w.jpeg 400w, ' + base + '-800w.jpeg 800w, ' + base + '.jpeg 1200w';
 }
 
 function webpSrcsetFor(imgPath, prefix) {
   prefix = prefix || '';
-  var base = imgPath.replace(/\.jpeg$/, '');
-  return prefix + base + '-400w.webp 400w, ' + prefix + base + '-800w.webp 800w, ' + prefix + base + '.webp 1200w';
+  var base = srcsetUrl(prefix + imgPath.replace(/\.jpeg$/, ''));
+  return base + '-400w.webp 400w, ' + base + '-800w.webp 800w, ' + base + '.webp 1200w';
 }
 
 function avifSrcsetFor(imgPath, prefix) {
   prefix = prefix || '';
-  var base = imgPath.replace(/\.jpeg$/, '');
-  return prefix + base + '-400w.avif 400w, ' + prefix + base + '-800w.avif 800w, ' + prefix + base + '.avif 1200w';
+  var base = srcsetUrl(prefix + imgPath.replace(/\.jpeg$/, ''));
+  return base + '-400w.avif 400w, ' + base + '-800w.avif 800w, ' + base + '.avif 1200w';
 }
 
 function slugify(str) {

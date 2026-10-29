@@ -39,7 +39,7 @@ function renderSellPrelude(indent) {
     // Flat on purpose: the build's anchor matches this div up to its first
     // </div>, so it must never contain a nested <div>.
     i + '<div class="sell-form-prelude">',
-    i + '  <img class="sell-form-host-photo" src="/images/about/collin-bottrell-400w.jpeg" alt="Collin Bottrell" width="56" height="56" loading="lazy">',
+    i + '  <img class="sell-form-host-photo" src="/images/about/collin-bottrell-168w.jpeg" alt="Collin Bottrell" width="56" height="56" loading="lazy">',
     i + '  <p class="sell-form-host">We assess your piece based on brand, age, and condition, and aim to reply the same day.</p>',
     i + '  <p class="sell-form-fit">We primarily purchase higher-quality sofas and sectionals from premium retailers, chosen for their construction, materials, and comfort.</p>',
     i + '</div>',

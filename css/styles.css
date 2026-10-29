@@ -1,6 +1,27 @@
 /* ── Reset & Base ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* Metric-matched fallbacks: text set in these before the web fonts arrive
+   takes the same space as Inter / Playfair, so the swap (display=swap) does
+   not re-wrap lines and shift the page. Values measured from the Google Fonts
+   woff2 (hhea metrics; width averaged over guide body copy), 2026-10-29. */
+@font-face {
+  font-family: 'Inter Fallback';
+  src: local('Arial'), local('ArialMT');
+  size-adjust: 106.97%;
+  ascent-override: 90.56%;
+  descent-override: 22.55%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Playfair Display Fallback';
+  src: local('Georgia');
+  size-adjust: 102.06%;
+  ascent-override: 106.02%;
+  descent-override: 24.59%;
+  line-gap-override: 0%;
+}
+
 :root {
   --color-bg: #fafaf9;
   --color-surface: #ffffff;
@@ -11,8 +32,8 @@
   --color-border: #e8e8e8;
   --color-sold-badge: #b91c1c;
   --color-success: #166534;
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Inter', 'Inter Fallback', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-serif: 'Playfair Display', 'Playfair Display Fallback', Georgia, serif;
   --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
   --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
   --shadow-lg: 0 8px 30px rgba(0,0,0,0.1);
