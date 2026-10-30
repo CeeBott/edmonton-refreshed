@@ -171,10 +171,13 @@ export default {
       '',
       `Brand: ${get('Brand')}`,
       `Year purchased / made: ${ageValue}`,
-      `Condition (seller's own assessment): ${get('Condition') || '(not answered)'}`,
-      `Original purchase price: ${get('Original purchase price') || '(not provided)'}`,
-      `Has receipt: ${get('Has receipt') || '(not answered)'}`,
-      `Pets in home: ${get('Pets in home') || '(not answered)'}`,
+      // Condition, original price, receipt and pets left the form on
+      // 2026-10-30 (§10.28). Printed only when a page cached before then
+      // still sends them, same as the legacy asking-price line below.
+      ...(get('Condition') ? [`Condition (seller's own assessment): ${get('Condition')}`] : []),
+      ...(get('Original purchase price') ? [`Original purchase price: ${get('Original purchase price')}`] : []),
+      ...(get('Has receipt') ? [`Has receipt: ${get('Has receipt')}`] : []),
+      ...(get('Pets in home') ? [`Pets in home: ${get('Pets in home')}`] : []),
       `Files attached: ${attachments.length}`,
       // The "what are you hoping to get?" field was removed from the form
       // (§10.22). This line is retained CONDITIONALLY, not as a live field:

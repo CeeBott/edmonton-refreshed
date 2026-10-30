@@ -2,15 +2,13 @@
 //  SELL FORM HANDLER
 //
 //  Used on /sell/ and every /sell/[slug]/ landing page.
-//  Posts a multipart form (Brand, Year of purchase, Original purchase
-//  price, Condition, Pets in home, Has receipt, 1–6 files (photos
-//  plus the receipt), Name, Contact, Notes) to the Cloudflare Worker
-//  endpoint.
+//  Posts a multipart form (Brand, Year of purchase, 1–6 photos, Name,
+//  Contact, Notes) to the Cloudflare Worker endpoint.
 //
 //  The MARKUP is not authored here — it is generated from
 //  partials/sell-form.js and stamped onto all 22 sell pages by
-//  build.js (§5.11). This file owns submit behaviour only: money
-//  formatting, the photo picker, in-browser compression, the size
+//  build.js (§5.11). This file owns submit behaviour only: the photo
+//  picker, in-browser compression, the size
 //  gates, and the fetch. Adding a field means editing the partial,
 //  this file, and worker/index.js.
 // ═══════════════════════════════════════════════════════════
@@ -18,8 +16,7 @@
 (function () {
   var SELL_FORM_ENDPOINT = 'https://edmonton-refreshed-sell.cbottrell1990.workers.dev/';
   var MIN_PHOTOS = 1;
-  // 6, not 5: the receipt now rides in this same picker (§5.11), and it should
-  // not cost the seller a photo slot.
+  // Must match the Worker's MAX_PHOTOS (§5.11).
   var MAX_PHOTOS = 6;
   // 18 MB raw — Cloudflare Email Routing forwards messages up to 25 MB
   // on-the-wire, and base64-encoded attachments expand by 4/3. Anything
@@ -102,35 +99,6 @@
     }, { rootMargin: '0px 0px -30% 0px' }).observe(formSection);
     form.addEventListener('sell-form-sent', function () { formSent = true; updateSticky(); });
     updateSticky();
-  }
-
-  // Original purchase price (optional) — format the value as CAD dollars as
-  // the seller types, so "400" displays as "$400". Digits only; no cents.
-  var msrpInput = document.getElementById('sf-msrp');
-  if (msrpInput) {
-    var formatMoney = function () {
-      var digits = msrpInput.value.replace(/[^0-9]/g, '');
-      if (!digits) { msrpInput.value = ''; return; }
-      msrpInput.value = '$' + Number(digits).toLocaleString('en-CA');
-    };
-    msrpInput.addEventListener('input', formatMoney);
-    msrpInput.addEventListener('blur', formatMoney);
-
-    // "Not sure" (inherited pieces, no receipt). The checkbox carries the same
-    // field name with the value "Not sure"; disabling the text input keeps it
-    // out of both validation and the FormData, so exactly one value is sent
-    // and no placeholder number is ever invented.
-    var msrpUnsure = document.getElementById('sf-msrp-unsure');
-    if (msrpUnsure) {
-      var syncUnsure = function () {
-        msrpInput.disabled = msrpUnsure.checked;
-        msrpInput.required = !msrpUnsure.checked;
-        if (msrpUnsure.checked) msrpInput.value = '';
-      };
-      msrpUnsure.addEventListener('change', syncUnsure);
-      form.addEventListener('reset', function () { setTimeout(syncUnsure, 0); });
-      syncUnsure();
-    }
   }
 
   var photosInput = document.getElementById('sf-photos');
@@ -265,7 +233,7 @@
         var item = document.createElement('li');
         item.className = 'sell-photo-item';
 
-        // A PDF receipt has no decodable preview — an <img> would render as a
+        // A PDF (receipt, spec sheet) has no decodable preview — an <img> would render as a
         // broken image. Give non-images a labelled tile instead.
         var isImage = /^image\//i.test(file.type || '');
         var img;
@@ -325,8 +293,8 @@
     for (var i = 0; i < newFiles.length; i++) {
       var f = newFiles[i];
       if (selectedPhotos.length >= MAX_PHOTOS) { skipped++; continue; }
-      // Images plus PDF — the receipt uploads here alongside the photos, and
-      // plenty of people have it as a phone photo rather than a document.
+      // Images plus PDF: the form no longer asks for a receipt, but a seller who
+      // has one (or a spec sheet) can still attach it here.
       if (!/^image\//i.test(f.type) && f.type !== 'application/pdf') { skipped++; continue; }
       var dup = selectedPhotos.some(function (s) {
         return s.name === f.name && s.size === f.size && s.lastModified === f.lastModified;

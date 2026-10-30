@@ -285,7 +285,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="../../css/styles.min.css?v=ea481d80">
+  <link rel="stylesheet" href="../../css/styles.min.css?v=e26ed9d8">
   <meta name="theme-color" content="#2c2c2c">
 </head>
 <body>
@@ -510,73 +510,36 @@
               <p class="sell-form-brand-warn" id="sf-brand-warn" role="status" data-brands="[[&quot;IKEA&quot;,&quot;\\bikea\\b&quot;],[&quot;Ashley&quot;,&quot;\\bashley\\b&quot;],[&quot;Leon’s&quot;,&quot;\\bleon[’']?s\\b&quot;],[&quot;The Brick&quot;,&quot;\\b(the )?brick\\b&quot;],[&quot;Structube&quot;,&quot;\\bstructube\\b&quot;],[&quot;Wayfair&quot;,&quot;\\bwayfair\\b&quot;],[&quot;Wayfair&quot;,&quot;\\bwilla arlo\\b&quot;],[&quot;Walmart&quot;,&quot;\\bwal-?mart\\b&quot;],[&quot;Costco&quot;,&quot;\\bcostco\\b&quot;],[&quot;Kort &amp; Co.&quot;,&quot;\\bkort\\b&quot;]]" hidden></p>
             </div>
 
-            <fieldset class="sell-form-row sell-form-choice">
-              <legend>Do you have the original receipt? <span class="sell-form-req" aria-hidden="true">*</span></legend>
-              <div class="sell-form-seg">
-                <label><input type="radio" name="Has receipt" value="Yes" required> <span>Yes</span></label>
-                <label><input type="radio" name="Has receipt" value="No"> <span>No</span></label>
-              </div>
-              <p class="sell-form-hint">It helps us make a stronger offer. It isn&rsquo;t required. We make offers with or without one.</p>
-            </fieldset>
-
-            <div class="sell-form-pair">
-              <div class="sell-form-row">
-                <label for="sf-year">Year purchased <span class="sell-form-req" aria-hidden="true">*</span></label>
-                <select id="sf-year" name="Year of purchase" required>
-                  <option value="">Select a year</option>
-                  <option>2026</option>
-                  <option>2025</option>
-                  <option>2024</option>
-                  <option>2023</option>
-                  <option>2022</option>
-                  <option>2021</option>
-                  <option>2020</option>
-                  <option>2019</option>
-                  <option>2018</option>
-                  <option>2017</option>
-                  <option>2016</option>
-                  <option>2015</option>
-                  <option>2014</option>
-                  <option>2013</option>
-                  <option>2012</option>
-                  <option>2011</option>
-                  <option>2010</option>
-                  <option>Older than 2010</option>
-                  <option>Not sure</option>
-                </select>
-              </div>
-              <div class="sell-form-row">
-                <label for="sf-msrp">Original price <span class="sell-form-req" aria-hidden="true">*</span></label>
-                <input type="text" id="sf-msrp" name="Original purchase price" inputmode="numeric" autocomplete="off" placeholder="$ (approximate is fine)" required>
-                <label class="sell-form-unsure"><input type="checkbox" id="sf-msrp-unsure" name="Original purchase price" value="Not sure"> Not sure</label>
-              </div>
-            </div>
-
             <div class="sell-form-row">
-              <label for="sf-condition">Condition <span class="sell-form-req" aria-hidden="true">*</span></label>
-              <select id="sf-condition" name="Condition" required>
-                <option value="">Select a condition</option>
-                <option value="Excellent / Like New">Excellent / Like New: Virtually no signs of use</option>
-                <option value="Very Good">Very Good: Minimal signs of use, apparent on close inspection</option>
-                <option value="Good">Good: Signs of use expected with normal use</option>
-                <option value="Fair">Fair: Obvious cosmetic wear, structurally sound</option>
+              <label for="sf-year">Year purchased <span class="sell-form-req" aria-hidden="true">*</span></label>
+              <select id="sf-year" name="Year of purchase" required>
+                <option value="">Select a year</option>
+                <option>2026</option>
+                <option>2025</option>
+                <option>2024</option>
+                <option>2023</option>
+                <option>2022</option>
+                <option>2021</option>
+                <option>2020</option>
+                <option>2019</option>
+                <option>2018</option>
+                <option>2017</option>
+                <option>2016</option>
+                <option>2015</option>
+                <option>2014</option>
+                <option>2013</option>
+                <option>2012</option>
+                <option>2011</option>
+                <option>2010</option>
+                <option>Older than 2010</option>
+                <option>Not sure</option>
               </select>
             </div>
-
-            <fieldset class="sell-form-row sell-form-choice">
-              <legend>Pets in the home <span class="sell-form-req" aria-hidden="true">*</span></legend>
-              <div class="sell-form-seg sell-form-seg-3">
-                <label><input type="radio" name="Pets in home" value="Non-hypoallergenic cat or dog" required> <span>Cat or dog</span></label>
-                <label><input type="radio" name="Pets in home" value="Hypoallergenic cat or dog"> <span>Hypoallergenic</span></label>
-                <label><input type="radio" name="Pets in home" value="None"> <span>No pets</span></label>
-              </div>
-              <p class="sell-form-hint">Only tells us what cleaning it needs. It never disqualifies a piece.</p>
-            </fieldset>
           </fieldset>
 
           <fieldset class="sell-form-group">
-            <legend class="sell-form-group-title" id="sf-photos-label"><span class="sell-form-group-num" aria-hidden="true">2</span> Photos <span class="sell-form-req" aria-hidden="true">*</span> <span class="sell-form-req-note">(at least 1, up to 6 files)</span></legend>
-            <p class="sell-form-hint sell-form-hint-lead">Best shots: the front, the side profile, a close-up of the fabric or leather, and any tags or labels. Add your receipt too if you have it.</p>
+            <legend class="sell-form-group-title" id="sf-photos-label"><span class="sell-form-group-num" aria-hidden="true">2</span> Photos <span class="sell-form-req" aria-hidden="true">*</span> <span class="sell-form-req-note">(at least 1, up to 6)</span></legend>
+            <p class="sell-form-hint sell-form-hint-lead">Best shots: the front, the side profile, a close-up of the fabric or leather, and any tags or labels.</p>
             <details class="sell-photo-examples">
               <summary>See example shots</summary>
               <ul>
@@ -788,7 +751,7 @@
   <!-- FOOTER_END -->
 
   <script src="../../js/shared.min.js?v=a8f2059b"></script>
-  <script src="../../js/sell-form.min.js?v=9a02af92"></script>
+  <script src="../../js/sell-form.min.js?v=39765d4c"></script>
 
 </body>
 </html>

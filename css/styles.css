@@ -2748,6 +2748,24 @@ h3.faq-question,
   color: var(--color-text-secondary);
   margin-bottom: 1rem;
 }
+/* Early CTA: one box right after a guide's introduction (§5.12), so a
+   reader who arrives owning the piece sees the offer path on the first
+   screen. Tighter than the closing box so it doesn't read as the end. */
+.guide-body .guide-cta--early {
+  margin: 2rem 0 2.5rem;
+  padding: 1.5rem;
+}
+.guide-body .guide-cta--early p {
+  font-size: 0.975rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 0.875rem;
+}
+/* Two-path closing box on brand guides: buy or sell. Stacks on phones. */
+.guide-cta .listing-cta + .listing-cta { margin-right: 0; }
+@media (max-width: 480px) {
+  .guide-cta .listing-cta { display: block; margin: 0 0 10px; }
+  .guide-cta .listing-cta:last-child { margin-bottom: 0; }
+}
 
 /* Guides index page */
 .guides-section + .guides-section { margin-top: 48px; }
@@ -3450,27 +3468,6 @@ footer a:focus-visible {
   flex-direction: column;
   gap: 6px;
 }
-/* "Not sure" escape hatch under Original price. */
-.sell-form-unsure {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 32px;
-  font-size: 0.85rem;
-  color: var(--color-text-secondary);
-  cursor: pointer;
-}
-.sell-form-unsure input[type="checkbox"] {
-  width: 16px;
-  height: 16px;
-  margin: 0;
-  accent-color: var(--color-accent);
-}
-.sell-form input[type="text"]:disabled {
-  background: var(--color-bg-subtle, #f4f4f2);
-  color: var(--color-text-secondary);
-  cursor: not-allowed;
-}
 .sell-form-row > label {
   font-size: 0.85rem;
   font-weight: 500;
@@ -3478,8 +3475,8 @@ footer a:focus-visible {
   letter-spacing: 0.01em;
 }
 /* Required marker. --color-accent (#2c2c2c) is indistinguishable from the
-   label text (#1a1a1a), and the error red would read as ten failures on a form
-   where every field is simply mandatory. Muted grey marks them without
+   label text (#1a1a1a), and the error red would read as a row of failures on a
+   form where nearly every field is mandatory. Muted grey marks them without
    shouting. */
 .sell-form-req {
   color: var(--color-text-secondary);
@@ -3489,46 +3486,6 @@ footer a:focus-visible {
   font-weight: 400;
   color: var(--color-text-secondary);
   font-size: 0.78rem;
-}
-/* Radio group (Pets in home). A <fieldset> so the question is announced with
-   its options; the browser default border/padding/margin are cleared so it
-   behaves as a plain .sell-form-row, and min-width:0 stops the legacy
-   fieldset min-content sizing from blowing out the narrow form column. */
-.sell-form-choice {
-  border: 0;
-  padding: 0;
-  margin: 0;
-  min-width: 0;
-}
-.sell-form-choice > legend {
-  padding: 0;
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--color-text);
-  letter-spacing: 0.01em;
-}
-.sell-form-choice .sell-form-hint {
-  margin-bottom: 8px;
-}
-/* 44px min tap target on touch, matching the listing collapsibles. */
-.sell-form-choice-option {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-height: 44px;
-  padding: 2px 0;
-  font-size: 0.95rem;
-  font-weight: 400;
-  color: var(--color-text);
-  cursor: pointer;
-}
-.sell-form-choice-option input[type="radio"] {
-  width: 18px;
-  height: 18px;
-  margin: 0;
-  flex: 0 0 auto;
-  accent-color: var(--color-text);
-  cursor: pointer;
 }
 .sell-form input[type="text"],
 .sell-form input[type="file"],
@@ -4775,45 +4732,6 @@ footer a:focus-visible {
   grid-template-columns: 1fr 1fr;
   gap: 16px 14px;
 }
-.sell-form-choice > legend { margin-bottom: 8px; }
-.sell-form-seg {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-}
-.sell-form-seg-3 { grid-template-columns: repeat(3, 1fr); }
-.sell-form-seg label { position: relative; }
-.sell-form-seg input {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  margin: 0;
-  cursor: pointer;
-}
-.sell-form-seg span {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 44px;
-  padding: 0 6px;
-  text-align: center;
-  font-size: 0.9rem;
-  color: var(--color-text);
-  background: #fff;
-  border: 1px solid #d9d9d6;
-  border-radius: 6px;
-  transition: background 150ms ease, border-color 150ms ease, color 150ms ease;
-}
-.sell-form-seg input:checked + span {
-  background: var(--color-accent);
-  border-color: var(--color-accent);
-  color: #fff;
-}
-.sell-form-seg input:focus-visible + span {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-}
-.sell-form-choice .sell-form-hint { margin: 8px 0 0; }
 .sell-form-hint-lead { margin: 0; }
 .sell-form-brand-warn {
   margin: 4px 0 0;
@@ -4868,7 +4786,6 @@ footer a:focus-visible {
 .sell-form-disclaimer { margin-top: 12px; }
 @media (max-width: 640px) {
   .sell-form-pair { grid-template-columns: 1fr; }
-  .sell-form-seg-3 span { font-size: 0.82rem; }
 }
 
 /* ═══════════════════════════════════════════════════════════

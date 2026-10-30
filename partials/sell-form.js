@@ -42,33 +42,31 @@
  *
  * ── Worker contract ─────────────────────────────────────────────────
  * Field `name` attributes are the wire format the Cloudflare Worker reads
- * (§5.11): Brand, Year of purchase, Original purchase price, receipt, Pets in
- * home, photos, Name, Best contact, Notes, plus the _honey checkbox honeypot
- * (which must stay a CHECKBOX — §9.1) and Acknowledged.
+ * (§5.11): Brand, Year of purchase, photos, Name, Best contact, Notes, plus
+ * the _honey checkbox honeypot (which must stay a CHECKBOX — §9.1) and
+ * Acknowledged.
  * Renaming any of these here without updating worker/index.js breaks
  * submissions.
  *
  * Only Brand / Year of purchase / Name / Best contact are enforced by the
- * Worker. Everything else is either genuinely optional or a client-side-only
- * gate — the same reasoning that keeps `Acknowledged` out of REQUIRED_FIELDS
- * (§5.11): a field the Worker demands but some page does not send rejects
- * that page's submissions outright, so the server-side list stays minimal.
- * `Pets in home` is `required` in markup and unenforced server-side for
- * exactly this reason.
+ * Worker. Photos are a client-side gate plus the Worker's own count, and
+ * `Acknowledged` stays out of REQUIRED_FIELDS because brand pages omit it
+ * (§5.11).
  *
  * ── Field order ─────────────────────────────────────────────────────
  * Three numbered groups (Your piece / Photos / How to reach you) so the form
- * reads as short steps rather than one long column. The provenance answers
- * (receipt, year, original price) sit together because they come from one
- * place: the receipt.
+ * reads as short steps rather than one long column. "Your piece" is only
+ * Brand and Year: the receipt, original price, condition and pets questions
+ * were removed 2026-10-30 (§10.28). The photos carry condition and
+ * provenance better than self-reported answers did.
  *
  * There is deliberately NO "what are you hoping to get?" field — see §10.22.
  * Do not add one back next to the original purchase price, or anywhere else.
  */
 
-// Required marker. Every field on this form is mandatory (§5.11), so the
-// asterisk is a visual cue only — aria-hidden keeps screen readers from
-// announcing "star" on all ten labels, since each control already carries a
+// Required marker. Every field on this form is mandatory except Notes
+// (§5.11), so the asterisk is a visual cue only — aria-hidden keeps screen
+// readers from announcing "star" on every label, since each control already carries a
 // `required` attribute, which is what assistive tech actually reports.
 var REQ = ' <span class="sell-form-req" aria-hidden="true">*</span>';
 
@@ -86,9 +84,8 @@ var DEFAULTS = {
   // longer three-brand version clipped it off.
   brandPlaceholder: 'e.g. Natuzzi, EQ3 (or &lsquo;unsure&rsquo;)',
   // Must agree with MIN_PHOTOS / MAX_PHOTOS in js/sell-form.js and
-  // worker/index.js (1 and 6). The receipt uploads through this same field,
-  // which is why the cap is 6 rather than 5 and the wording says "files".
-  photosNote: '(at least 1, up to 6 files)',
+  // worker/index.js (1 and 6).
+  photosNote: '(at least 1, up to 6)',
   brandLabel: 'Brand',
   notesLabel: 'Anything we should know?',
   notesPlaceholder: 'Anything we should know?',
@@ -116,34 +113,6 @@ function yearOptions(currentYear) {
   out.push('<option>Not sure</option>');
   return out;
 }
-
-// Condition options. These are the §5.19 grades, in the same order and with
-// the same meaning as config/conditions.js — deliberately NOT a second scale.
-//
-// The seller's answer here is compared directly against the grade that ends up
-// on the listing, so the two must name the same tiers. The top tier is labelled
-// "Excellent / Like New" because that is exactly how the published rubric
-// (guides/what-condition-means-furniture-grading-edmonton/) heads it: sellers
-// think in "like new", and the guide already treats the two as one tier. Do not
-// split them into separate options — that publishes a five-tier scale against
-// the site's four (§5.19), and shifts every label down one so a seller's
-// "Excellent" would mean our "Very Good".
-//
-// Definitions are the seller-facing wording: same degree of wear as
-// config/conditions.js, phrased for someone assessing their own piece. Degree
-// only, never a named defect (§5.19).
-//
-// Do NOT copy this wording back into config/conditions.js. Those definitions
-// render on every listing at that grade and are bound by the stricter rules
-// there: degree only, no named defects, and no claims about how long a piece
-// was owned or how heavily it was used. Guidance that helps a seller size up
-// their own piece can assert more than a published grade definition may.
-var CONDITION_OPTIONS = [
-  ['Excellent / Like New', 'Virtually no signs of use'],
-  ['Very Good',            'Minimal signs of use, apparent on close inspection'],
-  ['Good',                 'Signs of use expected with normal use'],
-  ['Fair',                 'Obvious cosmetic wear, structurally sound'],
-];
 
 // Example shots shown behind "See example shots" in the photo group. Real
 // photos from our own listings (CB-050, AL-049), cropped square by CSS.
@@ -185,65 +154,18 @@ function renderSellForm(opts) {
   p('      <p class="sell-form-brand-warn" id="sf-brand-warn" role="status" data-brands="' + attrJson(rules.massMarketBrands) + '" hidden></p>');
   p('    </div>');
   p('');
-  // Second field, directly under Brand: asking about the receipt up front
-  // primes everything downstream.
-  p('    <fieldset class="sell-form-row sell-form-choice">');
-  p('      <legend>Do you have the original receipt?' + REQ + '</legend>');
-  p('      <div class="sell-form-seg">');
-  p('        <label><input type="radio" name="Has receipt" value="Yes" required> <span>Yes</span></label>');
-  p('        <label><input type="radio" name="Has receipt" value="No"> <span>No</span></label>');
-  p('      </div>');
-  // The "isn't required" sentence is load-bearing (§5.11): stating only the
-  // upside of a receipt implies a downside to not having one, and a seller
-  // answering "No" this early could read it as being disqualified.
-  p('      <p class="sell-form-hint">It helps us make a stronger offer. It isn&rsquo;t required. We make offers with or without one.</p>');
-  p('    </fieldset>');
-  p('');
-  p('    <div class="sell-form-pair">');
-  p('      <div class="sell-form-row">');
-  p('        <label for="sf-year">Year purchased' + REQ + '</label>');
-  p('        <select id="sf-year" name="Year of purchase" required>');
-  years.forEach(function (opt) { p('          ' + opt); });
-  p('        </select>');
-  p('      </div>');
-  p('      <div class="sell-form-row">');
-  p('        <label for="sf-msrp">Original price' + REQ + '</label>');
-  p('        <input type="text" id="sf-msrp" name="Original purchase price" inputmode="numeric" autocomplete="off" placeholder="$ (approximate is fine)" required>');
-  // "Not sure" escape hatch (§5.11: every mandatory field needs one). It
-  // shares the price input's name, and js/sell-form.js disables the input
-  // while it is ticked, so the form sends exactly one value: the literal
-  // "Not sure", never a made-up number. The Worker prints it as-is.
-  p('        <label class="sell-form-unsure"><input type="checkbox" id="sf-msrp-unsure" name="Original purchase price" value="Not sure"> Not sure</label>');
-  p('      </div>');
-  p('    </div>');
-  p('');
-  // No hint under Condition by design: the per-option definitions carry the
-  // whole explanation.
   p('    <div class="sell-form-row">');
-  p('      <label for="sf-condition">Condition' + REQ + '</label>');
-  p('      <select id="sf-condition" name="Condition" required>');
-  p('        <option value="">Select a condition</option>');
-  CONDITION_OPTIONS.forEach(function (c) {
-    p('        <option value="' + c[0] + '">' + c[0] + ': ' + c[1] + '</option>');
-  });
+  p('      <label for="sf-year">Year purchased' + REQ + '</label>');
+  p('      <select id="sf-year" name="Year of purchase" required>');
+  years.forEach(function (opt) { p('        ' + opt); });
   p('      </select>');
   p('    </div>');
-  p('');
-  p('    <fieldset class="sell-form-row sell-form-choice">');
-  p('      <legend>Pets in the home' + REQ + '</legend>');
-  p('      <div class="sell-form-seg sell-form-seg-3">');
-  p('        <label><input type="radio" name="Pets in home" value="Non-hypoallergenic cat or dog" required> <span>Cat or dog</span></label>');
-  p('        <label><input type="radio" name="Pets in home" value="Hypoallergenic cat or dog"> <span>Hypoallergenic</span></label>');
-  p('        <label><input type="radio" name="Pets in home" value="None"> <span>No pets</span></label>');
-  p('      </div>');
-  p('      <p class="sell-form-hint">Only tells us what cleaning it needs. It never disqualifies a piece.</p>');
-  p('    </fieldset>');
   p('  </fieldset>');
   p('');
   // ── Group 2: photos ─────────────────────────────────────────────
   p('  <fieldset class="sell-form-group">');
   p('    <legend class="sell-form-group-title" id="sf-photos-label"><span class="sell-form-group-num" aria-hidden="true">2</span> Photos' + REQ + ' <span class="sell-form-req-note">' + DEFAULTS.photosNote + '</span></legend>');
-  p('    <p class="sell-form-hint sell-form-hint-lead">Best shots: the front, the side profile, a close-up of the fabric or leather, and any tags or labels. Add your receipt too if you have it.</p>');
+  p('    <p class="sell-form-hint sell-form-hint-lead">Best shots: the front, the side profile, a close-up of the fabric or leather, and any tags or labels.</p>');
   // Examples sit behind a disclosure: shown full size inside the form they
   // read as photos already attached, or as options to tap.
   p('    <details class="sell-photo-examples">');
