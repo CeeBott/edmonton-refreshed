@@ -4212,6 +4212,13 @@ footer a:focus-visible {
   color: var(--color-text-secondary);
 }
 .sell-form-host strong { color: var(--color-text); font-weight: 600; }
+.sell-form-host-name {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
 .sell-form-fit {
   grid-column: 1 / -1;
   margin: 0;

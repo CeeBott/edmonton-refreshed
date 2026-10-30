@@ -40,7 +40,9 @@ function renderSellPrelude(indent) {
     // </div>, so it must never contain a nested <div>.
     i + '<div class="sell-form-prelude">',
     i + '  <img class="sell-form-host-photo" src="/images/about/collin-bottrell-168w.jpeg" alt="Collin Bottrell" width="56" height="56" loading="lazy">',
-    i + '  <p class="sell-form-host">We assess your piece based on brand, age, and condition, and aim to reply the same day.</p>',
+    // The name line tells a seller whose face this is. Third person, as
+    // founder, never sole operator (§5.17).
+    i + '  <p class="sell-form-host"><span class="sell-form-host-name">Collin Bottrell, founder</span>We assess your piece based on brand, age, and condition, and aim to reply the same day.</p>',
     i + '  <p class="sell-form-fit">We primarily purchase higher-quality sofas and sectionals from premium retailers, chosen for their construction, materials, and comfort.</p>',
     i + '</div>',
     // Collapsed by default: the copy is unchanged in force (§5.13), it just no
