@@ -15,7 +15,7 @@
 //     renders no blurb.
 //
 //  The listing page links the brand's buyer's guide separately via
-//  brandGuideMap in build.js — do not duplicate that link here.
+//  config/brand-guides.js — do not duplicate that link here.
 // ═══════════════════════════════════════════════════════════
 
 var brandBlurbs = {

@@ -69,6 +69,7 @@ var conditionScopeNote  = require('./config/conditions').conditionScopeNote;
 var conditionGuideHref  = require('./config/conditions').conditionGuideHref;
 var conditionGuideLabel = require('./config/conditions').conditionGuideLabel;
 var brandBlurbs        = require('./config/brands').brandBlurbs;
+var brandGuides        = require('./config/brand-guides').brandGuides;
 
 
 // ── Utilities ────────────────────────────────────────────
@@ -3183,21 +3184,11 @@ fs.writeFileSync(merchantFeedPath, generateMerchantFeed(availableItems), 'utf8')
 //      it makes every sell-page/guide author citation inert; sameAs drift and
 //      guide gaps are warnings. See CLAUDE.md §5.17 and §4.3.
 // ── Brand-guide cross-link map — module-scoped so the audit can lint it ──
-// One entry per brand with a published buyer's guide; renders the listing
-// Description cross-link (§5.8). The audit warns when a published brand-
-// review guide has no entry here.
+// Lives in config/brand-guides.js, shared with scripts/gen-sold-stub.js so
+// listings and sold stubs can't drift apart (§5.8). The audit warns when a
+// published brand-review guide has no entry there.
 function getBrandGuideMap() {
-  return {
-    'Natuzzi': { slug: 'natuzzi-sofa-review-edmonton', label: 'Read our full Natuzzi buyer&rsquo;s guide for Edmonton' },
-    'Natuzzi Editions': { slug: 'natuzzi-sofa-review-edmonton', label: 'Read our full Natuzzi buyer&rsquo;s guide for Edmonton' },
-    'Natuzzi Italia': { slug: 'natuzzi-sofa-review-edmonton', label: 'Read our full Natuzzi buyer&rsquo;s guide for Edmonton' },
-    'B&B Italia': { slug: 'bb-italia-sofa-review-edmonton', label: 'Read our full B&amp;B Italia buyer&rsquo;s guide for Edmonton' },
-    'Rove Concepts': { slug: 'rove-concepts-sofa-review-edmonton', label: 'Read our full Rove Concepts buyer&rsquo;s guide for Edmonton' },
-    'Pottery Barn': { slug: 'pottery-barn-sofa-review-edmonton', label: 'Read our full Pottery Barn buyer&rsquo;s guide for Edmonton' },
-    'Crate & Barrel': { slug: 'crate-and-barrel-sofa-review-edmonton', label: 'Read our full Crate &amp; Barrel buyer&rsquo;s guide for Edmonton' },
-    'EQ3': { slug: 'eq3-sofa-review-edmonton', label: 'Read our full EQ3 buyer&rsquo;s guide for Edmonton' },
-    'West Elm': { slug: 'west-elm-sofa-review-edmonton', label: 'Read our full West Elm buyer&rsquo;s guide for Edmonton' }
-  };
+  return brandGuides;
 }
 
 // ── llms.txt: regenerate the sold-archive list ───────────────────────────

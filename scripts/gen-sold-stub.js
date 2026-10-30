@@ -911,18 +911,9 @@ function neutralizeLegacyDesc(s) {
   return String(s).replace(/^This\s+(.+?)\s+has sold\.\s*/i, 'Pre-owned $1. ');
 }
 
-// Brand → buyer's-guide cross-link (mirror of build.js brandGuideMap), shown
-// in the retained Description collapsible.
-var BRAND_GUIDE_MAP = {
-  'Natuzzi':          { slug: 'natuzzi-sofa-review-edmonton',         label: 'Read our full Natuzzi buyer&rsquo;s guide for Edmonton' },
-  'Natuzzi Editions': { slug: 'natuzzi-sofa-review-edmonton',         label: 'Read our full Natuzzi buyer&rsquo;s guide for Edmonton' },
-  'Natuzzi Italia':   { slug: 'natuzzi-sofa-review-edmonton',         label: 'Read our full Natuzzi buyer&rsquo;s guide for Edmonton' },
-  'B&B Italia':       { slug: 'bb-italia-sofa-review-edmonton',       label: 'Read our full B&amp;B Italia buyer&rsquo;s guide for Edmonton' },
-  'Rove Concepts':    { slug: 'rove-concepts-sofa-review-edmonton',   label: 'Read our full Rove Concepts buyer&rsquo;s guide for Edmonton' },
-  'Pottery Barn':     { slug: 'pottery-barn-sofa-review-edmonton',    label: 'Read our full Pottery Barn buyer&rsquo;s guide for Edmonton' },
-  'Crate & Barrel':   { slug: 'crate-and-barrel-sofa-review-edmonton', label: 'Read our full Crate &amp; Barrel buyer&rsquo;s guide for Edmonton' },
-  'EQ3':              { slug: 'eq3-sofa-review-edmonton',             label: 'Read our full EQ3 buyer&rsquo;s guide for Edmonton' }
-};
+// Brand → buyer's-guide cross-link, shown in the retained Description
+// collapsible. Same map build.js uses for active listings (§5.8).
+var BRAND_GUIDE_MAP = require('../config/brand-guides').brandGuides;
 function brandGuideHTML(brand) {
   var bg = BRAND_GUIDE_MAP[brand];
   return bg ? '<p class="listing-brand-guide-link"><a href="/guides/' + bg.slug + '/">' + bg.label + ' &rarr;</a></p>' : '';
