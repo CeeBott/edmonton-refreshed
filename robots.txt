@@ -8,22 +8,23 @@
 # visibility — that runs through the separate search/answer user agents, which
 # stay fully allowed.
 #
-# Welcome (allowed by the default rule at the bottom): Googlebot, Bingbot,
-# Applebot, DuckDuckBot, OAI-SearchBot, ChatGPT-User, PerplexityBot,
-# Perplexity-User, Claude-SearchBot, Claude-User — every search engine and
-# every AI search/answer bot.
+# The exception is Google-Extended, which is allowed. Google's crawler docs say
+# that token also controls grounding in Gemini Apps (Gemini reading Google
+# Search results when it answers), so blocking it kept the site out of Gemini
+# answers, not just out of training (CLAUDE.md §6.5, 2026-10-31).
 #
-# This same policy is enforced at the edge by Cloudflare's managed AI-bot rule
-# (Content-Signal: search=yes, ai-train=no). The rules below keep the origin
-# self-documenting and enforced even if the edge is bypassed. If you change the
-# policy in one place, change it in the other — see CLAUDE.md §6.5.
+# Welcome (allowed by the default rule at the bottom): Googlebot, Bingbot,
+# Google-Extended, Applebot, DuckDuckBot, OAI-SearchBot, ChatGPT-User,
+# PerplexityBot, Perplexity-User, Claude-SearchBot, Claude-User — every search
+# engine and every AI search/answer bot.
+#
+# This file is the whole policy: as of 2026-10-31 Cloudflare's AI crawler
+# settings are all "Allow" and add nothing to this file. If an edge block is
+# ever turned on, make sure it does not block Google-Extended (CLAUDE.md §6.5).
 
 # --- AI training crawlers: no referral value, blocked. (Search/answer bots are
 #     unaffected — they use separate user agents and fall under the * rule.) ---
 User-agent: GPTBot
-Disallow: /
-
-User-agent: Google-Extended
 Disallow: /
 
 User-agent: CCBot
