@@ -1420,6 +1420,33 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   gap: 4px;
   text-align: right;
 }
+/* Social icons — sit above the copyright line, same muted tone as the
+   utility links. The 36px box (44px on mobile) is the tap target; the
+   20px glyph sits centred in it. */
+.footer-social {
+  list-style: none;
+  display: flex;
+  gap: 4px;
+  margin: 0 -8px 4px 0;
+  padding: 0;
+}
+.footer-social a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  color: var(--color-text-secondary);
+  transition: color 0.2s ease;
+}
+.footer-social a:hover { color: var(--color-text); }
+.footer-social svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 .footer-copy {
   margin: 0;
   font-size: 0.72rem;
@@ -1475,6 +1502,11 @@ body:not(:has(.credibility-strip)) main { padding-top: var(--nav-height); }
   .footer-meta {
     align-items: flex-start;
     text-align: left;
+  }
+  .footer-social { margin: 0 0 4px -12px; }
+  .footer-social a {
+    width: 44px;
+    height: 44px;
   }
 }
 

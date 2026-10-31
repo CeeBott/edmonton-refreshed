@@ -100,6 +100,7 @@ module.exports = {
   sameAs: [
     'https://maps.app.goo.gl/Nipdt38odihmKEfG7',     // Google Business Profile
     'https://www.facebook.com/edmontonrefreshed',
+    'https://www.instagram.com/edmontonrefreshed/',
   ],
 
   // Canonical brand logo for structured data — the Organization /

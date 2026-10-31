@@ -1,11 +1,26 @@
 /**
  * Footer partial — renders the sitewide global footer: brand statement,
  * three-column taxonomy (Sell by Furniture Type / Sell By Situation /
- * Sell By Brand), and utility/legal row. All taxonomy content comes from
+ * Sell By Brand), utility/legal row, and social icons. All taxonomy content comes from
  * config/taxonomy.js; copy comes from config/site.js.
  */
 const site = require('../config/site');
 const tax = require('../config/taxonomy');
+
+// Line icons drawn on a 24px grid, stroked in currentColor so they take the
+// footer's muted text colour and hover state.
+const SOCIAL_ICONS = [
+  {
+    name: 'Facebook',
+    host: 'facebook.com',
+    svg: '<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>',
+  },
+  {
+    name: 'Instagram',
+    host: 'instagram.com',
+    svg: '<rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="0.6" fill="currentColor"/>',
+  },
+];
 
 function renderFooter() {
   const pieceLinks = tax.furnitureTypes
@@ -24,6 +39,15 @@ function renderFooter() {
     .concat([
       '            <li class="footer-link-aside"><a href="/sell/">Other brands &rarr;</a></li>',
     ])
+    .join('\n');
+
+  // Social icons — URLs come from config/site.js#sameAs (the one list of
+  // external profiles), so a profile added there for schema also gets its
+  // footer icon. Only platforms with an icon below render.
+  const socialLinks = SOCIAL_ICONS
+    .map(p => ({ ...p, url: site.sameAs.find(u => u.includes(p.host)) }))
+    .filter(p => p.url)
+    .map(p => `            <li><a href="${p.url}" target="_blank" rel="noopener" aria-label="${site.brandName} on ${p.name}"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">${p.svg}</svg></a></li>`)
     .join('\n');
 
   return [
@@ -64,6 +88,9 @@ function renderFooter() {
     '          <li><a href="/returns/">Returns &amp; Refunds</a></li>',
     '        </ul>',
     '        <div class="footer-meta">',
+    '          <ul class="footer-social">',
+    socialLinks,
+    '          </ul>',
     `          <p class="footer-copy">&copy; 2026 ${site.brandFullName}</p>`,
     `          <p class="footer-tagline">${site.brandTagline}</p>`,
     '        </div>',
