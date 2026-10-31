@@ -498,7 +498,8 @@ function injectSellCluster(html, filepath) {
   html = injectPartial(html, 'HERO_MOSAIC', function () {
     return generateHeroMosaic(meta, SELL_PAGES['sell/index.html']);
   });
-  html = injectPartial(html, 'FIT_CHECK', function () { return isBrand ? '' : renderFitCheck('      ', hasLists); });
+  var fitAfterForm = hasForm && html.indexOf('FIT_CHECK_START') > html.indexOf('<form class="sell-form"');
+  html = injectPartial(html, 'FIT_CHECK', function () { return isBrand ? '' : renderFitCheck('      ', hasLists, fitAfterForm); });
   html = injectPartial(html, 'FIT_LISTS', function () { return isBrand ? '' : renderFitLists('        ', selfUrl); });
 
   if (meta.howTo) {

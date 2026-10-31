@@ -23,7 +23,10 @@ function esc(s) {
   return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/’/g, '&rsquo;');
 }
 
-function renderFitCheck(indent, hasLists) {
+// afterForm: on the landing pages the check sits after the form, directly
+// above "Is my piece a fit?", so a link down to that list would point at the
+// next line; it is dropped there.
+function renderFitCheck(indent, hasLists, afterForm) {
   const i = indent || '      ';
   const yes = rules.weBuy.map(([t, aside]) =>
     `${i}          <li>${esc(t)}${aside ? ` <span>(${esc(aside)})</span>` : ''}</li>`).join('\n');
@@ -48,11 +51,11 @@ function renderFitCheck(indent, hasLists) {
     `${i}      </ul>`,
     `${i}    </div>`,
     `${i}  </div>`,
-    `${i}  <p class="sell-fitcheck-foot">` + (hasLists
+    afterForm ? null : `${i}  <p class="sell-fitcheck-foot">` + (hasLists
       ? '<a href="#is-it-a-fit">Full list of brands we buy &darr;</a>'
       : '<a href="/sell/what-we-buy/">Full list of what we buy &rarr;</a>') + '</p>',
     `${i}</section>`,
-  ].join('\n').replace(/^( *)          <li>/gm, '$1<li>').replace(/\n(\s*)(<li>)/g, (m, sp, li) => '\n' + i + '        ' + li);
+  ].filter((l) => l !== null).join('\n').replace(/^( *)          <li>/gm, '$1<li>').replace(/\n(\s*)(<li>)/g, (m, sp, li) => '\n' + i + '        ' + li);
 }
 
 // self = the page's own URL ('/sell/sell-designer-furniture/'), so the block
