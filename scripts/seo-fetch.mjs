@@ -28,6 +28,10 @@
 //  instead of stdout (PSI responses run ~3 MB — point them at the audit's
 //  data/YYYY-MM-DD/ folder rather than flooding the terminal).
 //    cf             Cloudflare zone analytics by day (GraphQL). --days N (28)
+//    cf-bots        Crawler health: per search / AI-answer crawler, requests
+//                   that succeeded, 404'd, errored, or were challenged or
+//                   blocked by Cloudflare itself. --days N (28, max ~30 on
+//                   the free plan). Flags any crawler Cloudflare stopped.
 //    all            Standard audit bundle → docs/seo-audit/data/YYYY-MM-DD/
 //    setup          Print the one-time credential setup steps
 //
@@ -304,6 +308,80 @@ async function cf(days) {
   return json.data.viewer.zones[0];
 }
 
+// ── Cloudflare crawler health (are search / AI-answer crawlers getting in?) ──
+// Search and answer crawlers that §6.5 welcomes. Matched on user agent, so a
+// spoofer with the same agent counts too; confirm a challenged crawler's IPs
+// in Security → Analytics → Events before acting (CLAUDE.md §6.5).
+const CRAWLERS = [
+  ['Googlebot', '%Googlebot%'],
+  ['Bingbot', '%bingbot%'],
+  ['OAI-SearchBot', '%OAI-SearchBot%'],
+  ['ChatGPT-User', '%ChatGPT-User%'],
+  ['PerplexityBot', '%PerplexityBot%'],
+  ['Perplexity-User', '%Perplexity-User%'],
+  ['Claude-SearchBot', '%Claude-SearchBot%'],
+  ['Claude-User', '%Claude-User%'],
+  ['Applebot', '%Applebot/%'],
+  ['DuckDuckBot', '%DuckDuckBot%'],
+];
+
+async function cfBots(days) {
+  const cfg = config().cloudflare || {};
+  if (!cfg.apiToken || !cfg.zoneTag) fail('cf-bots requires "cloudflare": { "apiToken", "zoneTag" } in the config.');
+  const since = new Date(Date.now() - days * 86400000).toISOString();
+  const until = new Date().toISOString();
+  // One alias per crawler for status counts, one for anything Cloudflare
+  // itself challenged or blocked (securitySource set), by day and path.
+  const parts = CRAWLERS.map(([, ua], i) => `
+    s${i}: httpRequestsAdaptiveGroups(limit: 50, filter: { datetime_geq: $since, datetime_lt: $until, userAgent_like: "${ua}" }) {
+      count dimensions { edgeResponseStatus securitySource }
+    }
+    x${i}: httpRequestsAdaptiveGroups(limit: 20, filter: { datetime_geq: $since, datetime_lt: $until, userAgent_like: "${ua}", securitySource_neq: "unknown" }, orderBy: [date_DESC]) {
+      count dimensions { date clientRequestPath securitySource securityAction }
+    }`).join('');
+  const query = `query($zone: String!, $since: Time!, $until: Time!) {
+    viewer { zones(filter: { zoneTag: $zone }) {${parts}
+    } }
+  }`;
+  const res = await fetch('https://api.cloudflare.com/client/v4/graphql', {
+    method: 'POST',
+    headers: { authorization: `Bearer ${cfg.apiToken}`, 'content-type': 'application/json' },
+    body: JSON.stringify({ query, variables: { zone: cfg.zoneTag, since, until } }),
+  });
+  const json = await jsonOrThrow(res, 'Cloudflare GraphQL');
+  if (json.errors && json.errors.length) throw new Error(`Cloudflare GraphQL: ${JSON.stringify(json.errors).slice(0, 600)}`);
+  const z = json.data.viewer.zones[0];
+  const sitemap = readFileSync(path.join(ROOT, 'sitemap.xml'), 'utf8');
+  const realPaths = new Set([...sitemap.matchAll(/<(?:image:)?loc>([^<]+)<\/(?:image:)?loc>/g)]
+    .map((m) => decodeURI(new URL(m[1]).pathname)));
+  const crawlers = CRAWLERS.map(([name], i) => {
+    const t = { name, requests: 0, ok: 0, notFound: 0, otherClientError: 0, serverError: 0, edgeChallengedOrBlocked: 0 };
+    for (const r of z[`s${i}`]) {
+      const st = r.dimensions.edgeResponseStatus;
+      t.requests += r.count;
+      if (r.dimensions.securitySource !== 'unknown') t.edgeChallengedOrBlocked += r.count;
+      else if (st < 400) t.ok += r.count;
+      else if (st === 404) t.notFound += r.count;
+      else if (st >= 500) t.serverError += r.count;
+      else t.otherClientError += r.count;
+    }
+    const edge = z[`x${i}`];
+    t.lastChallengedOrBlocked = edge.length ? edge[0].dimensions.date : null;
+    t.edgeEvents = edge.map((r) => ({ count: r.count, ...r.dimensions }));
+    // Flag a challenge anywhere, a block on a real page, or any 5xx. Blocks on
+    // paths the site doesn't have (/api/auth, /settings) are scanners spoofing
+    // the agent; 404s are usually the crawler's own bad URLs (CLAUDE.md §6.5).
+    const stopped = t.edgeEvents.some((e) => /challenge/.test(e.securityAction) || realPaths.has(e.clientRequestPath));
+    t.flag = stopped || t.serverError ? 'CHECK' : '';
+    return t;
+  });
+  return {
+    window: { since, until, days },
+    note: 'Counts come from Cloudflare\'s sampled adaptive dataset: estimates, often in multiples of 10 over long windows. Matched on user agent only.',
+    crawlers,
+  };
+}
+
 // ── standard audit bundle ───────────────────────────────────
 async function all() {
   const days = Number(flag('days', 84));
@@ -413,10 +491,11 @@ try {
       print(await crux(positionals[0], Boolean(flag('origin', false))));
       break;
     case 'cf': print(await cf(Number(flag('days', 28)))); break;
+    case 'cf-bots': print(await cfBots(Number(flag('days', 28)))); break;
     case 'all': await all(); break;
     case 'setup': console.log(SETUP); break;
     default:
-      console.log('Commands: gsc | inspect | sitemaps | ga4 | psi | crux | cf | all | setup');
+      console.log('Commands: gsc | inspect | sitemaps | ga4 | psi | crux | cf | cf-bots | all | setup');
       console.log('See the header of scripts/seo-fetch.mjs or CLAUDE.md §8.16 for details.');
   }
 } catch (e) {
