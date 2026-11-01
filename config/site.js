@@ -18,7 +18,7 @@ module.exports = {
 
   // Brand
   brandName: 'Edmonton Refreshed',
-  brandFullName: 'Edmonton Refreshed Seating',
+  brandFullName: 'Edmonton Refreshed',
   brandTagline: 'Better furniture. Better experience.',
   brandStatement:
     'Edmonton Refreshed buys and resells premium pre-owned sofas and sectionals across Edmonton and surrounding areas.',

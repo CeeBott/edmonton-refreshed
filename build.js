@@ -1480,7 +1480,7 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions, rev
     "@context": "https://schema.org",
     "@type": "FurnitureStore",
     "@id": BASE_URL + "#business",
-    "name": "Edmonton Refreshed Seating",
+    "name": "Edmonton Refreshed",
     "url": BASE_URL,
     "telephone": "+1-780-965-1477",
     "image": BASE_URL + "images/og-preview.png",
@@ -1511,7 +1511,7 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions, rev
     "@context": "https://schema.org",
     "@type": "Organization",
     "@id": BASE_URL + "#organization",
-    "name": "Edmonton Refreshed Seating",
+    "name": "Edmonton Refreshed",
     "url": BASE_URL,
     "logo": site.logo,
     "contactPoint": {
@@ -1780,7 +1780,7 @@ function generateListingPage(item, slug, allItems, soldItems, assetVersions, rev
 '  <meta property="og:url" content="' + listingUrl + '">\n' +
 '  <meta property="og:title" content="' + titleTag + '">\n' +
 '  <meta property="og:description" content="' + metaDesc + '">\n' +
-'  <meta property="og:site_name" content="Edmonton Refreshed Seating">\n' +
+'  <meta property="og:site_name" content="Edmonton Refreshed">\n' +
 '  <meta property="og:image" content="' + ogImageUrl + '">\n' +
 (ogDims.w ? '  <meta property="og:image:width" content="' + ogDims.w + '">\n' : '') +
 (ogDims.h ? '  <meta property="og:image:height" content="' + ogDims.h + '">\n' : '') +

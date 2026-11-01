@@ -788,7 +788,7 @@ function buildHead(m, bases, pageUrl) {
     '  <meta property="og:url" content="' + pageUrl + '">\n' +
     '  <meta property="og:title" content="' + titleContent + '">\n' +
     '  <meta property="og:description" content="' + descContent + '">\n' +
-    '  <meta property="og:site_name" content="Edmonton Refreshed Seating">\n' +
+    '  <meta property="og:site_name" content="Edmonton Refreshed">\n' +
     '  <meta property="og:image" content="' + coverAbs + '">\n' +
     (ogDims.w ? '  <meta property="og:image:width" content="' + ogDims.w + '">\n' : '') +
     (ogDims.h ? '  <meta property="og:image:height" content="' + ogDims.h + '">\n' : '') +
