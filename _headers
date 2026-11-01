@@ -14,3 +14,10 @@
   Cache-Control: public, max-age=604800
 /brand/*
   Cache-Control: public, max-age=604800
+
+# Instagram carousel slides (scripts/ig-slide.sh). Hosted here only so the
+# Instagram API can fetch them; kept out of search so they never compete with
+# the listing photos they are made from. Never edited in place.
+/social/*
+  X-Robots-Tag: noindex
+  Cache-Control: public, max-age=604800
