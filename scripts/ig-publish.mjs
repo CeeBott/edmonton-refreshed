@@ -3,7 +3,8 @@
 //
 //   node scripts/ig-publish.mjs                 list the queue and what is due
 //   node scripts/ig-publish.mjs approve <id..>  record Collin's approval of those posts
-//   node scripts/ig-publish.mjs publish         publish every approved post that is due
+//   node scripts/ig-publish.mjs publish         publish every approved post that is due,
+//                                               each at its own time in the posting window
 //   node scripts/ig-publish.mjs publish --id X  publish one approved post now
 //
 // The queue (docs/social/instagram/queue.json) is local and git-ignored.
@@ -15,6 +16,11 @@
 // after approval puts it back in draft. Every slide URL must answer 200 as a
 // JPEG first, so a post whose slides have not been pushed yet is skipped,
 // not half-published.
+//
+// Posting window: every post goes out between 9:47 and 10:22 Edmonton time
+// (Collin, 2026-11-01), at the minute stored in its `time`. `publish` waits
+// for that minute; run after the window closes, it holds due posts for the
+// next morning instead of posting late. `--id` publishes immediately.
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
@@ -26,9 +32,18 @@ const QUEUE = path.join(ROOT, 'docs/social/instagram/queue.json');
 const CREDS = path.join(os.homedir(), '.config/instagram-mcp/credentials.json');
 const GRAPH = 'https://graph.facebook.com/v23.0';
 const REFRESH_DAYS = 15;
+const WINDOW = ['09:47', '10:22'];
 
-const today = () => new Date().toLocaleDateString('en-CA', { timeZone: 'America/Edmonton' });
+// Alberta Time is UTC-6 year-round from 2026-11-01. Node's bundled tz data
+// (2026a) still falls Edmonton back to UTC-7, so the offset is fixed here
+// rather than read from a time zone.
+const ALBERTA_OFFSET_H = -6;
+const albertaNow = () => new Date(Date.now() + ALBERTA_OFFSET_H * 3600e3);
+const today = () => albertaNow().toISOString().slice(0, 10);
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const mins = (hhmm) => { const [h, m] = hhmm.split(':').map(Number); return h * 60 + m; };
+// Seconds since Edmonton midnight.
+const nowSec = () => { const d = albertaNow(); return d.getUTCHours() * 3600 + d.getUTCMinutes() * 60 + d.getUTCSeconds(); };
 const readQueue = () => JSON.parse(fs.readFileSync(QUEUE, 'utf8'));
 const writeQueue = (q) => fs.writeFileSync(QUEUE, JSON.stringify(q, null, 2) + '\n');
 const creds = () => JSON.parse(fs.readFileSync(CREDS, 'utf8'));
@@ -119,7 +134,7 @@ if (cmd === 'list') {
   for (const p of q.posts) {
     const state = p.permalink ? 'posted' : isApproved(p) ? (p.date <= t ? 'DUE' : 'approved')
       : p.status === 'approved' ? 'CHANGED since approval' : 'draft';
-    console.log(p.date, p.id.padEnd(13), String(p.images.length).padStart(2), state.padEnd(22), p.permalink || '');
+    console.log(p.date, p.time || '     ', p.id.padEnd(13), String(p.images.length).padStart(2), state.padEnd(22), p.permalink || '');
   }
 } else if (cmd === 'approve') {
   for (const id of args) {
@@ -132,11 +147,20 @@ if (cmd === 'list') {
   writeQueue(q);
 } else if (cmd === 'publish') {
   const only = args[0] === '--id' ? args[1] : null;
-  const due = q.posts.filter((p) => !p.permalink && (only ? p.id === only : p.date <= today()));
+  const due = q.posts.filter((p) => !p.permalink && (only ? p.id === only : p.date <= today()))
+    .sort((a, b) => (a.time || '').localeCompare(b.time || ''));
   if (!due.length) { console.log('nothing due'); process.exit(0); }
   console.log(await refreshIfNeeded());
   for (const p of due) {
     if (!isApproved(p)) { console.log(`SKIP ${p.id}: ${p.status === 'approved' ? 'changed since approval' : 'not approved'}`); continue; }
+    if (!only) {
+      const target = mins(p.time || WINDOW[0]) * 60;
+      if (nowSec() > mins(WINDOW[1]) * 60 + 59) { console.log(`HOLD ${p.id}: posting window (${WINDOW.join('-')}) has passed; goes out tomorrow`); continue; }
+      if (nowSec() < target) {
+        console.log(`WAIT ${p.id}: until ${p.time}`);
+        await sleep((target - nowSec()) * 1000);
+      }
+    }
     const dead = await slidesLive(p);
     if (dead) { console.log(`SKIP ${p.id}: slide not live yet (push needed): ${dead}`); continue; }
     try {
