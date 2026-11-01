@@ -154,15 +154,18 @@ function imageSize(absPath) {
   return {};
 }
 
-// Business timezone. Freshness dates (dateModified, sitemap <lastmod>,
-// priceValidUntil) are stamped in Edmonton local time, NOT UTC: between
-// ~18:00 and midnight MDT (UTC-6) the UTC ISO date is already tomorrow, which
-// would mis-stamp every date a day ahead of the business's actual day.
-var BUSINESS_TZ = 'America/Edmonton';
+// Business clock. Freshness dates (dateModified, sitemap <lastmod>,
+// priceValidUntil) are stamped in Edmonton local time, NOT UTC: after 18:00
+// local the UTC date is already tomorrow (§9.5). Alberta Time is UTC-6 year
+// round from 2026-11-01, and Node's bundled tz data (2026a) still falls
+// 'America/Edmonton' back to UTC-7, so the offset is fixed rather than read
+// from a time zone. A city fork sets its own offset here.
+var BUSINESS_UTC_OFFSET_H = -6;
 
-// en-CA locale formats a Date as zero-padded YYYY-MM-DD.
+// The UTC date of an instant shifted by the business offset is the business's
+// local date: zero-padded YYYY-MM-DD.
 function isoDate(date) {
-  return date.toLocaleDateString('en-CA', { timeZone: BUSINESS_TZ });
+  return new Date(date.getTime() + BUSINESS_UTC_OFFSET_H * 3600000).toISOString().slice(0, 10);
 }
 
 function today() {
@@ -170,9 +173,7 @@ function today() {
 }
 
 function todayPlusDays(n) {
-  var d = new Date();
-  d.setDate(d.getDate() + n);
-  return isoDate(d);
+  return isoDate(new Date(Date.now() + n * 86400000));
 }
 
 // Reserved (§5.10): sold to a buyer but not yet delivered and paid for. The

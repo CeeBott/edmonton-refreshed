@@ -92,8 +92,10 @@ function config() {
 
 // Dates are Edmonton-local, never UTC: toISOString() rolls to tomorrow after
 // ~18:00 local, shifting windows and bundle stamps a day (CLAUDE.md §9.5).
-const BUSINESS_TZ = 'America/Edmonton';
-const isoDate = (d) => d.toLocaleDateString('en-CA', { timeZone: BUSINESS_TZ });
+// Alberta Time is UTC-6 year round (from 2026-11-01); Node's tz data predates
+// it, so the offset is fixed, as in build.js.
+const BUSINESS_UTC_OFFSET_H = -6;
+const isoDate = (d) => new Date(d.getTime() + BUSINESS_UTC_OFFSET_H * 3600000).toISOString().slice(0, 10);
 
 function isoDaysAgo(n) {
   return isoDate(new Date(Date.now() - n * 86400000));

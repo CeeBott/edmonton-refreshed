@@ -624,8 +624,10 @@ function pluralize(s) { return /(?:ch|sh|s|x|z)$/i.test(s) ? s + 'es' : s + 's';
 // configuration ("we buy leather sofas directly") instead of the brand.
 var CONFIG_SELL_PAGES = ['/sell/sectional/', '/sell/leather-sectional/', '/sell/sofa/', '/sell/leather-sofa/'];
 
+// Alberta Time is UTC-6 year round (from 2026-11-01); Node's tz data predates
+// it, so the offset is fixed, as in build.js (§9.5).
 function isoDate() {
-  return new Date().toLocaleDateString('en-CA', { timeZone: 'America/Edmonton' });
+  return new Date(Date.now() - 6 * 3600000).toISOString().slice(0, 10);
 }
 
 // Slice an inclusive [startMarker … endMarker] region out of the template.
